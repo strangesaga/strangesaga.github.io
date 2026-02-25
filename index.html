@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmic Cupcake Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Oswald:wght@600;700&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* =========================================
-           GENERAL & CURSOR
-        ========================================= */
         body {
-            margin: 0; padding: 0; height: 100vh;
+            margin: 0; padding: 0; min-height: 100vh;
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(to bottom, #070314 0%, #170936 50%, #321042 100%);
             color: #ffffff; overflow: hidden;
@@ -21,18 +18,13 @@
             cursor: none; user-select: none;
         }
 
-        /* Rolling Scanlines & Noise */
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
             background-size: 100% 4px; pointer-events: none; z-index: 998;
             animation: rollScanlines 10s linear infinite;
         }
-
-        @keyframes rollScanlines {
-            from { background-position: 0 0; }
-            to { background-position: 0 100vh; }
-        }
+        @keyframes rollScanlines { from { background-position: 0 0; } to { background-position: 0 100vh; } }
 
         .noise-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -40,108 +32,46 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Pulsing Vignette & CRT Screen Curvature */
         .vignette-pulse {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 997;
-            /* Inset shadow profundo para simular tela de tubo arredondada */
             box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 0, 0, 1);
-            border-radius: 15px;
             animation: pulseVignette 4s ease-in-out infinite alternate;
         }
-
         @keyframes pulseVignette {
             0% { box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,1); }
             100% { box-shadow: inset 0 0 180px rgba(20, 0, 10, 0.95), inset 0 0 40px rgba(0,0,0,1); }
         }
 
-        /* Custom Cursor & Ripple */
         #custom-cursor {
             position: fixed; top: 0; left: 0; width: 8px; height: 8px;
             background: #ffffff; border-radius: 50%; pointer-events: none; z-index: 1000;
             box-shadow: 0 0 15px 4px rgba(255, 42, 120, 0.8), 0 0 30px rgba(0, 229, 255, 0.6);
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); transition: transform 0.1s ease-out;
         }
 
-        .cursor-ripple {
-            position: fixed; border-radius: 50%; border: 2px solid #00e5ff;
-            pointer-events: none; z-index: 999; transform: translate(-50%, -50%) scale(0);
-            animation: rippleAnim 0.6s ease-out forwards;
-        }
-
-        @keyframes rippleAnim {
-            0% { width: 0; height: 0; opacity: 1; border-color: #00e5ff; }
-            100% { width: 100px; height: 100px; opacity: 0; border-color: #ff2a78; }
-        }
-
-        /* =========================================
-           VCR OSD (ON SCREEN DISPLAY) - HUD de Câmera
-        ========================================= */
-        .vcr-osd {
-            position: fixed; z-index: 996; font-family: 'VT323', monospace;
-            font-size: 1.8rem; color: #00e5ff; 
-            text-shadow: 2px 0px 0px rgba(0, 0, 255, 0.5);
-            pointer-events: none; opacity: 0.8; letter-spacing: 2px;
-        }
-        .vcr-top-left { top: 30px; left: 40px; }
-        .vcr-top-right { top: 30px; right: 40px; }
-        .vcr-bottom-right { bottom: 30px; right: 40px; color: #d3d3d3; }
-        .vcr-blink { animation: blinkVcr 1.5s infinite; }
-        .vcr-red { color: #ff2a4b; text-shadow: 2px 0px 0px rgba(255, 0, 0, 0.5); }
-        
-        @keyframes blinkVcr { 0%, 49% { opacity: 0.8; } 50%, 100% { opacity: 0; } }
-
-        /* =========================================
-           COSMIC HORIZON (BACKGROUND)
-        ========================================= */
         #parallax-bg {
             position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
             z-index: 1; pointer-events: none; transition: transform 0.1s linear;
         }
-
         .horizon-glow {
             position: absolute; bottom: -20vh; left: 50%; transform: translateX(-50%);
             width: 150vw; height: 50vh;
             background: radial-gradient(ellipse at center, rgba(162, 59, 219, 0.4) 0%, rgba(255, 42, 120, 0.2) 40%, transparent 70%);
             filter: blur(50px); animation: breatheHorizon 8s ease-in-out infinite alternate;
         }
+        @keyframes breatheHorizon { 0% { opacity: 0.6; } 100% { opacity: 1; } }
 
-        @keyframes breatheHorizon {
-            0% { opacity: 0.6; transform: translateX(-50%) scaleY(1); }
-            100% { opacity: 1; transform: translateX(-50%) scaleY(1.2); }
-        }
-
-        #star-container, #ray-container, #shooting-stars { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
+        #star-container, #ray-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .star { position: absolute; border-radius: 50%; animation: twinkle linear infinite; }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.1; transform: scale(0.8); }
-            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 8px currentColor; }
-        }
-
-        .ray {
-            position: absolute; bottom: -10%; left: 50%; width: 80px; height: 120vh;
-            transform-origin: bottom center; filter: blur(25px);
-            animation: sway 15s ease-in-out infinite alternate; mix-blend-mode: screen;
-        }
-
-        @keyframes sway {
-            0% { transform: translateX(-50%) rotate(-20deg); opacity: 0.2; }
-            100% { transform: translateX(-50%) rotate(20deg); opacity: 0.5; }
-        }
-
-        /* =========================================
-           MAIN LAYOUT
-        ========================================= */
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 8px currentColor; } }
+        
         .content-container {
             position: relative; z-index: 10; display: flex;
             justify-content: space-between; align-items: center;
             width: 85%; max-width: 1300px;
         }
 
-        /* =========================================
-           LEFT: TILTED MENU & ICONS
-        ========================================= */
         .menu-wrapper {
             display: flex; flex-direction: column; gap: 15px;
             transform: rotate(-5deg); padding-left: 40px;
@@ -152,92 +82,67 @@
             color: #ffffff; text-decoration: none; text-transform: uppercase;
             position: relative; padding: 5px 10px;
             text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 255, 0, 0.8);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0; transform: translateX(-50px); animation: slideInFade 0.6s forwards;
+            transition: all 0.2s;
         }
-
-        .menu-item:nth-child(1) { animation-delay: 0.1s; }
-        .menu-item:nth-child(2) { animation-delay: 0.2s; }
-        .menu-item:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes slideInFade { to { opacity: 1; transform: translateX(0); } }
-
         .menu-item::before {
             content: '▶'; position: absolute; left: -35px; color: #ffffff; opacity: 0;
             text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 255, 0, 0.8);
             transition: all 0.2s;
         }
-
         .menu-item:hover {
             color: #ffffff; letter-spacing: 2px;
             text-shadow: 4px 0px 0px rgba(0, 229, 255, 1), -4px 0px 0px rgba(255, 42, 120, 1);
         }
-
         .menu-item:hover::before { opacity: 1; left: -25px; }
 
-        .icon-row {
-            display: flex; gap: 30px; margin-top: 15px; padding-left: 10px;
-            opacity: 0; animation: slideInFade 0.6s forwards 0.5s;
-        }
-
+        .icon-row { display: flex; gap: 30px; margin-top: 15px; padding-left: 10px; }
         .icon-btn {
             font-size: 2.8rem; color: #ffffff; text-decoration: none;
             text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 255, 0, 0.8);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 5px;
+            transition: all 0.2s; padding: 5px;
         }
+        .icon-btn:hover { text-shadow: 4px 0px 0px rgba(0, 229, 255, 1), -4px 0px 0px rgba(255, 42, 120, 1); transform: scale(1.2) rotate(5deg); }
 
-        .icon-btn:hover {
-            text-shadow: 4px 0px 0px rgba(0, 229, 255, 1), -4px 0px 0px rgba(255, 42, 120, 1);
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        /* =========================================
-           RIGHT: LOGO & STUDIO BIO (3D Effect)
-        ========================================= */
-        .brand-wrapper {
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            perspective: 1000px; /* Habilita a física 3D */
-        }
-
+        .brand-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; perspective: 1000px; }
         .logo-image {
-            width: 450px; max-width: 45vw;
-            animation: floatLogo 6s ease-in-out infinite;
+            width: 450px; max-width: 45vw; animation: floatLogo 6s ease-in-out infinite;
             filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.6)) drop-shadow(0px 0px 50px rgba(138, 43, 226, 0.6));
-            transform-origin: center;
         }
-
         @keyframes floatLogo {
-            0%, 100% { transform: translateY(0px) rotate(2deg); filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.6)) drop-shadow(0px 0px 50px rgba(138, 43, 226, 0.6));}
-            50% { transform: translateY(-20px) rotate(-2deg); filter: drop-shadow(0px 30px 20px rgba(0, 0, 0, 0.4)) drop-shadow(0px 0px 60px rgba(255, 42, 120, 0.8));}
+            0%, 100% { transform: translateY(0px) rotate(2deg); }
+            50% { transform: translateY(-20px) rotate(-2deg); }
         }
 
         .studio-bio {
-            margin-top: 25px; font-size: 1.1rem; max-width: 400px;
-            color: #d3d3d3; line-height: 1.6; letter-spacing: 0.5px;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+            margin-top: 25px; font-size: 1.1rem; max-width: 400px; color: #d3d3d3; line-height: 1.6;
             background: rgba(0,0,0,0.3); padding: 15px 25px; border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-            opacity: 0; animation: slideInFade 0.6s forwards 0.8s;
-            transition: transform 0.1s; /* Para o efeito 3D JS */
-            transform-style: preserve-3d;
+            border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
         }
-
         .studio-bio span.highlight-blue { color: #00e5ff; font-weight: bold; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); }
         .studio-bio span.highlight-red { color: #ff2a78; font-weight: bold; text-shadow: 0 0 8px rgba(255, 42, 120, 0.6); }
 
-        .footer {
-            position: absolute; bottom: 20px; left: 40px; font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; text-transform: uppercase;
+        .footer { position: absolute; bottom: 20px; left: 40px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; text-transform: uppercase; }
+
+        /* =========================================
+           MOBILE OPTIMIZATIONS
+        ========================================= */
+        @media (max-width: 900px) {
+            body { overflow-y: auto; overflow-x: hidden; } /* Permite rolar se a tela for muito pequena */
+            .content-container { flex-direction: column-reverse; justify-content: center; gap: 40px; height: auto; padding: 40px 0; }
+            .menu-wrapper { transform: rotate(0deg); align-items: center; padding-left: 0; }
+            .menu-item { font-size: 2.5rem; text-align: center; }
+            .menu-item::before { display: none; } /* Remove seta no mobile para não quebrar layout */
+            .logo-image { width: 70vw; max-width: 300px; animation: none; /* Desativa o balanço no mobile */ }
+            .studio-bio { font-size: 1rem; margin-top: 15px; max-width: 85vw; }
+            .footer { position: relative; bottom: 0; left: 0; text-align: center; margin-top: 20px; }
+            #parallax-bg { display: none; } /* Desativa parallax no mobile por performance */
         }
 
-        @media (max-width: 900px) {
-            .content-container { flex-direction: column-reverse; justify-content: center; gap: 40px; }
-            .menu-wrapper { transform: rotate(0deg); align-items: center; padding-left: 0; }
-            .menu-item { font-size: 2.5rem; }
-            .logo-image { width: 70vw; max-width: 300px; }
-            .studio-bio { font-size: 1rem; margin-top: 15px; max-width: 85vw; }
-            .vcr-osd { display: none; } /* Esconde overlays em celular pra não poluir */
+        /* Desativa o Custom Cursor em telas de toque (Mobile) */
+        @media (hover: none) and (pointer: coarse) {
+            #custom-cursor { display: none !important; }
+            body { cursor: auto; }
+            .mag-btn { transform: none !important; } /* Desativa física magnética no dedo */
         }
     </style>
 </head>
@@ -248,19 +153,12 @@
     <div class="vignette-pulse"></div>
     <div id="custom-cursor"></div>
 
-    <div class="vcr-osd vcr-top-left vcr-blink">▶ PLAY</div>
-    <div class="vcr-osd vcr-top-right vcr-red">REC <span style="font-size: 1rem;">●</span></div>
-    <div class="vcr-osd vcr-bottom-right" id="vcr-timer">00:00:00</div>
-
     <div id="parallax-bg">
         <div class="horizon-glow"></div>
-        <div id="ray-container"></div>
         <div id="star-container"></div>
-        <div id="shooting-stars"></div>
     </div>
 
     <div class="content-container">
-        
         <div class="menu-wrapper">
             <a href="projects.html" class="menu-item mag-btn scramble-text" data-text="Projects & Games">Projects & Games</a>
             <a href="mailto:seuemail@gmail.com" class="menu-item mag-btn scramble-text" data-text="Contact Us">Contact Us</a>
@@ -278,159 +176,95 @@
                 We are <span class="highlight-blue">Cosmic Cupcake</span>. We bake sweet slice-of-life adventures and corrupt them with <span class="highlight-red">psychological horror</span>. Currently investigating the hidden files of Hurricane City.
             </p>
         </div>
-
     </div>
 
     <div class="footer">SYSTEM ONLINE // USE THE MOUSE TO INSPECT</div>
 
     <script>
-        // Relógio VCR Dinâmico
-        let seconds = 0;
-        setInterval(() => {
-            seconds++;
-            let h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-            let m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-            let s = (seconds % 60).toString().padStart(2, '0');
-            document.getElementById('vcr-timer').innerText = `SP ${h}:${m}:${s}`;
-        }, 1000);
-
-        // Motor de Estrelas
+        // Stars
         function createCosmos() {
             const starContainer = document.getElementById('star-container');
-            const rayContainer = document.getElementById('ray-container');
-
             for (let i = 0; i < 150; i++) {
                 let star = document.createElement('div');
                 star.classList.add('star');
-                let size = Math.random() * 2.5 + 0.5;
-                star.style.width = `${size}px`; star.style.height = `${size}px`;
+                star.style.width = `${Math.random() * 2.5 + 0.5}px`; star.style.height = star.style.width;
                 star.style.left = `${Math.random() * 100}vw`; star.style.top = `${Math.random() * 100}vh`;
                 star.style.filter = Math.random() > 0.8 ? 'blur(0px)' : 'blur(1px)';
-                star.style.animationDuration = `${Math.random() * 4 + 2}s`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.animationDuration = `${Math.random() * 4 + 2}s`; star.style.animationDelay = `${Math.random() * 5}s`;
                 const colors = ['#ffffff', '#00e5ff', '#ff2a78', '#a23bdb'];
                 star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                starContainer.appendChild(star);
-            }
-
-            for (let i = 0; i < 6; i++) {
-                let ray = document.createElement('div');
-                ray.classList.add('ray');
-                ray.style.left = `${15 + (i * 15) + (Math.random() * 10)}vw`;
-                let color = Math.random() > 0.5 ? 'rgba(162, 59, 219, 0.08)' : 'rgba(0, 229, 255, 0.05)';
-                ray.style.background = `linear-gradient(to top, ${color} 0%, transparent 100%)`;
-                ray.style.animationDuration = `${Math.random() * 8 + 12}s`;
-                ray.style.animationDelay = `-${Math.random() * 10}s`;
-                rayContainer.appendChild(ray);
+                if(starContainer) starContainer.appendChild(star);
             }
         }
         createCosmos();
 
-        // Rastreamento de Mouse (Cursor, Parallax e Cartão 3D)
-        const cursor = document.getElementById('custom-cursor');
-        const parallaxBg = document.getElementById('parallax-bg');
-        const magButtons = document.querySelectorAll('.mag-btn');
-        const bioBox = document.getElementById('bio-3d'); // Referência da Bio
+        // Rastreamento (apenas se for mouse)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursor = document.getElementById('custom-cursor');
+            const parallaxBg = document.getElementById('parallax-bg');
+            const magButtons = document.querySelectorAll('.mag-btn');
+            const bioBox = document.getElementById('bio-3d');
 
-        window.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
-            
-            // Parallax do fundo
-            const moveX = (e.clientX - window.innerWidth / 2) * -0.015;
-            const moveY = (e.clientY - window.innerHeight / 2) * -0.015;
-            parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
-
-            // Física 3D da caixa de Biografia
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 45; 
-            const yAxis = (window.innerHeight / 2 - e.pageY) / -30;
-            bioBox.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-
-        // Clique Ripple
-        window.addEventListener('mousedown', (e) => {
-            const ripple = document.createElement('div');
-            ripple.classList.add('cursor-ripple');
-            ripple.style.left = `${e.clientX}px`; ripple.style.top = `${e.clientY}px`;
-            document.body.appendChild(ripple);
-            setTimeout(() => { ripple.remove(); }, 600);
-            playClickSound();
-        });
-
-        // Botões Magnéticos
-        magButtons.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const pullX = (e.clientX - (rect.left + rect.width / 2)) * 0.15; 
-                const pullY = (e.clientY - (rect.top + rect.height / 2)) * 0.3;  
-                btn.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
-                cursor.style.transform = `translate(-50%, -50%) scale(1.5)`; 
+            window.addEventListener('mousemove', (e) => {
+                cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+                const moveX = (e.clientX - window.innerWidth / 2) * -0.015;
+                const moveY = (e.clientY - window.innerHeight / 2) * -0.015;
+                parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                
+                if(window.innerWidth > 900) {
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 45; 
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / -30;
+                    bioBox.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                }
             });
 
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = `translate(0px, 0px) scale(1)`;
-                cursor.style.transform = `translate(-50%, -50%) scale(1)`;
+            magButtons.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const pullX = (e.clientX - (rect.left + rect.width / 2)) * 0.15; 
+                    const pullY = (e.clientY - (rect.top + rect.height / 2)) * 0.3;  
+                    btn.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
+                    cursor.style.transform = `translate(-50%, -50%) scale(1.5)`; 
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = `translate(0px, 0px) scale(1)`;
+                    cursor.style.transform = `translate(-50%, -50%) scale(1)`;
+                });
             });
-        });
+        }
 
-        // Hacker Decode
+        // Text Scramble
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!<>-_\\/[]{}—=+*^?#________";
-        const scrambleTexts = document.querySelectorAll('.scramble-text');
-        
-        scrambleTexts.forEach(el => {
+        document.querySelectorAll('.scramble-text').forEach(el => {
             el.addEventListener('mouseenter', event => {
+                if (!window.matchMedia("(pointer: fine)").matches) return; // Evita bugar no celular
                 let iterations = 0;
                 const originalText = event.target.dataset.text;
                 clearInterval(el.interval);
-                
                 el.interval = setInterval(() => {
-                    event.target.innerText = originalText.split("")
-                        .map((letter, index) => {
-                            if(index < iterations) return originalText[index];
-                            return letters[Math.floor(Math.random() * 52)];
-                        }).join("");
-                    
+                    event.target.innerText = originalText.split("").map((letter, index) => {
+                        if(index < iterations) return originalText[index];
+                        return letters[Math.floor(Math.random() * 52)];
+                    }).join("");
                     if(iterations >= originalText.length) clearInterval(el.interval);
                     iterations += 1 / 3; 
                 }, 30);
             });
         });
 
-        // Áudio API
+        // Audio
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
-
-        function initAudio() {
-            if (!audioCtx) audioCtx = new AudioContext();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
-
-        function playHoverSound() {
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(300 + Math.random() * 50, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1); 
-            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-        }
-
-        function playClickSound() {
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.type = 'square'; 
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.05); 
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
-        }
-
-        magButtons.forEach(item => { item.addEventListener('mouseenter', playHoverSound); });
+        function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+        document.querySelectorAll('.mag-btn').forEach(item => { 
+            item.addEventListener('mouseenter', () => {
+                if (!window.matchMedia("(pointer: fine)").matches) return;
+                initAudio(); const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(300 + Math.random() * 50, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1); 
+                gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            }); 
+        });
     </script>
 </body>
 </html>
