@@ -3,187 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSMIC CUPCAKE | SYSTEM OS</title>
+    <title>Cosmic Cupcake Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================
+           O HORIZONTE CÓSMICO (FUNDO)
+        ========================================= */
         body {
-            background-color: #050000;
-            color: #d3d3d3;
-            font-family: 'VT323', monospace;
             margin: 0;
             padding: 0;
             height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(to bottom, #070314 0%, #170936 50%, #3d144c 100%);
+            color: #ffffff;
+            overflow: hidden; /* Esconde barras de rolagem */
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            overflow: hidden; 
-            user-select: none;
+            justify-content: center;
         }
 
-        .crt-overlay {
-            position: fixed;
+        /* O Brilho do Horizonte na parte inferior */
+        .horizon-glow {
+            position: absolute;
+            bottom: -20vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150vw;
+            height: 50vh;
+            background: radial-gradient(ellipse at center, rgba(255, 42, 120, 0.4) 0%, rgba(0, 229, 255, 0.1) 40%, transparent 70%);
+            filter: blur(40px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           SISTEMA DE LUZES E ESTRELAS
+        ========================================= */
+        #star-container, #ray-container {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            background-size: 100% 4px, 3px 100%;
+            z-index: 2;
             pointer-events: none;
-            z-index: 999;
-            box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .vhs-flicker {
-            animation: flicker 0.15s infinite;
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle linear infinite, floatUp linear infinite;
         }
 
-        @keyframes flicker {
-            0% { opacity: 0.95; }
-            50% { opacity: 0.85; }
-            100% { opacity: 1; }
+        .ray {
+            position: absolute;
+            bottom: -10%;
+            left: 50%;
+            width: 100px;
+            height: 120vh;
+            background: linear-gradient(to top, rgba(0, 229, 255, 0.15) 0%, transparent 100%);
+            transform-origin: bottom center;
+            filter: blur(20px);
+            animation: sway 15s ease-in-out infinite alternate;
         }
 
-        /* === A NOVA LOGO EM IMAGEM === */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px #fff; }
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh); }
+            to { transform: translateY(-10vh); }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(-50%) rotate(-15deg); opacity: 0.3; }
+            100% { transform: translateX(-50%) rotate(15deg); opacity: 0.6; }
+        }
+
+        /* =========================================
+           A LOGO DO CUPCAKE
+        ========================================= */
         .logo-image {
-            max-width: 80%; /* Garante que não passe da tela */
-            width: 450px;   /* Tamanho ideal para desktops baseado no seu 1200x1000 */
-            height: auto;
-            margin-bottom: 50px;
-            /* Glitch Cromático projetado direto na sua arte transparente */
-            filter: drop-shadow(4px 0px 0px rgba(255, 42, 75, 0.8)) 
-                    drop-shadow(-4px 0px 0px rgba(0, 229, 255, 0.8));
-            animation: breatheLogo 4s ease-in-out infinite, glitchLogo 3s infinite;
             position: relative;
             z-index: 10;
+            width: 350px;
+            max-width: 80%;
+            margin-bottom: 40px;
+            animation: floatLogo 6s ease-in-out infinite;
+            filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.5)) drop-shadow(0px 0px 30px rgba(184, 27, 27, 0.4));
         }
 
-        /* Animação de pulsar e tremer */
-        @keyframes breatheLogo {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
         }
 
-        @keyframes glitchLogo {
-            0%, 96%, 98%, 100% { filter: drop-shadow(4px 0px 0px rgba(255, 42, 75, 0.8)) drop-shadow(-4px 0px 0px rgba(0, 229, 255, 0.8)); }
-            97% { filter: drop-shadow(-6px 2px 0px rgba(0, 229, 255, 1)) drop-shadow(6px -2px 0px rgba(255, 42, 75, 1)); }
-            99% { filter: drop-shadow(6px -2px 0px rgba(255, 42, 75, 1)) drop-shadow(-6px 2px 0px rgba(0, 229, 255, 1)); }
-        }
-
-        /* Ajuste para telas de Celular */
-        @media (max-width: 600px) {
-            .logo-image { width: 85%; }
-        }
-
+        /* =========================================
+           MENU GLASSMORPHISM (Menos Engessado)
+        ========================================= */
         .main-menu {
+            position: relative;
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
-            position: relative;
-            z-index: 10;
+            width: 100%;
         }
 
         .menu-item {
-            font-size: 2.5rem;
-            color: #d3d3d3;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
             text-decoration: none;
-            text-transform: uppercase;
-            position: relative;
-            transition: all 0.1s;
+            letter-spacing: 2px;
+            padding: 15px 40px;
+            border-radius: 50px; /* Bordas totalmente arredondadas (Pílula) */
+            
+            /* O Efeito de Vidro */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            padding: 5px 20px;
+            overflow: hidden;
+            position: relative;
         }
 
+        /* Brilho interno ao passar o mouse */
         .menu-item::before {
-            content: '>';
+            content: '';
             position: absolute;
-            left: -30px;
-            color: #ff2a4b;
-            opacity: 0;
-            text-shadow: 0px 0px 10px #ff2a4b;
-            animation: blinkCursor 0.5s infinite;
-        }
-
-        @keyframes blinkCursor {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
         }
 
         .menu-item:hover {
-            color: #ffffff;
-            text-shadow: 0px 0px 15px rgba(255, 42, 75, 0.8);
-            transform: scale(1.05);
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(0, 229, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(184, 27, 27, 0.3);
+            color: #00e5ff;
         }
 
         .menu-item:hover::before {
-            opacity: 1; 
+            left: 100%;
         }
 
-        .footer-controls {
-            position: absolute;
-            bottom: 30px;
-            font-size: 1.2rem;
-            color: #555;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-        
-        .footer-controls span {
-            color: #ff2a4b;
-        }
     </style>
 </head>
-<body class="vhs-flicker">
+<body>
 
-    <div class="crt-overlay"></div>
+    <div class="horizon-glow"></div>
+    <div id="ray-container"></div>
+    <div id="star-container"></div>
 
     <img src="logo-pixel.png" alt="Cosmic Cupcake Logo" class="logo-image">
 
     <nav class="main-menu">
-        <a href="COLOQUE_SEU_LINK_DO_ITCH_AQUI" target="_blank" class="menu-item">Projetos & Jogos</a>
-        <a href="#" class="menu-item">Registros (Devlog)</a>
-        <a href="COLOQUE_SEU_LINK_DO_YOUTUBE_AQUI" target="_blank" class="menu-item">Verifique a Fita (Canal)</a>
-        <a href="mailto:seuemail@gmail.com" class="menu-item">Contato de Emergência</a>
+        <a href="#" class="menu-item">Projetos & Jogos</a>
+        <a href="#" class="menu-item">Devlog do Estúdio</a>
+        <a href="#" class="menu-item">Canal no YouTube</a>
+        <a href="#" class="menu-item">Fale Conosco</a>
     </nav>
 
-    <div class="footer-controls">
-        SISTEMA ONLINE - USE O <span>MOUSE</span> PARA INSPECIONAR
-    </div>
-
     <script>
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
+        // Função para criar estrelas
+        function createStars() {
+            const container = document.getElementById('star-container');
+            const starCount = 100; // Quantidade de estrelinhas
 
-        function playHoverSound() {
-            if (!audioCtx) audioCtx = new AudioContext();
-            if (audioCtx.state === 'suspended') audioCtx.resume(ss);
-            
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            osc.type = 'square'; 
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); 
-            
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-            
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
+            for (let i = 0; i < starCount; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Tamanho e posições aleatórias
+                let size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                
+                // Animações com tempos diferentes para ser orgânico
+                let duration = Math.random() * 20 + 10;
+                star.style.animationDuration = `${Math.random() * 3 + 1}s, ${duration}s`;
+                star.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 10}s`;
+
+                // Algumas estrelas são levemente coloridas
+                const colors = ['#ffffff', '#00e5ff', '#ff2a78', '#fff'];
+                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                container.appendChild(star);
+            }
         }
 
-        const menuItems = document.querySelectorAll('.menu-item');
-        menuItems.forEach(item => {
-            item.addEventListener('mouseenter', playHoverSound);
-        });
+        // Função para criar raios de luz do horizonte
+        function createRays() {
+            const container = document.getElementById('ray-container');
+            const rayCount = 5;
+
+            for (let i = 0; i < rayCount; i++) {
+                let ray = document.createElement('div');
+                ray.classList.add('ray');
+                
+                // Espalha os raios pela tela
+                ray.style.left = `${20 + (i * 15)}vw`;
+                
+                // Rotações iniciais
+                let rotation = (Math.random() * 60) - 30;
+                ray.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+                
+                // Cores dos raios alternando entre Ciano e Rosa/Roxo do seu Cupcake
+                let isCyan = Math.random() > 0.5;
+                let color = isCyan ? 'rgba(0, 229, 255, 0.1)' : 'rgba(255, 42, 120, 0.08)';
+                ray.style.background = `linear-gradient(to top, ${color} 0%, transparent 100%)`;
+
+                // Animações dessincronizadas
+                ray.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                ray.style.animationDelay = `-${Math.random() * 10}s`;
+
+                container.appendChild(ray);
+            }
+        }
+
+        // Inicia o motor visual
+        createStars();
+        createRays();
     </script>
 </body>
 </html>
