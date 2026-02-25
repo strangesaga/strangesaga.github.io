@@ -10,14 +10,22 @@
 
     <style>
         /* =========================================
-           BASE & CURSOR
+           BASE & SCROLL DESTRAVADO
         ========================================= */
         body {
-            margin: 0; padding: 0; height: 100vh;
+            margin: 0; padding: 0; min-height: 100vh;
             font-family: 'Nunito', sans-serif;
-            background-color: #000;
-            color: #ffffff; overflow: hidden;
+            background-color: #050000;
+            color: #ffffff; 
+            overflow-x: hidden; /* Permite rolar para baixo, mas não para os lados */
             cursor: none; user-select: none;
+            /* Fade-in Global quando a página carrega */
+            animation: pageFadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pageFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         #custom-cursor {
@@ -27,7 +35,13 @@
             transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
         }
 
-        /* OVERLAYS CONSTANTES */
+        /* Fundo Dinâmico Fixo (Muda suavemente por trás do conteúdo) */
+        #dynamic-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; transition: background 1.5s ease;
+            background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
+        }
+
         .noise-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 9000; opacity: 0.05;
@@ -35,138 +49,140 @@
         }
 
         .back-btn {
-            position: absolute; top: 30px; left: 40px; z-index: 9500;
+            position: fixed; top: 30px; left: 40px; z-index: 9500;
             font-family: 'Oswald', sans-serif; font-size: 1.5rem; color: #fff;
             text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
-            transition: 0.3s; text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            transition: 0.3s; text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 5px; backdrop-filter: blur(5px);
         }
         .back-btn:hover { color: #00e5ff; transform: translateX(-5px); }
 
         /* =========================================
-           O CARROSSEL E OS SLIDES
+           O CARROSSEL E AS SETAS FIXAS
         ========================================= */
         .carousel-container {
-            position: relative; width: 100vw; height: 100vh;
+            width: 100%; position: relative;
         }
 
+        .nav-arrow {
+            position: fixed; top: 50%; transform: translateY(-50%);
+            font-size: 3rem; color: rgba(255,255,255,0.2); cursor: pointer;
+            z-index: 9500; transition: 0.3s; padding: 20px;
+        }
+        .nav-arrow:hover { color: #fff; transform: translateY(-50%) scale(1.2); text-shadow: 0 0 15px #fff; }
+        .arrow-left { left: 20px; }
+        .arrow-right { right: 20px; }
+
         .slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; visibility: hidden;
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
-            display: flex; align-items: center; justify-content: center;
+            display: none; /* Esconde os inativos para não criar scroll fantasma */
+            opacity: 0;
+            transition: opacity 0.8s ease;
         }
 
         .slide.active {
-            opacity: 1; visibility: visible; z-index: 10;
+            display: block;
+            opacity: 1;
+            animation: slideContentFade 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        /* Animação do conteúdo entrando (Juice) */
-        .slide .content {
-            transform: translateY(40px) scale(0.95);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transition-delay: 0.2s;
-            opacity: 0;
-            text-align: center; max-width: 800px; padding: 40px;
-            border-radius: 20px; backdrop-filter: blur(15px);
-        }
-
-        .slide.active .content {
-            transform: translateY(0) scale(1); opacity: 1;
+        @keyframes slideContentFade {
+            0% { opacity: 0; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         /* =========================================
-           IDENTIDADES VISUAIS ÚNICAS POR PROJETO
+           LAYOUT DE LOJA (ESTILO ITCH/STEAM)
         ========================================= */
-        
-        /* TEMA 1: OUT OF ORDER (Horror / Noir) */
-        #slide-outoforder {
-            background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
-        }
-        #slide-outoforder .content {
-            background: rgba(10, 0, 0, 0.7);
-            border: 1px solid rgba(255, 42, 75, 0.2);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 30px rgba(255, 42, 75, 0.1);
-        }
-        #slide-outoforder h1 {
-            font-family: 'VT323', monospace; font-size: 5rem; color: #ff2a4b;
-            margin: 0; text-shadow: 3px 0px 0px rgba(0, 229, 255, 0.8), -3px 0px 0px rgba(255, 255, 0, 0.8);
-            animation: glitchText 3s infinite;
-        }
-        #slide-outoforder p { font-size: 1.2rem; color: #d3d3d3; line-height: 1.6; }
-        #slide-outoforder .play-btn {
-            background: transparent; border: 2px solid #ff2a4b; color: #ff2a4b;
-            border-radius: 0; font-family: 'VT323', monospace; font-size: 2rem;
-        }
-        #slide-outoforder .play-btn:hover { background: #ff2a4b; color: #000; box-shadow: 0 0 20px #ff2a4b; }
-
-        @keyframes glitchText {
-            0%, 96%, 98%, 100% { text-shadow: 3px 0px 0px rgba(0, 229, 255, 0.8), -3px 0px 0px rgba(255, 255, 0, 0.8); }
-            97% { text-shadow: -4px 2px 0px rgba(0, 229, 255, 1), 4px -2px 0px rgba(255, 42, 120, 1); }
-            99% { text-shadow: 4px -2px 0px rgba(255, 42, 120, 1), -4px 2px 0px rgba(0, 229, 255, 1); }
+        .store-page {
+            max-width: 1100px; margin: 0 auto; padding: 80px 20px 100px 20px;
         }
 
-        /* TEMA 2: COSMIC PROJECT (Slice of Life / Fofo) */
-        #slide-cosmic {
-            background: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
+        /* O Banner Gigante (Hero) */
+        .hero-banner {
+            width: 100%; height: 450px; border-radius: 15px; margin-bottom: 40px;
+            background-size: cover; background-position: center;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: flex; align-items: flex-end; padding: 30px; box-sizing: border-box;
+            position: relative; overflow: hidden;
         }
-        #slide-cosmic .content {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 40px; /* Bordas fofas */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        #slide-cosmic h1 {
-            font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 4.5rem; color: #ffffff;
-            margin: 0; text-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        #slide-cosmic p { font-size: 1.2rem; color: #f0f0f0; line-height: 1.6; }
-        #slide-cosmic .play-btn {
-            background: #00e5ff; border: none; color: #170936;
-            border-radius: 50px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.5rem;
-        }
-        #slide-cosmic .play-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 229, 255, 0.5); }
 
-        /* =========================================
-           UI DO CARROSSEL (BOTÕES E TAGS)
-        ========================================= */
+        /* Gradiente escuro no fundo do banner para o texto aparecer */
+        .hero-banner::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 1;
+        }
+
+        .hero-title-area { position: relative; z-index: 2; }
+
+        .hero-title {
+            font-size: 4rem; margin: 0; text-transform: uppercase;
+        }
+
+        /* A Grade Dividida (Conteúdo e Barra Lateral) */
+        .store-grid {
+            display: grid; grid-template-columns: 2fr 1fr; gap: 40px;
+        }
+
+        .description-panel {
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px; border-radius: 10px; backdrop-filter: blur(10px);
+            font-size: 1.1rem; line-height: 1.7; color: #d3d3d3;
+        }
+
+        .sidebar-panel { display: flex; flex-direction: column; gap: 20px; }
+
+        .widget-box {
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px; border-radius: 10px; backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .widget-box iframe, .widget-box img {
+            width: 100%; border-radius: 8px; margin-bottom: 15px;
+        }
+
         .game-tag {
             display: inline-block; padding: 5px 15px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 20px;
-            letter-spacing: 1px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
         }
 
         .play-btn {
-            display: inline-block; padding: 15px 40px; margin-top: 30px;
+            display: block; width: 100%; padding: 15px 0; text-align: center;
             text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
-            transition: all 0.3s ease; cursor: pointer;
+            font-weight: bold; border-radius: 5px; transition: all 0.3s ease; cursor: pointer;
+            box-sizing: border-box;
         }
 
-        /* Setas de Navegação */
-        .nav-arrow {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            font-size: 3rem; color: rgba(255,255,255,0.3); cursor: pointer;
-            z-index: 9500; transition: 0.3s; padding: 20px;
-        }
-        .nav-arrow:hover { color: #fff; transform: translateY(-50%) scale(1.2); }
-        .arrow-left { left: 50px; }
-        .arrow-right { right: 50px; }
+        /* =========================================
+           IDENTIDADES DOS JOGOS (CUSTOMIZAÇÃO)
+        ========================================= */
+        /* Out of Order */
+        .theme-ooo .hero-title { font-family: 'VT323', monospace; color: #ff2a4b; text-shadow: 3px 0px 0px rgba(0, 229, 255, 0.8); }
+        .theme-ooo .play-btn { background: #ff2a4b; color: #000; }
+        .theme-ooo .play-btn:hover { background: #fff; box-shadow: 0 0 20px #ff2a4b; }
+        .theme-ooo .game-tag { color: #ff2a4b; border-color: #ff2a4b; }
 
-        /* Indicadores (Dots) */
-        .carousel-dots {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 15px; z-index: 9500;
-        }
-        .dot {
-            width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2);
-            cursor: pointer; transition: 0.3s;
-        }
-        .dot.active { background: #fff; transform: scale(1.5); box-shadow: 0 0 10px #fff; }
+        /* Starlight Cafe */
+        .theme-star .hero-title { font-family: 'Nunito', sans-serif; font-weight: 900; color: #fff; text-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5); }
+        .theme-star .play-btn { background: #00e5ff; color: #170936; border-radius: 50px; }
+        .theme-star .play-btn:hover { background: #fff; box-shadow: 0 0 20px #00e5ff; }
+        .theme-star .game-tag { color: #00e5ff; border-color: #00e5ff; }
 
+        @media (max-width: 900px) {
+            .store-grid { grid-template-columns: 1fr; }
+            .hero-banner { height: 300px; }
+            .hero-title { font-size: 2.5rem; }
+            .nav-arrow { font-size: 2rem; padding: 10px; }
+            .arrow-left { left: 5px; } .arrow-right { right: 5px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="noise-overlay"></div>
+    <div id="dynamic-bg"></div>
     <div id="custom-cursor"></div>
 
     <a href="index.html" class="back-btn mag-btn"><i class="fa-solid fa-chevron-left"></i> Main Menu</a>
@@ -176,60 +192,110 @@
 
     <div class="carousel-container">
         
-        <div class="slide active" id="slide-outoforder">
-            <div class="content">
-                <span class="game-tag" style="color: #ff2a4b; border-color: #ff2a4b;">Survival Horror</span>
-                <h1>OUT OF ORDER</h1>
-                <p>Play as Detective Thomas as he dives into the most harrowing case of his career. Explore forgotten arcades, piece together key evidence, and survive encounters with things that were never meant to move again.</p>
-                <a href="https://cosmiccupcake.itch.io/out-of-order-a-five-nights-at-freddys-story" target="_blank" class="play-btn mag-btn">ACCESS FILE (ITCH.IO)</a>
+        <div class="slide active theme-ooo" data-bg="radial-gradient(circle at center, #1a0505 0%, #000000 100%)">
+            <div class="store-page">
+                
+                <div class="hero-banner" style="background-image: url('https://img.itch.zone/aW1nLzE0OTYwMjY0LnBuZw==/original/y%2F1G8%2B.png');">
+                    <div class="hero-title-area">
+                        <span class="game-tag">Survival Horror</span>
+                        <h1 class="hero-title">OUT OF ORDER</h1>
+                    </div>
+                </div>
+
+                <div class="store-grid">
+                    <div class="description-panel">
+                        <p>Play as Detective Thomas as he dives into the most harrowing case of his career. Explore forgotten arcades, piece together key evidence, and survive encounters with things that were never meant to move again.</p>
+                        <p><strong>OUT OF ORDER</strong> is a story-driven survival horror fangame inspired by Five Nights at Freddy’s. It blends atmospheric exploration, deduction puzzle-solving, and cinematic storytelling into a mature, psychological thriller.</p>
+                        <br>
+                        <h3>Key Features:</h3>
+                        <ul>
+                            <li>Advanced investigation board mechanics.</li>
+                            <li>Dynamic heart-rate survival system.</li>
+                            <li>Retro VHS aesthetics and immersive sound design.</li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-panel">
+                        <div class="widget-box">
+                            <a href="https://cosmiccupcake.itch.io/out-of-order-a-five-nights-at-freddys-story" target="_blank" class="play-btn mag-btn">ACCESS FILE (ITCH.IO)</a>
+                        </div>
+                        
+                        <div class="widget-box">
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <div class="slide" id="slide-cosmic">
-            <div class="content">
-                <span class="game-tag" style="color: #00e5ff; border-color: #00e5ff;">Slice of Life / RPG</span>
-                <h1>STARLIGHT CAFE</h1>
-                <p>An upcoming cozy adventure where you manage a small cafe at the edge of the galaxy. Meet quirky aliens, bake cosmic cupcakes, and discover the secrets of the universe, one recipe at a time.</p>
-                <a href="#" class="play-btn mag-btn">IN DEVELOPMENT</a>
+        <div class="slide theme-star" data-bg="linear-gradient(135deg, #2b1055 0%, #7597de 100%)">
+            <div class="store-page">
+                
+                <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop');">
+                    <div class="hero-title-area">
+                        <span class="game-tag">Slice of Life / RPG</span>
+                        <h1 class="hero-title">STARLIGHT CAFE</h1>
+                    </div>
+                </div>
+
+                <div class="store-grid">
+                    <div class="description-panel">
+                        <p>An upcoming cozy adventure where you manage a small cafe at the edge of the galaxy. Meet quirky aliens, bake cosmic cupcakes, and discover the secrets of the universe, one recipe at a time.</p>
+                        <p>Focus on relationships, resource management, and discovering the heartwarming stories of your interstellar customers.</p>
+                    </div>
+
+                    <div class="sidebar-panel">
+                        <div class="widget-box">
+                            <a href="#" class="play-btn mag-btn">IN DEVELOPMENT</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-    </div>
-
-    <div class="carousel-dots">
-        <div class="dot active mag-btn" onclick="goToSlide(0)"></div>
-        <div class="dot mag-btn" onclick="goToSlide(1)"></div>
     </div>
 
     <script>
-        // LÓGICA DO CARROSSEL
+        // LÓGICA DO CARROSSEL DE PÁGINAS INTEIRAS
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
+        const dynamicBg = document.getElementById('dynamic-bg');
 
         function showSlide(index) {
-            // Remove active class from all
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+                slide.style.display = 'none'; // Esconde fisicamente os inativos
+            });
             
-            // Loop boundaries
             if (index >= slides.length) currentSlide = 0;
             if (index < 0) currentSlide = slides.length - 1;
             
-            // Add active to current
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+            let activeSlide = slides[currentSlide];
+            activeSlide.style.display = 'block';
             
-            playClickSound(); // Juice extra
+            // Força o navegador a recalcular antes de adicionar a classe de animação
+            void activeSlide.offsetWidth; 
+            
+            activeSlide.classList.add('active');
+            
+            // Troca o fundo suavemente baseado no "data-bg" da página atual
+            dynamicBg.style.background = activeSlide.getAttribute('data-bg');
+            
+            // Rola a página para o topo sempre que trocar de jogo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            playClickSound();
         }
 
         function nextSlide() { currentSlide++; showSlide(currentSlide); }
         function prevSlide() { currentSlide--; showSlide(currentSlide); }
-        function goToSlide(index) { currentSlide = index; showSlide(currentSlide); }
 
-        // =========================================
+        // Inicializa o fundo da primeira página
+        dynamicBg.style.background = slides[0].getAttribute('data-bg');
+
         // TRACKING DO MOUSE E ÁUDIO
-        // =========================================
         const cursor = document.getElementById('custom-cursor');
         const magButtons = document.querySelectorAll('.mag-btn');
 
