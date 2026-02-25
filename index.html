@@ -9,82 +9,126 @@
 
     <style>
         /* =========================================
-           O HORIZONTE CÓSMICO (FUNDO)
+           CONFIGURAÇÕES GERAIS E CURSOR
         ========================================= */
         body {
             margin: 0;
             padding: 0;
             height: 100vh;
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(to bottom, #070314 0%, #170936 50%, #3d144c 100%);
+            background: linear-gradient(to bottom, #070314 0%, #170936 50%, #321042 100%);
             color: #ffffff;
-            overflow: hidden; /* Esconde barras de rolagem */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            cursor: none; /* Esconde o mouse padrão */
         }
 
-        /* O Brilho do Horizonte na parte inferior */
-        .horizon-glow {
-            position: absolute;
-            bottom: -20vh;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150vw;
-            height: 50vh;
-            background: radial-gradient(ellipse at center, rgba(255, 42, 120, 0.4) 0%, rgba(0, 229, 255, 0.1) 40%, transparent 70%);
-            filter: blur(40px);
-            z-index: 1;
+        /* Textura de Ruído Indie (Film Grain) */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
+            z-index: 999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Cursor */
+        #custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 8px; height: 8px;
+            background: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 15px 4px rgba(255, 42, 120, 0.8), 0 0 30px rgba(0, 229, 255, 0.6);
+            transition: transform 0.1s ease-out, width 0.2s, height 0.2s;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Efeito de clique no cursor */
+        body:active #custom-cursor {
+            transform: translate(-50%, -50%) scale(0.5);
+            box-shadow: 0 0 30px 10px #00e5ff;
         }
 
         /* =========================================
-           SISTEMA DE LUZES E ESTRELAS
+           O HORIZONTE CÓSMICO (FUNDO)
         ========================================= */
-        #star-container, #ray-container {
+        #parallax-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 2;
+            top: -5%; left: -5%;
+            width: 110%; height: 110%;
+            z-index: 1;
             pointer-events: none;
-            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .horizon-glow {
+            position: absolute;
+            bottom: -20vh; left: 50%;
+            transform: translateX(-50%);
+            width: 150vw; height: 50vh;
+            background: radial-gradient(ellipse at center, rgba(162, 59, 219, 0.4) 0%, rgba(255, 42, 120, 0.2) 40%, transparent 70%);
+            filter: blur(50px);
+            animation: breatheHorizon 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes breatheHorizon {
+            0% { opacity: 0.6; transform: translateX(-50%) scaleY(1); }
+            100% { opacity: 1; transform: translateX(-50%) scaleY(1.2); }
+        }
+
+        /* Sistema de Estrelas e Raios */
+        #star-container, #ray-container, #shooting-stars {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
         }
 
         .star {
             position: absolute;
-            background-color: #fff;
             border-radius: 50%;
-            animation: twinkle linear infinite, floatUp linear infinite;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 8px currentColor; }
         }
 
         .ray {
             position: absolute;
-            bottom: -10%;
-            left: 50%;
-            width: 100px;
-            height: 120vh;
-            background: linear-gradient(to top, rgba(0, 229, 255, 0.15) 0%, transparent 100%);
+            bottom: -10%; left: 50%;
+            width: 80px; height: 120vh;
             transform-origin: bottom center;
-            filter: blur(20px);
+            filter: blur(25px);
             animation: sway 15s ease-in-out infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px #fff; }
-        }
-
-        @keyframes floatUp {
-            from { transform: translateY(100vh); }
-            to { transform: translateY(-10vh); }
+            mix-blend-mode: screen;
         }
 
         @keyframes sway {
-            0% { transform: translateX(-50%) rotate(-15deg); opacity: 0.3; }
-            100% { transform: translateX(-50%) rotate(15deg); opacity: 0.6; }
+            0% { transform: translateX(-50%) rotate(-20deg); opacity: 0.2; }
+            100% { transform: translateX(-50%) rotate(20deg); opacity: 0.5; }
+        }
+
+        /* Estrelas Cadentes */
+        .shooting-star {
+            position: absolute;
+            width: 100px; height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(-45deg);
+            opacity: 0;
+            animation: shoot 6s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% { transform: translate(100vw, -20vh) rotate(-45deg); opacity: 1; }
+            10% { transform: translate(-20vw, 100vh) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
         }
 
         /* =========================================
@@ -93,20 +137,21 @@
         .logo-image {
             position: relative;
             z-index: 10;
-            width: 350px;
-            max-width: 80%;
-            margin-bottom: 40px;
+            width: 380px;
+            max-width: 75%;
+            margin-bottom: 50px;
             animation: floatLogo 6s ease-in-out infinite;
-            filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.5)) drop-shadow(0px 0px 30px rgba(184, 27, 27, 0.4));
+            filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.6)) 
+                    drop-shadow(0px 0px 40px rgba(138, 43, 226, 0.5)); /* Glow roxo exato da imagem */
         }
 
         @keyframes floatLogo {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
 
         /* =========================================
-           MENU GLASSMORPHISM (Menos Engessado)
+           MENU GLASSMORPHISM 2.0 (Física & Rastreador)
         ========================================= */
         .main-menu {
             position: relative;
@@ -119,128 +164,266 @@
         }
 
         .menu-item {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 900;
             color: #ffffff;
             text-decoration: none;
             letter-spacing: 2px;
-            padding: 15px 40px;
-            border-radius: 50px; /* Bordas totalmente arredondadas (Pílula) */
+            padding: 16px 45px;
+            border-radius: 50px;
             
-            /* O Efeito de Vidro */
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(25, 10, 35, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.3s, letter-spacing 0.3s;
             position: relative;
+            overflow: hidden;
+
+            /* Animação de entrada em cascata */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUpFade 0.6s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Brilho interno ao passar o mouse */
+        /* Delay em cascata para cada botão */
+        .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .menu-item:nth-child(2) { animation-delay: 0.2s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        .menu-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideUpFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Lanterna Dinâmica do Cursor (via JS) */
         .menu-item::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.5s ease;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15), transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
 
+        /* O pequeno ícone animado que aparece no texto */
+        .menu-item span {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .menu-item span::after {
+            content: ' ✦';
+            position: absolute;
+            opacity: 0;
+            transform: translateX(-10px) rotate(-90deg);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #ff2a78;
+        }
+
+        /* =================HOVER ================= */
         .menu-item:hover {
-            transform: translateY(-5px) scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(0, 229, 255, 0.5);
-            box-shadow: 0 15px 35px rgba(0, 229, 255, 0.2), 0 0 20px rgba(184, 27, 27, 0.3);
-            color: #00e5ff;
+            color: #ff2a78;
+            letter-spacing: 3px;
+            border-color: rgba(255, 42, 120, 0.5);
+            box-shadow: 0 15px 35px rgba(255, 42, 120, 0.2), 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 15px rgba(255, 42, 120, 0.1);
+            /* O transform real é controlado pelo JS Magnético agora */
         }
 
         .menu-item:hover::before {
-            left: 100%;
+            opacity: 1; /* Liga a lanterna do mouse */
         }
 
+        .menu-item:hover span {
+            transform: translateX(-10px);
+        }
+
+        .menu-item:hover span::after {
+            opacity: 1;
+            transform: translateX(5px) rotate(0deg);
+        }
+
+        .menu-item:active {
+            transform: scale(0.95) !important; /* Física de clique pesado */
+        }
+
+        /* Rodapé Oficial do Estúdio */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
-    <div class="horizon-glow"></div>
-    <div id="ray-container"></div>
-    <div id="star-container"></div>
+    <div class="noise-overlay"></div>
+    <div id="custom-cursor"></div>
+
+    <div id="parallax-bg">
+        <div class="horizon-glow"></div>
+        <div id="ray-container"></div>
+        <div id="star-container"></div>
+        <div id="shooting-stars"></div>
+    </div>
 
     <img src="logo-pixel.png" alt="Cosmic Cupcake Logo" class="logo-image">
 
     <nav class="main-menu">
-        <a href="#" class="menu-item">Projetos & Jogos</a>
-        <a href="#" class="menu-item">Devlog do Estúdio</a>
-        <a href="#" class="menu-item">Canal no YouTube</a>
-        <a href="#" class="menu-item">Fale Conosco</a>
+        <a href="#" class="menu-item"><span>Projetos & Jogos</span></a>
+        <a href="#" class="menu-item"><span>Devlog do Estúdio</span></a>
+        <a href="#" class="menu-item"><span>Canal no YouTube</span></a>
+        <a href="#" class="menu-item"><span>Fale Conosco</span></a>
     </nav>
 
-    <script>
-        // Função para criar estrelas
-        function createStars() {
-            const container = document.getElementById('star-container');
-            const starCount = 100; // Quantidade de estrelinhas
+    <div class="footer">© Cosmic Cupcake Studio - System v2.0</div>
 
-            for (let i = 0; i < starCount; i++) {
+    <script>
+        // =========================================
+        // MOTOR DE PARTÍCULAS (CÉU E RAIOS)
+        // =========================================
+        function createCosmos() {
+            const starContainer = document.getElementById('star-container');
+            const rayContainer = document.getElementById('ray-container');
+            const shootingContainer = document.getElementById('shooting-stars');
+
+            // 150 estrelas para densidade 3D
+            for (let i = 0; i < 150; i++) {
                 let star = document.createElement('div');
                 star.classList.add('star');
-                
-                // Tamanho e posições aleatórias
-                let size = Math.random() * 3 + 1;
+                let size = Math.random() * 2.5 + 0.5;
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
                 star.style.left = `${Math.random() * 100}vw`;
                 star.style.top = `${Math.random() * 100}vh`;
                 
-                // Animações com tempos diferentes para ser orgânico
-                let duration = Math.random() * 20 + 10;
-                star.style.animationDuration = `${Math.random() * 3 + 1}s, ${duration}s`;
-                star.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 10}s`;
-
-                // Algumas estrelas são levemente coloridas
-                const colors = ['#ffffff', '#00e5ff', '#ff2a78', '#fff'];
+                let isFrontLayer = Math.random() > 0.8;
+                star.style.filter = isFrontLayer ? 'blur(0px)' : 'blur(1px)';
+                
+                star.style.animationDuration = `${Math.random() * 4 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                const colors = ['#ffffff', '#00e5ff', '#ff2a78', '#a23bdb'];
                 star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-                container.appendChild(star);
+                starContainer.appendChild(star);
             }
-        }
 
-        // Função para criar raios de luz do horizonte
-        function createRays() {
-            const container = document.getElementById('ray-container');
-            const rayCount = 5;
-
-            for (let i = 0; i < rayCount; i++) {
+            // Raios de luz mais orgânicos
+            for (let i = 0; i < 6; i++) {
                 let ray = document.createElement('div');
                 ray.classList.add('ray');
+                ray.style.left = `${15 + (i * 15) + (Math.random() * 10)}vw`;
                 
-                // Espalha os raios pela tela
-                ray.style.left = `${20 + (i * 15)}vw`;
-                
-                // Rotações iniciais
-                let rotation = (Math.random() * 60) - 30;
-                ray.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
-                
-                // Cores dos raios alternando entre Ciano e Rosa/Roxo do seu Cupcake
-                let isCyan = Math.random() > 0.5;
-                let color = isCyan ? 'rgba(0, 229, 255, 0.1)' : 'rgba(255, 42, 120, 0.08)';
+                let isPurple = Math.random() > 0.5;
+                let color = isPurple ? 'rgba(162, 59, 219, 0.08)' : 'rgba(0, 229, 255, 0.05)';
                 ray.style.background = `linear-gradient(to top, ${color} 0%, transparent 100%)`;
-
-                // Animações dessincronizadas
-                ray.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                ray.style.animationDuration = `${Math.random() * 8 + 12}s`;
                 ray.style.animationDelay = `-${Math.random() * 10}s`;
+                rayContainer.appendChild(ray);
+            }
 
-                container.appendChild(ray);
+            // Estrelas cadentes
+            for (let i = 0; i < 3; i++) {
+                let shoot = document.createElement('div');
+                shoot.classList.add('shooting-star');
+                shoot.style.top = `${Math.random() * 50}vh`;
+                shoot.style.animationDelay = `${Math.random() * 15}s`;
+                shootingContainer.appendChild(shoot);
             }
         }
 
-        // Inicia o motor visual
-        createStars();
-        createRays();
+        createCosmos();
+
+        // =========================================
+        // TRACKING DE MOUSE (CURSOR, PARALLAX E MAGNÉTICO)
+        // =========================================
+        const cursor = document.getElementById('custom-cursor');
+        const parallaxBg = document.getElementById('parallax-bg');
+        const buttons = document.querySelectorAll('.menu-item');
+
+        window.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Move o cursor personalizado
+            cursor.style.left = `${x}px`;
+            cursor.style.top = `${y}px`;
+
+            // Parallax do fundo (Move o fundo sutilmente na direção oposta ao mouse)
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const moveX = (x - centerX) * -0.015;
+            const moveY = (y - centerY) * -0.015;
+            parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+
+        // Efeito Magnético e Lanterna de Vidro nos Botões
+        buttons.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                
+                // Variáveis para a lanterna CSS (Glow interno)
+                const relativeX = e.clientX - rect.left;
+                const relativeY = e.clientY - rect.top;
+                btn.style.setProperty('--mouse-x', `${relativeX}px`);
+                btn.style.setProperty('--mouse-y', `${relativeY}px`);
+
+                // Física Magnética (puxa o botão pro mouse)
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const pullX = (e.clientX - centerX) * 0.15; // Força do ímã X
+                const pullY = (e.clientY - centerY) * 0.3;  // Força do ímã Y
+                
+                btn.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
+                cursor.style.transform = `translate(-50%, -50%) scale(1.5)`; // Cursor cresce no botão
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                // Reseta as posições quando o mouse sai
+                btn.style.transform = `translate(0px, 0px) scale(1)`;
+                cursor.style.transform = `translate(-50%, -50%) scale(1)`;
+            });
+        });
+
+        // =========================================
+        // MOTOR DE ÁUDIO MELHORADO
+        // =========================================
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function playHoverSound() {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            // Randomiza levemente o pitch (frequência) para parecer orgânico
+            const baseFreq = 300 + Math.random() * 50; 
+            
+            osc.type = 'sine'; // Som mais suave que combina com o fundo estrelado
+            osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1); 
+            
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        buttons.forEach(item => {
+            item.addEventListener('mouseenter', playHoverSound);
+        });
     </script>
 </body>
 </html>
