@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmic Cupcake Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Oswald:wght@600;700&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -40,17 +40,19 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Pulsing Vignette (Heartbeat) */
+        /* Pulsing Vignette & CRT Screen Curvature */
         .vignette-pulse {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 997;
-            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+            /* Inset shadow profundo para simular tela de tubo arredondada */
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 0, 0, 1);
+            border-radius: 15px;
             animation: pulseVignette 4s ease-in-out infinite alternate;
         }
 
         @keyframes pulseVignette {
-            0% { box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8); }
-            100% { box-shadow: inset 0 0 180px rgba(20, 0, 10, 0.95); }
+            0% { box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,1); }
+            100% { box-shadow: inset 0 0 180px rgba(20, 0, 10, 0.95), inset 0 0 40px rgba(0,0,0,1); }
         }
 
         /* Custom Cursor & Ripple */
@@ -73,12 +75,28 @@
         }
 
         /* =========================================
+           VCR OSD (ON SCREEN DISPLAY) - HUD de Câmera
+        ========================================= */
+        .vcr-osd {
+            position: fixed; z-index: 996; font-family: 'VT323', monospace;
+            font-size: 1.8rem; color: #00e5ff; 
+            text-shadow: 2px 0px 0px rgba(0, 0, 255, 0.5);
+            pointer-events: none; opacity: 0.8; letter-spacing: 2px;
+        }
+        .vcr-top-left { top: 30px; left: 40px; }
+        .vcr-top-right { top: 30px; right: 40px; }
+        .vcr-bottom-right { bottom: 30px; right: 40px; color: #d3d3d3; }
+        .vcr-blink { animation: blinkVcr 1.5s infinite; }
+        .vcr-red { color: #ff2a4b; text-shadow: 2px 0px 0px rgba(255, 0, 0, 0.5); }
+        
+        @keyframes blinkVcr { 0%, 49% { opacity: 0.8; } 50%, 100% { opacity: 0; } }
+
+        /* =========================================
            COSMIC HORIZON (BACKGROUND)
         ========================================= */
         #parallax-bg {
             position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
-            z-index: 1; pointer-events: none;
-            transition: transform 0.1s linear; /* Faster response */
+            z-index: 1; pointer-events: none; transition: transform 0.1s linear;
         }
 
         .horizon-glow {
@@ -113,7 +131,7 @@
         }
 
         /* =========================================
-           MAIN LAYOUT (FLEX CONTAINER)
+           MAIN LAYOUT
         ========================================= */
         .content-container {
             position: relative; z-index: 10; display: flex;
@@ -174,10 +192,11 @@
         }
 
         /* =========================================
-           RIGHT: LOGO & STUDIO BIO
+           RIGHT: LOGO & STUDIO BIO (3D Effect)
         ========================================= */
         .brand-wrapper {
             display: flex; flex-direction: column; align-items: center; text-align: center;
+            perspective: 1000px; /* Habilita a física 3D */
         }
 
         .logo-image {
@@ -200,13 +219,15 @@
             border: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
             opacity: 0; animation: slideInFade 0.6s forwards 0.8s;
+            transition: transform 0.1s; /* Para o efeito 3D JS */
+            transform-style: preserve-3d;
         }
 
         .studio-bio span.highlight-blue { color: #00e5ff; font-weight: bold; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); }
         .studio-bio span.highlight-red { color: #ff2a78; font-weight: bold; text-shadow: 0 0 8px rgba(255, 42, 120, 0.6); }
 
         .footer {
-            position: absolute; bottom: 20px; left: 30px; font-size: 0.8rem;
+            position: absolute; bottom: 20px; left: 40px; font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; text-transform: uppercase;
         }
 
@@ -216,6 +237,7 @@
             .menu-item { font-size: 2.5rem; }
             .logo-image { width: 70vw; max-width: 300px; }
             .studio-bio { font-size: 1rem; margin-top: 15px; max-width: 85vw; }
+            .vcr-osd { display: none; } /* Esconde overlays em celular pra não poluir */
         }
     </style>
 </head>
@@ -225,6 +247,10 @@
     <div class="noise-overlay"></div>
     <div class="vignette-pulse"></div>
     <div id="custom-cursor"></div>
+
+    <div class="vcr-osd vcr-top-left vcr-blink">▶ PLAY</div>
+    <div class="vcr-osd vcr-top-right vcr-red">REC <span style="font-size: 1rem;">●</span></div>
+    <div class="vcr-osd vcr-bottom-right" id="vcr-timer">00:00:00</div>
 
     <div id="parallax-bg">
         <div class="horizon-glow"></div>
@@ -243,13 +269,13 @@
             <div class="icon-row">
                 <a href="#" class="icon-btn mag-btn" title="Itch.io"><i class="fa-brands fa-itch-io"></i></a>
                 <a href="#" class="icon-btn mag-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                <a href="#" class="icon-btn mag-btn" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="icon-btn mag-btn" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
             </div>
         </div>
 
         <div class="brand-wrapper">
             <img src="logo-pixel.png" alt="Cosmic Cupcake Logo" class="logo-image">
-            <p class="studio-bio">
+            <p class="studio-bio" id="bio-3d">
                 We are <span class="highlight-blue">Cosmic Cupcake</span>. We bake sweet slice-of-life adventures and corrupt them with <span class="highlight-red">psychological horror</span>. Currently investigating the hidden files of Hurricane City.
             </p>
         </div>
@@ -259,9 +285,17 @@
     <div class="footer">SYSTEM ONLINE // USE THE MOUSE TO INSPECT</div>
 
     <script>
-        // =========================================
-        // PARTICLE ENGINE (STARS & RAYS)
-        // =========================================
+        // Relógio VCR Dinâmico
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            let h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            let m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            let s = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('vcr-timer').innerText = `SP ${h}:${m}:${s}`;
+        }, 1000);
+
+        // Motor de Estrelas
         function createCosmos() {
             const starContainer = document.getElementById('star-container');
             const rayContainer = document.getElementById('ray-container');
@@ -293,30 +327,37 @@
         }
         createCosmos();
 
-        // =========================================
-        // TRACKING, RIPPLE & MAGNETIC PHYSICS
-        // =========================================
+        // Rastreamento de Mouse (Cursor, Parallax e Cartão 3D)
         const cursor = document.getElementById('custom-cursor');
         const parallaxBg = document.getElementById('parallax-bg');
         const magButtons = document.querySelectorAll('.mag-btn');
+        const bioBox = document.getElementById('bio-3d'); // Referência da Bio
 
         window.addEventListener('mousemove', (e) => {
             cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+            
+            // Parallax do fundo
             const moveX = (e.clientX - window.innerWidth / 2) * -0.015;
             const moveY = (e.clientY - window.innerHeight / 2) * -0.015;
             parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+            // Física 3D da caixa de Biografia
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 45; 
+            const yAxis = (window.innerHeight / 2 - e.pageY) / -30;
+            bioBox.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        // Click Ripple Effect
+        // Clique Ripple
         window.addEventListener('mousedown', (e) => {
             const ripple = document.createElement('div');
             ripple.classList.add('cursor-ripple');
             ripple.style.left = `${e.clientX}px`; ripple.style.top = `${e.clientY}px`;
             document.body.appendChild(ripple);
             setTimeout(() => { ripple.remove(); }, 600);
-            playClickSound(); // Toca som de clique
+            playClickSound();
         });
 
+        // Botões Magnéticos
         magButtons.forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
@@ -332,9 +373,7 @@
             });
         });
 
-        // =========================================
-        // TEXT SCRAMBLE (HACKER DECODE EFFECT)
-        // =========================================
+        // Hacker Decode
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!<>-_\\/[]{}—=+*^?#________";
         const scrambleTexts = document.querySelectorAll('.scramble-text');
         
@@ -352,14 +391,12 @@
                         }).join("");
                     
                     if(iterations >= originalText.length) clearInterval(el.interval);
-                    iterations += 1 / 3; // Velocidade do decode
+                    iterations += 1 / 3; 
                 }, 30);
             });
         });
 
-        // =========================================
-        // WEB AUDIO API (HOVER & CLICK SOUNDS)
-        // =========================================
+        // Áudio API
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
 
@@ -386,7 +423,7 @@
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             osc.type = 'square'; 
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime); // Som agudo de seleção
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
             osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.05); 
             gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
