@@ -8,9 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
     <style>
-        /* =========================================
-           LUNA JUICE: CRIMSON VHS AESTHETIC
-        ========================================= */
         body {
             background-color: #050000;
             color: #d3d3d3;
@@ -22,11 +19,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Esconde barras de rolagem */
+            overflow: hidden; 
             user-select: none;
         }
 
-        /* Efeito de Tubo de TV Antiga (Vignette e Scanlines) */
         .crt-overlay {
             position: fixed;
             top: 0;
@@ -42,7 +38,6 @@
             box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.1);
         }
 
-        /* Fita Corrompida (Tremor da Tela) */
         .vhs-flicker {
             animation: flicker 0.15s infinite;
         }
@@ -53,27 +48,37 @@
             100% { opacity: 1; }
         }
 
-        /* O Título Gigante no Topo */
-        .game-title {
-            font-size: 5rem;
-            color: #ff2a4b;
-            text-align: center;
+        /* === A NOVA LOGO EM IMAGEM === */
+        .logo-image {
+            max-width: 80%; /* Garante que não passe da tela */
+            width: 450px;   /* Tamanho ideal para desktops baseado no seu 1200x1000 */
+            height: auto;
             margin-bottom: 50px;
-            letter-spacing: 5px;
-            text-shadow: 
-                3px 3px 0px rgba(0, 0, 0, 1),
-                -2px -2px 0px rgba(0, 229, 255, 0.8), /* Aberração Cromática Ciana */
-                0px 0px 20px rgba(255, 42, 75, 0.6);
-            animation: glitch 3s infinite;
+            /* Glitch Cromático projetado direto na sua arte transparente */
+            filter: drop-shadow(4px 0px 0px rgba(255, 42, 75, 0.8)) 
+                    drop-shadow(-4px 0px 0px rgba(0, 229, 255, 0.8));
+            animation: breatheLogo 4s ease-in-out infinite, glitchLogo 3s infinite;
+            position: relative;
+            z-index: 10;
         }
 
-        @keyframes glitch {
-            0%, 96%, 98%, 100% { transform: translate(0, 0); text-shadow: 3px 3px 0px rgba(0, 0, 0, 1), -2px -2px 0px rgba(0, 229, 255, 0.8), 0px 0px 20px rgba(255, 42, 75, 0.6); }
-            97% { transform: translate(-5px, 2px); text-shadow: -3px 0px 0px rgba(0, 229, 255, 1), 2px 2px 0px rgba(255, 42, 75, 1); }
-            99% { transform: translate(5px, -2px); text-shadow: 3px 0px 0px rgba(255, 42, 75, 1), -2px -2px 0px rgba(0, 229, 255, 1); }
+        /* Animação de pulsar e tremer */
+        @keyframes breatheLogo {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
         }
 
-        /* O Menu Principal */
+        @keyframes glitchLogo {
+            0%, 96%, 98%, 100% { filter: drop-shadow(4px 0px 0px rgba(255, 42, 75, 0.8)) drop-shadow(-4px 0px 0px rgba(0, 229, 255, 0.8)); }
+            97% { filter: drop-shadow(-6px 2px 0px rgba(0, 229, 255, 1)) drop-shadow(6px -2px 0px rgba(255, 42, 75, 1)); }
+            99% { filter: drop-shadow(6px -2px 0px rgba(255, 42, 75, 1)) drop-shadow(-6px 2px 0px rgba(0, 229, 255, 1)); }
+        }
+
+        /* Ajuste para telas de Celular */
+        @media (max-width: 600px) {
+            .logo-image { width: 85%; }
+        }
+
         .main-menu {
             display: flex;
             flex-direction: column;
@@ -94,7 +99,6 @@
             padding: 5px 20px;
         }
 
-        /* O Cursor (Fica invisível até passar o mouse) */
         .menu-item::before {
             content: '>';
             position: absolute;
@@ -110,7 +114,6 @@
             50%, 100% { opacity: 0; }
         }
 
-        /* Efeito de Seleção (Hover) */
         .menu-item:hover {
             color: #ffffff;
             text-shadow: 0px 0px 15px rgba(255, 42, 75, 0.8);
@@ -118,10 +121,9 @@
         }
 
         .menu-item:hover::before {
-            opacity: 1; /* Mostra o cursor */
+            opacity: 1; 
         }
 
-        /* Dica de Controles no Rodapé */
         .footer-controls {
             position: absolute;
             bottom: 30px;
@@ -140,7 +142,7 @@
 
     <div class="crt-overlay"></div>
 
-    <h1 class="game-title">COSMIC CUPCAKE</h1>
+    <img src="logo-pixel.png" alt="Cosmic Cupcake Logo" class="logo-image">
 
     <nav class="main-menu">
         <a href="COLOQUE_SEU_LINK_DO_ITCH_AQUI" target="_blank" class="menu-item">Projetos & Jogos</a>
@@ -154,21 +156,19 @@
     </div>
 
     <script>
-        // Cria o sintetizador de som retrô do zero
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
 
         function playHoverSound() {
             if (!audioCtx) audioCtx = new AudioContext();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (audioCtx.state === 'suspended') audioCtx.resume(ss);
             
-            // Cria um "Beep" grave
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             
-            osc.type = 'square'; // Tipo de onda 8-bits
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime); // Frequência baixa
-            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); // Cai rápido
+            osc.type = 'square'; 
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); 
             
             gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
@@ -180,7 +180,6 @@
             osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        // Aplica o som a todos os itens do menu
         const menuItems = document.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             item.addEventListener('mouseenter', playHoverSound);
