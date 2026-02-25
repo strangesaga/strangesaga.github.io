@@ -9,19 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* =========================================
-           BASE, ATMOSPHERE & SCROLL PHYSICS
-        ========================================= */
-        html {
-            scroll-behavior: smooth; /* Rolagem nativa mais suave */
-        }
-
+        html { scroll-behavior: smooth; }
         body {
             margin: 0; padding: 0; min-height: 100vh;
             font-family: 'Nunito', sans-serif;
             background-color: #050000; color: #ffffff; 
             overflow-x: hidden; cursor: none; user-select: none;
-            perspective: 1000px; /* Habilita 3D para elementos filhos */
+            perspective: 1000px;
         }
 
         #custom-cursor {
@@ -37,28 +31,17 @@
             background: #000;
         }
 
-        #star-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-        }
+        #star-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .star { position: absolute; border-radius: 50%; background: #fff; animation: twinkle linear infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.8; box-shadow: 0 0 8px #fff; } }
 
-        .star {
-            position: absolute; border-radius: 50%; background: #fff;
-            animation: twinkle linear infinite;
-        }
-
-        /* Efeito de "Hyperjump" na transição */
         .hyperjump-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #fff; z-index: 9999; pointer-events: none;
-            opacity: 0; transition: opacity 0.4s ease-out;
-            mix-blend-mode: overlay;
+            opacity: 0; transition: opacity 0.4s ease-out; mix-blend-mode: overlay;
         }
         body.jumping .hyperjump-overlay { opacity: 0.8; }
 
-        /* =========================================
-           UI NAVIGATION (MAGNETIC ARROWS & BACK BTN)
-        ========================================= */
         .back-btn {
             position: fixed; top: 30px; left: 40px; z-index: 9500;
             font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: #fff;
@@ -67,95 +50,61 @@
             background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
-        .back-btn:hover { 
-            color: #00e5ff; border-color: #00e5ff; 
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
-        }
+        .back-btn:hover { color: #00e5ff; border-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.3); }
 
         .nav-arrow {
             position: fixed; top: 50%; transform: translateY(-50%);
             font-size: 3rem; color: rgba(255,255,255,0.4); cursor: pointer;
-            z-index: 9500; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 30px; border-radius: 50%;
+            z-index: 9500; transition: all 0.2s; padding: 30px; border-radius: 50%;
             animation: pulseArrow 2s infinite alternate;
         }
-        @keyframes pulseArrow {
-            0% { text-shadow: 0 0 10px rgba(255,255,255,0.2); }
-            100% { text-shadow: 0 0 25px rgba(255,255,255,0.6); }
-        }
+        @keyframes pulseArrow { 0% { text-shadow: 0 0 10px rgba(255,255,255,0.2); } 100% { text-shadow: 0 0 25px rgba(255,255,255,0.6); } }
         .nav-arrow:hover { color: #fff; text-shadow: 0 0 30px #fff; }
         .arrow-left { left: 20px; } .arrow-right { right: 20px; }
 
-        /* =========================================
-           CAROUSEL & SLIDES (THEME SYSTEM)
-        ========================================= */
         .carousel-container { width: 100%; position: relative; }
 
         .slide {
             display: none; opacity: 0;
-            /* O conteúdo entra com um efeito de impacto 3D */
             transform: scale(1.1) translateY(50px) rotateX(10deg);
-            transform-origin: center top;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efeito elástico */
+            transform-origin: center top; transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .slide.active { display: block; opacity: 1; transform: scale(1) translateY(0) rotateX(0deg); }
 
-        .slide.active {
-            display: block; opacity: 1;
-            transform: scale(1) translateY(0) rotateX(0deg);
-        }
+        .store-page { max-width: 1100px; margin: 0 auto; padding: 100px 20px 150px 20px; transform-style: preserve-3d; }
 
-        /* =========================================
-           STORE PAGE LAYOUT (GLASS HOLOGRAPHIC)
-        ========================================= */
-        .store-page {
-            max-width: 1100px; margin: 0 auto; padding: 100px 20px 150px 20px;
-            transform-style: preserve-3d; /* Mantém 3D para os filhos */
-        }
-
-        /* --- 3D PARALLAX BANNER --- */
         .banner-wrapper {
             width: 100%; height: 450px; border-radius: 20px; margin-bottom: 50px;
-            overflow: hidden; position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            transform-style: preserve-3d;
+            overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); transform-style: preserve-3d;
         }
 
         .hero-banner-img {
             position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
-            background-size: cover; background-position: center;
-            transition: transform 0.1s ease-out; /* Movimento suave do mouse */
+            background-size: cover; background-position: center; transition: transform 0.1s ease-out;
         }
 
         .banner-overlay {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to top, rgba(0,0,0,0.9) 10%, transparent 80%);
-            z-index: 2; pointer-events: none;
-            display: flex; align-items: flex-end; padding: 40px; box-sizing: border-box;
+            z-index: 2; pointer-events: none; display: flex; align-items: flex-end; padding: 40px; box-sizing: border-box;
         }
         
-        .hero-title-area { position: relative; z-index: 3; transform: translateZ(50px); /* Texto flutua na frente */ }
+        .hero-title-area { position: relative; z-index: 3; transform: translateZ(50px); }
         .hero-title { font-size: 5rem; margin: 0; text-transform: uppercase; line-height: 1; }
 
-        /* --- HOLOGRAPHIC GLASS PANELS --- */
         .store-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
 
         .glass-panel {
-            background: rgba(20, 20, 25, 0.5);
-            border-radius: 15px; padding: 30px;
+            background: rgba(20, 20, 25, 0.5); border-radius: 15px; padding: 30px;
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 
-                0 20px 40px rgba(0,0,0,0.4),
-                inset 0 0 20px rgba(255,255,255,0.02);
-            transition: all 0.3s ease;
-            position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.02);
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-        
-        /* Brilho Iridescente nas bordas ao passar o mouse */
         .glass-panel::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 15px; padding: 2px; /* Espessura da borda */
+            border-radius: 15px; padding: 2px;
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor; mask-composite: exclude;
@@ -173,8 +122,7 @@
         .game-tag {
             display: inline-block; padding: 8px 20px; border-radius: 30px;
             font-size: 0.9rem; font-weight: bold; text-transform: uppercase; margin-bottom: 15px;
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
-            letter-spacing: 1px; backdrop-filter: blur(5px);
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); letter-spacing: 1px; backdrop-filter: blur(5px);
         }
 
         .play-btn {
@@ -185,33 +133,44 @@
         }
 
         /* =========================================
-           THEME CUSTOMIZATION (OOO & COSMIC)
+           THEME CUSTOMIZATION
         ========================================= */
-        /* Theme: OUT OF ORDER */
+        /* OUT OF ORDER */
         .theme-ooo .hero-title { font-family: 'VT323', monospace; color: #ff2a4b; text-shadow: 4px 4px 0px rgba(0, 229, 255, 0.5); }
         .theme-ooo .game-tag { color: #ff2a4b; border-color: rgba(255, 42, 75, 0.4); }
         .theme-ooo .play-btn { background: linear-gradient(45deg, #ff2a4b, #b81b1b); color: #fff; border: 2px solid #ff2a4b; }
         .theme-ooo .play-btn:hover { box-shadow: 0 0 40px rgba(255, 42, 75, 0.6); letter-spacing: 5px; }
-        /* Borda iridescente vermelha para OOO */
         .theme-ooo .glass-panel::before { background: linear-gradient(45deg, transparent, rgba(255, 42, 75, 0.4), transparent); }
         .theme-ooo .banner-wrapper { border-color: rgba(255, 42, 75, 0.3); }
 
-        /* Theme: STARLIGHT CAFE */
-        .theme-star .hero-title { font-family: 'Nunito', sans-serif; font-weight: 900; color: #fff; text-shadow: 0px 5px 20px rgba(0, 229, 255, 0.6); }
-        .theme-star .game-tag { color: #00e5ff; border-color: rgba(0, 229, 255, 0.4); }
-        .theme-star .play-btn { background: linear-gradient(45deg, #00e5ff, #2b1055); color: #fff; border: 2px solid #00e5ff; border-radius: 50px;}
-        .theme-star .play-btn:hover { box-shadow: 0 0 40px rgba(0, 229, 255, 0.6); letter-spacing: 5px; transform: translateY(-3px); }
-        /* Borda iridescente ciana para Star */
-        .theme-star .glass-panel::before { background: linear-gradient(45deg, transparent, rgba(0, 229, 255, 0.4), transparent); }
-        .theme-star .banner-wrapper { border-color: rgba(0, 229, 255, 0.3); }
+        /* BREWED MOMENTS */
+        .theme-brewed .hero-title { font-family: 'Nunito', sans-serif; font-weight: 900; color: #fff; text-shadow: 0px 5px 20px rgba(212, 163, 115, 0.6); }
+        .theme-brewed .game-tag { color: #d4a373; border-color: rgba(212, 163, 115, 0.4); }
+        .theme-brewed .play-btn { background: linear-gradient(45deg, #a98467, #582f0e); color: #fff; border: 2px solid #d4a373; border-radius: 50px;}
+        .theme-brewed .play-btn:hover { box-shadow: 0 0 40px rgba(212, 163, 115, 0.6); letter-spacing: 5px; transform: translateY(-3px); }
+        .theme-brewed .glass-panel::before { background: linear-gradient(45deg, transparent, rgba(212, 163, 115, 0.4), transparent); }
+        .theme-brewed .banner-wrapper { border-color: rgba(212, 163, 115, 0.3); }
 
+        /* =========================================
+           MOBILE OPTIMIZATIONS (Responsive Grid)
+        ========================================= */
         @media (max-width: 900px) {
-            .store-grid { grid-template-columns: 1fr; }
-            .banner-wrapper { height: 350px; }
-            .hero-title { font-size: 3rem; }
-            .nav-arrow { font-size: 2rem; padding: 10px; background: rgba(0,0,0,0.5); }
+            .store-grid { grid-template-columns: 1fr; } /* Empilha as colunas */
+            .banner-wrapper { height: 350px; margin-bottom: 30px; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-title-area { transform: translateZ(0); } /* Desativa flutuação 3D em mobile */
+            .nav-arrow { font-size: 1.5rem; padding: 15px; background: rgba(0,0,0,0.6); border-radius: 5px; }
             .arrow-left { left: 10px; } .arrow-right { right: 10px; }
-            .store-page { padding-top: 80px; }
+            .store-page { padding: 90px 15px 100px 15px; }
+            .back-btn { top: 20px; left: 20px; font-size: 1rem; padding: 8px 15px; }
+        }
+
+        /* Desativa Cursor Customizado e efeitos pesados em Celular */
+        @media (hover: none) and (pointer: coarse) {
+            #custom-cursor { display: none !important; }
+            body { cursor: auto; }
+            .mag-btn { transform: none !important; }
+            .glass-panel:hover { transform: none; box-shadow: 0 20px 40px rgba(0,0,0,0.4); } /* Evita hover bugado */
         }
     </style>
 </head>
@@ -222,16 +181,15 @@
     <div id="star-container"></div>
     <div id="custom-cursor"></div>
 
-    <a href="index.html" class="back-btn mag-btn"><i class="fa-solid fa-chevron-left"></i> Main Menu</a>
+    <a href="index.html" class="back-btn mag-btn"><i class="fa-solid fa-chevron-left"></i> Menu</a>
 
     <i class="fa-solid fa-chevron-left nav-arrow arrow-left mag-btn" onclick="changeSlide('prev')"></i>
     <i class="fa-solid fa-chevron-right nav-arrow arrow-right mag-btn" onclick="changeSlide('next')"></i>
 
-    <div class="carousel-container">
+    <div class="carousel-container" id="swipe-area">
         
         <div class="slide active theme-ooo" data-bg="#0a0000">
             <div class="store-page">
-                
                 <div class="banner-wrapper js-parallax">
                     <div class="hero-banner-img" style="background-image: url('https://img.itch.zone/aW1nLzE0OTYwMjY0LnBuZw==/original/y%2F1G8%2B.png');"></div>
                     <div class="banner-overlay">
@@ -249,43 +207,47 @@
                         <br>
                         <h3>Key Investigation Features:</h3>
                         <ul>
-                            <li>Advanced investigation board mechanics for connecting clues.</li>
+                            <li>Advanced investigation board mechanics.</li>
                             <li>Dynamic heart-rate survival system (Hendrix System).</li>
-                            <li>Retro VHS aesthetics and immersive analog sound design.</li>
+                            <li>Retro VHS aesthetics and immersive sound design.</li>
                         </ul>
                     </div>
 
                     <div class="sidebar-panel">
                         <div class="glass-panel" style="padding: 20px;">
-                            <a href="https://cosmiccupcake.itch.io/out-of-order-a-five-nights-at-freddys-story" target="_blank" class="play-btn mag-btn">ACCESS FILE (ITCH.IO)</a>
+                            <a href="https://cosmiccupcake.itch.io/out-of-order-a-five-nights-at-freddys-story" target="_blank" class="play-btn mag-btn">ACCESS FILE</a>
                         </div>
-                        
                         <div class="glass-panel" style="padding: 10px;">
                             <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen style="margin-bottom: 0;"></iframe>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <div class="slide theme-star" data-bg="linear-gradient(135deg, #1a0a2e 0%, #291d4f 100%)">
+        <div class="slide theme-brewed" data-bg="linear-gradient(135deg, #3e2723 0%, #1a0f0a 100%)">
             <div class="store-page">
-                
                 <div class="banner-wrapper js-parallax">
-                    <div class="hero-banner-img" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop');"></div>
+                    <div class="hero-banner-img" style="background-image: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop');"></div>
                     <div class="banner-overlay">
                         <div class="hero-title-area">
-                            <span class="game-tag">Slice of Life / RPG</span>
-                            <h1 class="hero-title">STARLIGHT CAFE</h1>
+                            <span class="game-tag">Management / Visual Novel</span>
+                            <h1 class="hero-title">BREWED MOMENTS</h1>
                         </div>
                     </div>
                 </div>
 
                 <div class="store-grid">
                     <div class="glass-panel description-text">
-                        <p>An upcoming cozy adventure where you manage a small cafe at the edge of the galaxy. Meet quirky aliens, bake cosmic cupcakes, and discover the secrets of the universe, one recipe at a time.</p>
-                        <p>Focus on relationships, resource management, and discovering the heartwarming stories of your interstellar customers. Customize your shop, invent new recipes, and watch the stars go by.</p>
+                        <p>Welcome to <strong>Brewed Moments</strong>, a cozy slice-of-life management game where every cup tells a story. Step behind the counter of a charming corner cafe and learn the delicate art of brewing the perfect espresso while listening to the lives of your quirky customers.</p>
+                        <p>Manage your ingredients, master new latte art, and create a warm sanctuary for the neighborhood. In this cafe, a good conversation is just as important as a good roast.</p>
+                        <br>
+                        <h3>Key Features:</h3>
+                        <ul>
+                            <li>Deep coffee brewing mechanics and recipe discovery.</li>
+                            <li>Branching dialogues with a diverse cast of local patrons.</li>
+                            <li>Lo-fi soundtrack to study and relax to.</li>
+                        </ul>
                     </div>
 
                     <div class="sidebar-panel">
@@ -294,7 +256,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -308,102 +269,118 @@
         const slides = document.querySelectorAll('.slide');
         const dynamicBg = document.getElementById('dynamic-bg');
         const body = document.body;
+        let isAnimating = false;
 
         function changeSlide(direction) {
-            // Ativa o efeito de Hyperjump (flash branco)
+            if (isAnimating) return;
+            isAnimating = true;
             body.classList.add('jumping');
 
             setTimeout(() => {
-                // Esconde o slide atual
                 slides[currentSlide].classList.remove('active');
                 slides[currentSlide].style.display = 'none';
                 
-                // Calcula o próximo slide
                 if (direction === 'next') {
                     currentSlide = (currentSlide + 1) % slides.length;
                 } else {
                     currentSlide = (currentSlide - 1 + slides.length) % slides.length;
                 }
                 
-                // Prepara e mostra o novo slide
                 let activeSlide = slides[currentSlide];
                 activeSlide.style.display = 'block';
                 dynamicBg.style.background = activeSlide.getAttribute('data-bg');
-                window.scrollTo({ top: 0, behavior: 'auto' }); // Pula pro topo instantaneamente durante o flash
+                window.scrollTo({ top: 0, behavior: 'auto' });
                 
-                // Pequeno delay para garantir que o navegador renderizou o display:block antes de animar
                 requestAnimationFrame(() => {
                      activeSlide.classList.add('active');
-                     body.classList.remove('jumping'); // Remove o flash
+                     body.classList.remove('jumping');
+                     setTimeout(() => { isAnimating = false; }, 800); // Libera o próximo clique após a animação
                 });
                 
-                playClickSound();
-            }, 400); // Tempo do flash branco
+                if(window.matchMedia("(pointer: fine)").matches) playClickSound();
+            }, 400); 
         }
 
-        // Inicializa o fundo
         dynamicBg.style.background = slides[0].getAttribute('data-bg');
 
         // =========================================
-        // 3D MOUSE PARALLAX (BANNER)
+        // MOBILE SWIPE GESTURES (NOVIDADE)
         // =========================================
-        document.addEventListener('mousemove', (e) => {
-            const banners = document.querySelectorAll('.js-parallax');
-            const x = (window.innerWidth - e.pageX * 2) / 100;
-            const y = (window.innerHeight - e.pageY * 2) / 100;
+        let touchstartX = 0;
+        let touchendX = 0;
+        const swipeArea = document.getElementById('swipe-area');
 
-            banners.forEach(banner => {
-                const img = banner.querySelector('.hero-banner-img');
-                // Move a imagem na direção oposta ao mouse para criar profundidade
-                img.style.transform = `translate(${x * 2}px, ${y * 3}px) scale(1.1)`;
-            });
-        });
+        swipeArea.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        swipeArea.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            // Se deslizou mais de 50 pixels para a esquerda
+            if (touchendX < touchstartX - 50) changeSlide('next');
+            // Se deslizou mais de 50 pixels para a direita
+            if (touchendX > touchstartX + 50) changeSlide('prev');
+        }
 
         // =========================================
-        // CURSOR, MAGNETIC BUTTONS & AUDIO (Standard System)
+        // 3D MOUSE PARALLAX (Apenas Desktop)
         // =========================================
-        const cursor = document.getElementById('custom-cursor');
-        const magButtons = document.querySelectorAll('.mag-btn');
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                const banners = document.querySelectorAll('.js-parallax');
+                const x = (window.innerWidth - e.pageX * 2) / 100;
+                const y = (window.innerHeight - e.pageY * 2) / 100;
 
-        window.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
-        });
+                banners.forEach(banner => {
+                    const img = banner.querySelector('.hero-banner-img');
+                    if(img) img.style.transform = `translate(${x * 2}px, ${y * 3}px) scale(1.1)`;
+                });
+            });
+        }
 
-        magButtons.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => { 
-                const rect = btn.getBoundingClientRect();
-                const pullX = (e.clientX - (rect.left + rect.width / 2)) * 0.2; 
-                const pullY = (e.clientY - (rect.top + rect.height / 2)) * 0.4;
-                btn.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
-                cursor.style.transform = `translate(-50%, -50%) scale(1.8)`;
-                cursor.style.background = btn.classList.contains('arrow-left') || btn.classList.contains('arrow-right') ? '#fff' : 'transparent';
-                cursor.style.border = '2px solid #fff';
+        // =========================================
+        // CURSOR, MAGNETIC BUTTONS & AUDIO
+        // =========================================
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursor = document.getElementById('custom-cursor');
+            const magButtons = document.querySelectorAll('.mag-btn');
+
+            window.addEventListener('mousemove', (e) => {
+                cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
             });
-            btn.addEventListener('mouseleave', () => { 
-                btn.style.transform = `translate(0px, 0px) scale(1)`;
-                cursor.style.transform = `translate(-50%, -50%) scale(1)`;
-                cursor.style.background = '#fff'; cursor.style.border = 'none';
+
+            magButtons.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => { 
+                    const rect = btn.getBoundingClientRect();
+                    const pullX = (e.clientX - (rect.left + rect.width / 2)) * 0.2; 
+                    const pullY = (e.clientY - (rect.top + rect.height / 2)) * 0.4;
+                    btn.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
+                    cursor.style.transform = `translate(-50%, -50%) scale(1.8)`;
+                    cursor.style.background = btn.classList.contains('arrow-left') || btn.classList.contains('arrow-right') ? '#fff' : 'transparent';
+                    cursor.style.border = '2px solid #fff';
+                });
+                btn.addEventListener('mouseleave', () => { 
+                    btn.style.transform = `translate(0px, 0px) scale(1)`;
+                    cursor.style.transform = `translate(-50%, -50%) scale(1)`;
+                    cursor.style.background = '#fff'; cursor.style.border = 'none';
+                });
             });
-        });
+        }
 
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
         function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
-        function playHoverSound() {
-            initAudio(); const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
-            osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-        }
         function playClickSound() {
             initAudio(); const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
             osc.type = 'square'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
             osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         }
-        magButtons.forEach(item => { item.addEventListener('mouseenter', playHoverSound); });
 
-        // =========================================
-        // ATMOSPHERE PARTICLES
-        // =========================================
+        // Atmosphere Particles
         function createCosmos() {
             const starContainer = document.getElementById('star-container');
             for (let i = 0; i < 50; i++) {
@@ -413,7 +390,7 @@
                 star.style.left = `${Math.random() * 100}vw`; star.style.top = `${Math.random() * 100}vh`;
                 star.style.opacity = Math.random() * 0.5 + 0.1;
                 star.style.animationDuration = `${Math.random() * 4 + 2}s`; star.style.animationDelay = `${Math.random() * 5}s`;
-                starContainer.appendChild(star);
+                if(starContainer) starContainer.appendChild(star);
             }
         }
         createCosmos();
