@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Cupcake | Terminal</title>
+    <style>
+        /* O "Luna Juice" CSS - Estética de Monitor CRT Sombrio */
+        body {
+            background-color: #000000;
+            color: #d3d3d3;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(circle, #111 10%, #000 90%);
+        }
+
+        .terminal-container {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 50px;
+            border: 1px solid #333;
+            box-shadow: 0px 0px 20px rgba(0, 229, 255, 0.1);
+            padding: 30px;
+            background-color: rgba(10, 10, 10, 0.9);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .studio-name {
+            color: #ffffff;
+            font-size: 2.5em;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .studio-status {
+            color: #00e5ff;
+            font-size: 1em;
+            margin-top: 10px;
+            text-shadow: 0px 0px 5px rgba(0, 229, 255, 0.8);
+        }
+
+        .section-title {
+            color: #ff2a4b;
+            font-size: 1.5em;
+            border-left: 5px solid #ff2a4b;
+            padding-left: 10px;
+            margin-top: 40px;
+            text-shadow: 0px 0px 8px rgba(255, 42, 75, 0.6);
+        }
+
+        .game-card {
+            border: 1px solid #222;
+            padding: 15px;
+            margin-top: 20px;
+            background: rgba(255, 42, 75, 0.05);
+            transition: 0.3s;
+        }
+
+        .game-card:hover {
+            border-color: #ff2a4b;
+            box-shadow: inset 0px 0px 15px rgba(255, 42, 75, 0.2);
+        }
+
+        .devlog-entry {
+            border-top: 1px solid #333;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+
+        .date {
+            color: #00e5ff;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #00e5ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #ffffff;
+            text-shadow: 0px 0px 8px #00e5ff;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: transparent;
+            border: 1px solid #ff2a4b;
+            color: #ff2a4b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ff2a4b;
+            color: #000;
+            box-shadow: 0px 0px 15px #ff2a4b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        
+        <div class="header">
+            <h1 class="studio-name">COSMIC CUPCAKE</h1>
+            <p class="studio-status">> SISTEMA ONLINE. MONITORANDO ATIVIDADES ANÔMALAS...</p>
+        </div>
+
+        <h2 class="section-title">ARQUIVOS DE CASO (JOGOS)</h2>
+        <div class="game-card">
+            <h3 style="color: #ffffff; margin-top: 0;">OUT OF ORDER - A Five Nights at Freddy's Story</h3>
+            <p>Assuma o papel do Detetive Thomas e investigue os segredos sombrios de Hurricane City. Um jogo de terror psicológico com foco em narrativa, dedução e sobrevivência.</p>
+            <p><strong>Status:</strong> Em Desenvolvimento (Demo Disponível)</p>
+            <a href="COLOQUE_SEU_LINK_DO_ITCH_IO_AQUI" target="_blank" class="btn">ACESSAR ARQUIVO (DOWNLOAD)</a>
+        </div>
+
+        <h2 class="section-title">REGISTROS DO SISTEMA (DEVLOG)</h2>
+        
+        <div class="devlog-entry">
+            <span class="date">[ DATA: Hoje ] - Entrada #002</span>
+            <p style="color: #ffffff; font-weight: bold;">Estabelecendo Conexão de Servidor</p>
+            <p>A base de operações da Cosmic Cupcake está oficialmente online. Estamos transferindo os dados do Itch.io para este terminal seguro. O desenvolvimento de <i>Out of Order</i> continua. O sistema de corações e o rádio policial estão sendo implementados com sucesso. Fique atento a novas transmissões.</p>
+        </div>
+
+        <div class="devlog-entry">
+            <span class="date">[ DATA: Algum tempo atrás ] - Entrada #001</span>
+            <p style="color: #ffffff; font-weight: bold;">O Início da Investigação</p>
+            <p>O caso #87 foi aberto. A pizzaria está abandonada, mas algo lá dentro não está. Começamos a estruturar as mecânicas de investigação do Detetive Thomas.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
