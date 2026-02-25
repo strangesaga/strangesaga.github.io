@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Devlog | Cosmic Cupcake</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =========================================
+           GENERAL, BACKGROUND & CURSOR (Imported from Home)
+        ========================================= */
+        body {
+            margin: 0; padding: 0; min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(to bottom, #070314 0%, #170936 50%, #321042 100%);
+            background-attachment: fixed; /* Mantém o fundo fixo ao rolar a página */
+            color: #ffffff; overflow-x: hidden;
+            cursor: none; user-select: none;
+        }
+
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 998;
+            animation: rollScanlines 10s linear infinite;
+        }
+
+        @keyframes rollScanlines { from { background-position: 0 0; } to { background-position: 0 100vh; } }
+
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 999; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background: #ffffff; border-radius: 50%; pointer-events: none; z-index: 1000;
+            box-shadow: 0 0 15px 4px rgba(255, 42, 120, 0.8), 0 0 30px rgba(0, 229, 255, 0.6);
+            transform: translate(-50%, -50%);
+        }
+
+        #star-container, #ray-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;}
+        .star { position: absolute; border-radius: 50%; animation: twinkle linear infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 8px currentColor; } }
+        .ray {
+            position: absolute; bottom: -10%; left: 50%; width: 80px; height: 120vh;
+            transform-origin: bottom center; filter: blur(25px);
+            animation: sway 15s ease-in-out infinite alternate; mix-blend-mode: screen;
+        }
+        @keyframes sway { 0% { transform: translateX(-50%) rotate(-20deg); opacity: 0.2; } 100% { transform: translateX(-50%) rotate(20deg); opacity: 0.5; } }
+
+        /* =========================================
+           DEVLOG LAYOUT (NEW)
+        ========================================= */
+        .devlog-wrapper {
+            position: relative; z-index: 10;
+            max-width: 800px; margin: 0 auto; padding: 40px 20px 100px 20px;
+        }
+
+        /* Nav Bar (Top) */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 50px; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 20px;
+        }
+
+        .back-btn {
+            font-family: 'Oswald', sans-serif; font-size: 1.5rem; text-transform: uppercase;
+            color: #00e5ff; text-decoration: none; display: flex; align-items: center; gap: 10px;
+            text-shadow: 0 0 8px rgba(0, 229, 255, 0.5); transition: 0.3s;
+        }
+
+        .back-btn:hover { color: #ffffff; text-shadow: 0 0 15px rgba(255, 42, 120, 0.8); transform: translateX(-5px); }
+        
+        .page-title {
+            font-family: 'Oswald', sans-serif; font-size: 2.5rem; margin: 0;
+            color: #ffffff; text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 42, 120, 0.8);
+        }
+
+        /* Post Entry (Glass Card) */
+        .post-card {
+            background: rgba(10, 5, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ff2a78;
+            border-radius: 10px;
+            padding: 30px; margin-bottom: 40px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .post-card:hover {
+            border-left-color: #00e5ff;
+            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Post Elements */
+        .post-date {
+            font-family: 'Oswald', sans-serif; color: #00e5ff;
+            font-size: 1rem; letter-spacing: 1px; margin-bottom: 10px; display: block;
+        }
+
+        .post-title {
+            font-family: 'Oswald', sans-serif; font-size: 2rem;
+            color: #ffffff; margin: 0 0 20px 0; text-transform: uppercase;
+        }
+
+        .post-content {
+            font-size: 1.1rem; line-height: 1.7; color: #d3d3d3;
+        }
+
+        /* Styling for content inside posts (Images, Gifs, Videos, Links) */
+        .post-content img, .post-content video, .post-content iframe {
+            max-width: 100%; height: auto; border-radius: 8px;
+            margin: 20px 0; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .post-content a {
+            color: #ff2a78; font-weight: bold; text-decoration: none;
+            transition: 0.2s; border-bottom: 1px dashed #ff2a78;
+        }
+
+        .post-content a:hover { color: #00e5ff; border-color: #00e5ff; text-shadow: 0 0 8px rgba(0, 229, 255, 0.5); }
+        
+        .post-content p { margin-top: 0; }
+        
+        /* Highlight words */
+        .hl-blue { color: #00e5ff; font-weight: bold; }
+        .hl-red { color: #ff2a78; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <div class="crt-overlay"></div>
+    <div class="noise-overlay"></div>
+    <div id="custom-cursor"></div>
+
+    <div id="ray-container"></div>
+    <div id="star-container"></div>
+
+    <div class="devlog-wrapper">
+        
+        <div class="top-nav">
+            <a href="index.html" class="back-btn"><i class="fa-solid fa-chevron-left"></i> SYSTEM MENU</a>
+            <h1 class="page-title">System Logs</h1>
+        </div>
+
+        <article class="post-card">
+            <span class="post-date">LOG DATE: FEB 25, 2026 // 14:32</span>
+            <h2 class="post-title">Implementing the Hendrix Heart System</h2>
+            <div class="post-content">
+                <p>Today we successfully integrated the new visual HUD for Detective Thomas. The standard health bar was removed and replaced by a beating heart system that reacts to the environment.</p>
+                
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjMwMmVhZDhhNGFmMDZhMjRlNzQ4ZTBhYTQwZDYyMzhkNWQ2OWE4MiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3o7aD2saalEvTe2yA8/giphy.gif" alt="Heart System GIF Example">
+                
+                <p>We also updated the <span class="hl-blue">Cinematic Toolkit</span>. Now, when the cinematic black bars appear on the screen, the hearts automatically hide to give that movie-like feel. Check our <a href="#" target="_blank">itch.io page</a> for the latest demo update.</p>
+            </div>
+        </article>
+
+        <article class="post-card">
+            <span class="post-date">LOG DATE: FEB 19, 2026 // 09:00</span>
+            <h2 class="post-title">Project "Out of Order" is officially online</h2>
+            <div class="post-content">
+                <p>Welcome to the Cosmic Cupcake development terminal. We are currently investigating the strange events at Hurricane City. Our first project, <span class="hl-red">Out of Order</span>, is a story-driven survival horror.</p>
+                <p>Check out our first teaser trailer below:</p>
+                
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                
+                <p>The darkness never left. Stay tuned for more updates.</p>
+            </div>
+        </article>
+
+        </div>
+
+    <script>
+        // Cursor tracking
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+        });
+
+        // Stars & Rays Background
+        function createCosmos() {
+            const starContainer = document.getElementById('star-container');
+            const rayContainer = document.getElementById('ray-container');
+            for (let i = 0; i < 100; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 2 + 0.5}px`; star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}vw`; star.style.top = `${Math.random() * 100}vh`;
+                star.style.animationDuration = `${Math.random() * 4 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starContainer.appendChild(star);
+            }
+            for (let i = 0; i < 4; i++) {
+                let ray = document.createElement('div');
+                ray.classList.add('ray');
+                ray.style.left = `${20 + (i * 20)}vw`;
+                let color = Math.random() > 0.5 ? 'rgba(162, 59, 219, 0.05)' : 'rgba(0, 229, 255, 0.03)';
+                ray.style.background = `linear-gradient(to top, ${color} 0%, transparent 100%)`;
+                ray.style.animationDuration = `${Math.random() * 8 + 12}s`;
+                rayContainer.appendChild(ray);
+            }
+        }
+        createCosmos();
+    </script>
+</body>
+</html>
