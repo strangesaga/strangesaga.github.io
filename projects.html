@@ -10,7 +10,7 @@
 
     <style>
         /* =========================================
-           BASE & BUG FIXES (ADEUS BARRA ESCURA)
+           BASE & BUG FIXES
         ========================================= */
         html { scroll-behavior: smooth; }
         
@@ -19,10 +19,8 @@
             font-family: 'Nunito', sans-serif;
             background-color: #050000; color: #ffffff; 
             overflow-x: hidden; 
-            /* Cursor customizado removido! Usando o padrão. */
         }
 
-        /* Fundos FIXOS na câmera (Resolve o corte da imagem) */
         #dynamic-bg, #star-container, .noise-overlay, .hyperjump-overlay {
             position: fixed; top: 0; left: 0; 
             width: 100vw; height: 100vh; 
@@ -65,7 +63,7 @@
         .arrow-left { left: 30px; } .arrow-right { right: 30px; }
 
         /* =========================================
-           NOVO LAYOUT CINEMATOGRÁFICO (STEAM STYLE)
+           LAYOUT CINEMATOGRÁFICO
         ========================================= */
         .carousel-container { width: 100%; position: relative; }
 
@@ -75,12 +73,10 @@
         }
         .slide.active { display: block; opacity: 1; transform: translateY(0); }
 
-        /* O Header Massivo que "sangra" na tela toda */
         .cinematic-header {
             width: 100%; height: 65vh; position: absolute; top: 0; left: 0;
             background-size: cover; background-position: center 20%;
             z-index: -1; 
-            /* A mágica que funde a imagem com o fundo da página */
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
         }
@@ -92,7 +88,14 @@
 
         .game-header-info { margin-bottom: 50px; text-shadow: 0 5px 20px rgba(0,0,0,0.8); }
         
-        .hero-title { font-size: 6rem; margin: 0 0 10px 0; text-transform: uppercase; line-height: 1; letter-spacing: -2px; }
+        /* NOVO ESTILO PARA LOGOS EM IMAGEM */
+        .hero-logo-img {
+            max-height: 150px; /* Altura máxima para não ficar gigante */
+            width: auto;
+            display: block;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        }
         
         .game-tags { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         .tag {
@@ -102,7 +105,6 @@
             border-left: 3px solid #fff;
         }
 
-        /* A Grade Principal Elevada */
         .store-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; align-items: start; }
 
         .hologram-panel {
@@ -119,9 +121,7 @@
         .description-text h3 { color: #ffffff; margin-top: 35px; font-family: 'Oswald', sans-serif; }
         .description-text strong { color: #ffffff; }
 
-        /* Coluna da Direita (Ações) */
         .action-sidebar { display: flex; flex-direction: column; gap: 30px; position: sticky; top: 120px; }
-        
         .media-box iframe { width: 100%; border-radius: 8px; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
 
         .play-btn {
@@ -133,10 +133,10 @@
         }
 
         /* =========================================
-           TEMAS DOS JOGOS (AS CORES QUE MUDAM TUDO)
+           TEMAS DOS JOGOS
         ========================================= */
         /* --- OUT OF ORDER --- */
-        .theme-ooo .hero-title { font-family: 'VT323', monospace; color: #ff2a4b; text-shadow: 5px 5px 0px rgba(0,0,0,1), 0 0 30px rgba(255, 42, 75, 0.5); font-size: 7rem; }
+        .theme-ooo .hero-logo-img { filter: drop-shadow(0 0 20px rgba(255, 42, 75, 0.6)); }
         .theme-ooo .tag { border-left-color: #ff2a4b; color: #ff2a4b; }
         .theme-ooo .play-btn { background: #ff2a4b; color: #000; box-shadow: 0 15px 30px rgba(255, 42, 75, 0.3); }
         .theme-ooo .play-btn:hover { background: #fff; box-shadow: 0 20px 50px rgba(255, 42, 75, 0.6); transform: translateY(-5px) scale(1.02); }
@@ -144,12 +144,27 @@
         .theme-ooo .hologram-panel { border-top: 2px solid rgba(255, 42, 75, 0.2); }
 
         /* --- BREWED MOMENTS --- */
-        .theme-brewed .hero-title { font-family: 'Nunito', sans-serif; font-weight: 900; color: #fdf5e6; text-shadow: 0px 10px 30px rgba(0,0,0,0.8); letter-spacing: 0; }
+        .theme-brewed .hero-logo-img { filter: drop-shadow(0 0 20px rgba(212, 163, 115, 0.4)); }
         .theme-brewed .tag { border-left-color: #d4a373; color: #d4a373; border-radius: 20px;}
         .theme-brewed .play-btn { background: #d4a373; color: #2b1c11; border-radius: 50px; box-shadow: 0 15px 30px rgba(212, 163, 115, 0.2); }
         .theme-brewed .play-btn:hover { background: #fff; box-shadow: 0 20px 50px rgba(212, 163, 115, 0.5); transform: translateY(-5px) scale(1.02); }
         .theme-brewed .description-text h2 { color: #d4a373; }
         .theme-brewed .hologram-panel { border-top: 2px solid rgba(212, 163, 115, 0.2); border-radius: 20px; }
+
+        /* --- NOVO TEMA: RED AND PINK (Cute/Horror Vibe) --- */
+        .theme-redpink .hero-logo-img { filter: drop-shadow(0 0 20px rgba(255, 20, 147, 0.8)); /* Brilho Rosa Choque */ }
+        .theme-redpink .tag { border-left-color: #ff1493; color: #ff69b4; border-radius: 5px; background: rgba(50, 0, 20, 0.6); }
+        .theme-redpink .play-btn { 
+            background: linear-gradient(45deg, #ff1493, #ff0000); /* Gradiente Rosa para Vermelho */
+            color: #fff; border-radius: 5px; box-shadow: 0 15px 30px rgba(255, 20, 147, 0.4); 
+        }
+        .theme-redpink .play-btn:hover { background: #fff; color: #ff1493; box-shadow: 0 20px 60px rgba(255, 0, 0, 0.7); transform: translateY(-5px) scale(1.02); }
+        .theme-redpink .description-text h2 { color: #ff69b4; /* Título Rosa */ }
+        .theme-redpink .hologram-panel { 
+            border-top: 2px solid #ff1493;
+            /* Bordas iridescentes Ciano/Rosa */
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 20px rgba(255, 20, 147, 0.1);
+        }
 
         /* =========================================
            RESPONSIVIDADE EXTREMA (MOBILE)
@@ -158,8 +173,10 @@
             .store-grid { grid-template-columns: 1fr; gap: 30px; }
             .action-sidebar { position: static; }
             .store-page { padding: 35vh 20px 100px 20px; }
-            .hero-title { font-size: 3.5rem; }
-            .theme-ooo .hero-title { font-size: 4.5rem; }
+            
+            /* Ajuste da logo no mobile */
+            .hero-logo-img { max-height: 100px; margin-bottom: 10px; }
+            
             .nav-arrow { width: 45px; height: 45px; font-size: 1.5rem; }
             .arrow-left { left: 10px; } .arrow-right { right: 10px; }
             .cinematic-header { height: 50vh; }
@@ -191,7 +208,7 @@
                         <span class="tag">Survival Horror</span>
                         <span class="tag">Point & Click</span>
                     </div>
-                    <h1 class="hero-title">OUT OF ORDER</h1>
+                    <img src="https://placehold.co/600x200/26050a/ff2a4b?text=OUT+OF+ORDER+LOGO" alt="Out of Order Logo" class="hero-logo-img">
                 </div>
 
                 <div class="store-grid">
@@ -233,7 +250,7 @@
                         <span class="tag">Management</span>
                         <span class="tag">Visual Novel</span>
                     </div>
-                    <h1 class="hero-title">BREWED MOMENTS</h1>
+                    <img src="https://placehold.co/600x200/2b1c11/d4a373?text=BREWED+MOMENTS+LOGO" alt="Brewed Moments Logo" class="hero-logo-img">
                 </div>
 
                 <div class="store-grid">
@@ -261,11 +278,52 @@
             </div>
         </div>
 
+        <div class="slide theme-redpink" data-bg="linear-gradient(to bottom, #4a0010 0%, #1a0005 100%)">
+            
+            <div class="cinematic-header" style="background-image: url('https://images.unsplash.com/photo-1524413840807-433913d9b4d6?q=80&w=1920&auto=format&fit=crop');"></div>
+
+            <div class="store-page">
+                <div class="game-header-info">
+                    <div class="game-tags">
+                        <span class="tag">Action RPG</span>
+                        <span class="tag">School Sim</span>
+                    </div>
+                    <img src="https://placehold.co/600x200/4a0010/ff1493?text=RED+AND+PINK+LOGO" alt="Red and Pink Logo" class="hero-logo-img">
+                </div>
+
+                <div class="store-grid">
+                    <div class="hologram-panel description-text">
+                        <h2>SECRETS ARE PART OF THE CURRICULUM.</h2>
+                        <p>Welcome to Saint Juniper High, an elite academy where grades matter, social standing is everything, and something sinister festers beneath the manicured cherry blossoms. <strong>Red and Pink</strong> is an action RPG focused on fast-paced school life combat.</p>
+                        <p>Balance your daily school schedule, build relationships with classmates, and descend into hidden dungeons when the bell rings. Just remember: the cutest faces often hide the sharpest knives.</p>
+                        
+                        <h3>ACADEMIC FEATURES</h3>
+                        <ul>
+                            <li><strong>Dynamic Combat:</strong> Intense real-time battles using school equipment as weapons.</li>
+                            <li><strong>Social Links:</strong> Befriend (or betray) a cast of complex characters.</li>
+                            <li><strong>Hidden Lore:</strong> Uncover the dark history of the academy through exploration.</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-sidebar">
+                        <div class="hologram-panel" style="padding: 25px;">
+                            <a href="#" class="play-btn btn-sfx" style="opacity: 0.8; cursor: not-allowed;">
+                                <i class="fa-solid fa-heart-pulse"></i> COMING SOON
+                            </a>
+                        </div>
+                        <div class="media-box" style="height: 200px; background: rgba(255,20,147,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <p style="color: #ff69b4;">[TRAILER CLASSIFIED]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
         // =========================================
-        // MOTOR DE PARTÍCULAS (MANTIDO)
+        // MOTOR DE PARTÍCULAS
         // =========================================
         function createCosmos() {
             const starContainer = document.getElementById('star-container');
@@ -294,35 +352,29 @@
             if (isAnimating) return;
             isAnimating = true;
             
-            // Ativa o flash branco
             body.classList.add('jumping');
             playClickSound();
 
             setTimeout(() => {
                 slides[currentSlide].classList.remove('active');
                 
-                // Calcula o próximo índice
                 if (direction === 'next') currentSlide = (currentSlide + 1) % slides.length;
                 else currentSlide = (currentSlide - 1 + slides.length) % slides.length;
                 
                 let activeSlide = slides[currentSlide];
                 
-                // Troca a cor de fundo dinâmico
                 dynamicBg.style.background = activeSlide.getAttribute('data-bg');
-                
-                // Força rolagem suave pro topo da tela para a pessoa ver o header novo
                 window.scrollTo({ top: 0, behavior: 'instant' });
                 
                 requestAnimationFrame(() => {
                      activeSlide.classList.add('active');
                      body.classList.remove('jumping');
-                     setTimeout(() => { isAnimating = false; }, 800); // Cooldown
+                     setTimeout(() => { isAnimating = false; }, 800);
                 });
                 
-            }, 300); // Tempo do fade branco
+            }, 300);
         }
 
-        // Inicializa a cor de fundo correta na primeira carga
         dynamicBg.style.background = slides[0].getAttribute('data-bg');
 
         // =========================================
@@ -340,7 +392,7 @@
         }, {passive: true});
 
         // =========================================
-        // ÁUDIO DOS BOTÕES (Mantido, mas sem JS do cursor)
+        // ÁUDIO DOS BOTÕES
         // =========================================
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
@@ -361,7 +413,6 @@
         }
 
         document.querySelectorAll('.btn-sfx').forEach(item => { 
-            // Som de hover apenas em desktop (para não bugar no mobile)
             if (window.matchMedia("(pointer: fine)").matches) {
                 item.addEventListener('mouseenter', playHoverSound); 
             }
