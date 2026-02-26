@@ -3,21 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Cupcake Studio</title>
+    <title>Cosmic Cupcake Studio | OS</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* =========================================
+           BASE, CRT POWER ON & SCROLL FIX
+        ========================================= */
         body {
-            margin: 0; padding: 0; min-height: 100vh;
+            margin: 0; padding: 0; height: 100vh;
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(to bottom, #070314 0%, #170936 50%, #321042 100%);
-            color: #ffffff; overflow: hidden;
+            background-color: #050000; color: #ffffff;
+            overflow: hidden; /* Home não rola, é uma tela de sistema */
             display: flex; align-items: center; justify-content: center;
-            cursor: none; user-select: none;
+            /* O mouse padrão voltou */
         }
 
+        /* Animação de TV Antiga ligando */
+        .power-on-container {
+            width: 100vw; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            animation: crtTurnOn 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes crtTurnOn {
+            0% { transform: scale(1, 0.001) translate3d(0, 0, 0); filter: brightness(10); opacity: 0; }
+            40% { transform: scale(1, 0.001) translate3d(0, 0, 0); filter: brightness(10); opacity: 1; }
+            70% { transform: scale(1, 1) translate3d(0, 0, 0); filter: brightness(1); opacity: 1; }
+            100% { transform: scale(1, 1) translate3d(0, 0, 0); filter: brightness(1); opacity: 1; }
+        }
+
+        /* OVERLAYS FIXOS (Chumbados na tela) */
         .crt-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
@@ -43,35 +61,38 @@
             100% { box-shadow: inset 0 0 180px rgba(20, 0, 10, 0.95), inset 0 0 40px rgba(0,0,0,1); }
         }
 
-        #custom-cursor {
-            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
-            background: #ffffff; border-radius: 50%; pointer-events: none; z-index: 1000;
-            box-shadow: 0 0 15px 4px rgba(255, 42, 120, 0.8), 0 0 30px rgba(0, 229, 255, 0.6);
-            transform: translate(-50%, -50%); transition: transform 0.1s ease-out;
-        }
-
+        /* FUNDO CÓSMICO */
         #parallax-bg {
-            position: absolute; top: -5%; left: -5%; width: 110%; height: 110%;
-            z-index: 1; pointer-events: none; transition: transform 0.1s linear;
+            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
+            z-index: -2; pointer-events: none; transition: transform 0.1s linear;
+            background: linear-gradient(to bottom, #070314 0%, #170936 50%, #321042 100%);
         }
+        
         .horizon-glow {
             position: absolute; bottom: -20vh; left: 50%; transform: translateX(-50%);
             width: 150vw; height: 50vh;
             background: radial-gradient(ellipse at center, rgba(162, 59, 219, 0.4) 0%, rgba(255, 42, 120, 0.2) 40%, transparent 70%);
             filter: blur(50px); animation: breatheHorizon 8s ease-in-out infinite alternate;
         }
-        @keyframes breatheHorizon { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+        @keyframes breatheHorizon { 0% { opacity: 0.6; } 100% { opacity: 1; transform: translateX(-50%) scaleY(1.1); } }
 
-        #star-container, #ray-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .star { position: absolute; border-radius: 50%; animation: twinkle linear infinite; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.1; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 8px currentColor; } }
-        
+        #star-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .star { position: absolute; border-radius: 50%; background: #fff; animation: twinkle linear infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.1; transform: scale(0.8); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 8px #fff; } }
+
+        /* =========================================
+           LAYOUT PRINCIPAL
+        ========================================= */
         .content-container {
             position: relative; z-index: 10; display: flex;
             justify-content: space-between; align-items: center;
             width: 85%; max-width: 1300px;
+            /* Fade suave após a TV ligar */
+            opacity: 0; animation: contentFade 1s ease forwards 0.8s;
         }
+        @keyframes contentFade { to { opacity: 1; } }
 
+        /* --- LADO ESQUERDO: MENU --- */
         .menu-wrapper {
             display: flex; flex-direction: column; gap: 15px;
             transform: rotate(-5deg); padding-left: 40px;
@@ -82,13 +103,16 @@
             color: #ffffff; text-decoration: none; text-transform: uppercase;
             position: relative; padding: 5px 10px;
             text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 255, 0, 0.8);
-            transition: all 0.2s;
+            transition: color 0.2s, text-shadow 0.2s, letter-spacing 0.2s;
+            cursor: pointer;
         }
+        
         .menu-item::before {
             content: '▶'; position: absolute; left: -35px; color: #ffffff; opacity: 0;
             text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 255, 0, 0.8);
             transition: all 0.2s;
         }
+        
         .menu-item:hover {
             color: #ffffff; letter-spacing: 2px;
             text-shadow: 4px 0px 0px rgba(0, 229, 255, 1), -4px 0px 0px rgba(255, 42, 120, 1);
@@ -97,16 +121,21 @@
 
         .icon-row { display: flex; gap: 30px; margin-top: 15px; padding-left: 10px; }
         .icon-btn {
-            font-size: 2.8rem; color: #ffffff; text-decoration: none;
+            font-size: 2.5rem; color: #ffffff; text-decoration: none;
             text-shadow: 2px 0px 0px rgba(0, 229, 255, 0.8), -2px 0px 0px rgba(255, 255, 0, 0.8);
-            transition: all 0.2s; padding: 5px;
+            transition: color 0.2s, text-shadow 0.2s; padding: 10px; cursor: pointer;
         }
-        .icon-btn:hover { text-shadow: 4px 0px 0px rgba(0, 229, 255, 1), -4px 0px 0px rgba(255, 42, 120, 1); transform: scale(1.2) rotate(5deg); }
+        .icon-btn:hover { text-shadow: 4px 0px 0px rgba(0, 229, 255, 1), -4px 0px 0px rgba(255, 42, 120, 1); }
 
-        .brand-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; perspective: 1000px; }
+        /* --- LADO DIREITO: LOGO & BIO HOLOGRÁFICA --- */
+        .brand-wrapper { 
+            display: flex; flex-direction: column; align-items: center; text-align: center; 
+            perspective: 1000px; 
+        }
+        
         .logo-image {
             width: 450px; max-width: 45vw; animation: floatLogo 6s ease-in-out infinite;
-            filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.6)) drop-shadow(0px 0px 50px rgba(138, 43, 226, 0.6));
+            filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.6)) drop-shadow(0px 0px 40px rgba(138, 43, 226, 0.6));
         }
         @keyframes floatLogo {
             0%, 100% { transform: translateY(0px) rotate(2deg); }
@@ -114,35 +143,55 @@
         }
 
         .studio-bio {
-            margin-top: 25px; font-size: 1.1rem; max-width: 400px; color: #d3d3d3; line-height: 1.6;
-            background: rgba(0,0,0,0.3); padding: 15px 25px; border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            margin-top: 30px; font-size: 1.1rem; max-width: 420px; color: #d3d3d3; line-height: 1.6;
+            background: rgba(20, 10, 30, 0.4); padding: 25px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.08); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02);
+            transition: transform 0.1s ease-out; /* Física 3D */
+            position: relative; overflow: hidden;
         }
+
+        /* Linha Holográfica passando pela Bio */
+        .studio-bio::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 50px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 229, 255, 0.1), transparent);
+            transform: rotate(45deg); animation: holoScan 4s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes holoScan { 0% { top: -50%; } 100% { top: 150%; } }
+
         .studio-bio span.highlight-blue { color: #00e5ff; font-weight: bold; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); }
         .studio-bio span.highlight-red { color: #ff2a78; font-weight: bold; text-shadow: 0 0 8px rgba(255, 42, 120, 0.6); }
 
-        .footer { position: absolute; bottom: 20px; left: 40px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; text-transform: uppercase; }
-
-        /* =========================================
-           MOBILE OPTIMIZATIONS
-        ========================================= */
-        @media (max-width: 900px) {
-            body { overflow-y: auto; overflow-x: hidden; } /* Permite rolar se a tela for muito pequena */
-            .content-container { flex-direction: column-reverse; justify-content: center; gap: 40px; height: auto; padding: 40px 0; }
-            .menu-wrapper { transform: rotate(0deg); align-items: center; padding-left: 0; }
-            .menu-item { font-size: 2.5rem; text-align: center; }
-            .menu-item::before { display: none; } /* Remove seta no mobile para não quebrar layout */
-            .logo-image { width: 70vw; max-width: 300px; animation: none; /* Desativa o balanço no mobile */ }
-            .studio-bio { font-size: 1rem; margin-top: 15px; max-width: 85vw; }
-            .footer { position: relative; bottom: 0; left: 0; text-align: center; margin-top: 20px; }
-            #parallax-bg { display: none; } /* Desativa parallax no mobile por performance */
+        .footer { 
+            position: fixed; bottom: 20px; left: 40px; font-size: 0.8rem; z-index: 10;
+            color: rgba(255, 255, 255, 0.3); letter-spacing: 2px; text-transform: uppercase; 
         }
 
-        /* Desativa o Custom Cursor em telas de toque (Mobile) */
+        /* =========================================
+           RESPONSIVIDADE (MOBILE)
+        ========================================= */
+        @media (max-width: 900px) {
+            body { overflow-y: auto; overflow-x: hidden; align-items: flex-start; }
+            .power-on-container { height: auto; min-height: 100vh; padding: 40px 0; align-items: flex-start; }
+            .content-container { flex-direction: column-reverse; justify-content: flex-start; gap: 50px; }
+            
+            .menu-wrapper { transform: rotate(0deg); align-items: center; padding-left: 0; }
+            .menu-item { font-size: 2.8rem; text-align: center; }
+            .menu-item::before { display: none; }
+            
+            .logo-image { width: 70vw; max-width: 320px; animation: floatLogoMobile 4s ease-in-out infinite; }
+            @keyframes floatLogoMobile { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+            
+            .studio-bio { font-size: 1.05rem; margin-top: 20px; max-width: 85vw; }
+            .footer { position: relative; bottom: 0; left: 0; text-align: center; padding-top: 20px; width: 100%; }
+        }
+
+        /* Desativa física em telas de toque */
         @media (hover: none) and (pointer: coarse) {
-            #custom-cursor { display: none !important; }
-            body { cursor: auto; }
-            .mag-btn { transform: none !important; } /* Desativa física magnética no dedo */
+            .mag-btn { transform: none !important; }
+            .studio-bio { transform: none !important; }
         }
     </style>
 </head>
@@ -151,37 +200,43 @@
     <div class="crt-overlay"></div>
     <div class="noise-overlay"></div>
     <div class="vignette-pulse"></div>
-    <div id="custom-cursor"></div>
 
     <div id="parallax-bg">
         <div class="horizon-glow"></div>
         <div id="star-container"></div>
     </div>
 
-    <div class="content-container">
-        <div class="menu-wrapper">
-            <a href="projects.html" class="menu-item mag-btn scramble-text" data-text="Projects & Games">Projects & Games</a>
-            <a href="mailto:seuemail@gmail.com" class="menu-item mag-btn scramble-text" data-text="Contact Us">Contact Us</a>
+    <div class="power-on-container">
+        <div class="content-container">
             
-            <div class="icon-row">
-                <a href="https://cosmiccupcake.itch.io/" target="_blank" class="icon-btn mag-btn" title="Itch.io"><i class="fa-brands fa-itch-io"></i></a>
-                <a href="#" class="icon-btn mag-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                <a href="#" class="icon-btn mag-btn" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <div class="menu-wrapper">
+                <a href="projects.html" class="menu-item mag-btn scramble-text btn-sfx" data-text="Projects & Games">Projects & Games</a>
+                
+                <a href="devlog.html" class="menu-item mag-btn scramble-text btn-sfx" data-text="Studio Devlog">Studio Devlog</a>
+                
+                <a href="mailto:seuemail@gmail.com" class="menu-item mag-btn scramble-text btn-sfx" data-text="Contact Us">Contact Us</a>
+                
+                <div class="icon-row">
+                    <a href="https://cosmiccupcake.itch.io/" target="_blank" class="icon-btn mag-btn btn-sfx" title="Itch.io"><i class="fa-brands fa-itch-io"></i></a>
+                    <a href="#" class="icon-btn mag-btn btn-sfx" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="icon-btn mag-btn btn-sfx" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                </div>
             </div>
-        </div>
 
-        <div class="brand-wrapper">
-            <img src="logo-pixel.png" alt="Cosmic Cupcake Logo" class="logo-image">
-            <p class="studio-bio" id="bio-3d">
-                We are <span class="highlight-blue">Cosmic Cupcake</span>. We bake sweet slice-of-life adventures and corrupt them with <span class="highlight-red">psychological horror</span>. Currently investigating the hidden files of Hurricane City.
-            </p>
+            <div class="brand-wrapper">
+                <img src="logo-pixel.png" alt="Cosmic Cupcake Logo" class="logo-image">
+                <p class="studio-bio" id="bio-3d">
+                    We are <span class="highlight-blue">Cosmic Cupcake</span>. We bake sweet slice-of-life adventures and corrupt them with <span class="highlight-red">psychological horror</span>. Currently investigating the hidden files of Hurricane City.
+                </p>
+            </div>
+            
         </div>
     </div>
 
-    <div class="footer">SYSTEM ONLINE // USE THE MOUSE TO INSPECT</div>
+    <div class="footer">SYSTEM ONLINE // SECURE CONNECTION</div>
 
     <script>
-        // Stars
+        // Criação das Estrelas
         function createCosmos() {
             const starContainer = document.getElementById('star-container');
             for (let i = 0; i < 150; i++) {
@@ -198,19 +253,19 @@
         }
         createCosmos();
 
-        // Rastreamento (apenas se for mouse)
+        // Parallax do Fundo e Física Magnética dos Botões (Mantida apenas para Desktop)
         if (window.matchMedia("(pointer: fine)").matches) {
-            const cursor = document.getElementById('custom-cursor');
             const parallaxBg = document.getElementById('parallax-bg');
             const magButtons = document.querySelectorAll('.mag-btn');
             const bioBox = document.getElementById('bio-3d');
 
             window.addEventListener('mousemove', (e) => {
-                cursor.style.left = `${e.clientX}px`; cursor.style.top = `${e.clientY}px`;
+                // Parallax sutil do céu estrelado
                 const moveX = (e.clientX - window.innerWidth / 2) * -0.015;
                 const moveY = (e.clientY - window.innerHeight / 2) * -0.015;
                 parallaxBg.style.transform = `translate(${moveX}px, ${moveY}px)`;
                 
+                // Tilt 3D do cartão de Biografia
                 if(window.innerWidth > 900) {
                     const xAxis = (window.innerWidth / 2 - e.pageX) / 45; 
                     const yAxis = (window.innerHeight / 2 - e.pageY) / -30;
@@ -218,26 +273,25 @@
                 }
             });
 
+            // O botão pula na direção do mouse
             magButtons.forEach(btn => {
                 btn.addEventListener('mousemove', (e) => {
                     const rect = btn.getBoundingClientRect();
                     const pullX = (e.clientX - (rect.left + rect.width / 2)) * 0.15; 
                     const pullY = (e.clientY - (rect.top + rect.height / 2)) * 0.3;  
                     btn.style.transform = `translate(${pullX}px, ${pullY}px) scale(1.05)`;
-                    cursor.style.transform = `translate(-50%, -50%) scale(1.5)`; 
                 });
                 btn.addEventListener('mouseleave', () => {
                     btn.style.transform = `translate(0px, 0px) scale(1)`;
-                    cursor.style.transform = `translate(-50%, -50%) scale(1)`;
                 });
             });
         }
 
-        // Text Scramble
+        // Hacker Decode Effect
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!<>-_\\/[]{}—=+*^?#________";
         document.querySelectorAll('.scramble-text').forEach(el => {
             el.addEventListener('mouseenter', event => {
-                if (!window.matchMedia("(pointer: fine)").matches) return; // Evita bugar no celular
+                if (!window.matchMedia("(pointer: fine)").matches) return; 
                 let iterations = 0;
                 const originalText = event.target.dataset.text;
                 clearInterval(el.interval);
@@ -252,18 +306,30 @@
             });
         });
 
-        // Audio
+        // Áudio Retrô (Sintetizador Nativo)
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let audioCtx;
         function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
-        document.querySelectorAll('.mag-btn').forEach(item => { 
+        
+        // Clica no site para desbloquear áudio no navegador
+        document.body.addEventListener('mousedown', initAudio, { once: true });
+
+        document.querySelectorAll('.btn-sfx').forEach(item => { 
             item.addEventListener('mouseenter', () => {
                 if (!window.matchMedia("(pointer: fine)").matches) return;
-                initAudio(); const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+                initAudio(); 
+                const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
                 osc.type = 'sine'; osc.frequency.setValueAtTime(300 + Math.random() * 50, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1); 
                 gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                 osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-            }); 
+            });
+            item.addEventListener('click', () => {
+                initAudio(); 
+                const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+                osc.type = 'square'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1); 
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            });
         });
     </script>
 </body>
