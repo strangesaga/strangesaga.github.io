@@ -141,6 +141,7 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 .rolo .dd.gira{animation:quica .13s ease-in-out infinite alternate}
 .rolo .dd.pousa{animation:pousa .26s ease-out}
 .rolo.sai{opacity:0;translate:0 -10px;transition:opacity .3s,translate .3s}
+.rolo.aberto{animation:none}
 @keyframes desenrola{from{clip-path:inset(0 100% 0 0);transform:translateY(-8px)}to{clip-path:inset(0 0 0 0);transform:none}}
 @keyframes carimbo{0%{opacity:0;transform:scale(2.3) rotate(-22deg)}100%{opacity:1;transform:scale(1) rotate(-8deg)}}
 @keyframes tranco{0%,100%{translate:0 0}25%{translate:3px 1px}55%{translate:-3px 0}80%{translate:1px -1px}}
@@ -1210,12 +1211,14 @@ function mostraRolagem(r, opts) {
     if (r.bonus) { const mc = numeroPixel(novoCv('md'), (r.bonus < 0 ? '-' : '+') + Math.abs(r.bonus), '#5a4f5c'); mc.style.width = mc.width * 3 + 'px'; mc.style.height = 21 + 'px'; conta.appendChild(mc); }
     const res = document.createElement('div'); res.className = 'rs'; res.textContent = av.res; mio.appendChild(res);
     const tot = document.createElement('div'); tot.className = 'tt'; const tc = novoCv(); tot.appendChild(tc); el.appendChild(tot);
+    const pintaTotal = () => { numeroPixel(tc, av.total < 0 ? '-' + Math.abs(av.total) : av.total, av.tom === 'crit' ? '#6d4a0c' : '#241e27'); tc.style.width = tc.width * 5 + 'px'; tc.style.height = '35px'; };
+    pintaTotal();                                     // já ocupa o lugar certo; aparece quando os dados param
     const selo = document.createElement('div'); selo.className = 'selo'; selo.textContent = av.tom === 'crit' ? '大成功' : '大失敗'; el.appendChild(selo);
     el.classList.add('tom-' + av.tom);
     const estDado = () => av.tom === 'crit' ? 'crit' : av.tom === 'falha' ? 'falha' : '';
-    const cor = corDe(r.quem), tinta = av.tom === 'crit' ? '#6d4a0c' : '#241e27';
+    const cor = corDe(r.quem);
     const fim = () => { cvs.forEach((c, i) => { desenhaDado(c, r.dados[i].f, r.dados[i].v, cor, 0, r.k === 'livre' ? '' : estDado()); c.classList.remove('gira'); c.classList.add('pousa'); });
-      numeroPixel(tc, av.total < 0 ? '-' + Math.abs(av.total) : av.total, tinta); tc.style.width = tc.width * 5 + 'px'; tc.style.height = 35 + 'px'; el.classList.add('pronto');
+      el.classList.add('pronto');
       if (av.tom === 'crit' || av.tom === 'falha') el.classList.add('selou'); };
     if (reduzMov || document.hidden) fim();          // aba em segundo plano: mostra o resultado direto
     else { const t0 = performance.now(), dur = 620 + Math.random() * 120, fimT = dur + 120 * (cvs.length - 1);
@@ -1224,11 +1227,11 @@ function mostraRolagem(r, opts) {
         if (t >= fimT || document.hidden) { fim(); return; }
         cvs.forEach((c, i) => { if (t < dur + 120 * i) desenhaDado(c, r.dados[i].f, dN(r.dados[i].f), cor, (Math.random() - .5) * 1.4, ''); else if (!c.classList.contains('pousa')) { desenhaDado(c, r.dados[i].f, r.dados[i].v, cor, 0, ''); c.classList.remove('gira'); c.classList.add('pousa'); } });
         setTimeout(passo, 55); };
-      passo(); }
+      setTimeout(passo, 0); }                       // começa depois que a tira entra na tela
     if (!(opts && opts.mudo)) som(av.tom);
   }
   for (const o of rolosEl.children) o.classList.add('velho');
-  rolosEl.prepend(el);
+  rolosEl.prepend(el); setTimeout(() => el.classList.add('aberto'), 900);   // garante a tira aberta mesmo se a animação travar
   // some depois de um tempo à vista: não conta enquanto a aba está escondida nem com o mouse em cima
   const fica = segredo ? 3500 : (el.classList.contains('tom-crit') || el.classList.contains('tom-falha') ? 9000 : 6500);
   let visto = 0, ult = Date.now(), pausa = false;
