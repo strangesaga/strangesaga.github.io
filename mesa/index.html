@@ -1217,23 +1217,27 @@ function mostraRolagem(r, opts) {
     const fim = () => { cvs.forEach((c, i) => { desenhaDado(c, r.dados[i].f, r.dados[i].v, cor, 0, r.k === 'livre' ? '' : estDado()); c.classList.remove('gira'); c.classList.add('pousa'); });
       numeroPixel(tc, av.total < 0 ? '-' + Math.abs(av.total) : av.total, tinta); tc.style.width = tc.width * 5 + 'px'; tc.style.height = 35 + 'px'; el.classList.add('pronto');
       if (av.tom === 'crit' || av.tom === 'falha') el.classList.add('selou'); };
-    if (reduzMov) fim();
-    else { const t0 = performance.now(), dur = 620 + Math.random() * 120;
+    if (reduzMov || document.hidden) fim();          // aba em segundo plano: mostra o resultado direto
+    else { const t0 = performance.now(), dur = 620 + Math.random() * 120, fimT = dur + 120 * (cvs.length - 1);
       cvs.forEach(c => c.classList.add('gira'));
       const passo = () => { const t = performance.now() - t0; if (!el.isConnected) return;
-        if (t >= dur + 120 * (cvs.length - 1)) { fim(); return; }
+        if (t >= fimT || document.hidden) { fim(); return; }
         cvs.forEach((c, i) => { if (t < dur + 120 * i) desenhaDado(c, r.dados[i].f, dN(r.dados[i].f), cor, (Math.random() - .5) * 1.4, ''); else if (!c.classList.contains('pousa')) { desenhaDado(c, r.dados[i].f, r.dados[i].v, cor, 0, ''); c.classList.remove('gira'); c.classList.add('pousa'); } });
-        setTimeout(() => requestAnimationFrame(passo), 55); };
+        setTimeout(passo, 55); };
       passo(); }
     if (!(opts && opts.mudo)) som(av.tom);
   }
   for (const o of rolosEl.children) o.classList.add('velho');
   rolosEl.prepend(el);
-  let fica = segredo ? 3500 : (el.classList.contains('tom-crit') || el.classList.contains('tom-falha') ? 9000 : 6500), t0 = Date.now(), pausa = false;
-  el.addEventListener('mouseenter', () => { pausa = true; fica -= Date.now() - t0; }); el.addEventListener('mouseleave', () => { pausa = false; t0 = Date.now(); });
+  // some depois de um tempo à vista: não conta enquanto a aba está escondida nem com o mouse em cima
+  const fica = segredo ? 3500 : (el.classList.contains('tom-crit') || el.classList.contains('tom-falha') ? 9000 : 6500);
+  let visto = 0, ult = Date.now(), pausa = false;
+  el.addEventListener('mouseenter', () => pausa = true); el.addEventListener('mouseleave', () => pausa = false);
   const sai = () => { el.classList.add('sai'); setTimeout(() => el.remove(), 320); };
   el.addEventListener('click', sai);
-  const tick = () => { if (!el.isConnected) return; if (!pausa && Date.now() - t0 > fica) sai(); else setTimeout(tick, 250); }; setTimeout(tick, 400);
+  const tick = () => { if (!el.isConnected) return; const ag = Date.now(); if (!pausa && !document.hidden) visto += Math.min(ag - ult, 1000); ult = ag;
+    if (visto > fica) sai(); else setTimeout(tick, 250); };
+  setTimeout(tick, 250);
 }
 
 // ----- histórico -----
