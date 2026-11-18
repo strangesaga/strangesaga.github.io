@@ -201,7 +201,9 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 #tecBtn canvas{width:33px;height:33px;image-rendering:pixelated}
 #tecBtn:hover{background:rgba(26,32,52,.92)}
 #tecBtn[aria-expanded="true"]{border-color:rgba(233,196,106,.55)}
-#tecnicas{right:12px;top:140px;width:300px;max-height:calc(100vh - 306px);overflow:auto;display:flex;flex-direction:column;gap:9px;padding:12px;scrollbar-width:thin;scrollbar-color:#39435c transparent}
+#tecnicas{right:12px;top:140px;width:326px;box-sizing:border-box;max-height:calc(100vh - 306px);overflow:hidden;display:flex;flex-direction:column;gap:9px;padding:12px}
+#tqCorpo{display:flex;flex-direction:column;gap:9px;flex:1 1 auto;min-height:0;overflow:auto;margin:-2px -6px 0 0;padding:2px 6px 0 0;scrollbar-width:thin;scrollbar-color:#39435c transparent}
+#tqLancar{flex:none}
 #tecnicas[hidden],#tecnicas [hidden]{display:none!important}
 #tecnicas .dq{display:flex;align-items:center;gap:9px}
 #tqRet{box-sizing:border-box;padding:4px 0;width:40px!important;height:40px!important;object-fit:contain;image-rendering:pixelated;background:#1b2234;border-radius:8px;flex:none}
@@ -327,6 +329,7 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 </section>
 <button id="tecBtn" class="ui" type="button" style="display:none" aria-expanded="false" aria-controls="tecnicas" title="Técnicas (T)"><canvas id="tecIco" width="22" height="22"></canvas><span>Técnicas</span></button>
 <section id="tecnicas" class="ui" hidden aria-label="Técnicas">
+ <div id="tqCorpo">
   <div class="dq"><canvas id="tqRet" width="32" height="32"></canvas><div class="dqn"><label for="tqQuem" class="lb">Quem usa</label><select id="tqQuem"></select><b id="tqFixo"></b></div></div>
   <div id="tqAtalhos" hidden></div>
   <div class="campos">
@@ -340,6 +343,7 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
   <label class="chk" id="tqTamRow"><input type="checkbox" id="tqNvTam"><span>Tamanho pelo nível usado (menor)</span></label>
   <dl id="tqParams"></dl>
   <div id="tqMira" aria-live="polite"></div>
+ </div>
   <button id="tqLancar" type="button" class="rolar" disabled><canvas width="22" height="22"></canvas><span>Lançar técnica</span></button>
 </section>
 <div id="vez" aria-live="polite"><span class="r"></span><b></b></div>
