@@ -269,6 +269,143 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 #ficha .nota{margin:11px 0 0;padding-top:9px;border-top:1px solid rgba(36,30,39,.2);font-style:italic;font-size:14px;line-height:1.45;color:#4f4552}
 #ficha .acoes{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 @media (max-width:900px){#nevoa{left:8px;right:8px;top:auto;bottom:64px;width:auto;max-height:46vh}#ficha{left:8px!important;right:8px;top:auto!important;bottom:64px;width:auto}}
+/* ---------- ficha do personagem ---------- */
+#persBtn{right:248px;top:88px;display:flex;align-items:center;gap:8px;padding:5px 13px 5px 9px;font-size:13px;font-weight:600;color:#efe9da;cursor:pointer;min-height:45px;box-sizing:border-box}
+#persBtn:hover{background:rgba(26,32,52,.92)}
+#persBtn[aria-expanded="true"]{border-color:rgba(233,196,106,.55)}
+#pers{position:fixed;z-index:9;inset:24px max(24px,calc((100vw - 1180px)/2));display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-rows:minmax(0,1fr);padding:0;overflow:hidden;border-radius:6px;background:#0d1322;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+#pers[hidden]{display:none}
+body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,body.fichaAberta #nevoa{visibility:hidden}
+#pvPalco{display:flex;flex-direction:column;gap:9px;padding:14px 16px 16px;overflow:auto;color:#ece6d6;background:radial-gradient(120% 60% at 50% 30%,#26324f 0,#141b2f 55%,#0d1322 100%);scrollbar-width:thin;scrollbar-color:#39435c transparent}
+.pvTopo{display:flex;gap:6px;align-items:center}
+.pvTopo select{flex:1;min-width:0;background:#11172a;color:#ece6d6;border:1px solid #39435c;border-radius:6px;padding:5px 6px;font:600 13px system-ui,sans-serif}
+.pvTopo button{background:transparent;border:1px solid #39435c;color:#c9c5b8;border-radius:6px;padding:5px 8px;font:600 12px system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.pvTopo button:hover{background:#232b3f;color:#fff}
+.pvBon{position:relative;height:184px;display:flex;align-items:flex-end;justify-content:center}
+.pvBon::after{content:'';position:absolute;bottom:4px;left:50%;width:150px;height:30px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(233,196,106,.32),rgba(233,196,106,.08) 70%,transparent);box-shadow:0 0 0 1px rgba(233,196,106,.25) inset}
+.pvBoneco{position:relative;z-index:1;width:160px;height:160px;image-rendering:pixelated;margin-bottom:8px}
+.pvNome{font:600 26px/1.1 var(--mincho);text-align:center;color:#fff;overflow-wrap:anywhere}
+.pvSub{text-align:center;font:500 12.5px/1.4 system-ui,sans-serif;color:#b9b4a6}
+.pvBar .cab{display:flex;align-items:baseline;gap:8px;font:500 12px system-ui,sans-serif;color:#c9c5b8}
+.pvBar .cab b{margin-left:auto;font:700 14px system-ui,sans-serif;color:#fff;font-variant-numeric:tabular-nums}
+.pvBar .bt{display:flex;gap:3px}
+.pvBar .bt button{width:24px;height:22px;padding:0;border-radius:5px;border:1px solid #39435c;background:#11172a;color:#ece6d6;font:700 14px/1 system-ui;cursor:pointer}
+.pvBar .tr{height:10px;margin-top:4px;background:#0a0f1c;box-shadow:0 0 0 1px #2b3349 inset;position:relative}
+.pvBar .tr::before{content:'';position:absolute;inset:2px auto 2px 2px;width:calc((100% - 4px) * var(--p));background:var(--c);image-rendering:pixelated}
+.pvNums{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:2px}
+.pvNums div{display:flex;flex-direction:column;align-items:center;padding:6px 2px;border-radius:6px;background:rgba(255,255,255,.04);cursor:help}
+.pvNums b{font:700 19px/1.1 var(--mincho);color:#fff;font-variant-numeric:tabular-nums}
+.pvNums span{font:500 11px system-ui,sans-serif;color:#a9a69c}
+.pvPts{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.pvPts button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;border-radius:6px;border:1px solid #2b3349;background:#11172a;color:#c9c5b8;font:500 11px system-ui,sans-serif;cursor:pointer}
+.pvPts button b{font:700 15px system-ui,sans-serif;color:#9fd3a8}
+.pvPts .falta b{color:#e9c46a}.pvPts .erro b{color:#ff8f7a}.pvPts .erro{border-color:rgba(255,143,122,.5)}
+.db{display:flex;flex-direction:column;gap:3px}
+.dbT{display:flex;justify-content:space-between;align-items:baseline;font:600 12px system-ui,sans-serif;letter-spacing:.3px;color:#e9c46a}
+.dbT b{font:700 13px system-ui,sans-serif;color:#fff}
+.dbL{display:grid;grid-template-columns:78px 1fr 28px;align-items:center;gap:6px;font:500 11.5px system-ui,sans-serif;color:#c9c5b8;cursor:help}
+.dbL .cel{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.dbL i{height:9px;background:#1d2539}
+.dbL i.on{background:#e9c46a}
+.dbL i.on:nth-child(n+7){background:#f0a35a}.dbL i.on:nth-child(n+9){background:#e5674f}
+.dbL b{text-align:right;color:#fff;font-variant-numeric:tabular-nums}
+.dbAba .dbT{color:var(--shu)}.dbAba .dbT b,.dbAba .dbL b{color:var(--sumi)}.dbAba .dbL{color:#4f4552;grid-template-columns:96px 1fr 34px;font-size:13px}.dbAba .dbL i{height:12px;background:rgba(36,30,39,.1)}.dbAba .dbL i.on{background:#3b3040}.dbAba .dbL i.on:nth-child(n+7){background:#8f2a22}.dbAba .dbL i.on:nth-child(n+9){background:var(--shu)}
+#pvPapel{display:flex;flex-direction:column;min-height:0;color:var(--sumi);background-color:var(--washi);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .34 0 0 0 0 .28 0 0 0 0 .2 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E")}
+#pvAbas{display:flex;gap:2px;padding:10px 14px 0;overflow-x:auto;border-bottom:1px solid rgba(36,30,39,.22);scrollbar-width:none}
+#pvAbas button{flex:none;background:transparent;border:0;border-bottom:3px solid transparent;padding:8px 10px 7px;font:600 13px system-ui,sans-serif;color:#5a4f5c;cursor:pointer}
+#pvAbas button i{font-style:normal;display:inline-grid;place-items:center;width:18px;height:18px;margin-right:5px;border-radius:50%;background:rgba(36,30,39,.12);font-size:11px}
+#pvAbas button[aria-selected="true"]{color:var(--sumi);border-bottom-color:var(--shu)}
+#pvAbas button[aria-selected="true"] i{background:var(--shu);color:var(--washi)}
+#pvAvisos{display:flex;flex-wrap:wrap;gap:5px;padding:8px 18px 0}
+#pvAvisos:empty{display:none}
+#pvAvisos button,#pvAvisos span{font:600 12px/1.3 system-ui,sans-serif;border-radius:12px;padding:3px 9px;border:0;cursor:pointer}
+#pvAvisos .falta{background:rgba(233,170,60,.22);color:#6b4a10}#pvAvisos .erro{background:rgba(168,44,36,.14);color:#8f2a22}
+#pvAvisos .pend,#pvAvisos .mais{background:rgba(36,30,39,.08);color:#5a4f5c;cursor:default}
+#pvCorpo{flex:1;min-height:0;overflow:auto;padding:4px 20px 18px;scrollbar-width:thin;scrollbar-color:rgba(36,30,39,.3) transparent}
+#pvCorpo h3{display:flex;align-items:baseline;gap:10px;margin:16px 0 8px;font:600 18px/1.2 var(--mincho);color:var(--sumi)}
+#pvCorpo h3 .cont{margin-left:auto}
+.cont{font:700 12px system-ui,sans-serif;padding:2px 8px;border-radius:10px;cursor:help}
+.cont.ok{background:rgba(70,120,70,.14);color:#2e5a32}.cont.falta{background:rgba(233,170,60,.22);color:#6b4a10}.cont.erro{background:rgba(168,44,36,.14);color:#8f2a22}
+#pvCorpo .nota{margin:6px 0;font:500 12.5px/1.45 system-ui,sans-serif;color:#5a4f5c}
+#pvCorpo .nota.erro{color:#8f2a22}
+.grade2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:8px 14px}
+.grade4{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px 10px;margin-top:6px}
+.grade7{display:grid;grid-template-columns:repeat(7,minmax(46px,1fr));gap:6px;margin-top:6px}
+.cp{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cp>span{font:600 11.5px system-ui,sans-serif;color:#5a4f5c}
+.cp input,.cp textarea,.cp select{width:100%;box-sizing:border-box;font:500 14px/1.4 system-ui,sans-serif;color:var(--sumi);background:rgba(255,255,255,.55);border:1px solid rgba(36,30,39,.22);border-radius:4px;padding:5px 7px}
+.cp textarea{resize:vertical;font-family:var(--mincho);font-size:15px;line-height:1.55}
+.cp.mini{width:74px;flex:none}.cp.mini input{text-align:center}
+.ln .cp.mini{flex-direction:row;align-items:center;gap:6px;width:auto}.ln .cp.mini>span{font-weight:500}.ln .cp.mini input{width:56px;padding:3px 4px}
+.cp.jeito input{font:italic 600 17px var(--mincho)}
+.cp input:focus,.cp textarea:focus,.cp select:focus{outline:2px solid var(--shu);outline-offset:0;background:#fff}
+.linhas{display:flex;flex-direction:column}
+.ln{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid rgba(36,30,39,.1)}
+.ln .nm{min-width:150px;font:600 14px system-ui,sans-serif}
+.ln .nm small{font-weight:500;color:#7a6f7c}
+.ln .det{font:500 12px system-ui,sans-serif;color:#7a6f7c}
+.ln .tot{min-width:30px;text-align:right;font:700 18px var(--mincho);font-variant-numeric:tabular-nums;cursor:help}
+.ln .tot.grande{font-size:24px;min-width:38px}
+.ln.apagada .nm,.ln.apagada .tot{opacity:.45}
+.ln.dano .g{display:flex;flex-direction:column;align-items:center;min-width:52px}.ln.dano .g small{font:500 10.5px system-ui;color:#7a6f7c}.ln.dano .g b{font:700 16px var(--mincho)}
+.ps{display:inline-flex;align-items:center;gap:2px}
+.ps b{min-width:30px;text-align:center;font:700 17px var(--mincho);font-variant-numeric:tabular-nums}
+.ps button{width:28px;height:28px;padding:0;border-radius:50%;border:1px solid rgba(36,30,39,.3);background:rgba(255,255,255,.5);color:var(--sumi);font:700 16px/1 system-ui;cursor:pointer}
+.ps button:hover:not(:disabled){background:var(--sumi);color:var(--washi)}
+.ps button:disabled{opacity:.3;cursor:default}
+.chk{display:inline-flex;align-items:center;gap:6px;font:500 12.5px system-ui,sans-serif;color:#4f4552;cursor:pointer}
+.chk input{accent-color:var(--shu);width:16px;height:16px;margin:0}
+.marcas{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 14px}
+.marcas .chk{align-items:flex-start}.marcas .chk span{line-height:1.35}
+.nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px}
+.nums div{display:flex;flex-direction:column;padding:8px 10px;border-radius:4px;background:rgba(255,255,255,.4);box-shadow:0 0 0 1px rgba(36,30,39,.12) inset;cursor:help}
+.nums b{font:700 22px/1.1 var(--mincho);font-variant-numeric:tabular-nums}.nums span{font:500 11.5px system-ui,sans-serif;color:#5a4f5c}
+.card{margin:8px 0;padding:10px 12px;border-radius:4px;background:rgba(255,255,255,.32);box-shadow:0 0 0 1px rgba(36,30,39,.14) inset}
+.cardCab{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.cardCab>.cp:first-child{flex:1;min-width:160px}
+.card .param{margin:6px 0;font:500 12px system-ui,sans-serif;color:#5a4f5c}
+.card>.cp{margin-top:6px}
+.tecs{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:8px}
+.tecs .lb{font:600 11.5px system-ui;color:#5a4f5c;margin-right:2px}
+#pvCorpo button.tg{padding:3px 9px;border-radius:12px;border:1px solid rgba(36,30,39,.25);background:transparent;color:#4f4552;font:600 12px system-ui;cursor:pointer}
+#pvCorpo button.tg.on{background:var(--sumi);color:var(--washi);border-color:var(--sumi)}
+#pvCorpo button.add{margin:6px 0;padding:6px 12px;border-radius:4px;border:1px dashed rgba(36,30,39,.4);background:transparent;color:var(--sumi);font:600 13px system-ui;cursor:pointer}
+#pvCorpo button.rm{padding:5px 9px;border-radius:4px;border:0;background:transparent;color:#8f2a22;font:600 12px system-ui;cursor:pointer}
+#pvCorpo button.rm:hover{background:rgba(168,44,36,.1)}
+.hist{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:7px 0;border-bottom:1px solid rgba(36,30,39,.1);font:500 12.5px system-ui,sans-serif}
+.hist .det{grid-column:1;color:#5a4f5c}.hist button{grid-row:1/3;grid-column:2;align-self:center;padding:5px 9px;border-radius:4px;border:1px solid rgba(36,30,39,.3);background:transparent;color:var(--sumi);font:600 12px system-ui;cursor:pointer}
+.hist button:hover{background:var(--sumi);color:var(--washi)}
+.visuais{display:flex;flex-wrap:wrap;gap:6px}
+#pvCorpo button.vis{padding:4px;border-radius:6px;border:2px solid transparent;background:rgba(255,255,255,.4);cursor:pointer}
+#pvCorpo button.vis canvas{width:64px;height:64px;image-rendering:pixelated;display:block}
+#pvCorpo button.vis.on{border-color:var(--shu)}
+#pvCorpo.ro .ps button,#pvCorpo.ro button.add,#pvCorpo.ro button.rm{display:none}
+#pvExplica{padding:7px 20px;min-height:18px;font:500 12.5px/1.4 system-ui,sans-serif;color:#4f4552;background:rgba(36,30,39,.06);border-top:1px solid rgba(36,30,39,.14)}
+#pvPassos{display:flex;align-items:center;gap:10px;padding:9px 20px;border-top:1px solid rgba(36,30,39,.18)}
+#pvPassos[hidden]{display:none}
+#pvPassos span{flex:1;text-align:center;font:600 12.5px system-ui;color:#5a4f5c}
+#pvPassos button{padding:8px 16px;border-radius:4px;border:1px solid var(--sumi);background:transparent;color:var(--sumi);font:600 13px system-ui;cursor:pointer}
+#pvPassos button.on{background:var(--sumi);color:var(--washi)}
+#pvPassos button:disabled{opacity:.35}
+#pers button:focus-visible,#pers input:focus-visible,#pers select:focus-visible,#persBtn:focus-visible{outline:2px solid #e9c46a;outline-offset:1px}
+#ficha .en{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+#ficha .enb{font:500 11.5px system-ui;color:#5a4f5c;display:grid;grid-template-columns:1fr auto;row-gap:3px}
+#ficha .enb b{font:700 13px system-ui;color:var(--sumi)}
+#ficha .enb::after{content:'';grid-column:1/3;height:7px;background:linear-gradient(90deg,var(--c) calc(var(--p) * 100%),rgba(36,30,39,.12) 0)}
+@media (max-width:900px){
+  #persBtn{top:auto;bottom:12px;left:252px;right:auto;padding:5px 9px}#persBtn span{display:none}
+  #chars{left:304px;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}#chars>*{flex:none}
+  #pers{inset:0;border-radius:0;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  #pvPapel{min-width:0}
+  #pvPalco{display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,1fr);grid-template-areas:"topo topo topo" "bon nome nome" "bon sub sub" "vit vit cha" "nums nums nums";gap:4px 10px;padding:10px 12px;max-height:44vh}
+  #pvPalco .pvTopo{grid-area:topo}#pvPalco .pvBon{grid-area:bon;height:56px;align-items:center}#pvPalco .pvBon::after{display:none}#pvPalco .pvBoneco{width:56px;height:56px;margin:0}
+  #pvPalco .pvNome{grid-area:nome;text-align:left;font-size:20px;align-self:end}#pvPalco .pvSub{grid-area:sub;text-align:left;align-self:start}
+  #pvPalco .pvBar.vit{grid-area:vit}#pvPalco .pvBar.cha{grid-area:cha}#pvPalco .pvNums{grid-area:nums}#pvPalco .pvNums div{padding:3px 2px}#pvPalco .pvNums b{font-size:16px}#pvPalco .pvPts,#pvPalco .pvDb{display:none}
+  #pvCorpo{padding:4px 14px 14px}.ln .nm{min-width:120px}.grade7{grid-template-columns:repeat(4,1fr)}
+}
+@media (prefers-reduced-motion:reduce){#pers *{transition:none!important}}
+@media (max-width:520px){#dadosBtn,#tecBtn,#persBtn{padding:5px 6px}#dadosBtn span,#tecBtn span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}#tecBtn{left:66px!important}#persBtn{left:128px}#chars{left:174px}}
 /* ---------- técnicas ---------- */
 #tecBtn{right:124px;top:88px;display:flex;align-items:center;gap:8px;padding:5px 13px 5px 7px;font-size:13px;font-weight:600;color:#efe9da;cursor:pointer}
 #tecBtn canvas{width:33px;height:33px;image-rendering:pixelated}
@@ -400,6 +537,18 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
   <div class="row" id="cbAcoes" hidden><button id="cbPrev" type="button" title="Volta um turno">Voltar</button><button id="cbProx" type="button" class="on">Próximo turno</button></div>
   <div class="row" id="cbGM" hidden><button id="cbAdd" type="button">Pôr inimigo</button><button id="cbAddOc" type="button" title="Só você vê, até revelar">Pôr oculto</button><button id="cbFim" type="button">Encerrar combate</button></div>
   <div id="cbZonas" hidden></div>
+</section>
+<button id="persBtn" class="ui" type="button" style="display:none" aria-expanded="false" aria-controls="pers" title="Ficha (F)"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 3h9l4 4v14H6z" fill="#efe2c4" stroke="#3a2f33" stroke-width="1.6"/><path d="M15 3v4h4" fill="none" stroke="#3a2f33" stroke-width="1.6"/><path d="M9 11h7M9 14h7M9 17h5" stroke="#a82c24" stroke-width="1.6"/></svg><span>Ficha</span></button>
+<section id="pers" class="ui" hidden aria-label="Ficha do personagem">
+  <div id="pvPalco"></div>
+  <div id="pvPapel">
+    <nav id="pvAbas" role="tablist" aria-label="Partes da ficha"></nav>
+    <div id="pvAvisos" aria-live="polite"></div>
+    <div id="pvCorpo"></div>
+    <div id="pvExplica" aria-live="polite"></div>
+    <div id="pvPassos" hidden></div>
+  </div>
+  <datalist id="pvPoderes"></datalist><datalist id="pvSensores"></datalist>
 </section>
 <button id="tecBtn" class="ui" type="button" style="display:none" aria-expanded="false" aria-controls="tecnicas" title="Técnicas (T)"><canvas id="tecIco" width="22" height="22"></canvas><span>Técnicas</span></button>
 <section id="tecnicas" class="ui" hidden aria-label="Técnicas">
@@ -580,7 +729,7 @@ const Mesa = (() => {
     const open = async u8 => { if (u8.length < 29) return null; try { return JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: u8.subarray(0, 12) }, aes, u8.subarray(12)))); } catch (e) { return null; } };
     const will = { topic: base + '/p/' + cid, payload: await seal({ t: 'bye', cid, id: cid + '-bye' }) };
     const byeNow = await seal({ t: 'bye', cid, id: cid + '-bye2' });
-    const api = { cid, room, isGM: !!priv, links: null, conns: [], onPresence: o.onPresence, onBye: o.onBye, onState: o.onState, onRoll: o.onRoll || (() => {}), onEvent: o.onEvent || (() => {}), onChange: o.onChange || (() => {}) };
+    const api = { cid, room, isGM: !!priv, links: null, conns: [], onPresence: o.onPresence, onBye: o.onBye, onState: o.onState, onRoll: o.onRoll || (() => {}), onEvent: o.onEvent || (() => {}), onChange: o.onChange || (() => {}), onFicha: o.onFicha || (() => {}) };
     const pageUrl = location.href.split('#')[0];
     api.links = { player: `${pageUrl}#m=${m}&k=${k}`, gm: `${pageUrl}#m=${m}&k=${k}&g=${g || ''}` };
     async function onMsg(topic, payload, retained) {
@@ -595,6 +744,10 @@ const Mesa = (() => {
         let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode(msg.s)); } catch (e) {}
         if (!ok) return; let st = null; try { st = JSON.parse(msg.s); } catch (e) {} if (st) api.onState(st, retained);
       }
+      else if (msg.t === 'f' && typeof msg.c === 'string' && typeof msg.s === 'string' && typeof msg.sig === 'string') {     // ficha de personagem, assinada pelo mestre
+        let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode(msg.c + '|' + msg.s)); } catch (e) {}
+        if (!ok) return; let f = null; try { f = JSON.parse(msg.s); } catch (e) {} if (f) api.onFicha(msg.c, f, retained);
+      }
     }
     const relays = o.relays && o.relays.length ? o.relays : RELAYS;
     for (const url of relays) api.conns.push(new Conn(url, 'mv' + cid + hex(rand(2)), base + '/#', will, onMsg, () => api.onChange()));
@@ -606,6 +759,13 @@ const Mesa = (() => {
       const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, priv, enc.encode(s)));
       const p = await seal({ t: 's', id: cid + '-s' + (++seq), s, sig: b64u.enc(sig) });
       for (const c of api.conns) c.publish(base + '/s', p, true);
+    };
+    // cada ficha fica retida no seu próprio canal: quem entra recebe todas, e o estado da mesa não engorda
+    api.sendFicha = async (c, f) => {
+      if (!priv || !/^[a-z]{1,12}$/.test(c)) return; const s = JSON.stringify(f);
+      const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, priv, enc.encode(c + '|' + s)));
+      const p = await seal({ t: 'f', id: cid + '-f' + (++seq), c, s, sig: b64u.enc(sig) });
+      for (const cn of api.conns) cn.publish(base + '/f/' + c, p, true);
     };
     api.sendRoll = async r => { const p = await seal(Object.assign({}, r, { t: 'r', cid, id: cid + '-r' + (++seq) })); for (const c of api.conns) c.publish(base + '/r', p, false); };
     // eventos passageiros da mesa (técnicas lançadas, animações): não ficam retidos no servidor
@@ -785,7 +945,26 @@ function vilAt(v, t, day) {
 }
 function vilState(v, t, day) { return vilAt(v, t, day) || (v.n ? vilAt(v, t + 1440, day - 1) : null); }      // quem vira a noite (sentinelas) é procurado também no dia anterior
 // ---------- estado do jogo ----------
-const CHARS = ['masato', 'kazuki', 'izumi', 'ichiro', 'raiden', 'kaiser'];
+const EXTRAS = ['novoa', 'novob', 'novoc', 'novod'];                 // vagas para personagens novos criados pela ficha
+const CHARS = ['masato', 'kazuki', 'izumi', 'ichiro', 'raiden', 'kaiser'].concat(EXTRAS);
+// gerado por gen_pers.py: fichas importadas das planilhas do Drive e a tabela de poderes da Ficha Base (Mangá)
+const FICHAS0 = {"masato":{"c":"masato","nc":7,"id":{"nome":"Masato Uchiha","cla":"Uchiha / Genialidade","patente":"Genin","filiacao":"Aldeia Oculta da Folha","genero":"Masculino","tendencia":"Perder","idade":"11","nasc":"Aldeia Oculta da Folha","sexualidade":"Sim","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":2,"int":5,"esp":5},"rm":[],"base":{"cc":3,"cd":4,"esq":1,"lm":4},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[3,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[3,0,0],"escapar":[0,0,0],"furtividade":[3,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[3,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[2,0,0],"veneficio":[0,0,0]},"soc":{"yin":[0,"MUDAR ATITUDE"],"yang":[0,"ATUAÇÃO"]},"cfg":["acuidade"],"pod":[{"n":"Katon","nv":3,"ef":"Canhão; Dano Contínuo; Flechas; Energizar (ainda não tem); Sopro Destrutivo","custo":3,"tec":["canhao","flechas","sopro"]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Elemento Natural: Katon","d":"","custo":0,"g":1},{"n":"Sharingan","d":"","custo":0,"g":1},{"n":"Acuidade","d":"","custo":0,"g":1},{"n":"Henge Perfeito","d":"","custo":2,"g":0},{"n":"Miragem","d":"","custo":2,"g":0},{"n":"Nidan Sharingan","d":"","custo":2,"g":0},{"n":"Fascinar","d":"","custo":2,"g":0},{"n":"Ilusão Profunda","d":"","custo":2,"g":0},{"n":"Ponto Cego","d":"","custo":2,"g":0},{"n":"Controle Perfeito","d":"Perdi","custo":0,"g":0},{"n":"Sandan Sharingan","d":"Perdi","custo":0,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"masato","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"kazuki":{"c":"kazuki","nc":7,"id":{"nome":"Kazuki","cla":"","patente":"Genin","filiacao":"Konohagakure","genero":"Masculino","tendencia":"Bom Caótico","idade":"12","nasc":"Konohagakure","sexualidade":"Limosine","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":3,"int":2,"esp":7},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[3,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[3,0,0],"cultura":[3,0,0],"disfarce":[0,0,0],"escapar":[0,0,0],"furtividade":[0,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[3,0,0],"prestidigitacao":[3,0,0],"procurar":[2,0,0],"prontidao":[3,0,0],"rastrear":[0,0,0],"veneficio":[0,0,0]},"soc":{"yin":[2,"ETIQUETA"],"yang":[2,"ATUAÇÃO"]},"cfg":[],"pod":[{"n":"Fuuton","nv":3,"ef":"Canhão (1), Raio (2). Ricochete (3). Energizar (4). Carregar (4) Correnteza (5). Lâmina de Vento (5). Afiar (6). Carregar (7). Míssil (7). Míssil (8). Carregar (9). Míssil (9). Lâmina de Vento (10). Sopro de Navalha (10).","custo":3,"tec":["canhao","raio","ricochete"]},{"n":"Invocação (NC 12)","nv":0,"ef":"Doninha. Técnica: Estilo Vento: Dança da Grande Decapitadora Rápida (Potencializar + Poderosa).","custo":0,"tec":[]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"De Pé","d":"","custo":0,"g":1},{"n":"Lutar às Cegas","d":"","custo":0,"g":1},{"n":"Luva Sanrei","d":"","custo":0,"g":0},{"n":"Kai Perfeito","d":"","custo":2,"g":0},{"n":"Mestre dos Leques","d":"","custo":2,"g":0},{"n":"Saque Rápido","d":"","custo":0,"g":0},{"n":"Acuidade","d":"","custo":0,"g":0},{"n":"Amortecer Queda","d":"","custo":0,"g":0},{"n":"Potencializar","d":"","custo":0,"g":0},{"n":"Leque Refletor","d":"","custo":0,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"kazuki","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"izumi":{"c":"izumi","nc":8,"id":{"nome":"Izumi Uzumaki","cla":"Uzumaki (Op. 2) · Magen","patente":"Genin","filiacao":"Aldeia da Folha","genero":"Feminino","tendencia":"Leal e Neutro","idade":"11","nasc":"País da Grama","sexualidade":"","jeito":"Encontrar meu próprio caminho e proteger quem escolhi."},"at":{"forca":2,"des":8,"agi":2,"per":8,"vig":2,"int":8,"esp":6},"rm":[],"sensor":"KAGURA SHINGAN","base":{"cc":3,"cd":4,"esq":1,"lm":4},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[4,0,0],"escapar":[4,0,0],"furtividade":[0,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[4,0,0],"ocultismo":[0,0,0],"prestidigitacao":[0,0,0],"procurar":[4,0,0],"prontidao":[4,0,0],"rastrear":[4,0,1],"veneficio":[0,0,0]},"soc":{"yin":[1,"ACALMAR"],"yang":[1,"ATUAÇÃO"]},"cfg":["acuidade","diligente"],"pod":[{"n":"Magen (Ilusão Demoníaca)","nv":4,"ef":"Êxtase (1) · Segurar (2) · Adormecer (3) · Falsa Posição (4)","custo":4,"tec":[]},{"n":"Fuuinjutsu (Selamento)","nv":2,"ef":"Armazenamento / Armazenamento Maior","custo":2,"tec":[]}],"bio":"Izumi nasceu em uma comunidade de refugiados do clã Uzumaki próxima à fronteira do País do Fogo. Após a dispersão de sobreviventes durante os conflitos na região, parte das crianças foi resgatada por jovens shinobi de Konoha. Izumi chegou à vila separadamente, acompanhada e protegida por Shido. Recebeu atendimento médico, conheceu Hiruzen junto à Grande Cerejeira e encontrou na Folha a promessa de um lar. Sob a tutela de Kanen Otoribashi, retomou os estudos e o treinamento. Sua sensibilidade às assinaturas de Chakra, conhecida como Kagura Shingan, combina-se à aptidão para Genjutsu (Magen) e ao estudo de Fūinjutsu. Ainda está aprendendo a confiar nas pessoas e a decidir o que fazer com seu talento.","cur":"Gosta de observar os ambientes antes de se apresentar e costuma notar presenças pelo Chakra antes de reconhecer rostos. Não consegue ler pensamentos: interpreta flutuações e emoções, às vezes de maneira equivocada. Treina com pequenos pergaminhos, senbons e ilusões discretas. Sua história em Konoha — Shido, a clínica, a Grande Cerejeira, Hiruzen e Kanen — permanece como foi jogada. Ainda não domina Iryō Ninjutsu nem Regeneração de Vigor.","mis":[],"xp0":0,"apt":[{"n":"Fascinar","d":"Genjutsu mental básico; exige INT 4.","custo":0,"g":1},{"n":"Miragem","d":"Ilusão externa visual; exige INT 2.","custo":0,"g":1},{"n":"Acuidade","d":"CC usa Destreza (armas leves, desarmado e toque).","custo":0,"g":1},{"n":"Ilusão Profunda","d":"Magen: +1 na resistência já incluso na Dif; +2 contra Kai.","custo":2,"g":0},{"n":"Perito: Rastrear","d":"+2 de precisão nos TESTES de Rastrear; não altera alcance/parâmetros nem pré-requisitos.","custo":2,"g":0},{"n":"Kagura Shingan","d":"Sentir Chakra · Rastrear nível 8 · Ryoushitsu: 104m ativo / 52m passivo. Não lê pensamentos.","custo":2,"g":0},{"n":"NC8 · Seimei no Uzu (futuro)","d":"Regeneração de Vigor: toque da palma e cicatrizes espiraladas; NÃO ADQUIRIDA. Comprar no NC8 (2 PP).","custo":0,"g":0},{"n":"NC8 · Regeneração (futura)","d":"Uzumaki Op. 2: Regeneração opcional para aquisição futura; não está ativa nem paga.","custo":0,"g":0},{"n":"Ryoushitsu Kagura Shingan","d":"Rastrear 6; alcance normal ×2. Progressivo: 100m por nível de Rastrear após 20 rodadas imóvel/concentrada. Supressão de chakra.","custo":2,"g":0},{"n":"Diligente","d":"+3 Iniciativa; repetir uma rolagem de Iniciativa por cena, aceitando o segundo resultado.","custo":2,"g":0},{"n":"Duro de Matar","d":"1×/dia, evita cair a 0 Vit por golpe não crítico; Vit residual conforme Vigor, segundo regra.","custo":2,"g":0}],"v":1,"comp":[],"tam":"MÉDIO","rp":3,"vis":"izumi","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"ichiro":{"c":"ichiro","nc":7,"id":{"nome":"Ichiro Inuzuka","cla":"Inuzuka","patente":"Genin","filiacao":"Konoha","genero":"Masculino","tendencia":"Autenticidade","idade":"12","nasc":"Konoha","sexualidade":"Heterossexual","jeito":"Cadê a matilha?"},"at":{"forca":7,"des":2,"agi":2,"per":7,"vig":7,"int":2,"esp":3},"rm":[],"base":{"cc":5,"cd":1,"esq":3,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[0,0,0],"atletismo":[3,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[3,0,0],"escapar":[0,0,0],"furtividade":[2,0,0],"animais":[3,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[0,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[3,0,0],"veneficio":[0,0,0]},"soc":{"yin":[1,"COMPOSTURA"],"yang":[3,"CONVENCER"]},"cfg":["diligente","shikakyu"],"pod":[{"n":"Shikakyu","nv":3,"ef":"","custo":3,"tec":[]}],"sensor":"HAKKEN NO JUTSU","bio":"História completa: https://docs.google.com/document/d/1b7zUiGI2mmm5V0wsLWqdVpDaFNYu8Trk6vqmOd3LsUE/edit?usp=sharing","cur":"- 1 Ovo Dourado: 2 Kobans\n- 1 Ovo Vermelho: 1 Koban","comp":[{"n":"Plantão","nc":5,"tam":"PEQUENO","vit":47,"cha":13,"chaP":3,"desl":7,"dur":2,"at":{"forca":5,"des":0,"agi":0,"per":5,"vig":5,"int":0,"esp":1},"nota":"Hakken no Jutsu 20 m"}],"mis":[],"xp0":0,"apt":[{"n":"Hakken no Jutsu","d":"Ativar ou desativar o Hakken é uma ação livre, requer 2 pontos de chakra e tem duração contínua.\nTeste: Não é necessário teste a menos que existam situações que atrapalhem (ventos, chuva ou a presença de cheiros muito fortes), necessário teste de Percepção.\nAlerta contra Surpresa: O personagem também tem direito a um teste de Rastrear para notar a presença do oponente quando estiver prestes a receber um ataque surpresa, adicional a quaisquer outros.\nOlfato Apurado: Enquanto estiver com o Hakken ativo, você ainda recebe -1 nível de dificuldade em testes de Prontidão, Rastrear e Procurar sempre que a situação permitir utilizar seu olfato.","custo":0,"g":1},{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"Companheiro Animal","d":"","custo":0,"g":1},{"n":"Diligente","d":"","custo":2,"g":0},{"n":"Lutador","d":"","custo":2,"g":0},{"n":"Derrubar Agressivo","d":"","custo":2,"g":0},{"n":"Rasteira","d":"","custo":2,"g":0},{"n":"Crítico Aprimorado","d":"","custo":2,"g":0},{"n":"Velocista","d":"","custo":0,"g":0}],"v":1,"tam":"MÉDIO","rp":3,"vis":"ichiro","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"raiden":{"c":"raiden","nc":8,"id":{"nome":"Raiden Sumi","cla":"Chouju-Giga / Tensai","patente":"Genin","filiacao":"Konoha","genero":"Masculino","tendencia":"Leal e Neutro","idade":"12","nasc":"Desconhecido","sexualidade":"Heterossexual","jeito":"Se eu não herdei um nome... farei Konoha lembrar do meu"},"at":{"forca":2,"des":8,"agi":2,"per":8,"vig":2,"int":8,"esp":6},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":2},"per":{"acrobacia":[0,0,0],"arte":[4,1,1],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[0,0,0],"escapar":[4,0,0],"furtividade":[0,0,0],"animais":[1,0,1],"mecanismo":[0,0,0],"medicina":[2,0,0],"ocultismo":[4,0,0],"prestidigitacao":[4,0,0],"procurar":[0,0,0],"prontidao":[4,0,0],"rastrear":[1,0,0],"veneficio":[0,0,0]},"soc":{"yin":[2,"ENGANAR"],"yang":[2,"OBTER INFO."]},"cfg":["acuidade","diligente"],"pod":[{"n":"Sumi Ninpou","nv":4,"ef":"Canhão; Montaria (Nv. 2); Desenhos Rastreadores; Coluna.","custo":4,"tec":["canhao","coluna"]},{"n":"Pergaminho da Super Besta","nv":4,"ef":"As técnicas do Pergaminho da Super Besta, inspiradas nas caricaturas de animais antropomorfizados (Chōjū-jinbutsu-giga) do Templo de Kozan-Ji, também conhecido como “O Primeiro Mangá”, são a base do uso artístico em forma de ninpou para combate e missões. O usuário usa um pergaminho e tinta para dar vida a suas criações e lutar com elas.","custo":4,"tec":[]},{"n":"Fuuinjutsu","nv":2,"ef":"Nv. 1: Selo de Armazenamento. Nv. 2: Selo de Armazenamento Maior.","custo":2,"tec":[]}],"bio":"RAIDEN SUMI  |  UM NOME FEITO DE TINTA\n\nORIGENS — Encontrado ainda bebê nos portões de Konoha, acompanhado apenas de um pergaminho, um pincel e tinta preta. Cresceu no orfanato sob os cuidados de Ayame Shizuno, que incentivou sua curiosidade. A amizade e rivalidade com Haru Senda, os estudos com Iori Takeda e as lições de Daichi Kurogane marcaram sua formação.\n\nA ARTE COMO CAMINHO — Quieto e observador, encontrou no desenho uma linguagem própria. Inspirado pelo espírito inventivo de Tobirama Senju, estudou controle de chakra, mecanismos, caligrafia, substâncias e técnicas de selamento. Aos poucos, suas criaturas de tinta deixaram de ser simples desenhos e se tornaram ninjutsu.\n\nVIDA DE GENIN — Aos 12 anos, Raiden representa Konoha como Genin. Sobreviveu à guerra e participou de investigações envolvendo símbolos antigos, recipientes de chakra e o Templo do Fogo. Costuma registrar suas descobertas num pergaminho-diário, procurando entender antes de agir.\n\nFAMÍLIA E PRESENTE — Graças às pistas reunidas em seus relatórios, Hiruzen conseguiu localizar seus pais biológicos; o reencontro aconteceu em Konoha. O garoto ainda tem perguntas sobre o passado, mas agora também constrói vínculos no presente. Para Raiden, criar algo novo continua sendo tão importante quanto descobrir de onde veio.","cur":"✦ Guarda ideias, pesquisas e lembranças em um pergaminho-diário.\n✦ É competitivo consigo mesmo: quase sempre acha que um desenho pode ficar melhor.\n✦ Admira Tobirama Senju pelo conhecimento e pela criação de técnicas, não apenas pelo poder.\n✦ Gosta de investigar química de tintas, mecanismos, selos e padrões difíceis de perceber.\n✦ Estudou venenos, antídotos e cuidados básicos influenciado pelas conversas com Kaede.\n✦ Seu primeiro grande orgulho foi vestir a bandana da Folha; Konoha segue sendo seu lar.\n✦ Recebeu uma pequena aquarela dos pais durante o Festival das Flores.","mis":[{"t":"Guerra no País das Neves","rank":"A","exp":0,"obs":"","ryos":0},{"t":"Templo do Fogo","rank":"A","exp":0,"obs":"","ryos":0},{"t":"Templo do Fogo (limpeza)","rank":"C","exp":0,"obs":"","ryos":0},{"t":"Restaurante","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Missão chata dos velhos","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Família Haruno","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Vila do Chá","rank":"C","exp":0,"obs":"","ryos":0}],"xp0":0,"apt":[{"n":"Arte de Combate","d":"Permite obter e evoluir Sumi Ninpō. Concede Perito: Arte e Perícia Inata: Arte gratuitamente; ao usar Sustento com Arte, recebe o dobro de ryō. Fonte: Hijutsus Vol. 2.","custo":0,"g":1},{"n":"Acuidade","d":"Usa Destreza no cálculo da precisão de Combate Corporal para ataques desarmados, técnicas de toque e armas permitidas (como kunai em CC). Não altera o dano. Fonte: Básico 4.1b, p. 61.","custo":0,"g":1},{"n":"Duro de Matar","d":"CONSULTA • 1 vez/dia, ao sofrer dano que o reduziria a 0 ou menos de Vitalidade, pode permanecer com Vit igual ao nível de Vigor (ou 1, conforme a situação). Não funciona contra acertos críticos. Aquisição não confirmada.","custo":0,"g":1},{"n":"De Pé","d":"Levanta-se como ação livre no próprio turno, em vez de gastar uma ação de movimento. Uma vez por cena, pode levantar-se como reação imediatamente após ser derrubado por um oponente. Básico 4.1b, p. 63.","custo":2,"g":0},{"n":"Desenhos Rastreadores","d":"EFEITO DE SUMI NINPŌ • Cria pequenos desenhos exploradores (pássaros, insetos, peixes etc.). Ação padrão; 2 Chakra; alcance de 20 m por desenho; duração de 5 turnos. Fazem varredura visual e transmitem informações; não combatem nem detectam chakra. Hijutsus Vol. 2, pp. 25–26.","custo":0,"g":0},{"n":"Ponto Cego","d":"Permite Fintar como ação de movimento, em vez de ação padrão. Também se aplica a fintas especiais de poderes e técnicas, como Flechas e Bunshin. Pré-requisito: Agilidade 6 ou Prestidigitação 6. Básico 4.1b, p. 65.","custo":2,"g":0},{"n":"Técnica do Clone de Tinta","d":"REFERÊNCIA • Sumi Bunshin no Jutsu (Rank C). Requer a aptidão Clone, que não está identificada na lista atual. Cria clones de tinta (1 Chakra por clone); um único clone não sofre a penalidade comum de precisão em CC/ESQ. Pode receber Henge na criação, compartilhar informações e visão; ao ser destruído, espalha tinta. Não ativar sem confirmar pré-requisito e aquisição.","custo":0,"g":0},{"n":"Talento Natural","d":"PLANEJAMENTO • Tensai — Talento Natural: escolhe um efeito permitido adicional de poder versátil ou Hibon Ninpō, com evoluções gratuitas quando alcançar o nível necessário. A opção anotada é Míssil  (Nv. 4), ainda acima do Sumi Ninpō 3 atual. Confirmar compra e compatibilidade antes de ativar. Básico 4.1b, p. 243.","custo":0,"g":0},{"n":"Técnica Avançada","d":"PLANEJAMENTO • Tensai — Técnica Poderosa concede duas aptidões de técnica, desde que seus pré-requisitos sejam atendidos. Opções anotadas: Técnica Acelerada (Espírito ou Inteligência 12) e Potencializar (Espírito ou Inteligência 8). Valores atuais não cumprem esses requisitos. Básico 4.1b, pp. 74 e 243.","custo":0,"g":0},{"n":"Capacidade","d":"NÃO DISPONÍVEL • Tensai — Capacidade: exige Espírito 8 (Raiden tem 3). Concede +1 no dano base de efeitos de Ninpō/elementos, com restrições, e possui evolução própria. Manter como referência futura; nenhum bônus aplicado. Básico 4.1b, p. 244.","custo":0,"g":0},{"n":"Hiraishin","d":"NÃO DISPONÍVEL • Hiraishin depende de Deus do Trovão, que exige Fūinjutsu 8 e Inteligência 14. Raiden possui Fūinjutsu 2 e Inteligência 7. Entrada mantida apenas como planejamento; nenhuma técnica ou teleporte concedido. Básico 4.1b, p. 244.","custo":0,"g":0},{"n":"Saque Rápido","d":"Pode sacar ou guardar arma/munição como ação livre e sacar arma corpo a corpo durante reação de Bloqueio. Em circunstâncias permitidas, facilita formar selos enquanto porta arma. Básico 4.1b, pp. 65–66.","custo":2,"g":0},{"n":"Trabalho em Equipe","d":"REGRA DA CAMPANHA • Ao auxiliar um parceiro num esforço, a ajuda concede vantagem (3d8) em vez do bônus usual de +2. Mantida a redação e o funcionamento registrados na ficha.","custo":0,"g":0},{"n":"Leitura de Selos","d":"REGRA DA CAMPANHA • Você recebe +2 nos testes para identificar técnicas inimigas ao observar seus selos de mão.\nLimitação: É necessário enxergar os gestos do adversário. A aptidão não reduz o tempo de execução de jutsus nem permite antecipar técnicas automaticamente.","custo":0,"g":0},{"n":"Resistência Maior: Inteligência","d":"","custo":0,"g":0},{"n":"Diligente","d":"(Aptidão ganha no treino de hoje.)","custo":2,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"raiden","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"kaiser":{"c":"kaiser","nc":7,"id":{"nome":"Kaiser Kusakabe","cla":"Kibaku Nendo","patente":"Genin","filiacao":"Vila Oculta da Folha","genero":"Masculino","tendencia":"Caótico e Neutro","idade":"12","nasc":"","sexualidade":"","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":2,"int":7,"esp":3},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[3,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[3,0,0],"cultura":[0,0,0],"disfarce":[0,0,0],"escapar":[3,0,0],"furtividade":[0,0,0],"animais":[2,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[3,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[0,0,0],"veneficio":[0,0,0]},"soc":{"yin":[0,"MUDAR ATITUDE"],"yang":[0,"ATUAÇÃO"]},"cfg":["diligente"],"pod":[{"n":"Kibaku Nendo","nv":3,"ef":"Canhão (1), Montaria (2), Flechas (3)","custo":3,"tec":["canhao","flechas"]},{"n":"Doton","nv":3,"ef":"Canhão (1), Repelir (2), Barreira (3)","custo":2,"tec":["canhao","barreira"]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"Diligente","d":"","custo":0,"g":1},{"n":"De Pé","d":"","custo":0,"g":1},{"n":"Ponto Cego","d":"","custo":2,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"kaiser","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0}};
+const PODER_TAB = [["NINPOU","0","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["DOTON","0","2","0","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["FUUTON","2","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KATON","2","0","0","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["RAITON","1","0","0","0,5m/Nível de Espírito","15m + 3m/Nível de Espírito"],["SUITON","0","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KIKAI NINPOU","0","0","0","1m/Nível de Lidar com Animais","10m + 2m/Nível de Lidar com Animais"],["MOKUTON","1","0","1","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["HYOUTON","0","2","1","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SABAKU HIJUTSU","0","2","0","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["YONBI YOUTTON","2","0","0","2m/Nível de Espírito","15m + 3m/Nível de Espírito"],["KAMI NINPOU","1","0","0","1m/Nível de Espírito/Arte","10m + 2m/Nível de Espírito/Arte"],["KUJAKU MYOHO","1","0","0","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SUMI NINPOU","0","1*","1","1m/Nível de Arte","15m + 3m/Nível de Arte"],["KUMO NINPOU","0","0","1","1m/Nível de Espírito","15m + 3m/Nível de Espírito"],["HEBI NINPOU","0","0","1","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["OTOTON","0","0","1","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["SAKIN","0","2","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SATETSU","1","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KIBAKU NENDO","2","0","0","2m/Nível de Arte","15m + 3m/Nível de Arte"],["RANTON","1","0","0","1m/Nível de Espírito","15m + 3m/Nível de Espírito"],["SHAKUTON","2","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SHOUTON","0","2","1","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SHOKUBUTSUTON","1","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["YUME NINPOU","0","0","1","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["HIKARITON","0","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KYUDO NINPOU","*","0","0","0,5m/Nível de Espírito","Alcance Arco + 2m por nível de Espírito"],["TAYOUTON","3","0","0","0,5m/Nível de Espírito","10m + 2m/Nível de Espírito"],["DOKUJUTSU","0","0","1*","1m/Nível de Venefício","10m + 2m/Nível de Venefício"],["YOTON (MEI)","1","0","0","2m/Nível de Espírito","15m + 3m/Nível de Espírito"],["FUTTON (MEI)","2","0","1","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["DOMÍNIO MECÂNICO","2*","1*","1*","1m/Nível de Mecanismo","15m + 1m/Nível de Mecanismo*"]];
+// ---------- fichas: o que precisa existir antes do resto da página ----------
+const PERS = {};                 // fichas que o mestre publicou (na tela de um jogador)
+const persPend = {};             // edições deste jogador que o mestre ainda não confirmou
+let SOLOP = null;                // fichas do modo sem mesa
+const VISUAIS = [['inimigo0', 'Colete escuro'], ['inimigo1', 'Faixa vermelha'], ['inimigo2', 'Roupa clara'], ['inimigo3', 'Capuz'], ['aldeao22', 'Colete verde'], ['aldeao23', 'Colete verde, cabelo preso'], ['aldeao0', 'Roupa simples'], ['aldeao6', 'Quimono']];
+function persPadrao() { return JSON.parse(JSON.stringify(FICHAS0)); }
+function persDe(c) {
+  if (!c) return null;
+  if (MESA && mesa && mesa.isGM) return (table && table.pers && table.pers[c]) || null;
+  if (!MESA) return (SOLOP && SOLOP[c]) || FICHAS0[c] || null;
+  return (persPend[c] && persPend[c].f) || PERS[c] || FICHAS0[c] || null;
+}
+function visDe(c) { if (!EXTRAS.includes(c)) return c; try { const f = persDe(c); return f && f.vis && VISUAIS.some(v => v[0] === f.vis) ? f.vis : 'inimigo0'; } catch (e) { return 'inimigo0'; } }
+function nomeNovo(c) { try { const f = persDe(c), n = f && f.id && f.id.nome ? f.id.nome.trim().split(/\s+/)[0] : ''; return n || 'Novo ninja'; } catch (e) { return 'Novo ninja'; } }
+
 let genPresos = [], genCena = 'genjutsu';                             // quem está preso no genjutsu e em qual ilusão (decidido pelo mestre)
 const cleanGen = a => Array.isArray(a) ? CHARS.filter(c => a.includes(c)) : [];
 const okGen = v => (typeof v === 'string' && CENAS[v] && CENAS[v].fx === 'genjutsu') ? v : 'genjutsu';
@@ -801,7 +980,7 @@ const opt = { tadayou: true, kinobori: false };
 let room = null, peers = [], lastSent = 0;
 let mesa = null; const peerMap = new Map(); let tokens = {}; let gmCid = null; let ecdh = null, gmEk = null;   // ecdh: par do mestre; gmEk: chave pública dele, vinda do estado assinado
 let table = null, tableDirty = false, tableSentAt = 0, lastStateRev = -1;
-const nome = c => c ? c[0].toUpperCase() + c.slice(1) : '';
+const nome = c => !c ? '' : EXTRAS.includes(c) ? nomeNovo(c) : c[0].toUpperCase() + c.slice(1);
 let speed = Q.has('s') ? +Q.get('s') : 30;
 const DAYMIN = 1440;
 let clockBase = Date.now(), clockAt = Q.has('t') ? +Q.get('t') : (Date.now() / 1000 * 30 / 60 + 540) % DAYMIN;
@@ -1333,7 +1512,7 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
       if (isPlayer && frameN % 1 === 0) { }
     } });
 }
-function charSprite(c, mv, front) { return E(`${c}_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`); }
+function charSprite(c, mv, front) { return E(`${visDe(c)}_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`); }
 // maior raio (até r) em que tudo em volta do ponto é água: o retângulo de meia-largura raio*kx + mx (e raio*ky + my), mais meia casa de folga.
 // Devolve -1 se nem parado no ponto o bicho cabe dentro d'água. Guardado por cena, porque o mapa não muda.
 // Bichos d'água não saem da água: o raio em que andam é o maior em que o retângulo todo do passeio (com a folga do desenho) é água.
@@ -1525,7 +1704,7 @@ $('tada').onclick = () => { opt.tadayou = !opt.tadayou; $('tada').classList.togg
 $('kino').onclick = () => { opt.kinobori = !opt.kinobori; $('kino').classList.toggle('on', opt.kinobori); };
 $('zin').onclick = () => setZoom(zoom + 1); $('zout').onclick = () => setZoom(zoom - 1);
 const chars = $('chars');
-for (const c of CHARS) { const k = document.createElement('canvas'); k.width = 32; k.height = 32; k.title = c[0].toUpperCase() + c.slice(1); const e = E(`${c}_parado_frente`);
+for (const c of CHARS) { if (EXTRAS.includes(c)) continue; const k = document.createElement('canvas'); k.width = 32; k.height = 32; k.title = c[0].toUpperCase() + c.slice(1); const e = E(`${c}_parado_frente`);
   const kc = k.getContext('2d'); kc.imageSmoothingEnabled = false; kc.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32); k.onclick = () => pick(c); k.dataset.c = c; chars.appendChild(k); }
 if (MESA) { const k = document.createElement('div'); k.className = 'eye'; k.title = 'Só a câmera (0)'; k.dataset.c = '';
   k.innerHTML = '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>';
@@ -1537,7 +1716,7 @@ async function pick(c) {
     if (t && okXY(t.x, t.y)) { const ts = okScene(t.s) ? t.s : 'vila';
       if (ts !== scene.id) { if (ts === 'vila') useScene(SCN.vila); else { const sc = await getScene(ts); if (sc) useScene(sc); } updateLugar(); }
       me.x = t.x; me.y = t.y; }
-    else { const i = CHARS.indexOf(c); const sp = nearestWalkable(624 + [0, 2, -2, 0, 2, -2][i], 669 + [0, 0, 0, 2, 2, 2][i], 4); if (sp) { me.x = sp[0] + 0.5; me.y = sp[1] + 0.5; } }
+    else { const i = CHARS.indexOf(c); const sp = nearestWalkable(624 + ([0, 2, -2, 0, 2, -2][i] || 0), 669 + ([0, 0, 0, 2, 2, 2][i] ?? -2), 4); if (sp) { me.x = sp[0] + 0.5; me.y = sp[1] + 0.5; } }
     me.path = []; pet.x = me.x - 1; pet.y = me.y; cam.follow = true; }
   me.c = c || null; for (const k of chars.children) k.classList.toggle('on', k.dataset.c === (me.c || '')); sendPresence();
   if (dadosPronto) dadosQuem();
@@ -1603,8 +1782,8 @@ if (window.claude && typeof window.claude.use === 'function') {
 function say(t) { const el = $('aviso'); el.textContent = t; el.style.opacity = 1; clearTimeout(say.tt); say.tt = setTimeout(() => el.style.opacity = 0, 3200); }
 function cleanTokens(o) { const out = {}; if (o && typeof o === 'object') for (const c of CHARS) { const t = o[c]; if (t && okXY(+t.x, +t.y)) out[c] = { s: okScene(t.s) ? t.s : 'vila', x: r2(+t.x), y: r2(+t.y) }; } return out; }
 function rebuildPeers() { peers = Array.from(peerMap.values()).filter(e => e.presence && e.presence.c); }
-function gmState(pub) { const P = pub ? estadoPublico(table) : table; return { v: 1, rev: table.rev, gmCid: mesa.cid, clock: { wm: r2(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN), at: Date.now(), speed }, tokens: table.tokens, gen: table.gen || [], genCena: table.genCena || 'genjutsu',
-  cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], ek: ecdh ? ecdh.pub : undefined }; }
+function gmState(pub) { const P = pub ? estadoPublico(table) : table; return Object.assign(pub ? {} : { pers: table.pers, persHist: table.persHist }, { v: 1, rev: table.rev, gmCid: mesa.cid, clock: { wm: r2(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN), at: Date.now(), speed }, tokens: table.tokens, gen: table.gen || [], genCena: table.genCena || 'genjutsu',
+  cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], ek: ecdh ? ecdh.pub : undefined }); }
 function saveTable() { try { localStorage.setItem('mvila:mesa:' + mesa.room, JSON.stringify(gmState())); } catch (e) {} }
 function gmPublish() { if (!mesa || !mesa.isGM) return; table.rev++; tableSentAt = Date.now(); tableDirty = false; saveTable(); mesa.sendState(gmState(true)).catch(() => {}); }
 function gmTrack(c, st) { if (st && ehGen(st.s)) return; combateTrack(c, st); const end = st.path && st.path.length ? st.path[st.path.length - 1] : [st.x, st.y]; if (!okXY(end[0], end[1])) return;
@@ -1640,12 +1819,14 @@ async function startMesa() {
       cmb = limpaCmb(st.cmb); npcs = limpaNpcs(st.npcs).filter(n => !n.oc); ficha = limpaFicha(st.ficha); zonas = limpaZonas(st.zonas); nevoa = limpaNevoa(st.nevoa); aplicarCombate();
     },
     onRoll(msg) { receberRolagem(msg); },
-    onEvent(msg) { receberEvento(msg); },
-    onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(gmPublish, 1500); } } });
+    onEvent(msg) { if (msg && msg.k === 'pers') persRecebeProposta(msg); else receberEvento(msg); },
+    onFicha(c, f, retained) { persRecebe(c, f, retained); },
+    onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(() => { gmPublish(); persPublicaTudo(); }, 1500); } } });
   if (mesa.isGM) {
-    table = { rev: 0, tokens: {}, gen: [], genCena: 'genjutsu', cmb: null, npcs: [], ficha: {}, zonas: [], nevoa: [] };
+    table = { rev: 0, tokens: {}, gen: [], genCena: 'genjutsu', cmb: null, npcs: [], ficha: {}, zonas: [], nevoa: [], pers: null, persHist: {} };
     try { const sv = JSON.parse(localStorage.getItem('mvila:mesa:' + mesa.room) || 'null'); if (sv) { table.rev = +sv.rev || 0; table.tokens = cleanTokens(sv.tokens); table.gen = cleanGen(sv.gen); table.genCena = okGen(sv.genCena); applyClock(sv.clock, false);
-      table.cmb = limpaCmb(sv.cmb); table.npcs = limpaNpcs(sv.npcs); table.ficha = limpaFicha(sv.ficha); table.zonas = limpaZonas(sv.zonas); table.nevoa = limpaNevoa(sv.nevoa); } } catch (e) {}
+      table.cmb = limpaCmb(sv.cmb); table.npcs = limpaNpcs(sv.npcs); table.ficha = limpaFicha(sv.ficha); table.zonas = limpaZonas(sv.zonas); table.nevoa = limpaNevoa(sv.nevoa); persCarregaMesa(sv); } } catch (e) {}
+    if (!table.pers) persCarregaMesa(null);
     genPresos = table.gen; genCena = table.genCena; gjChips();
     try { let jwk = null; try { jwk = JSON.parse(localStorage.getItem('mvila:ecdh:' + mesa.room) || 'null'); } catch (e) {}      // a chave fica neste navegador: recarregar a página não perde as rolagens a caminho
       ecdh = await Mesa.ecdhNew(jwk); try { localStorage.setItem('mvila:ecdh:' + mesa.room, JSON.stringify(ecdh.jwk)); } catch (e) {} } catch (e) { ecdh = null; }
@@ -1677,7 +1858,7 @@ $('abrir').onclick = () => $('arq').click();
 $('arq').onchange = async () => { const f = $('arq').files[0]; $('arq').value = ''; if (!f) return;
   try { const j = JSON.parse(await f.text()); const t = j && j.mesa ? j.mesa : j; if (!t || typeof t.tokens !== 'object') throw new Error('x');
     table.tokens = cleanTokens(t.tokens); tokens = table.tokens; applyClock(t.clock, false); table.rev = Math.max(table.rev, +t.rev || 0);
-    table.cmb = limpaCmb(t.cmb); table.npcs = limpaNpcs(t.npcs); table.ficha = limpaFicha(t.ficha); table.zonas = limpaZonas(t.zonas); table.nevoa = limpaNevoa(t.nevoa); aplicarCombate(); gmPublish(); say('Mesa carregada do arquivo'); }
+    table.cmb = limpaCmb(t.cmb); table.npcs = limpaNpcs(t.npcs); table.ficha = limpaFicha(t.ficha); table.zonas = limpaZonas(t.zonas); table.nevoa = limpaNevoa(t.nevoa); persCarregaMesa(t, true); aplicarCombate(); gmPublish(); persPublicaTudo(); say('Mesa carregada do arquivo'); }
   catch (e) { say('Esse arquivo não é um salvamento da mesa'); } };
 function aplicarGenjutsu() {
   if (!me.c || !mesa || mesa.isGM || !CENAS[genCena]) return;
@@ -1692,7 +1873,7 @@ function gjChips() {
   const box = $('gjchips'), tb = $('gjtemas'); if (!box || !mesa || !mesa.isGM) return;
   if (tb && !tb.childElementCount) for (const [id, rot] of GJTEMAS) { if (!CENAS[id]) continue; const b = document.createElement('button'); b.dataset.cena = id; b.textContent = rot; tb.appendChild(b);
     b.onclick = () => { if (table.genCena === id) return; table.genCena = genCena = id; gjChips(); gmPublish(); say('Ilusão: ' + rot.toLowerCase()); }; }
-  if (!box.childElementCount) for (const c of CHARS) { const b = document.createElement('button'); b.dataset.c = c; b.textContent = nome(c); box.appendChild(b);
+  if (!box.childElementCount) for (const c of CHARS) { if (EXTRAS.includes(c)) continue; const b = document.createElement('button'); b.dataset.c = c; b.textContent = nome(c); box.appendChild(b);
     b.onclick = () => { const on = !table.gen.includes(c); table.gen = cleanGen(on ? table.gen.concat([c]) : table.gen.filter(x => x !== c)); genPresos = table.gen; gjChips(); gmPublish();
       say(on ? `${nome(c)} preso no genjutsu` : `${nome(c)} saiu do genjutsu`); }; }
   for (const b of box.children) b.classList.toggle('on', genPresos.includes(b.dataset.c));
@@ -1719,7 +1900,7 @@ function updateLugar() { $('lugar').textContent = scene.outdoor ? '' : scene.nom
 // Rolagem "só para o mestre": o jogador cifra o resultado para a chave ECDH do mestre (que vem no estado assinado da mesa);
 // os outros só ficam sabendo que houve a rolagem.
 var dadosPronto = false;                 // var: o pick() roda antes deste trecho
-const COR_C = { masato: '#5b7bd6', kazuki: '#39a58c', izumi: '#9a6ad0', ichiro: '#c97b3b', raiden: '#d04b5d', kaiser: '#d6a43c' };
+const COR_C = { masato: '#5b7bd6', kazuki: '#39a58c', izumi: '#9a6ad0', ichiro: '#c97b3b', raiden: '#d04b5d', kaiser: '#d6a43c', novoa: '#4fa3a5', novob: '#b06fb0', novoc: '#8aa04a', novod: '#c0605a' };
 const COR_GM = '#8790a6';
 const TIPO = { teste: 'Teste', ataque: 'Ataque', livre: 'Livre', ini: 'Iniciativa' };
 const HIST_MAX = 40;
@@ -1781,7 +1962,7 @@ function desenhaDado(cv, f, v, cor, ang, est) {          // est: '' | 'crit' | '
 }
 const RET = {};
 function retrato(cv, q, esc) {
-  const nm = q && q.spr && E(q.spr) ? q.spr : q && q.c ? `${q.c}_parado_frente` : 'aldeao22_parado_frente';
+  const nm = q && q.spr && E(q.spr) ? q.spr : q && q.c ? `${visDe(q.c)}_parado_frente` : 'aldeao22_parado_frente';
   if (!RET[nm]) { const e = E(nm), t = document.createElement('canvas'); t.width = t.height = 32; const tx = t.getContext('2d'); if (e) tx.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32);
     const a = tx.getImageData(0, 0, 32, 32).data; let x0 = 32, y0 = 32, x1 = -1, y1 = -1;
     for (let i = 0; i < 1024; i++) if (a[i * 4 + 3] > 20) { const xx = i % 32, yy = (i / 32) | 0; x0 = Math.min(x0, xx); x1 = Math.max(x1, xx); y0 = Math.min(y0, yy); y1 = Math.max(y1, yy); }
@@ -2640,7 +2821,7 @@ try { const v = JSON.parse(localStorage.getItem('mvila:solo:combate') || 'null')
 const ehMestre = () => !MESA || !!(mesa && mesa.isGM);
 function tab() { return mesa && mesa.isGM ? table : (!MESA ? SOLO : null); }
 function limpaStats(o, base) { const out = {}; for (const [k] of CAMPOS) out[k] = nnum(o && o[k], 0, 40, base[k]); return out; }
-function limpaFicha(f) { const out = {}; if (f && typeof f === 'object') for (const c of CHARS) if (f[c] && typeof f[c] === 'object') out[c] = limpaStats(f[c], FICHA0[c]); return out; }
+function limpaFicha(f) { const out = {}; if (f && typeof f === 'object') for (const c of CHARS) if (f[c] && typeof f[c] === 'object') out[c] = limpaStats(f[c], FICHA0[c] || NPC0); return out; }
 function limpaNpcs(a) {
   const out = []; if (!Array.isArray(a)) return out;
   for (const n of a.slice(0, 40)) { if (!n || !/^[a-z0-9]{1,12}$/.test(n.id) || !okXY(+n.x, +n.y)) continue;
@@ -2705,7 +2886,8 @@ function alternaOculto(id) {
 const rid = () => Math.random().toString(36).slice(2, 9);
 const npcPorId = id => npcs.find(n => 'n:' + n.id === id) || null;
 function statsDe(id) {
-  if (id && id.startsWith('c:')) { const c = id.slice(2); return Object.assign({ pod: {} }, FICHA0[c] || NPC0, (ficha || {})[c] || {}, { pod: (FICHA0[c] || {}).pod || {} }); }
+  if (id && id.startsWith('c:')) { const c = id.slice(2), P = persDe(c); if (P) return Object.assign({ pod: {} }, FICHA0[c] || NPC0, persCalc(P).stats);      // a ficha do personagem manda
+    return Object.assign({ pod: {} }, FICHA0[c] || NPC0, (ficha || {})[c] || {}, { pod: (FICHA0[c] || {}).pod || {} }); }
   return Object.assign({ pod: {} }, NPC0, npcPorId(id) || {});
 }
 function nomeDe(id) { if (!id) return ''; if (id.startsWith('c:')) return nome(id.slice(2)); const n = npcPorId(id); return n ? n.nome : 'Inimigo'; }
@@ -3280,7 +3462,9 @@ function cbFicha(id) {
     const sp = document.createElement('button'); sp.type = 'button'; sp.className = 'ico txt'; sp.textContent = 'Trocar roupa'; sp.onclick = () => { n.spr = (n.spr + 1) % 4; publicar(true); }; box.appendChild(sp);
     const oc = document.createElement('button'); oc.type = 'button'; oc.className = 'ico txt ocb' + (n.oc ? ' on' : ''); oc.textContent = n.oc ? 'Revelar aos jogadores' : 'Ocultar dos jogadores'; oc.setAttribute('aria-pressed', !!n.oc);
     oc.title = n.oc ? 'Hoje só você vê este inimigo' : 'Tira o inimigo da tela dos jogadores sem tirá-lo da cena'; oc.onclick = () => alternaOculto(id); box.appendChild(oc); }
-  const g = document.createElement('div'); g.className = 'fgrade';
+  if (!ehN && persDe(id.slice(2))) { const p = document.createElement('p'); p.className = 'fnota'; p.textContent = 'Os números vêm da ficha do personagem.'; const b = document.createElement('button'); b.type = 'button'; b.className = 'ico txt'; b.textContent = 'Abrir ficha';
+    b.onclick = () => abrePers(id.slice(2), 'combate'); box.appendChild(p); box.appendChild(b); }
+  const g = document.createElement('div'); g.className = 'fgrade'; if (!ehN && persDe(id.slice(2))) g.hidden = true;
   for (const [k, rot] of CAMPOS) { const l = document.createElement('label'); const s = document.createElement('span'); s.textContent = rot; l.appendChild(s);
     const i = document.createElement('input'); i.type = 'number'; i.min = 0; i.max = 40; i.value = st[k]; i.inputMode = 'numeric';
     i.oninput = () => { const v = nnum(i.value, 0, 40, st[k]);
@@ -3358,7 +3542,7 @@ function tqQuemOpcoes() {
 }
 function tqEscolheQuem(id) {
   tec.quem = id; tec.alvos = []; tec.flechas = {}; tec.fixo = false;
-  const c = id && id.startsWith('c:') ? id.slice(2) : null; const pre = c && TEC0[c] ? TEC0[c][0] : null;
+  const c = id && id.startsWith('c:') ? id.slice(2) : null; const pre = c && tecDe(c).length ? tecDe(c)[0] : null;
   if (pre) { tec.el = pre[0]; tec.ef = pre[1]; } else if (id && id.startsWith('n:')) { if (!(PERMITE[tec.el] || []).includes(tec.ef)) tec.ef = 'canhao'; }
   tqNvPadrao(); tqUI();
 }
@@ -3384,7 +3568,7 @@ function tqUI(nvCampo, mexeu) {
   $('tqAlcRow').hidden = !(F.t !== 'pessoal' && F.forma !== 'explosao'); $('tqTamRow').hidden = !(F.t === 'area');
   // atalhos: as técnicas que estão na ficha
   const at = $('tqAtalhos'); at.textContent = ''; const c = tec.quem && tec.quem.startsWith('c:') ? tec.quem.slice(2) : null;
-  for (const [el, ef] of (c && TEC0[c]) || []) { const b = document.createElement('button'); b.type = 'button'; b.textContent = `${EFE[ef].n} · ${ELEM[el].n}`; b.classList.toggle('on', el === tec.el && ef === tec.ef);
+  for (const [el, ef] of (c && tecDe(c)) || []) { const b = document.createElement('button'); b.type = 'button'; b.textContent = `${EFE[ef].n} · ${ELEM[el].n}`; b.classList.toggle('on', el === tec.el && ef === tec.ef);
     b.onclick = () => { tec.el = el; tec.ef = ef; tec.alvos = []; tec.flechas = {}; tec.fixo = false; tqNvPadrao(); tqUI(true, true); }; at.appendChild(b); }
   at.hidden = !at.childElementCount;
   // parâmetros
@@ -3479,6 +3663,543 @@ function combateQuadro(now, dt) { passoNpcs(dt); atualizaOverlays(); if (tec.abe
 desenhaSelo($('tecIco'), 'ninpou');
 aplicarCombate();
 combatePronto = true;
+
+// ---------- ficha do personagem ----------
+// Regras: Shinobi no Sho 4.1b (Livro Básico, pp. 18-31) e as duas regras opcionais do Guia Avançado que a mesa usa:
+// 3 pontos de poder por NC e as regras sociais Yin e Yang. As fórmulas seguem a "Ficha Base (Mangá)" da comunidade.
+const ATR = [['forca', 'Força', 'FOR'], ['des', 'Destreza', 'DES'], ['agi', 'Agilidade', 'AGI'], ['per', 'Percepção', 'PER'], ['vig', 'Vigor', 'VIG'], ['int', 'Inteligência', 'INT'], ['esp', 'Espírito', 'ESP']];
+const ABR = Object.fromEntries(ATR.map(a => [a[0], a[2]])), ATN = Object.fromEntries(ATR.map(a => [a[0], a[1]]));
+// [chave, nome, atributo, 1 = só existe com ponto gasto | 2 = só com Químico]
+const PERS_PER = [['acrobacia', 'Acrobacia', 'agi'], ['arte', 'Arte', 'int'], ['atletismo', 'Atletismo', 'forca'], ['ciencias', 'Ciências Naturais', 'int'], ['concentracao', 'Concentração', 'int'],
+  ['cultura', 'Cultura', 'int'], ['disfarce', 'Disfarce', 'per'], ['escapar', 'Escapar', 'des'], ['furtividade', 'Furtividade', 'agi'], ['animais', 'Lidar com Animais', 'per', 1],
+  ['mecanismo', 'Mecanismo', 'int', 1], ['medicina', 'Medicina', 'int', 1], ['ocultismo', 'Ocultismo', 'int', 1], ['prestidigitacao', 'Prestidigitação', 'des'], ['procurar', 'Procurar', 'per'],
+  ['prontidao', 'Prontidão', 'per'], ['rastrear', 'Rastrear', 'per'], ['veneficio', 'Venefício', 'int', 2]];
+const YIN = [['MUDAR ATITUDE', ['per']], ['BLEFAR', ['int']], ['INTIMIDAÇÃO', ['per']], ['ACALMAR', ['int', 'esp']], ['COMPOSTURA', ['int', 'esp']], ['EMPATIA', ['per']], ['ENGANAR', ['int', 'per']], ['ETIQUETA', ['int', 'per']], ['OUVIR INFO', ['per']]];
+const YANG = [['ATUAÇÃO', ['arte']], ['MUDAR ATITUDE', ['int']], ['BARGANHAR', ['int']], ['OBTER INFO.', ['per']], ['CONVENCER', ['int', 'esp']], ['ENCORAJAR', ['esp']], ['ENGANAR', ['per', 'int']],
+  ['INTIMIDAR', ['esp', 'int']], ['ESPALHAR INFO', ['per']], ['PRESENÇA', ['esp', 'int']], ['PROVOCAR', ['esp', 'int']]];
+// marcadores que mudam números da ficha (aptidões e condições comuns da Ficha Base)
+const MARCAS = [['acuidade', 'Acuidade', 'Combate Corporal usa Destreza no lugar de Força.'], ['combate_def', 'Combate Defensivo', '−2 no CC e +3 na reação de esquiva.'],
+  ['diligente', 'Diligente', '+3 na iniciativa.'], ['acelerado', 'Acelerado', '+2 na iniciativa e metade da Agilidade a mais no deslocamento.'],
+  ['velocista', 'Velocista', 'Metade da Agilidade (ou do Espírito, com Shunjutsu) a mais no deslocamento.'], ['shunjutsu1', 'Shunjutsu nível 1', 'O deslocamento usa Espírito no lugar de Agilidade.'],
+  ['shunjutsu3', 'Shunjutsu nível 3', 'Com Shunjutsu, mais metade do Espírito no deslocamento.'], ['burro', 'Burro de Carga', 'Mais compartimentos sem penalidade, conforme a Força.'],
+  ['quimico', 'Químico', 'Libera a perícia Venefício.'], ['chakra_exp', 'Chakra Expandido', 'Chakra × 1,5.'], ['cp1', 'Controle Perfeito nível 1', 'Inteligência no lugar do Espírito no dano dos poderes e nos Selos.'],
+  ['cp2', 'Controle Perfeito nível 2', 'Soma a Inteligência ao Chakra.'], ['instinto', 'Instinto de Batalha', 'A base das habilidades de combate soma 13 em vez de 12.'],
+  ['sharingan', 'Esquiva perceptiva', 'A reação de esquiva usa LM no lugar de ESQ.'], ['shikakyu', 'Shikyaku no Jutsu', '+2 na iniciativa.'], ['anatomia', 'Anatomia Gêmea', '+2 em Atletismo.'], ['voo', 'Voo', '+10 m de deslocamento.']];
+// tamanho: [nome, força e vigor, ataque, alcance CC (m), furtividade, intimidar, deslocamento]
+const TAMANHOS = [['MINÚSCULO', -7, 2, 1, 5, -2, -12], ['DIMINUTO', -5, 1, 1, 3, -2, -9], ['MIÚDO', -3, 1, 1, 2, -1, -6], ['PEQUENO', -1, 0, 1, 1, -1, -3], ['MÉDIO', 0, 0, 1, 0, 0, 0],
+  ['GRANDE', 1, 0, 2, -1, 1, 3], ['ENORME', 3, 0, 3, -2, 1, 6], ['IMENSO', 5, 0, 4, -3, 2, 9], ['COLOSSAL', 7, 0, 5, -5, 2, 12]];
+const SENSORES = ['NÃO SENSOR', 'SENSOR (APTIDÃO)', 'HAKKEN NO JUTSU', 'SHINDENSHIN', 'KAGURA SHINGAN', 'KAGURA S. ESTENDIDO', 'BYAKUGAN', 'BYAKUGAN ESTENDIDO', 'SENJUTSU 1', 'SENJUTSU 2'];
+const RANKS = ['D', 'C', 'B', 'A', 'S'];
+const semAc = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
+function elemDePoder(n) {
+  const s = semAc(n) + ' ';
+  for (const [k, ws] of [['sumi', ['SUMI']], ['nendo', ['NENDO', 'KIBAKU']], ['katon', ['KATON', 'FOGO']], ['fuuton', ['FUUTON', 'VENTO']], ['raiton', ['RAITON', 'TROVAO']], ['suiton', ['SUITON', 'AGUA']], ['doton', ['DOTON', 'TERRA']], ['ninpou', ['NINPOU']]])
+    if (ws.some(w => s.includes(w))) return k;
+  return null;
+}
+function poderTab(n) { const s = semAc(n); return PODER_TAB.find(p => s === semAc(p[0])) || PODER_TAB.find(p => s.startsWith(semAc(p[0]))) || (elemDePoder(n) && PODER_TAB.find(p => elemDePoder(p[0]) === elemDePoder(n))) || null; }
+
+// ---------- limpar o que vem de fora ----------
+const pTxt = (v, n) => String(v == null ? '' : v).slice(0, n);
+const pNum = (v, a, b, d) => { v = Math.round(+v); return Number.isFinite(v) ? Math.max(a, Math.min(b, v)) : d; };
+function limpaPers(f, c) {
+  if (!f || typeof f !== 'object') return null; const o = {}, id = f.id || {};
+  o.v = 1; o.c = c; o.nc = pNum(f.nc, 1, 20, 4); o.rp = [2, 3, 4].includes(+f.rp) ? +f.rp : 3; o.u = pTxt(f.u, 16);
+  o.vis = EXTRAS.includes(c) ? (VISUAIS.some(v => v[0] === f.vis) ? f.vis : 'inimigo0') : c;
+  o.id = {}; for (const k of ['nome', 'cla', 'patente', 'filiacao', 'genero', 'tendencia', 'idade', 'nasc', 'sexualidade', 'jeito']) o.id[k] = pTxt(id[k], k === 'jeito' ? 160 : 60);
+  o.at = {}; for (const [k] of ATR) o.at[k] = pNum((f.at || {})[k], 0, 40, 0);
+  o.rm = Array.isArray(f.rm) ? f.rm.filter(k => ABR[k]) : [];
+  o.base = {}; o.outro = {}; for (const k of ['cc', 'cd', 'esq', 'lm']) { o.base[k] = pNum((f.base || {})[k], 0, 9, 3); o.outro[k] = pNum((f.outro || {})[k], -20, 20, 0); }
+  o.per = {}; for (const [k] of PERS_PER) { const q = (f.per || {})[k] || []; o.per[k] = [pNum(q[0], 0, 20, 0), pNum(q[1], -20, 20, 0), q[2] ? 1 : 0]; }
+  const so = f.soc || {}; o.soc = { yin: [pNum((so.yin || [])[0], 0, 20, 0), YIN.some(q => q[0] === (so.yin || [])[1]) ? so.yin[1] : 'MUDAR ATITUDE'], yang: [pNum((so.yang || [])[0], 0, 20, 0), YANG.some(q => q[0] === (so.yang || [])[1]) ? so.yang[1] : 'ATUAÇÃO'] };
+  o.cfg = Array.isArray(f.cfg) ? f.cfg.filter(k => MARCAS.some(m => m[0] === k)) : [];
+  o.tam = TAMANHOS.some(t => t[0] === f.tam) ? f.tam : 'MÉDIO'; o.sensor = pTxt(f.sensor || 'NÃO SENSOR', 40); o.durM = pNum(f.durM, 0, 20, 0);
+  o.pod = (Array.isArray(f.pod) ? f.pod : []).slice(0, 12).map(p => ({ n: pTxt(p.n, 50), nv: pNum(p.nv, 0, 20, 0), custo: pNum(p.custo, 0, 60, 0), ef: pTxt(p.ef, 1500), tec: (Array.isArray(p.tec) ? p.tec : []).filter(e => TODOS_EF.includes(e) || e === 'tremor').slice(0, 12) }));
+  o.apt = (Array.isArray(f.apt) ? f.apt : []).slice(0, 60).map(a => ({ n: pTxt(a.n, 60), d: pTxt(a.d, 1500), custo: pNum(a.custo, 0, 20, 0), g: a.g ? 1 : 0 }));
+  const iv = f.inv || {}, arm = iv.arm;
+  o.inv = { ryos: pNum(iv.ryos, 0, 1e7, 0), guard: pNum(iv.guard, 0, 1e7, 0),
+    arm: arm && typeof arm === 'object' ? { n: pTxt(arm.n, 50), abs: pNum(arm.abs, 0, 30, 0), dur: pNum(arm.dur, 0, 30, 0), pen: pNum(arm.pen, -10, 0, 0), tipo: arm.tipo === 'PESADA' ? 'PESADA' : 'LEVE', comp: pNum(arm.comp, 0, 20, 0) } : null,
+    armas: (Array.isArray(iv.armas) ? iv.armas : []).slice(0, 20).map(w => ({ n: pTxt(w.n, 50), dano: pNum(w.dano, 0, 40, 0), usa: ['forca', 'des', 'esp'].includes(w.usa) ? w.usa : 'forca', alc: pTxt(w.alc, 20), crit: pTxt(w.crit || '15~16', 10), tipo: pTxt(w.tipo, 6), comp: Math.max(0, Math.min(20, +w.comp || 0)), d: pTxt(w.d, 300) })),
+    itens: (Array.isArray(iv.itens) ? iv.itens : []).slice(0, 60).map(i => ({ n: pTxt(i.n, 50), q: pNum(i.q, 0, 999, 1), comp: Math.max(0, Math.min(20, +i.comp || 0)), d: pTxt(i.d, 300) })) };
+  o.en = { vitP: pNum((f.en || {}).vitP, -999, 999, 0), chaP: pNum((f.en || {}).chaP, -999, 999, 0) };
+  o.bio = pTxt(f.bio, 8000); o.cur = pTxt(f.cur, 4000); o.xp0 = pNum(f.xp0, 0, 99999, 0);
+  o.mis = (Array.isArray(f.mis) ? f.mis : []).slice(0, 120).map(m => ({ t: pTxt(m.t, 80), rank: RANKS.includes(m.rank) ? m.rank : 'D', exp: pNum(m.exp, 0, 9999, 0), ryos: pNum(m.ryos, 0, 1e7, 0), obs: pTxt(m.obs, 600) }));
+  o.comp = (Array.isArray(f.comp) ? f.comp : []).slice(0, 6).map(q => ({ n: pTxt(q.n, 40), nc: pNum(q.nc, 1, 20, 4), tam: TAMANHOS.some(t => t[0] === q.tam) ? q.tam : 'MÉDIO', vit: pNum(q.vit, 0, 999, 10), vitP: pNum(q.vitP, -999, 999, 0),
+    cha: pNum(q.cha, 0, 999, 10), chaP: pNum(q.chaP, -999, 999, 0), desl: pNum(q.desl, 0, 99, 10), dur: pNum(q.dur, 0, 30, 0), at: Object.fromEntries(ATR.map(([k]) => [k, pNum((q.at || {})[k], 0, 40, 0)])), nota: pTxt(q.nota, 600) }));
+  if (typeof f.gm === 'string') o.gm = pTxt(f.gm, 4000);
+  return o;
+}
+
+// ---------- cálculos ----------
+const CALC = new WeakMap();
+function persCalc(F) {
+  if (CALC.has(F)) return CALC.get(F);
+  const nc = F.nc, a = F.at, cf = new Set(F.cfg), has = k => cf.has(k), up = Math.ceil, half = v => Math.ceil(v / 2), T = TAMANHOS.find(t => t[0] === F.tam) || TAMANHOS[4];
+  const D = { ex: {}, avisos: [] }, ex = (k, t) => { D.ex[k] = t; };
+  const inv = F.inv;
+  D.comp = up((inv.arm ? inv.arm.comp : 0) + inv.armas.reduce((s, w) => s + (+w.comp || 0), 0) + inv.itens.reduce((s, i) => s + (+i.comp || 0) * 1, 0));
+  D.semPen = 3 + (has('burro') ? (a.forca >= 12 ? 3 : a.forca >= 8 ? 2 : a.forca >= 4 ? 1 : 0) : 0); D.pen = Math.min(0, D.semPen - D.comp);
+  ex('carga', `${D.comp} compartimentos ocupados; até ${D.semPen} sem penalidade.` + (D.pen ? ` Penalidade ${D.pen} em Força, Agilidade, Acrobacia e Atletismo, e ${D.pen * 3} m no deslocamento.` : ''));
+  D.prec = { forca: a.forca + D.pen + T[1], des: a.des, agi: a.agi + D.pen, per: a.per, vig: a.vig + T[1], int: a.int, esp: a.esp };
+  // pontos
+  D.ptsAt = Math.max(12, (nc - 2) * 6); D.gastoAt = ATR.reduce((s, [k]) => s + a[k], 0); D.minAt = Math.max(0, up((nc - 4) / 2)); D.maxAt = nc; D.lim = Math.floor(nc / 2);
+  D.ptsPer = Math.max(8, (nc - 2) * 4); D.gastoPer = PERS_PER.reduce((s, [k]) => s + F.per[k][0], 0);
+  D.ptsPod = F.rp === 2 ? (nc >= 20 ? 2 * nc : 2 * nc - 4) : F.rp === 4 ? (nc >= 20 ? 4 * nc : 4 * nc - 8) : (nc >= 20 ? 3 * nc : 3 * nc - 6);
+  D.gastoPod = F.pod.reduce((s, p) => s + p.custo, 0) + F.apt.reduce((s, q) => s + (q.g ? 0 : q.custo), 0);
+  D.ptsHab = has('instinto') ? 13 : 12; D.gastoHab = F.base.cc + F.base.cd + F.base.esq + F.base.lm;
+  D.ptsSoc = Math.max(2, D.minAt * 2); D.gastoSoc = F.soc.yin[0] + F.soc.yang[0];
+  ex('ptsAt', `NC ${nc}: ${D.ptsAt} pontos de atributo (12 no NC 4 e +6 por NC). Cada atributo entre ${D.minAt} e ${nc}.`);
+  ex('ptsPer', `NC ${nc}: ${D.ptsPer} pontos de perícia (8 no NC 4 e +4 por NC). No máximo ${D.lim} pontos em cada perícia.`);
+  ex('ptsPod', `NC ${nc}: ${D.ptsPod} pontos de poder (${F.rp} por NC). Nível de poder até ${D.lim}; aptidão extra custa 2.`);
+  ex('ptsHab', `A base das quatro habilidades soma ${D.ptsHab}; cada uma começa em 3 e pode ir de 1 a 5.`);
+  // perícias
+  D.per = {};
+  for (const [k, n, at, esp] of PERS_PER) { const [pts, outro, perito] = F.per[k];
+    if ((esp === 1 && !pts) || (esp === 2 && !has('quimico'))) { D.per[k] = null; ex('per_' + k, esp === 2 ? `${n} só existe com a aptidão Químico.` : `${n} só pode ser usada com ao menos 1 ponto gasto.`); continue; }
+    let t = half(a[at]) + pts + outro + (perito ? 2 : 0); const extra = [];
+    if ((k === 'acrobacia' || k === 'atletismo') && D.pen) { t += D.pen; extra.push(`${D.pen} carga`); }
+    if (k === 'atletismo' && has('anatomia')) { t += 2; extra.push('+2 Anatomia Gêmea'); }
+    D.per[k] = t; ex('per_' + k, `${n} ${t} = metade de ${ABR[at]} (${half(a[at])}) + ${pts} pontos` + (outro ? ` ${outro > 0 ? '+' : '−'} ${Math.abs(outro)} outro` : '') + (perito ? ' + 2 perito' : '') + (extra.length ? ' ' + extra.join(' ') : '')); }
+  // habilidades de combate
+  const atCC = has('acuidade') ? 'des' : 'forca', tA = T[2];
+  D.cc = F.base.cc + a[atCC] + F.outro.cc - (has('combate_def') ? 2 : 0) + tA; D.cd = F.base.cd + a.des + F.outro.cd + tA;
+  D.esq = F.base.esq + a.agi + F.outro.esq; D.lm = F.base.lm + a.per + F.outro.lm;
+  const o = v => v ? ` ${v > 0 ? '+' : '−'} ${Math.abs(v)} outro` : '';
+  ex('cc', `CC ${D.cc} = base ${F.base.cc} + ${ATN[atCC]} ${a[atCC]}` + (has('acuidade') ? ' (Acuidade)' : '') + o(F.outro.cc) + (has('combate_def') ? ' − 2 Combate Defensivo' : '') + (tA ? ` + ${tA} tamanho` : ''));
+  ex('cd', `CD ${D.cd} = base ${F.base.cd} + Destreza ${a.des}` + o(F.outro.cd) + (tA ? ` + ${tA} tamanho` : ''));
+  ex('esq', `ESQ ${D.esq} = base ${F.base.esq} + Agilidade ${a.agi}` + o(F.outro.esq)); ex('lm', `LM ${D.lm} = base ${F.base.lm} + Percepção ${a.per}` + o(F.outro.lm));
+  D.reacao = 9 + (has('sharingan') ? D.lm : D.esq) + (has('combate_def') ? 3 : 0);
+  ex('reacao', `Dificuldade para acertar: 9 + ${has('sharingan') ? 'LM' : 'ESQ'} ${has('sharingan') ? D.lm : D.esq}` + (has('combate_def') ? ' + 3 Combate Defensivo' : ''));
+  // energias e movimento
+  D.vit = 10 + 5 * nc + 3 * a.vig; D.cha = up((10 + 3 * a.esp) * (has('chakra_exp') ? 1.5 : 1)) + (has('cp2') ? a.int : 0);
+  D.vitA = D.vit - F.en.vitP; D.chaA = D.cha - F.en.chaP;
+  ex('vit', `Vitalidade ${D.vit} = 10 + 5 × NC ${nc} + 3 × Vigor ${a.vig}`); ex('cha', `Chakra ${D.cha} = 10 + 3 × Espírito ${a.esp}` + (has('chakra_exp') ? ', × 1,5 Chakra Expandido' : '') + (has('cp2') ? ` + Inteligência ${a.int}` : ''));
+  D.ini = a.agi + (D.per.prontidao || 0) + (has('diligente') ? 3 : 0) + (has('acelerado') ? 2 : 0) + (has('shikakyu') ? 2 : 0);
+  ex('ini', `Iniciativa +${D.ini} = Agilidade ${a.agi} + Prontidão ${D.per.prontidao || 0}` + (has('diligente') ? ' + 3 Diligente' : '') + (has('acelerado') ? ' + 2 Acelerado' : '') + (has('shikakyu') ? ' + 2 Shikyaku' : '') + '. Rola 1d8 + isso.');
+  const sj = has('shunjutsu1'), m = sj ? a.esp : a.agi, A = has('velocista'), B = sj ? has('shunjutsu3') : has('acelerado');
+  const extraD = A && B ? 10 + m / 2 : (A ? m / 2 : 0) + (B ? m / 2 : 0);
+  D.desl = Math.max(10, up(10 + m / 2 + extraD) + (has('voo') ? 10 : 0) + Math.min(0, D.pen * 3) + T[6]);
+  ex('desl', `Deslocamento ${D.desl} m = 10 + metade de ${sj ? 'Espírito' : 'Agilidade'} ${m}` + (extraD ? ` + ${up(extraD)} de aptidões` : '') + (has('voo') ? ' + 10 Voo' : '') + (D.pen ? ` ${D.pen * 3} carga` : '') + (T[6] ? ` ${T[6] > 0 ? '+' : '−'} ${Math.abs(T[6])} tamanho` : ''));
+  D.alcCC = T[3]; D.abs = inv.arm ? inv.arm.abs : 0; D.dur = (inv.arm ? inv.arm.dur : 0) + F.durM;
+  // social (Yin e Yang)
+  const vSoc = (lst, op, pts) => { const q = lst.find(z => z[0] === op); const v = q ? Math.max(...q[1].map(k => k === 'arte' ? (D.per.arte || 0) : a[k])) : 0; return [pts + half(v), q ? q[1].map(k => k === 'arte' ? 'Arte' : ABR[k]).join(' ou ') : '']; };
+  [D.yin, D.yinA] = vSoc(YIN, F.soc.yin[1], F.soc.yin[0]); [D.yang, D.yangA] = vSoc(YANG, F.soc.yang[1], F.soc.yang[0]);
+  ex('yin', `Yin ${D.yin} = ${F.soc.yin[0]} pontos + metade de ${D.yinA}`); ex('yang', `Yang ${D.yang} = ${F.soc.yang[0]} pontos + metade de ${D.yangA}`);
+  // dano
+  D.bonus = { forca: half(a.forca), des: half(a.des), esp: half(has('cp1') ? Math.max(a.int, a.esp) : a.esp) };
+  D.armas = inv.armas.map(w => { const t = w.dano + D.bonus[w.usa]; return { t, g: [1, 2, 3, 4].map(k => k * t) }; });
+  D.poderes = F.pod.map(p => { const tb = poderTab(p.n), b = tb && /^\d+$/.test(tb[1]) ? +tb[1] : 0, t = p.nv + D.bonus.esp + b; return { tb, t, g: [1, 2, 3, 4].map(k => k * t), dif: 9 + p.nv + D.bonus.esp + (tb && /^\d+$/.test(tb[3]) ? +tb[3] : 0) }; });
+  // elementos que a mesa sabe animar
+  D.pod = {}; for (const p of F.pod) { const el = elemDePoder(p.n); if (el && p.nv > (D.pod[el] || 0)) D.pod[el] = p.nv; }
+  // Databook: cada nota vai de 0 a 5 (valor ÷ máximo de referência da Ficha Base × 5)
+  const magen = Math.max(0, ...F.pod.filter(p => semAc(p.n).includes('MAGEN')).map(p => p.nv));
+  const selos = (D.per.concentracao || 0) + (D.per.prestidigitacao || 0) + (has('cp1') ? a.int : a.esp);
+  D.db = [['Ninjutsu', D.cha + D.cd, 131, 'Chakra + CD'], ['Taijutsu', D.cc, 26, 'CC'], ['Genjutsu', a.int + magen, 30, 'Inteligência + nível de Magen'], ['Inteligência', a.int, 20, 'Inteligência'],
+    ['Força', a.forca, 20, 'Força'], ['Velocidade', D.desl + (D.per.atletismo || 0), 72, 'deslocamento + Atletismo'], ['Estamina', D.vit, 230, 'Vitalidade'], ['Selos', selos, 64, 'Concentração + Prestidigitação + ' + (has('cp1') ? 'Inteligência' : 'Espírito')]]
+    .map(([n, v, mx, f]) => ({ n, v, mx, f, nota: Math.ceil(v / mx * 500) / 100 }));
+  D.dbTotal = Math.round(D.db.reduce((s, q) => s + Math.min(5, q.nota), 0) * 100) / 100;
+  // para o combate da mesa
+  D.stats = { agi: a.agi, esp: a.esp, arte: D.per.arte || 0, ini: D.ini, cc: D.cc, cd: D.cd, esq: D.esq, lm: D.lm, pod: D.pod };
+  // avisos de regra
+  const av = (t, erro, aba) => D.avisos.push({ t, erro: !!erro, aba });
+  const conta = (g, p, nome, aba) => { if (g < p) av(`Sobram ${p - g} ${nome}`, 0, aba); else if (g > p) av(`${nome[0].toUpperCase() + nome.slice(1)}: ${g} gastos de ${p}`, 1, aba); };
+  conta(D.gastoAt, D.ptsAt, 'pontos de atributo', 'atributos'); conta(D.gastoPer, D.ptsPer, 'pontos de perícia', 'pericias'); conta(D.gastoPod, D.ptsPod, 'pontos de poder', 'poderes');
+  if (D.gastoHab !== D.ptsHab) av(`A base das habilidades soma ${D.gastoHab}; deve somar ${D.ptsHab}`, 1, 'combate');
+  for (const k of ['cc', 'cd', 'esq', 'lm']) if (F.base[k] < 1 || F.base[k] > 5) av(`Base de ${k.toUpperCase()} fora de 1 a 5`, 1, 'combate');
+  for (const [k, n] of ATR) { if (a[k] < D.minAt) av(`${n} abaixo do mínimo ${D.minAt}`, 1, 'atributos'); if (a[k] > nc) av(`${n} acima do máximo ${nc}`, 1, 'atributos'); }
+  for (const [k, n] of PERS_PER) if (F.per[k][0] > D.lim) av(`${n}: ${F.per[k][0]} pontos (máximo ${D.lim})`, 1, 'pericias');
+  for (const p of F.pod) if (p.nv > D.lim) av(`${p.n || 'Poder'} nível ${p.nv} acima do limite ${D.lim}`, 1, 'poderes');
+  if (D.gastoSoc > D.ptsSoc) av(`Yin e Yang: ${D.gastoSoc} pontos de ${D.ptsSoc}`, 1, 'atributos');
+  if (F.apt.filter(q => q.g).length > 3) av('Mais de 3 aptidões gratuitas', 1, 'poderes');
+  if (D.vitA <= 0) av('Vitalidade zerada', 1, 'combate');
+  CALC.set(F, D); return D;
+}
+function tecDe(c) { const F = persDe(c); if (!F) return TEC0[c] || []; const out = []; for (const p of F.pod) { const el = elemDePoder(p.n); if (el && ELEM[el]) for (const e of p.tec) if (EFE[e]) out.push([el, e]); } return out; }
+
+// ---------- quem guarda e quem publica ----------
+// Mestre: as fichas ficam na mesa dele (salvamento local e arquivo) e cada uma vai assinada no seu canal.
+// Jogador: edita a ficha do personagem que está usando; a edição vai ao mestre, que confere e publica. Até lá fica guardada aqui.
+// Sem mesa: tudo fica neste navegador.
+const pendKey = c => 'mvila:pers:' + (mesa ? mesa.room : 'solo') + ':' + c;
+try { const v = JSON.parse(localStorage.getItem('mvila:solo:pers') || 'null'); if (v && typeof v === 'object') { SOLOP = {}; for (const c of CHARS) if (v[c]) { const f = limpaPers(v[c], c); if (f) SOLOP[c] = f; } } } catch (e) {}
+if (!MESA && !SOLOP) SOLOP = persPadrao();
+function persCarregaMesa(sv, arquivo) {
+  if (!table) return; const p = sv && sv.pers;
+  if (p && typeof p === 'object') { table.pers = {}; for (const c of CHARS) if (p[c]) { const f = limpaPers(p[c], c); if (f) table.pers[c] = f; } table.persFresh = 0; }
+  else if (!arquivo && !table.pers) { table.pers = persPadrao(); table.persFresh = 1; }
+  const h = sv && sv.persHist; table.persHist = {};
+  if (h && typeof h === 'object') for (const c of CHARS) if (Array.isArray(h[c])) table.persHist[c] = h[c].slice(-20).map(e => ({ at: +e.at || 0, q: pTxt(e.q, 30), f: limpaPers(e.f, c) })).filter(e => e.f);
+}
+const persPubT = {};
+function persPublica(c) { if (!mesa || !mesa.isGM || !table.pers[c]) return; clearTimeout(persPubT[c]); persPubT[c] = setTimeout(() => mesa.sendFicha(c, persPublicaObj(table.pers[c])).catch(() => {}), 400); }
+function persPublicaObj(f) { const o = Object.assign({}, f); delete o.gm; return o; }      // as notas do mestre nunca saem do navegador dele
+function persPublicaTudo() { if (!mesa || !mesa.isGM || !table || !table.pers) return; for (const c of Object.keys(table.pers)) mesa.sendFicha(c, persPublicaObj(table.pers[c])).catch(() => {}); }
+function persHistPoe(c, antiga, quem) {
+  if (!antiga) return; const H = table.persHist[c] || (table.persHist[c] = []), ult = H[H.length - 1];
+  if (ult && Date.now() - ult.at < 90000 && ult.q === quem) return;            // várias mudanças seguidas da mesma pessoa viram uma entrada
+  H.push({ at: Date.now(), q: quem, f: antiga }); if (H.length > 20) H.splice(0, H.length - 20);
+}
+// grava a ficha do personagem c (quem edita é esta tela)
+const persSendT = {};
+function persGrava(c, F) {
+  CALC.delete(F);
+  if (!MESA) { SOLOP[c] = F; try { localStorage.setItem('mvila:solo:pers', JSON.stringify(SOLOP)); } catch (e) {} persMudou(c); return; }
+  if (mesa && mesa.isGM) { const velha = table.pers[c]; if (velha !== F) persHistPoe(c, velha ? JSON.parse(JSON.stringify(velha)) : null, 'Mestre'); table.pers[c] = F; table.persFresh = 0; saveTable(); persPublica(c); persMudou(c); return; }
+  if (!mesa) return;
+  F.u = rid(); persPend[c] = { f: F, at: Date.now() }; try { localStorage.setItem(pendKey(c), JSON.stringify(persPend[c])); } catch (e) {}
+  clearTimeout(persSendT[c]); persSendT[c] = setTimeout(() => persEnvia(c), 500); persMudou(c);
+}
+function persEnvia(c) { const p = persPend[c]; if (!p || !mesa) return; mesa.sendEvent({ k: 'pers', c, f: persPublicaObj(p.f), quem: nome(me.c) || 'Jogador' }).catch(() => {}); }
+// no mestre: proposta de um jogador
+function persRecebeProposta(msg) {
+  if (!mesa || !mesa.isGM || !table || !CHARS.includes(msg.c)) return; const c = msg.c, velha = table.pers[c];
+  const F = limpaPers(msg.f, c); if (!F) return;
+  if (velha) { F.nc = velha.nc; F.rp = velha.rp; if (velha.gm) F.gm = velha.gm; }                 // NC e regra de pontos são do mestre
+  else { F.nc = Math.max(...Object.values(table.pers).map(q => q.nc), 4); }
+  persHistPoe(c, velha ? JSON.parse(JSON.stringify(velha)) : null, pTxt(msg.quem, 30) || nome(c));
+  table.pers[c] = F; table.persFresh = 0; saveTable(); persPublica(c); persMudou(c);
+  if (!velha) say(`${nomeNovo(c)}: ficha nova criada por um jogador`);
+}
+// num jogador (e no mestre, para recuperar): ficha publicada
+let persReenviou = false;
+function persRecebe(c, f, retained) {
+  if (!CHARS.includes(c)) return; const F = limpaPers(f, c); if (!F) return;
+  if (mesa && mesa.isGM) { if (table && table.persFresh && retained) { table.pers[c] = Object.assign(F, { gm: (table.pers[c] || {}).gm }); saveTable(); persMudou(c); } return; }
+  PERS[c] = F; const p = persPend[c];
+  if (p && (p.f.u === F.u || Date.now() - p.at > 864e5)) { delete persPend[c]; try { localStorage.removeItem(pendKey(c)); } catch (e) {} }
+  if (!persReenviou && Object.keys(persPend).length) { persReenviou = true; setTimeout(() => { for (const k of Object.keys(persPend)) persEnvia(k); }, 1500); }   // o mestre voltou: reenviar o que ficou guardado
+  persMudou(c);
+}
+if (MESA) setTimeout(() => { if (mesa && !mesa.isGM) for (const c of CHARS) { try { const v = JSON.parse(localStorage.getItem(pendKey(c)) || 'null'); if (v && v.f) { const f = limpaPers(v.f, c); if (f) { f.u = v.f.u; persPend[c] = { f, at: +v.at || Date.now() }; } } } catch (e) {} } }, 2500);
+function persMudou(c) { persPicker(); if (pvAberto() && c === pv.c) pvAtualiza(); if (fichaPronta && fiAlvo && fiAlvo.t === 'u' && fiAlvo.id === 'c:' + c) fichaMonta(); }
+function podeEditar(c) { return !MESA || (mesa && mesa.isGM) || (!!me.c && me.c === c); }
+// botões dos personagens novos na barra de escolha
+function persPicker() {
+  const box = $('chars'); if (!box) return;
+  for (const c of EXTRAS) { let k = box.querySelector(`canvas[data-c="${c}"]`); const F = persDe(c);
+    if (!F) { if (k) k.remove(); continue; }
+    if (!k) { k = document.createElement('canvas'); k.width = k.height = 32; k.dataset.c = c; k.onclick = () => pick(c); box.appendChild(k); }
+    k.title = nomeNovo(c); const e = E(visDe(c) + '_parado_frente'), kc = k.getContext('2d'); kc.clearRect(0, 0, 32, 32); kc.imageSmoothingEnabled = false; if (e) kc.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32);
+    k.classList.toggle('on', me.c === c); }
+}
+// ---------- painel da ficha ----------
+const pvEl = $('pers'), pv = { c: null, aba: 'databook', F: null, criar: -1, stale: false };
+const ABAS = [['databook', 'Databook'], ['atributos', 'Atributos'], ['combate', 'Combate'], ['pericias', 'Perícias'], ['poderes', 'Poderes'], ['equip', 'Equipamento'], ['missoes', 'Missões'], ['comp', 'Companheiros'], ['mestre', 'Mestre']];
+const PASSOS = [['origem', 'Origem'], ['atributos', 'Atributos'], ['combate', 'Combate'], ['pericias', 'Perícias'], ['poderes', 'Poderes'], ['equip', 'Equipamento'], ['historia', 'História']];
+const pvAberto = () => !!pvEl && !pvEl.hidden;
+const h = (tag, cls, ...kids) => { const e = document.createElement(tag); if (cls) e.className = cls; for (const k of kids) if (k != null && k !== false) e.append(k); return e; };
+const pode = () => podeEditar(pv.c) || pv.criar >= 0;
+const clone = o => JSON.parse(JSON.stringify(o));
+let pvSalvaT = 0;
+function mudar(fn, semRender) {
+  if (!pode()) return; fn(pv.F); CALC.delete(pv.F);
+  clearTimeout(pvSalvaT); pvSalvaT = setTimeout(() => persGrava(pv.c, pv.F), 300);
+  if (semRender) { pvPalco(); pvAvisos(); } else pvRender();
+}
+function abrePers(c, aba) {
+  if (!pvEl) return; c = c || me.c || CHARS.find(q => persDe(q)); if (!c) return;
+  const F = persDe(c); if (!F) return;
+  pv.c = c; pv.F = clone(F); pv.criar = -1; pv.aba = aba || pv.aba || 'databook'; if (pv.aba === 'mestre' && !ehMestre()) pv.aba = 'databook';
+  pvEl.hidden = false; $('persBtn').setAttribute('aria-expanded', 'true'); document.body.classList.add('fichaAberta'); pvRender();
+}
+function fechaPers() { if (!pvEl) return; clearTimeout(pvSalvaT); if (pv.F && pode() && pv.c) persGrava(pv.c, pv.F); pvEl.hidden = true; pv.criar = -1; $('persBtn').setAttribute('aria-expanded', 'false'); document.body.classList.remove('fichaAberta'); }
+function criaPers() {
+  const c = EXTRAS.find(q => !persDe(q)); if (!c) { say('Já existem 4 personagens novos: peça ao mestre para apagar um'); return; }
+  const ncs = CHARS.map(q => persDe(q)).filter(Boolean).map(f => f.nc);
+  pv.c = c; pv.F = limpaPers({ nc: Math.max(4, ...ncs), vis: 'inimigo0', base: { cc: 3, cd: 3, esq: 3, lm: 3 }, id: { patente: 'Genin' }, apt: [{ n: '', g: 1 }, { n: '', g: 1 }, { n: '', g: 1 }] }, c);
+  pv.criar = 0; pv.aba = 'origem'; pvEl.hidden = false; $('persBtn').setAttribute('aria-expanded', 'true'); document.body.classList.add('fichaAberta'); pvRender();
+}
+function pvAtualiza() {
+  const F = persDe(pv.c); if (!F || pv.criar >= 0) return;
+  const a = document.activeElement; if (a && pvEl.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && pode()) { pv.stale = true; return; }
+  pv.F = clone(F); pv.stale = false; pvRender();
+}
+// ----- palco: o personagem no meio -----
+function pvPalco() {
+  const F = pv.F, D = persCalc(F), st = $('pvPalco'); st.textContent = '';
+  const topo = h('div', 'pvTopo');
+  const sel = h('select'); sel.setAttribute('aria-label', 'Ficha de quem');
+  for (const c of CHARS) { const f = persDe(c); if (!f && c !== pv.c) continue; const o = h('option', null, (f || F).id.nome ? (c === 'kazuki' ? 'Kazuki' : (f || F).id.nome) : nome(c)); o.value = c; o.selected = c === pv.c; sel.append(o); }
+  sel.disabled = pv.criar >= 0; sel.onchange = () => { persGrava(pv.c, pv.F); abrePers(sel.value, pv.aba); };
+  topo.append(sel); if (pv.criar < 0) { const nv = h('button', 'pvNovo', 'Criar personagem'); nv.type = 'button'; nv.onclick = criaPers; topo.append(nv); }
+  const fx = h('button', 'pvFecha', 'Fechar'); fx.type = 'button'; fx.onclick = fechaPers; topo.append(fx); st.append(topo);
+  const cv = h('canvas', 'pvBoneco'); cv.width = 32; cv.height = 32; const e = E((EXTRAS.includes(pv.c) ? (F.vis || 'inimigo0') : pv.c) + '_parado_frente');
+  if (e) { const x = cv.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32); }
+  const bon = h('div', 'pvBon', cv); st.append(bon);
+  st.append(h('div', 'pvNome', F.id.nome || 'Sem nome'), h('div', 'pvSub', [F.id.cla, F.id.patente, 'NC ' + F.nc].filter(Boolean).join(' · ')));
+  const barra = (rot, a, t, cor, k) => { const b = h('div', 'pvBar ' + k); b.style.setProperty('--c', cor); const pct = t > 0 ? Math.max(0, Math.min(1, a / t)) : 0;
+    const tr = h('div', 'tr'); tr.style.setProperty('--p', pct); const lb = h('span', 'lb', rot); const v = h('b', null, `${a} / ${t}`); v.dataset.ex = k;
+    b.append(h('div', 'cab', lb, v), tr);
+    if (pode() && pv.criar < 0) { const m = h('button', null, '−'), p = h('button', null, '+'); m.type = p.type = 'button'; m.setAttribute('aria-label', `Perder 1 de ${rot}`); p.setAttribute('aria-label', `Recuperar 1 de ${rot}`);
+      const key = k === 'vit' ? 'vitP' : 'chaP'; m.onclick = () => mudar(f => { f.en[key]++; }); p.onclick = () => mudar(f => { f.en[key] = Math.max(0, f.en[key] - 1); }); b.querySelector('.cab').append(h('span', 'bt', m, p)); }
+    return b; };
+  st.append(barra('Vitalidade', D.vitA, D.vit, '#c45a4a', 'vit'), barra('Chakra', D.chaA, D.cha, '#4f7fc8', 'cha'));
+  const nums = h('div', 'pvNums'); for (const [k, rot, v] of [['ini', 'Iniciativa', '+' + D.ini], ['desl', 'Desloc.', D.desl + ' m'], ['reacao', 'Esquiva', D.reacao]]) { const q = h('div', null, h('b', null, v), h('span', null, rot)); q.dataset.ex = k; nums.append(q); }
+  st.append(nums);
+  const pts = h('div', 'pvPts'); for (const [rot, g, t, aba, k] of [['Atributos', D.gastoAt, D.ptsAt, 'atributos', 'ptsAt'], ['Perícias', D.gastoPer, D.ptsPer, 'pericias', 'ptsPer'], ['Poder', D.gastoPod, D.ptsPod, 'poderes', 'ptsPod']]) {
+    const b = h('button', g === t ? 'ok' : g > t ? 'erro' : 'falta', h('span', null, rot), h('b', null, g < t ? `+${t - g}` : g > t ? `${t - g}` : '✓')); b.type = 'button'; b.dataset.ex = k;
+    b.title = `${g} de ${t}`; b.onclick = () => { pv.aba = pv.criar >= 0 ? (PASSOS.find(p => p[0] === aba) ? aba : pv.aba) : aba; if (pv.criar >= 0) pv.criar = PASSOS.findIndex(p => p[0] === pv.aba); pvRender(); }; pts.append(b); }
+  st.append(pts);
+  st.append(pvDatabook(D, 'pvDb'));
+}
+function pvDatabook(D, cls) {
+  const box = h('div', 'db ' + cls); box.append(h('div', 'dbT', h('span', null, 'Databook'), h('b', null, `${D.dbTotal} / 40`)));
+  for (const q of D.db) { const r = h('div', 'dbL'); r.dataset.ex = 'db_' + q.n; const cel = h('div', 'cel'); const n = Math.min(10, Math.round(q.nota * 2));
+    for (let i = 0; i < 10; i++) cel.append(h('i', i < n ? 'on' : null)); r.append(h('span', null, q.n), cel, h('b', null, (Math.round(q.nota * 10) / 10).toLocaleString('pt-BR'))); box.append(r);
+    D.ex['db_' + q.n] = `${q.n} ${q.nota.toLocaleString('pt-BR')} = ${q.f} (${q.v}) ÷ ${q.mx} × 5`; }
+  return box;
+}
+function pvAvisos() { const box = $('pvAvisos'); box.textContent = ''; const D = persCalc(pv.F);
+  for (const a of D.avisos.slice(0, 4)) { const b = h('button', a.erro ? 'erro' : 'falta', a.t); b.type = 'button'; b.onclick = () => { if (pv.criar >= 0) { const i = PASSOS.findIndex(p => p[0] === a.aba); if (i >= 0) { pv.criar = i; pv.aba = a.aba; } } else pv.aba = a.aba; pvRender(); }; box.append(b); }
+  if (D.avisos.length > 4) box.append(h('span', 'mais', `+${D.avisos.length - 4}`));
+  const pend = !mesa || mesa.isGM ? null : persPend[pv.c]; if (pend) box.append(h('span', 'pend', 'Esperando o mestre confirmar'));
+  if (!pode()) box.append(h('span', 'pend', 'Só leitura: esta ficha é de outro jogador'));
+}
+function pvRender() {
+  if (!pvAberto() || !pv.F) return; if (pv.stale && pv.criar < 0) { const F = persDe(pv.c); if (F) pv.F = clone(F); pv.stale = false; } pvPalco(); pvAvisos();
+  const nav = $('pvAbas'), lista = pv.criar >= 0 ? PASSOS : ABAS.filter(a => a[0] !== 'mestre' || ehMestre()), chave = lista.map(q => q[0]).join();
+  if (nav.dataset.k !== chave) { nav.textContent = ''; nav.dataset.k = chave;            // as abas só são refeitas quando mudam: um clique nelas não se perde numa atualização
+    lista.forEach(([k, rot], i) => { const b = h('button', null, pv.criar >= 0 ? h('i', null, i + 1) : null, rot); b.type = 'button'; b.setAttribute('role', 'tab'); b.dataset.aba = k;
+      b.onclick = () => { pv.aba = k; if (pv.criar >= 0) pv.criar = i; pvRender(); }; nav.append(b); }); }
+  for (const b of nav.children) b.setAttribute('aria-selected', b.dataset.aba === pv.aba);
+  const corpo = $('pvCorpo'), sy = corpo.scrollTop; corpo.textContent = ''; corpo.classList.toggle('ro', !pode());
+  (ABA_FN[pv.aba] || ABA_FN.databook)(corpo, pv.F, persCalc(pv.F));
+  if (!pode()) for (const el of corpo.querySelectorAll('input,textarea,select,button.ed')) el.disabled = true;
+  corpo.scrollTop = sy;
+  const ps = $('pvPassos'); ps.hidden = pv.criar < 0; ps.textContent = '';
+  if (pv.criar >= 0) { const v = h('button', null, 'Voltar'), n = h('button', 'on', pv.criar === PASSOS.length - 1 ? 'Concluir' : 'Próximo'); v.type = n.type = 'button'; v.disabled = pv.criar === 0;
+    v.onclick = () => { pv.criar--; pv.aba = PASSOS[pv.criar][0]; pvRender(); corpo.scrollTop = 0; };
+    n.onclick = () => { if (pv.criar === 0 && !pv.F.id.nome.trim()) { say('Dê um nome ao personagem'); return; }
+      if (pv.criar < PASSOS.length - 1) { persGrava(pv.c, pv.F); pv.criar++; pv.aba = PASSOS[pv.criar][0]; pvRender(); corpo.scrollTop = 0; return; }
+      persGrava(pv.c, pv.F); const c = pv.c; pv.criar = -1; pv.aba = 'databook'; say(`${nomeNovo(c)} está pronto`); if (MESA && !(mesa && mesa.isGM)) pick(c); pvRender(); };
+    ps.append(v, h('span', null, `Passo ${pv.criar + 1} de ${PASSOS.length}`), n); }
+  $('pvExplica').textContent = 'Toque num número para ver de onde ele vem.';
+}
+// ----- peças dos formulários -----
+function campo(rot, val, set, o = {}) {
+  const l = h('label', 'cp' + (o.cls ? ' ' + o.cls : '')); l.append(h('span', null, rot));
+  const i = h(o.area ? 'textarea' : 'input'); if (!o.area) i.type = o.tipo || 'text'; i.value = val == null ? '' : val; if (o.max) i.maxLength = o.max; if (o.rows) i.rows = o.rows; if (o.ph) i.placeholder = o.ph;
+  if (o.tipo === 'number') { i.inputMode = 'numeric'; if (o.min != null) i.min = o.min; if (o.maxv != null) i.max = o.maxv; }
+  if (o.lista) i.setAttribute('list', o.lista);
+  i.oninput = () => mudar(f => set(f, o.tipo === 'number' ? (+i.value || 0) : i.value), true);
+  // número muda totais da página: refaz depois que o clique que tirou o foco terminar, e só se ninguém estiver digitando em outro campo
+  if (o.tipo === 'number') i.onchange = () => setTimeout(() => { const a = document.activeElement; if (!(a && pvEl.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName))) pvRender(); }, 300);
+  l.append(i); return l;
+}
+function passo(v, menos, mais, o = {}) {
+  const w = h('span', 'ps'); const m = h('button', 'ed', '−'), p = h('button', 'ed', '+'); m.type = p.type = 'button';
+  m.setAttribute('aria-label', 'Diminuir ' + (o.rot || '')); p.setAttribute('aria-label', 'Aumentar ' + (o.rot || ''));
+  m.disabled = !!o.semMenos; p.disabled = !!o.semMais; m.onclick = () => mudar(menos); p.onclick = () => mudar(mais);
+  const b = h('b', null, v); if (o.ex) b.dataset.ex = o.ex; w.append(m, b, p); return w;
+}
+const titulo = (t, extra) => h('h3', null, t, extra || null);
+const contador = (g, t, k) => { const s = h('span', 'cont ' + (g === t ? 'ok' : g > t ? 'erro' : 'falta'), `${g} de ${t}`); s.dataset.ex = k; return s; };
+function seletor(rot, val, ops, set) { const l = h('label', 'cp'); l.append(h('span', null, rot)); const s = h('select'); for (const o of ops) { const [v, t] = Array.isArray(o) ? o : [o, o]; const op = h('option', null, t); op.value = v; op.selected = v === val; s.append(op); }
+  s.onchange = () => mudar(f => set(f, s.value)); l.append(s); return l; }
+function remover(fn, rot) { const b = h('button', 'ed rm', 'Tirar'); b.type = 'button'; b.setAttribute('aria-label', 'Tirar ' + rot); b.onclick = () => mudar(fn); return b; }
+function somar(rot, fn) { const b = h('button', 'ed add', rot); b.type = 'button'; b.onclick = () => mudar(fn); return b; }
+// ----- abas -----
+const ABA_FN = {
+  databook(c, F, D) {
+    const grade = h('div', 'grade2');
+    for (const [k, rot] of [['nome', 'Nome'], ['cla', 'Clã ou hijutsu'], ['patente', 'Patente'], ['filiacao', 'Filiação'], ['idade', 'Idade'], ['genero', 'Gênero'], ['tendencia', 'Tendência'], ['nasc', 'Local de nascimento']])
+      grade.append(campo(rot, F.id[k], (f, v) => { f.id[k] = v.slice(0, 60); }, { max: 60 }));
+    c.append(titulo('Quem é'), grade);
+    c.append(titulo('Jeito ninja'), campo('', F.id.jeito, (f, v) => { f.id.jeito = v.slice(0, 160); }, { max: 160, cls: 'jeito', ph: 'A frase que ele leva consigo' }));
+    c.append(titulo('Biografia'), campo('', F.bio, (f, v) => { f.bio = v.slice(0, 8000); }, { area: 1, rows: 9, max: 8000, cls: 'longo', ph: 'De onde veio, o que viveu, o que quer' }));
+    c.append(titulo('Curiosidades'), campo('', F.cur, (f, v) => { f.cur = v.slice(0, 4000); }, { area: 1, rows: 5, max: 4000, cls: 'longo', ph: 'Manias, gostos, detalhes' }));
+    c.append(titulo('Mapa de poder'), pvDatabook(D, 'dbAba'));
+  },
+  origem(c, F, D) {
+    const grade = h('div', 'grade2');
+    for (const [k, rot] of [['nome', 'Nome'], ['cla', 'Clã ou hijutsu'], ['patente', 'Patente'], ['filiacao', 'Filiação'], ['idade', 'Idade'], ['genero', 'Gênero'], ['tendencia', 'Tendência'], ['nasc', 'Local de nascimento']])
+      grade.append(campo(rot, F.id[k], (f, v) => { f.id[k] = v.slice(0, 60); }, { max: 60 }));
+    c.append(titulo('Quem é'), grade);
+    if (EXTRAS.includes(pv.c)) { const vs = h('div', 'visuais');
+      for (const [k, rot] of VISUAIS) { const b = h('button', 'ed vis' + (F.vis === k ? ' on' : '')); b.type = 'button'; b.title = rot; b.setAttribute('aria-label', rot); b.setAttribute('aria-pressed', F.vis === k);
+        const cv = h('canvas'); cv.width = cv.height = 32; const e = E(k + '_parado_frente'); if (e) { const x = cv.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32); }
+        b.append(cv); b.onclick = () => mudar(f => { f.vis = k; }); vs.append(b); }
+      c.append(titulo('Visual'), vs); }
+    c.append(h('p', 'nota', `Nível de campanha ${F.nc}. Quem decide o NC é o mestre.`));
+  },
+  historia(c, F, D) { ABA_FN.databook(c, F, D); c.querySelector('.grade2').previousSibling.remove(); c.querySelector('.grade2').remove(); },
+  atributos(c, F, D) {
+    c.append(titulo('Atributos', contador(D.gastoAt, D.ptsAt, 'ptsAt')));
+    const t = h('div', 'linhas');
+    for (const [k, n] of ATR) { const v = F.at[k], pr = D.prec[k]; const r = h('div', 'ln');
+      r.append(h('span', 'nm', n), passo(v, f => { f.at[k] = Math.max(0, f.at[k] - 1); }, f => { f.at[k]++; }, { rot: n, semMenos: v <= D.minAt, semMais: v >= F.nc }),
+        h('span', 'det', pr !== v ? `precisão ${pr}` : ''));
+      const rm = h('label', 'chk'); const cb = h('input'); cb.type = 'checkbox'; cb.checked = F.rm.includes(k); cb.onchange = () => mudar(f => { f.rm = cb.checked ? f.rm.concat([k]) : f.rm.filter(q => q !== k); });
+      rm.append(cb, h('span', null, 'Resistência maior')); r.append(rm); t.append(r); }
+    c.append(t, h('p', 'nota', `Cada atributo entre ${D.minAt} e ${F.nc} no NC ${F.nc}.`));
+    c.append(titulo('Social: Yin e Yang', contador(D.gastoSoc, D.ptsSoc, 'soc')));
+    D.ex.soc = `Pontos sociais: o dobro do atributo mínimo (${D.ptsSoc}). Cada lado soma os pontos e metade do atributo da opção.`;
+    for (const [lado, lista, rot] of [['yin', YIN, 'Yin'], ['yang', YANG, 'Yang']]) { const r = h('div', 'ln');
+      r.append(h('span', 'nm', rot), passo(F.soc[lado][0], f => { f.soc[lado][0] = Math.max(0, f.soc[lado][0] - 1); }, f => { f.soc[lado][0]++; }, { rot }),
+        seletor('', F.soc[lado][1], lista.map(q => q[0]), (f, v) => { f.soc[lado][1] = v; }));
+      const tot = h('b', 'tot', D[lado]); tot.dataset.ex = lado; r.append(tot); t.append(r); c.append(r); }
+  },
+  combate(c, F, D) {
+    c.append(titulo('Habilidades de combate', contador(D.gastoHab, D.ptsHab, 'ptsHab')));
+    const t = h('div', 'linhas');
+    for (const [k, rot] of [['cc', 'Combate Corporal'], ['cd', 'Combate à Distância'], ['esq', 'Esquiva'], ['lm', 'Ler Movimento']]) { const r = h('div', 'ln');
+      const tot = h('b', 'tot grande', D[k]); tot.dataset.ex = k;
+      r.append(h('span', 'nm', rot), tot, h('span', 'det', 'base'), passo(F.base[k], f => { f.base[k]--; }, f => { f.base[k]++; }, { rot: 'base de ' + rot, semMenos: F.base[k] <= 1, semMais: F.base[k] >= 5 }),
+        campo('outro', F.outro[k], (f, v) => { f.outro[k] = Math.max(-20, Math.min(20, Math.round(v))); }, { tipo: 'number', cls: 'mini' })); t.append(r); }
+    c.append(t);
+    c.append(titulo('Energias e movimento'));
+    const g = h('div', 'nums');
+    for (const [k, rot, v] of [['vit', 'Vitalidade', D.vit], ['cha', 'Chakra', D.cha], ['ini', 'Iniciativa', '+' + D.ini], ['desl', 'Deslocamento', D.desl + ' m'], ['reacao', 'Reação de esquiva', D.reacao], ['alc', 'Alcance CC', D.alcCC + ' m'], ['abs', 'Absorção', D.abs], ['dur', 'Dureza', D.dur]]) {
+      const q = h('div', null, h('b', null, v), h('span', null, rot)); q.dataset.ex = k; g.append(q); }
+    D.ex.alc = 'Alcance corpo a corpo pelo tamanho.'; D.ex.abs = 'Absorção da armadura vestida.'; D.ex.dur = 'Dureza da armadura mais a dureza extra.';
+    c.append(g);
+    const g2 = h('div', 'grade2'); g2.append(seletor('Tamanho', F.tam, TAMANHOS.map(t => t[0]), (f, v) => { f.tam = v; }), campo('Sensor', F.sensor, (f, v) => { f.sensor = v.slice(0, 40); }, { lista: 'pvSensores' }),
+      campo('Dureza extra', F.durM, (f, v) => { f.durM = Math.max(0, Math.min(20, Math.round(v))); }, { tipo: 'number', cls: 'mini' })); c.append(g2);
+    c.append(titulo('Marcadores que mudam números'));
+    const mk = h('div', 'marcas');
+    for (const [k, n, d] of MARCAS) { const l = h('label', 'chk'); const cb = h('input'); cb.type = 'checkbox'; cb.checked = F.cfg.includes(k);
+      cb.onchange = () => mudar(f => { f.cfg = cb.checked ? f.cfg.concat([k]) : f.cfg.filter(q => q !== k); }); l.append(cb, h('span', null, h('b', null, n), ' ', d)); mk.append(l); }
+    c.append(mk);
+    c.append(titulo('Dano'));
+    const dn = h('div', 'linhas');
+    const lin = (n, t, g, ex) => { const r = h('div', 'ln dano'); r.append(h('span', 'nm', n)); for (let i = 0; i < 4; i++) r.append(h('span', 'g', h('small', null, `grau ${i + 1}`), h('b', null, g[i]))); r.dataset.ex = ex; return r; };
+    D.ex.dfor = `Desarmado: metade da Força (${D.bonus.forca}). Graus 1 a 4 multiplicam o total.`;
+    dn.append(lin('Desarmado', D.bonus.forca, [1, 2, 3, 4].map(k => k * Math.max(1, D.bonus.forca)), 'dfor'));
+    F.inv.armas.forEach((w, i) => { D.ex['darma' + i] = `${w.n || 'Arma'}: dano ${w.dano} + metade de ${ABR[w.usa]} (${D.bonus[w.usa]})`; dn.append(lin(w.n || 'Arma', D.armas[i].t, D.armas[i].g, 'darma' + i)); });
+    F.pod.forEach((p, i) => { if (!p.nv) return; const q = D.poderes[i]; D.ex['dpod' + i] = `${p.n}: nível ${p.nv} + metade do Espírito (${D.bonus.esp})` + (q.tb && /^\d+$/.test(q.tb[1]) && +q.tb[1] ? ` + ${q.tb[1]} do poder` : '') + `. Dificuldade dos testes: ${q.dif}.`; dn.append(lin(p.n || 'Poder', q.t, q.g, 'dpod' + i)); });
+    c.append(dn, h('p', 'nota', 'Rolagem 2d8: 2–3 falha, 4–8 grau 1, 9–11 grau 2, 12–14 grau 3, 15–16 grau 4.'));
+  },
+  pericias(c, F, D) {
+    c.append(titulo('Perícias', contador(D.gastoPer, D.ptsPer, 'ptsPer')));
+    const t = h('div', 'linhas');
+    for (const [k, n, at, esp] of PERS_PER) { const [pts, outro, perito] = F.per[k], tot = D.per[k]; const r = h('div', 'ln' + (tot == null ? ' apagada' : ''));
+      const b = h('b', 'tot', tot == null ? '—' : tot); b.dataset.ex = 'per_' + k;
+      r.append(h('span', 'nm', n, h('small', null, ' ' + ABR[at])), b, passo(pts, f => { f.per[k][0] = Math.max(0, f.per[k][0] - 1); }, f => { f.per[k][0]++; }, { rot: n, semMenos: !pts, semMais: pts >= D.lim }));
+      const l = h('label', 'chk'); const cb = h('input'); cb.type = 'checkbox'; cb.checked = !!perito; cb.onchange = () => mudar(f => { f.per[k][2] = cb.checked ? 1 : 0; }); l.append(cb, h('span', null, 'Perito'));
+      r.append(l, campo('outro', outro, (f, v) => { f.per[k][1] = Math.max(-20, Math.min(20, Math.round(v))); }, { tipo: 'number', cls: 'mini' })); t.append(r); }
+    c.append(t, h('p', 'nota', `Até ${D.lim} pontos por perícia no NC ${F.nc}. Lidar com Animais, Mecanismo, Medicina e Ocultismo só existem com ponto gasto; Venefício só com Químico.`));
+  },
+  poderes(c, F, D) {
+    c.append(titulo('Poderes', contador(D.gastoPod, D.ptsPod, 'ptsPod')));
+    c.append(h('p', 'nota', `Nível de poder até ${D.lim}. Cada nível custa 1 ponto; cada aptidão além das 3 gratuitas custa 2. Os pontos de poder pagam os dois.`));
+    F.pod.forEach((p, i) => { const card = h('div', 'card'); const q = D.poderes[i], el = elemDePoder(p.n);
+      const cab = h('div', 'cardCab'); cab.append(campo('Nome', p.n, (f, v) => { f.pod[i].n = v.slice(0, 50); }, { lista: 'pvPoderes', max: 50 }),
+        h('span', 'cp', h('span', null, 'Nível'), passo(p.nv, f => { f.pod[i].nv = Math.max(0, f.pod[i].nv - 1); if (f.pod[i].custo === p.nv) f.pod[i].custo = f.pod[i].nv; }, f => { f.pod[i].nv++; if (f.pod[i].custo === p.nv) f.pod[i].custo = f.pod[i].nv; }, { rot: 'nível de ' + (p.n || 'poder'), semMenos: !p.nv })),
+        campo('Custo', p.custo, (f, v) => { f.pod[i].custo = Math.max(0, Math.min(60, Math.round(v))); }, { tipo: 'number', cls: 'mini' }), remover(f => { f.pod.splice(i, 1); }, p.n || 'poder'));
+      card.append(cab);
+      if (q.tb) card.append(h('p', 'param', `Dano +${q.tb[1]} · Dureza +${q.tb[2]} · Dif. +${q.tb[3]} · Tamanho ${q.tb[4]} · Alcance ${q.tb[5]}`));
+      card.append(campo('Efeitos', p.ef, (f, v) => { f.pod[i].ef = v.slice(0, 1500); }, { area: 1, rows: 3, max: 1500 }));
+      if (el && ELEM[el]) { const tx = h('div', 'tecs'); tx.append(h('span', 'lb', 'No mapa:'));
+        for (const ef of (PERMITE[el] || TODOS_EF)) { if (!EFE[ef]) continue; const on = p.tec.includes(ef); const b = h('button', 'ed tg' + (on ? ' on' : ''), EFE[ef].n); b.type = 'button'; b.setAttribute('aria-pressed', on);
+          b.onclick = () => mudar(f => { const L = f.pod[i].tec; f.pod[i].tec = on ? L.filter(x => x !== ef) : L.concat([ef]); }); tx.append(b); }
+        card.append(tx); }
+      c.append(card); });
+    if (F.pod.length < 12) c.append(somar('Somar poder', f => { f.pod.push({ n: '', nv: 1, custo: 1, ef: '', tec: [] }); }));
+    const grat = F.apt.filter(a => a.g).length;
+    c.append(titulo('Aptidões', h('span', 'cont ' + (grat > 3 ? 'erro' : 'ok'), `${grat} de 3 gratuitas`)));
+    F.apt.forEach((a, i) => { const card = h('div', 'card apt'); const cab = h('div', 'cardCab');
+      const l = h('label', 'chk'); const cb = h('input'); cb.type = 'checkbox'; cb.checked = !!a.g; cb.onchange = () => mudar(f => { f.apt[i].g = cb.checked ? 1 : 0; if (!cb.checked && !f.apt[i].custo) f.apt[i].custo = 2; }); l.append(cb, h('span', null, 'Gratuita'));
+      cab.append(campo('Nome', a.n, (f, v) => { f.apt[i].n = v.slice(0, 60); }, { max: 60 }), l, a.g ? null : campo('Custo', a.custo, (f, v) => { f.apt[i].custo = Math.max(0, Math.min(20, Math.round(v))); }, { tipo: 'number', cls: 'mini' }), remover(f => { f.apt.splice(i, 1); }, a.n || 'aptidão'));
+      card.append(cab, campo('Descrição', a.d, (f, v) => { f.apt[i].d = v.slice(0, 1500); }, { area: 1, rows: 2, max: 1500 })); c.append(card); });
+    if (F.apt.length < 60) c.append(somar('Somar aptidão', f => { f.apt.push({ n: '', d: '', custo: 2, g: 0 }); }));
+  },
+  equip(c, F, D) {
+    const g = h('div', 'grade2'); g.append(campo('Ryos', F.inv.ryos, (f, v) => { f.inv.ryos = Math.max(0, Math.round(v)); }, { tipo: 'number' }), campo('Ryos guardados', F.inv.guard, (f, v) => { f.inv.guard = Math.max(0, Math.round(v)); }, { tipo: 'number' }));
+    c.append(titulo('Bolsa'), g);
+    const cg = h('p', 'nota' + (D.pen ? ' erro' : ''), `Carga: ${D.comp} de ${D.semPen} compartimentos sem penalidade` + (D.pen ? ` · penalidade ${D.pen}` : '')); cg.dataset.ex = 'carga'; c.append(cg);
+    c.append(titulo('Armadura'));
+    if (F.inv.arm) { const a = F.inv.arm, r = h('div', 'card'), cab = h('div', 'cardCab');
+      cab.append(campo('Nome', a.n, (f, v) => { f.inv.arm.n = v.slice(0, 50); }), campo('Absorção', a.abs, (f, v) => { f.inv.arm.abs = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }),
+        campo('Dureza', a.dur, (f, v) => { f.inv.arm.dur = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }), seletor('Tipo', a.tipo, ['LEVE', 'PESADA'], (f, v) => { f.inv.arm.tipo = v; }),
+        campo('Comp.', a.comp, (f, v) => { f.inv.arm.comp = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }), remover(f => { f.inv.arm = null; }, 'armadura'));
+      r.append(cab); c.append(r); }
+    else c.append(somar('Vestir armadura', f => { f.inv.arm = { n: '', abs: 0, dur: 0, pen: 0, tipo: 'LEVE', comp: 1 }; }));
+    c.append(titulo('Armas'));
+    F.inv.armas.forEach((w, i) => { const r = h('div', 'card'), cab = h('div', 'cardCab');
+      cab.append(campo('Nome', w.n, (f, v) => { f.inv.armas[i].n = v.slice(0, 50); }), campo('Dano', w.dano, (f, v) => { f.inv.armas[i].dano = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }),
+        seletor('Soma', w.usa, [['forca', 'Força'], ['des', 'Destreza'], ['esp', 'Espírito']], (f, v) => { f.inv.armas[i].usa = v; }), campo('Alcance', w.alc, (f, v) => { f.inv.armas[i].alc = v.slice(0, 20); }, { cls: 'mini' }),
+        campo('Crítico', w.crit, (f, v) => { f.inv.armas[i].crit = v.slice(0, 10); }, { cls: 'mini' }), campo('Tipo', w.tipo, (f, v) => { f.inv.armas[i].tipo = v.slice(0, 6); }, { cls: 'mini', ph: 'C, P, E' }),
+        campo('Comp.', w.comp, (f, v) => { f.inv.armas[i].comp = Math.max(0, +v || 0); }, { tipo: 'number', cls: 'mini' }), remover(f => { f.inv.armas.splice(i, 1); }, w.n || 'arma'));
+      const dn = h('span', 'det', `dano ${D.armas[i].g.join(' / ')}`); dn.dataset.ex = 'darma' + i; D.ex['darma' + i] = `Dano ${w.dano} + metade de ${ABR[w.usa]} (${D.bonus[w.usa]}); graus 1 a 4.`;
+      r.append(cab, dn, campo('Descrição', w.d, (f, v) => { f.inv.armas[i].d = v.slice(0, 300); }, { max: 300 })); c.append(r); });
+    c.append(somar('Somar arma', f => { f.inv.armas.push({ n: '', dano: 1, usa: 'forca', alc: '', crit: '15~16', tipo: 'P', comp: 0.5, d: '' }); }));
+    c.append(titulo('Itens'));
+    F.inv.itens.forEach((it, i) => { const r = h('div', 'card'), cab = h('div', 'cardCab');
+      cab.append(campo('Item', it.n, (f, v) => { f.inv.itens[i].n = v.slice(0, 50); }), campo('Qtd.', it.q, (f, v) => { f.inv.itens[i].q = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }),
+        campo('Comp.', it.comp, (f, v) => { f.inv.itens[i].comp = Math.max(0, +v || 0); }, { tipo: 'number', cls: 'mini' }), campo('Descrição', it.d, (f, v) => { f.inv.itens[i].d = v.slice(0, 300); }), remover(f => { f.inv.itens.splice(i, 1); }, it.n || 'item'));
+      r.append(cab); c.append(r); });
+    c.append(somar('Somar item', f => { f.inv.itens.push({ n: '', q: 1, comp: 0, d: '' }); }));
+  },
+  missoes(c, F, D) {
+    const tot = F.xp0 + F.mis.reduce((s, m) => s + m.exp, 0), ry = F.mis.reduce((s, m) => s + m.ryos, 0);
+    const g = h('div', 'nums'); for (const [rot, v] of [['EXP total', tot], ['Missões', F.mis.length], ['Ryos ganhos', ry]]) g.append(h('div', null, h('b', null, v), h('span', null, rot)));
+    c.append(titulo('Registro de missões'), g, campo('EXP inicial', F.xp0, (f, v) => { f.xp0 = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }));
+    F.mis.forEach((m, i) => { const r = h('div', 'card'), cab = h('div', 'cardCab');
+      cab.append(campo('Missão', m.t, (f, v) => { f.mis[i].t = v.slice(0, 80); }), seletor('Rank', m.rank, RANKS, (f, v) => { f.mis[i].rank = v; }), campo('EXP', m.exp, (f, v) => { f.mis[i].exp = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }),
+        campo('Ryos', m.ryos, (f, v) => { f.mis[i].ryos = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }), remover(f => { f.mis.splice(i, 1); }, m.t || 'missão'));
+      r.append(cab, campo('Observações e recompensas', m.obs, (f, v) => { f.mis[i].obs = v.slice(0, 600); }, { area: 1, rows: 2, max: 600 })); c.append(r); });
+    c.append(somar('Somar missão', f => { f.mis.push({ t: '', rank: 'D', exp: 0, ryos: 0, obs: '' }); }));
+  },
+  comp(c, F, D) {
+    c.append(titulo('Companheiros e invocações'), h('p', 'nota', 'Animais, invocações e marionetes: anote os valores da ficha deles.'));
+    F.comp.forEach((q, i) => { const r = h('div', 'card'), cab = h('div', 'cardCab');
+      cab.append(campo('Nome', q.n, (f, v) => { f.comp[i].n = v.slice(0, 40); }), campo('NC', q.nc, (f, v) => { f.comp[i].nc = Math.max(1, Math.min(20, Math.round(v))); }, { tipo: 'number', cls: 'mini' }),
+        seletor('Tamanho', q.tam, TAMANHOS.map(t => t[0]), (f, v) => { f.comp[i].tam = v; }), remover(f => { f.comp.splice(i, 1); }, q.n || 'companheiro'));
+      const g = h('div', 'grade4');
+      for (const [k, rot] of [['vit', 'Vitalidade'], ['vitP', 'Vit. perdida'], ['cha', 'Chakra'], ['chaP', 'Chakra perdido'], ['desl', 'Desloc. (m)'], ['dur', 'Dureza']]) g.append(campo(rot, q[k], (f, v) => { f.comp[i][k] = Math.round(v) || 0; }, { tipo: 'number', cls: 'mini' }));
+      const ga = h('div', 'grade7'); for (const [k, , ab] of ATR) ga.append(campo(ab, q.at[k], (f, v) => { f.comp[i].at[k] = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }));
+      r.append(cab, g, ga, campo('Notas', q.nota, (f, v) => { f.comp[i].nota = v.slice(0, 600); }, { area: 1, rows: 2 })); c.append(r); });
+    if (F.comp.length < 6) c.append(somar('Somar companheiro', f => { f.comp.push({ n: '', nc: Math.max(1, f.nc - 2), tam: 'PEQUENO', vit: 10, vitP: 0, cha: 10, chaP: 0, desl: 10, dur: 0, at: {}, nota: '' }); }));
+  },
+  mestre(c, F, D) {
+    if (!ehMestre()) return;
+    c.append(titulo('Nível e regras'));
+    const r = h('div', 'linhas'), l1 = h('div', 'ln');
+    l1.append(h('span', 'nm', 'Nível de campanha'), passo(F.nc, f => { f.nc = Math.max(1, f.nc - 1); }, f => { f.nc = Math.min(20, f.nc + 1); }, { rot: 'NC', semMenos: F.nc <= 1, semMais: F.nc >= 20 }),
+      h('span', 'det', 'Ao subir, os pontos novos aparecem para o jogador gastar.'));
+    const l2 = h('div', 'ln'); l2.append(h('span', 'nm', 'Pontos de poder por NC'), seletor('', String(F.rp), [['2', '2 (Livro Básico)'], ['3', '3 (Guia Avançado)'], ['4', '4 (Guia Avançado)']], (f, v) => { f.rp = +v; }));
+    r.append(l1, l2); c.append(r);
+    c.append(titulo('Notas do mestre'), h('p', 'nota', 'Só você vê. Não vai para os jogadores.'), campo('', F.gm || '', (f, v) => { f.gm = v.slice(0, 4000); }, { area: 1, rows: 5, cls: 'longo' }));
+    const H = ((table && table.persHist) || {})[pv.c] || [];
+    c.append(titulo('Histórico de mudanças'));
+    if (!H.length) c.append(h('p', 'nota', 'Nenhuma mudança registrada ainda.'));
+    for (let i = H.length - 1; i >= 0; i--) { const e = H[i], depois = i === H.length - 1 ? F : H[i + 1].f; const ln = h('div', 'hist');
+      const quando = new Date(e.at).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const b = h('button', 'ed', 'Voltar a antes disto'); b.type = 'button'; b.title = 'Desfaz esta mudança e as que vieram depois';
+      b.onclick = () => { const atual = clone(F); pv.F = clone(e.f); pv.F.gm = F.gm; persHistPoe(pv.c, atual, 'Mestre (desfazer)'); table.pers[pv.c] = pv.F; saveTable(); persPublica(pv.c); say('Ficha voltou à versão de ' + quando); pvRender(); };
+      ln.append(h('div', null, h('b', null, quando), ' · ', e.q), h('div', 'det', persResumo(e.f, depois) || 'sem mudança de números'), b); c.append(ln); }
+    if (EXTRAS.includes(pv.c)) { const ap = h('button', 'ed rm', 'Apagar este personagem'); ap.type = 'button';
+      ap.onclick = () => { if (!confirm(`Apagar ${nomeNovo(pv.c)}? A ficha some para todos.`)) return; const c2 = pv.c; delete table.pers[c2]; delete table.persHist[c2]; saveTable(); if (mesa) mesa.sendFicha(c2, { apagada: 1 }).catch(() => {}); fechaPers(); persPicker(); say('Personagem apagado'); };
+      c.append(titulo('Personagem novo'), ap); }
+  },
+};
+function persResumo(a, b) {
+  if (!a || !b) return ''; const out = [];
+  if (a.nc !== b.nc) out.push(`NC ${a.nc}→${b.nc}`);
+  for (const [k, , ab] of ATR) if (a.at[k] !== b.at[k]) out.push(`${ab} ${a.at[k]}→${b.at[k]}`);
+  for (const k of ['cc', 'cd', 'esq', 'lm']) if (a.base[k] !== b.base[k]) out.push(`base ${k.toUpperCase()} ${a.base[k]}→${b.base[k]}`);
+  for (const [k, n] of PERS_PER) if (a.per[k][0] !== b.per[k][0] || a.per[k][2] !== b.per[k][2]) out.push(`${n} ${a.per[k][0]}→${b.per[k][0]}`);
+  const pa = a.pod.map(p => `${p.n} ${p.nv}`).join(', '), pb = b.pod.map(p => `${p.n} ${p.nv}`).join(', '); if (pa !== pb) out.push('poderes');
+  if (a.apt.map(q => q.n).join() !== b.apt.map(q => q.n).join()) out.push('aptidões');
+  if (JSON.stringify(a.inv) !== JSON.stringify(b.inv)) out.push('equipamento');
+  if (a.bio !== b.bio || a.cur !== b.cur || JSON.stringify(a.id) !== JSON.stringify(b.id)) out.push('história');
+  if (JSON.stringify(a.en) !== JSON.stringify(b.en)) out.push('vitalidade e chakra');
+  if (JSON.stringify(a.mis) !== JSON.stringify(b.mis)) out.push('missões');
+  return out.slice(0, 8).join(' · ');
+}
+// ----- explicação de cada número -----
+if (pvEl) {
+  const mostra = e => { const t = e.target.closest && e.target.closest('[data-ex]'); if (!t || !pv.F) return; const tx = persCalc(pv.F).ex[t.dataset.ex]; if (tx) $('pvExplica').textContent = tx; };
+  pvEl.addEventListener('pointerover', mostra); pvEl.addEventListener('focusin', mostra); pvEl.addEventListener('click', mostra);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && pvAberto()) { fechaPers(); $('persBtn').focus(); } });
+  pvEl.addEventListener('focusout', () => { if (pv.stale) setTimeout(() => { const a = document.activeElement; if (!(a && pvEl.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName))) pvAtualiza(); }, 350); });   // depois do clique que tirou o foco
+  $('persBtn').onclick = () => pvAberto() ? fechaPers() : abrePers(me.c);
+  const dl = $('pvPoderes'); for (const p of PODER_TAB) dl.append(h('option', null, p[0].replace(/\b\w+/g, w => w[0] + w.slice(1).toLowerCase())));
+  const ds = $('pvSensores'); for (const s of SENSORES) ds.append(h('option', null, s));
+  addEventListener('keydown', e => { if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) { e.preventDefault(); pvAberto() ? fechaPers() : abrePers(me.c); } });
+}
+persPicker();
+
 
 // ---------- névoa: efeito de cena do mestre ----------
 // O mestre põe névoas na cena (a cena inteira ou uma área); elas vão no estado assinado e todas as telas desenham igual.
@@ -3673,13 +4394,16 @@ function fichaMonta() {
     par('Esquiva', 9 + st.esq, `Dificuldade para acertá-lo: 9 + ESQ ${st.esq}`); par('Deslocamento', deslocM(st) + ' m', 'Por rodada: 10 m + metade da Agilidade'); corpo.appendChild(dl);
     const pods = Object.entries(st.pod || {}).filter(([el]) => ELEM[el]);
     if (pods.length) { const l = h('div', 'lin'); l.appendChild(h('span', 'rt', 'Poderes')); for (const [el, nv] of pods) l.appendChild(h('span', 'pod', `${ELEM[el].n} ${nv}`)); corpo.appendChild(l); }
-    const tecs = (c && TEC0[c]) || [];
+    const tecs = (c && tecDe(c)) || [];
     if (tecs.length) { const l = h('div', 'lin'); l.appendChild(h('span', 'rt', 'Técnicas')); const pode = controlo(id);
       for (const [el, ef] of tecs) { const rot = `${EFE[ef].n} de ${ELEM[el].n}`;
         if (pode) { const b = botao(rot, () => { abreFicha(null); abreTecnicas(true); tqEscolheQuem(id); tec.el = el; tec.ef = ef; tec.alvos = []; tec.flechas = {}; tec.fixo = false; tqNvPadrao(); tqUI(true, true); }); b.title = 'Abre esta técnica pronta para mirar'; l.appendChild(b); }
         else l.appendChild(h('span', 'pod', rot)); }
       corpo.appendChild(l); } }
   const e = entrada(id);
+  const P = c ? persDe(c) : null;
+  if (P) { const D = persCalc(P), en = h('div', 'en'); for (const [rot, a, t, cor] of [['Vitalidade', D.vitA, D.vit, '#c45a4a'], ['Chakra', D.chaA, D.cha, '#4f7fc8']]) { const b = h('div', 'enb'); b.style.setProperty('--c', cor); b.style.setProperty('--p', t > 0 ? Math.max(0, Math.min(1, a / t)) : 0); b.append(h('span', null, rot), h('b', null, `${a} / ${t}`)); en.append(b); }
+    corpo.prepend(en); const ab = h('div', 'acoes'); ab.appendChild(botao('Abrir ficha completa', () => { abreFicha(null); abrePers(c); })); corpo.appendChild(ab); }
   if (cmb && cmb.on && e) { const k = cmb.ordem.indexOf(e) + 1, vez = unidadeAtiva() === id;
     corpo.appendChild(h('p', 'cmb' + (vez ? ' vez' : ''), cmb.r < 1 ? (e.ini == null ? 'No combate: ainda não rolou a iniciativa.' : `No combate: iniciativa ${e.ini}.`)
       : (vez ? 'É a vez dele agora. ' : `${k}º a agir, iniciativa ${e.ini == null ? '—' : e.ini}. `) + (e.mv ? 'Já se deslocou nesta rodada.' : 'Ainda pode se deslocar nesta rodada.'))); }
@@ -3723,7 +4447,7 @@ function cliqueMapa(wx, wy, cx, cy) {
 }
 fichaPronta = true;
 
-['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn'].forEach(id => $(id).style.display = '');
+['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'persBtn'].forEach(id => $(id).style.display = '');
 $('cbrow').style.display = $('nvrow').style.display = MESA ? 'none' : ''; $('load').style.display = 'none';
 $('solorow').style.display = (!MESA && !(window.claude && typeof window.claude.use === 'function')) ? '' : 'none';
 $('lugarrow').style.display = MESA ? 'none' : '';
@@ -3735,7 +4459,7 @@ if (MESA) {
   if (mesa && !mesa.isGM && !me.c) say('Escolha seu personagem no canto de cima');
   if (!me.c) { const [sx, sy] = unitScreen(me.x, me.y); cam.x = sx; cam.y = sy; cam.follow = false; }
 }
-if (Q.get('ui') === '0') ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'combate', 'nevoa', 'ficha'].forEach(id => $(id).style.display = 'none');
+if (Q.get('ui') === '0') ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'combate', 'nevoa', 'ficha', 'persBtn', 'pers'].forEach(id => $(id).style.display = 'none');
 if (Q.get('dados') === '1') abrePainel(true);
 if (Q.get('go')) { const [gx, gy] = Q.get('go').split(',').map(Number); const g = nearestWalkable(gx | 0, gy | 0, 7); const p = g && astar(me.x | 0, me.y | 0, g[0], g[1]); if (p) me.path = p; }
 requestAnimationFrame(draw);
