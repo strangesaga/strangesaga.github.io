@@ -269,6 +269,30 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 #ficha .nota{margin:11px 0 0;padding-top:9px;border-top:1px solid rgba(36,30,39,.2);font-style:italic;font-size:14px;line-height:1.45;color:#4f4552}
 #ficha .acoes{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 @media (max-width:900px){#nevoa{left:8px;right:8px;top:auto;bottom:64px;width:auto;max-height:46vh}#ficha{left:8px!important;right:8px;top:auto!important;bottom:64px;width:auto}}
+/* ---------- movimento e jutsus básicos ---------- */
+#acoes{left:12px;bottom:72px;display:flex;flex-wrap:wrap;align-items:center;gap:3px;padding:4px;max-width:calc(100vw - 24px);box-sizing:border-box}
+#acoes[hidden]{display:none}
+#acoes>button{display:flex;align-items:center;gap:6px;padding:5px 9px 5px 6px;border-radius:7px;border:1px solid transparent;background:transparent;color:#c9c5b8;font:600 12px system-ui,sans-serif;cursor:pointer}
+#acoes>button i{font:600 17px/1 var(--mincho);font-style:normal;color:#efe9da;width:20px;text-align:center}
+#acoes>button:hover{background:#232b3f;color:#fff}
+#acoes>button.on{background:#2e3a5c;border-color:#e9c46a;color:#fff}
+#acoes>button[hidden]{display:none}
+#acoes .sep{width:1px;height:24px;background:#39435c;margin:0 3px}
+#acMenu{flex-basis:100%;display:flex;flex-wrap:wrap;gap:4px;padding:4px 2px 2px}
+#acMenu[hidden]{display:none}
+#acMenu button{padding:5px 9px;border-radius:6px;border:1px solid #39435c;background:#11172a;color:#ece6d6;font:600 12px system-ui,sans-serif;cursor:pointer}
+#acMenu button:hover{background:#2e3a5c}
+#acoes button:focus-visible{outline:2px solid #e9c46a;outline-offset:1px}
+#descanso{right:12px;top:140px;width:320px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;padding:12px}
+#descanso[hidden]{display:none}
+#descanso .nvh{display:flex;align-items:center;justify-content:space-between}
+#descanso .ico{background:transparent;border-color:transparent;color:#c9c5b8}
+.dsInfo{margin:0;font:500 12px/1.4 system-ui,sans-serif;color:#9fd3a8}
+#dsLista{display:flex;flex-direction:column;gap:5px}
+#dsLista .chk{display:flex;gap:7px;align-items:center;font:500 12.5px system-ui,sans-serif;color:#d6d2c6}
+#dsLista input{accent-color:#e9c46a}
+body.fichaAberta #acoes{visibility:hidden}
+@media (max-width:900px){#acoes{bottom:64px;left:8px;right:8px;max-width:none}#acoes>button span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}#acoes>button{padding:6px 8px}body.painel #acoes{display:none}#descanso{left:8px;right:8px;top:auto;bottom:64px;width:auto}}
 /* ---------- ficha do personagem ---------- */
 #persBtn{right:248px;top:88px;display:flex;align-items:center;gap:8px;padding:5px 13px 5px 9px;font-size:13px;font-weight:600;color:#efe9da;cursor:pointer;min-height:45px;box-sizing:border-box}
 #persBtn:hover{background:rgba(26,32,52,.92)}
@@ -483,6 +507,7 @@ body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,bod
   <div class="row" id="gjrow" style="display:none" title="Quem estiver marcado vai para o Mundo de Genjutsu; o corpo fica parado onde estava"><span class="lbl">Genjutsu</span><span id="gjtemas" class="row" style="margin:0"></span><span id="gjchips" class="row" style="margin:0"></span></div>
   <div class="row" id="cbrow" style="display:none"><span class="lbl">Combate</span><button id="cbIniciar">Iniciar combate</button><button id="npcAdd" title="Põe um inimigo no centro da tela">Pôr inimigo</button><button id="npcAddOc" title="Põe um inimigo que só você vê, até revelar">Pôr oculto</button></div>
   <div class="row" id="nvrow" style="display:none"><span class="lbl">Cena</span><button id="nvBtn" title="Névoa na cena: cor, densidade, vento e visão">Névoa</button></div>
+  <div class="row" id="dsrow" style="display:none"><span class="lbl">Descanso</span><button id="dsCurto" title="1 hora: metade do que a noite recupera">Curto</button><button id="dsLongo" title="Uma noite de 8 horas">Longo</button></div>
   <div class="row" id="lugarrow" style="display:none"><span class="lbl">Lugar</span><select id="lugares"></select></div>
   <div class="row" id="solorow" style="display:none"><button id="criar">Criar mesa (mestre)</button></div>
   <div class="s" id="net"></div>
@@ -550,6 +575,22 @@ body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,bod
   </div>
   <datalist id="pvPoderes"></datalist><datalist id="pvSensores"></datalist>
 </section>
+<section id="descanso" class="ui" hidden aria-label="Descanso">
+  <div class="nvh"><b id="dsTit">Descanso</b><button id="dsFecha" type="button" class="ico">Fechar</button></div>
+  <p id="dsInfo" class="dsInfo"></p><div id="dsLista"></div>
+  <div class="row"><button id="dsOk" type="button" class="on">Descansar</button></div>
+</section>
+<div id="acoes" class="ui" hidden role="toolbar" aria-label="Movimento e jutsus básicos">
+  <button id="acAndar" type="button" title="Andar"><i>歩</i><span>Andar</span></button>
+  <button id="acCorrer" type="button" title="Correr (Shift)"><i>走</i><span>Correr</span></button>
+  <button id="acAgachar" type="button" title="Agachar: furtivo, metade do passo (C)"><i>伏</i><span>Agachar</span></button>
+  <button id="acVoar" type="button" title="Voar acima das nuvens (V)"><i>飛</i><span>Voar</span></button>
+  <span class="sep"></span>
+  <button id="acShun" type="button" title="Shunshin: 1 de chakra, até o seu deslocamento"><i>瞬</i><span>Shunshin</span></button>
+  <button id="acBun" type="button" title="Bunshin e clones"><i>分</i><span>Bunshin</span></button>
+  <button id="acHira" type="button" title="Hiraishin: selos e teleporte"><i>雷</i><span>Hiraishin</span></button>
+  <div id="acMenu" hidden></div>
+</div>
 <button id="tecBtn" class="ui" type="button" style="display:none" aria-expanded="false" aria-controls="tecnicas" title="Técnicas (T)"><canvas id="tecIco" width="22" height="22"></canvas><span>Técnicas</span></button>
 <section id="tecnicas" class="ui" hidden aria-label="Técnicas">
  <div id="tqCorpo">
@@ -1314,7 +1355,7 @@ let AMB = P.amb;
 function draw() {
   const now = performance.now(); const dt = Math.min(0.1, (now - tReal) / 1000); tReal = now; frameN++; dtLast = dt;
   const wm = worldMin(); const day = Math.floor(wm / DAYMIN); const tm = ((wm % DAYMIN) + DAYMIN) % DAYMIN; const dk0 = darkness(tm); const dk = scene.fx === 'genjutsu' ? 0 : scene.outdoor ? dk0 : 0.12 + dk0 * 0.72;
-  stepPlayer(dt); combateQuadro(now, dt); nevoaQuadro(); VTELA.length = 0;
+  stepPlayer(dt); combateQuadro(now, dt); nevoaQuadro(); acoesPasso(dt); VTELA.length = 0;
   if (cam.follow && me.c) { const [sx, sy] = unitScreen(me.x, me.y); cam.x += (sx - cam.x) * Math.min(1, dt * 6); cam.y += (sy - cam.y) * Math.min(1, dt * 6); }
   const sk = fxSacode(now); const vl = Math.round(cam.x - W / 2) + sk[0], vt = Math.round(cam.y - HH / 2) + sk[1], vr = vl + W, vb = vt + HH;
   ctx.setTransform(1, 0, 0, 1, -vl, -vt);
@@ -1411,13 +1452,16 @@ function draw() {
     pushUnit(items, unitsAt, e, w[0], w[1], w[2], w[3], w[4], now + i * 131, true, sxdir < 0);
   }
   // ---- jogador e outros ----
-  if (me.c) { pushUnit(items, unitsAt, charSprite(me.c, me.mv, (me.dx + me.dy) >= 0), me.x, me.y, me.dx, me.dy, me.mv, now, false, undefined, true); items[items.length - 1].isMe = true; }
+  if (me.c) { modoPU(presExtra().md); pushUnit(items, unitsAt, charSprite(me.c, me.mv, (me.dx + me.dy) >= 0), me.x, me.y, me.dx, me.dy, me.mv, now, false, undefined, true); if (!PU.alt) items[items.length - 1].isMe = true; modoPU('');
+    for (const q of ac.clones) pushUnit(items, unitsAt, charSprite(me.c, q.mv, (q.dx + q.dy) >= 0), q.x, q.y, q.dx, q.dy, q.mv, now + 97, false, undefined, true); }
   if (me.c === 'ichiro') pushUnit(items, unitsAt, E(`plantao_${pet.mv ? 'anda' : 'parado'}_${(pet.dx + pet.dy) >= 0 ? 'frente' : 'costas'}`), pet.x, pet.y, pet.dx, pet.dy, pet.mv, now);
   const tagPos = [];
-  for (const p of peers) { const s = peerPos(p); if (!s || s.s !== scene.id || nevoaEsconde(s.x, s.y)) continue; pushUnit(items, unitsAt, charSprite(s.c, s.mv, (s.dx + s.dy) >= 0), s.x, s.y, s.dx, s.dy, s.mv, now, false, undefined, true);
+  for (const p of peers) { const s = peerPos(p); if (!s || s.s !== scene.id || nevoaEsconde(s.x, s.y)) continue; modoPU(p.presence.md); const altP = PU.alt; pushUnit(items, unitsAt, charSprite(s.c, s.mv, (s.dx + s.dy) >= 0), s.x, s.y, s.dx, s.dy, s.mv, now, false, undefined, true); modoPU('');
+    for (const q of clonesDe(p)) { pushUnit(items, unitsAt, charSprite(s.c, q[4], (q[2] + q[3]) >= 0), q[0], q[1], q[2], q[3], q[4], now + 97, false, undefined, true); const [qx, qy] = unitScreen(q[0], q[1]); tagPos.push([s.c, (qx - vl) * zoom, (qy - vt - 31) * zoom]); }
+    s.altP = altP;
     if (s.c === 'ichiro') { const key = p.peer || 'x'; let pt = peerPets.get(key); if (!pt) { pt = { x: s.x - 1, y: s.y, dx: 1, dy: 1, mv: false }; peerPets.set(key, pt); }
       followPet(pt, s.x, s.y, Math.min(0.1, dtLast)); pushUnit(items, unitsAt, E(`plantao_${pt.mv ? 'anda' : 'parado'}_${(pt.dx + pt.dy) >= 0 ? 'frente' : 'costas'}`), pt.x, pt.y, pt.dx, pt.dy, pt.mv, now); }
-    const [sx, sy] = unitScreen(s.x, s.y); tagPos.push([s.c, (sx - vl) * zoom, (sy - vt - 31) * zoom]); }
+    const [sx, sy] = unitScreen(s.x, s.y); tagPos.push([s.c, (sx - vl) * zoom, (sy - vt - 31 - (s.altP || 0)) * zoom]); }
   if (scene.npcs) for (const q of scene.npcs) { pushUnit(items, unitsAt, E(q[0] + '_parado_' + (q[3] ? 'frente' : 'costas')), q[1] + 0.5, q[2] + 0.5, 1, 1, false, now + q[1] * 131 + q[2] * 71, false); VTELA.push([q[1] + 0.5, q[2] + 0.5, q[0], 'p', -2]); }
   if (MESA) { const live = new Set(peers.map(p => p.presence.c)); if (me.c) live.add(me.c);
     for (const c of CHARS) { const t = tokens[c]; const preso = genPresos.includes(c); if (!t || (live.has(c) && !preso) || (t.s || 'vila') !== scene.id || nevoaEsconde(t.x, t.y)) continue; if (t.x < tx0 - 4 || t.x > tx1 + 4 || t.y < ty0 - 4 || t.y > ty1 + 4) continue;
@@ -1450,6 +1494,7 @@ function draw() {
       ctx.fillStyle = (k + i) % 3 ? '#fcd' : '#f9b'; ctx.fillRect(Math.round(px), Math.round(py), (k + i) % 4 ? 1 : 2, 1); } }
   fxPasso(now, dt, lights);
   nevoaPasse(1, vl, vt, now);                                           // névoa alta: cobre tudo; a noite e as lanternas agem sobre ela
+  vooPasse(vl, vt, now);                                                // quem voa fica acima das nuvens
   // ---- luz ----
   if (dk > 0.02) {
     if (light.length !== W * HH) light = new Uint8Array(W * HH); else light.fill(0);
@@ -1474,7 +1519,7 @@ function draw() {
   if (scene.fx === 'genjutsu') { const img = ctx.getImageData(0, 0, W, HH); const u = new Uint32Array(img.data.buffer); const G = (scene.tema || 'espiral') === 'espiral' ? LUT.gen : LUT.day;
     for (let p = 0; p < u.length; p++) { const c = u[p]; u[p] = G[((c & 0xf0) << 4) | ((c >> 8) & 0xf0) | ((c >> 20) & 0x0f)]; }
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.putImageData(img, 0, 0); }
-  ctx.setTransform(1, 0, 0, 1, -vl, -vt); fxDesenha(now); combateTopo(now); nevoaTopo(now);
+  ctx.setTransform(1, 0, 0, 1, -vl, -vt); fxDesenha(now); combateTopo(now); nevoaTopo(now); acoesTopo(now);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   // marcador do destino
   if (me.path.length) { const g = me.path[me.path.length - 1]; const [sx, sy] = unitScreen(g[0], g[1]); ctx.strokeStyle = 'rgba(255,240,170,.9)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(Math.round(sx - vl), Math.round(sy - vt), 7, 3.5, 0, 0, 6.3); ctx.stroke(); }
@@ -1497,20 +1542,34 @@ function mkItem(e, frame, x, y, fx, fy, wx, wy, flip, depth) {
   const fw = e[3] / e[7]; const rx0 = wx - e[5], ry0 = wy - e[6];
   return { bx0: x, by0: y, bx1: x + fx, by1: y + fy, rx0, ry0, rx1: rx0 + fw, ry1: ry0 + e[4], depth, draw() { blit(ctx, e, frame, wx, wy, flip); } };
 }
+const PU = { alt: 0, aga: false, run: false }, VOO = [];          // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo
 function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, isPlayer) {
-  if (!e || (NVOC.length && nevoaEsconde(x, y))) return; const ti = (x | 0) * N + (y | 0); const onWater = isWater(TM[ti]);
+  if (!e || (NVOC.length && nevoaEsconde(x, y))) return; const ti = (x | 0) * N + (y | 0); const onWater = isWater(TM[ti]) && !PU.alt; const alt = PU.alt ? PU.alt + Math.round(Math.sin(t / 400 + x) * 2) : 0, aga = PU.aga;
   const [sx, sy] = unitScreen(x, y); const fw = e[3] / e[7];
-  const frame = mv ? Math.floor(t / 130) % e[7] : Math.floor(t / 600) % e[7];
+  const frame = mv ? Math.floor(t / (PU.run ? 80 : 130)) % e[7] : Math.floor(t / 600) % e[7];
   const flip = flipOverride !== undefined ? flipOverride : (dx - dy) < 0 ? (dx + dy) >= 0 : (dx + dy) < 0;
   if (TM[ti] === 2) unitsAt.set(ti, 1);
   if (TM[ti] === 25) GJR.push([e, frame, sx, sy, flip, sy, false]);
-  items.push({ bx0: x - 0.3, by0: y - 0.3, bx1: x + 0.3, by1: y + 0.3, rx0: sx - e[5], ry0: sy - e[6], rx1: sx - e[5] + fw, ry1: sy - e[6] + e[4], depth: x + y, top: TM[ti] === 98,
+  (alt ? VOO : items).push({ bx0: x - 0.3, by0: y - 0.3, bx1: x + 0.3, by1: y + 0.3, rx0: sx - e[5], ry0: sy - e[6], rx1: sx - e[5] + fw, ry1: sy - e[6] + e[4], depth: x + y, top: TM[ti] === 98,
     draw() {
       if (onWater && !side) { ctx.fillStyle = 'rgba(200,230,240,.55)'; ctx.fillRect(Math.round(sx) - 6, Math.round(sy) - 1, 12, 2); }
-      (scene.tema === 'demonio' ? blitNeg : blit)(ctx, e, frame, sx, sy, flip);
+      if (alt) { ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fillRect(Math.round(sx) - 5, Math.round(sy) - 1, 11, 2); blit(ctx, e, frame, sx, sy - alt, flip); return; }
+      if (aga) blitAgachado(ctx, e, frame, sx, sy, flip); else (scene.tema === 'demonio' ? blitNeg : blit)(ctx, e, frame, sx, sy, flip);
       if (TM[ti] === 2) { const xi = x | 0, yi = y | 0; const [wx, wy] = tw(xi, yi, HM[ti]); blit(ctx, GA[1], Math.floor(t / 700) % 2, wx, wy); }
       if (isPlayer && frameN % 1 === 0) { }
     } });
+}
+function modoPU(md) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; }
+const AGA = new Map();                                                // quadro agachado: as pernas perdem metade das linhas e o corpo desce
+function blitAgachado(c, e, frame, sx, sy, flip) {
+  const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + frame + ':' + (flip ? 1 : 0); let k = AGA.get(key);
+  if (!k) { const fw = Math.ceil(e[3] / e[7]), fh = e[4], a = document.createElement('canvas'); a.width = fw; a.height = fh; const ax = a.getContext('2d'); blit(ax, e, frame, e[5], e[6], flip);
+    const d = ax.getImageData(0, 0, fw, fh).data; let top = fh, bot = -1; for (let y = 0; y < fh; y++) for (let x = 0; x < fw; x++) if (d[(y * fw + x) * 4 + 3] > 20) { if (y < top) top = y; if (y > bot) bot = y; }
+    k = document.createElement('canvas'); k.width = fw; k.height = fh; const kx = k.getContext('2d');
+    if (bot > top) { const cut = top + Math.round((bot - top + 1) * 0.55), legs = []; for (let y = cut; y <= bot; y++) legs.push(y); const keep = legs.filter((y, i) => i % 2 === 0 || y === bot), drop = legs.length - keep.length;
+      kx.drawImage(a, 0, 0, fw, cut, 0, drop, fw, cut); keep.forEach((y, i) => kx.drawImage(a, 0, y, fw, 1, 0, cut + drop + i, fw, 1)); } else kx.drawImage(a, 0, 0);
+    AGA.set(key, k); }
+  c.drawImage(k, Math.round(sx) - e[5], Math.round(sy) - e[6]);
 }
 function charSprite(c, mv, front) { return E(`${visDe(c)}_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`); }
 // maior raio (até r) em que tudo em volta do ponto é água: o retângulo de meia-largura raio*kx + mx (e raio*ky + my), mais meia casa de folga.
@@ -1585,7 +1644,7 @@ function walkable(x, y, fromH) {
   if (x < 0 || y < 0 || x >= N || y >= N) return false; const i = x * N + y;
   if (occ[i] === 1) return false; const t = TM[i]; if (t === 99) return false; if (isWater(t) && !opt.tadayou) return false;
   if (treeAt(x, y)) return false; const h = isWater(t) ? 0 : HM[i];
-  if (!opt.kinobori && Math.abs(h - fromH) > 1) return false; return true;
+  if (!opt.kinobori && (h - fromH > 1 || fromH - h > 6)) return false; return true;       // subir mais de 1 m só com Kinobori; descer até 6 m é um salto (acima de 2 m, dano de queda)
 }
 function hEff(x, y) { const i = x * N + y; return isWater(TM[i]) ? 0 : HM[i]; }
 function astar(sx, sy, gx, gy) {
@@ -1602,7 +1661,7 @@ function astar(sx, sy, gx, gy) {
     for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
       if (!dx && !dy) continue; const nx = x + dx, ny = y + dy; if (!walkable(nx, ny, h0)) continue; if (WL && edgeBlocked(x, y, nx, ny)) continue;
       if (dx && dy && (!walkable(x + dx, y, h0) || !walkable(x, y + dy, h0))) continue;
-      const nk = key(nx, ny), ng = gk + (dx && dy ? 1.414 : 1); if (ng < (g.has(nk) ? g.get(nk) : 1e9)) { g.set(nk, ng); came.set(nk, k); push(ng + hfn(nx, ny), nk); }
+      const nk = key(nx, ny), ng = gk + (dx && dy ? 1.414 : 1) + (h0 - hEff(nx, ny) > 2 ? 14 : 0); if (ng < (g.has(nk) ? g.get(nk) : 1e9)) { g.set(nk, ng); came.set(nk, k); push(ng + hfn(nx, ny), nk); }
     }
   }
   const path = []; let k = best; while (k !== s && k !== undefined) { path.push([((k / N) | 0) + 0.5, (k % N) + 0.5]); k = came.get(k); } return path.reverse();
@@ -1619,10 +1678,11 @@ function nearestWalkable(x, y, R) {
 function stepPlayer(dt) {
   me.mv = false;
   if (me.path.length) {
-    let rem = dt * 4.5 * (+(Q.get('spd') || 1)); me.mv = true;
+    let rem = dt * velMe() * (+(Q.get('spd') || 1)); me.mv = true; const h0 = hEff(me.x | 0, me.y | 0);
     while (rem > 0 && me.path.length) { const [tx, ty] = me.path[0]; const dx = tx - me.x, dy = ty - me.y, d = Math.hypot(dx, dy);
       if (d < 1e-3) { me.path.shift(); continue; } me.dx = dx; me.dy = dy; if (d <= rem) { me.x = tx; me.y = ty; rem -= d; me.path.shift(); } else { me.x += dx / d * rem; me.y += dy / d * rem; rem = 0; } }
-    if (!me.path.length) { sendPresence(); const pt = portalHere(me.x | 0, me.y | 0); if (pt) goScene(pt); }
+    if (!ac.voo) { const h1 = hEff(me.x | 0, me.y | 0); if (h0 - h1 > 2) queda(h0 - h1); }
+    if (!me.path.length) { sendPresence(); const pt = ac.voo ? null : portalHere(me.x | 0, me.y | 0); if (pt) goScene(pt); }
   }
   followPet(pet, me.x, me.y, dt);
 }
@@ -1720,6 +1780,7 @@ async function pick(c) {
     me.path = []; pet.x = me.x - 1; pet.y = me.y; cam.follow = true; }
   me.c = c || null; for (const k of chars.children) k.classList.toggle('on', k.dataset.c === (me.c || '')); sendPresence();
   if (dadosPronto) dadosQuem();
+  try { acoesTroca(); } catch (e) {}                                     // outro personagem: sai do voo, desfaz clones
 }
 pick(me.c);
 const mmc = $('mmc'), mx = mmc.getContext('2d'); mx.imageSmoothingEnabled = false;
@@ -1758,7 +1819,7 @@ function packPath() {
   return out;
 }
 function sendPresence() {
-  if (mesa) { lastSent = Date.now(); const st = { c: me.c, s: scene.id, x: r2(me.x), y: r2(me.y), path: packPath(), sp: 4.5, gm: mesa.isGM ? 1 : 0 };
+  if (mesa) { lastSent = Date.now(); const st = Object.assign({ c: me.c, s: scene.id, x: r2(me.x), y: r2(me.y), path: packPath(), gm: mesa.isGM ? 1 : 0 }, presExtra());
     mesa.sendPresence(st).catch(() => {}); if (mesa.isGM && me.c) gmTrack(me.c, st); return; }
   if (!room) return; lastSent = Date.now();
   try { const pr = room.presence({ c: me.c, x: r2(me.x), y: r2(me.y), path: packPath(), sp: 4.5 }); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {} }
@@ -1767,7 +1828,7 @@ const okScene = v => v === 'vila' || (typeof v === 'string' && !!CENAS[v]);
 function peerPos(p) {
   const st = p && p.presence; if (!st || !okXY(st.x, st.y)) return null;
   let x = st.x, y = st.y, dx = 1, dy = 1, mv = false;
-  const sp = Number.isFinite(st.sp) ? Math.min(Math.max(st.sp, 0.5), 12) : 4.5;
+  const sp = Number.isFinite(st.sp) ? Math.min(Math.max(st.sp, 0.5), 16) : 4.5;
   let rem = Math.max(0, Date.now() - (p.updatedAt || Date.now())) / 1000 * sp;
   const path = Array.isArray(st.path) ? st.path.slice(0, 300) : [];
   for (const q of path) { if (!Array.isArray(q) || !okXY(q[0], q[1])) break; const ddx = q[0] - x, ddy = q[1] - y, d = Math.hypot(ddx, ddy); if (d < 1e-3) continue; dx = ddx; dy = ddy; if (rem >= d) { x = q[0]; y = q[1]; rem -= d; } else { x += ddx / d * rem; y += ddy / d * rem; mv = true; break; } }
@@ -1798,7 +1859,8 @@ async function startMesa() {
   const relays = Q.get('relay') ? Q.get('relay').split(',') : null;
   mesa = await Mesa.join({ m: Q.get('m'), k: Q.get('k'), g: Q.get('g'), relays,
     onPresence(cid, msg) {
-      const st = { c: CHARS.includes(msg.c) ? msg.c : null, s: okScene(msg.s) ? msg.s : 'vila', x: +msg.x, y: +msg.y, path: Array.isArray(msg.path) ? msg.path.slice(0, 300) : [], sp: +msg.sp || 4.5 };
+      const st = { c: CHARS.includes(msg.c) ? msg.c : null, s: okScene(msg.s) ? msg.s : 'vila', x: +msg.x, y: +msg.y, path: Array.isArray(msg.path) ? msg.path.slice(0, 300) : [], sp: +msg.sp || 4.5,
+        md: ['v', 'r', 'a'].includes(msg.md) ? msg.md : '', k: Array.isArray(msg.k) ? msg.k.slice(0, 2) : [] };      // modo de andar e clones
       if (!okXY(st.x, st.y)) return;
       let e = peerMap.get(cid); const isNew = !e; if (!e) { e = { peer: cid }; peerMap.set(cid, e); }
       e.presence = st; e.updatedAt = Date.now(); e.lastSeen = Date.now(); rebuildPeers();
@@ -1819,7 +1881,7 @@ async function startMesa() {
       cmb = limpaCmb(st.cmb); npcs = limpaNpcs(st.npcs).filter(n => !n.oc); ficha = limpaFicha(st.ficha); zonas = limpaZonas(st.zonas); nevoa = limpaNevoa(st.nevoa); aplicarCombate();
     },
     onRoll(msg) { receberRolagem(msg); },
-    onEvent(msg) { if (msg && msg.k === 'pers') persRecebeProposta(msg); else receberEvento(msg); },
+    onEvent(msg) { if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else receberEvento(msg); },
     onFicha(c, f, retained) { persRecebe(c, f, retained); },
     onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(() => { gmPublish(); persPublicaTudo(); }, 1500); } } });
   if (mesa.isGM) {
@@ -3172,7 +3234,9 @@ function tqEstado() {                                         // pronto para lan
     return { g, af, pronto: true };
   }
   const al = tec.alvos.map(id => ux.get(id)).filter(Boolean);
-  for (const u of al) if (Math.hypot(u.x - o[0], u.y - o[1]) - CORPO > A + 1e-6) return { af: al.map(u => u.id), msg: `${nomeDe(u.id)} está fora do alcance (${p.alc} m)` };
+  // a altura do terreno conta na distância (1 nível = 1 m); contra quem voa, atacando do chão, o alcance cai à metade (Combate Aéreo, p. 270)
+  for (const u of al) { const ar = vooDe(u.id) && !vooDe(tec.quem), dz = (hEff(u.x | 0, u.y | 0) - hEff(o[0] | 0, o[1] | 0)) / M_CASA;
+    if (Math.hypot(u.x - o[0], u.y - o[1], dz) - CORPO > (ar ? A / 2 : A) + 1e-6) return { af: al.map(u => u.id), msg: `${nomeDe(u.id)} está fora do alcance (${ar ? p.alc / 2 + ' m: está voando' : p.alc + ' m'})` }; }
   if (!al.length) return { af: [], msg: F.t === 'flechas' ? `Clique nos alvos: cada clique põe um projétil (${tec.nv})` : F.t === 'cadeia' ? 'Clique no primeiro alvo' : 'Clique no alvo', mira: true };
   if (F.t === 'raio' && al.length > 1) for (const u of al) for (const v of al) if (Math.hypot(u.x - v.x, u.y - v.y) * M_CASA > 4 + 1e-6) return { af: al.map(u => u.id), msg: 'Com vários raios, os alvos ficam a até 4 m entre si' };
   if (F.t === 'cadeia') for (const u of al.slice(1)) if (Math.hypot(u.x - al[0].x, u.y - al[0].y) * M_CASA > 10 + 1e-6) return { af: al.map(u => u.id), msg: `${nomeDe(u.id)} está a mais de 10 m do primeiro alvo` };
@@ -3209,6 +3273,7 @@ function lancarTecnica() {
     af: (st.af || []).slice(0, 30), p: { alc: p.alc, tam: p.tam, dano: p.dano, fixo: p.fixo, dif: p.dif, dureza: p.dureza, custo: p.custo },
     seed: (Math.random() * 1e9) | 0, at: Date.now(), qn: nomeDe(tec.quem) };
   if (F.t === 'area' && F.forma !== 'explosao' && !ev.a) ev.a = ev.o;
+  acoesGastaTecnica(tec.quem, ev.p.custo);                                    // o chakra sai da ficha
   if (mesa) mesa.sendEvent(Object.assign({ tid: ev.id }, ev, { alvos: ev.alvos.filter(a => !ocultoId(a[0])), af: ev.af.filter(id => !ocultoId(id)) })).catch(() => {});   // o id da mensagem é trocado pela rede; o da técnica vai em tid
   tocarTecnica(ev, true);
   tec.alvos = []; tec.flechas = {}; tec.fixo = false; tec.pausa = true; tec.lancou = performance.now(); tqUI();
@@ -3726,6 +3791,8 @@ function limpaPers(f, c) {
   o.mis = (Array.isArray(f.mis) ? f.mis : []).slice(0, 120).map(m => ({ t: pTxt(m.t, 80), rank: RANKS.includes(m.rank) ? m.rank : 'D', exp: pNum(m.exp, 0, 9999, 0), ryos: pNum(m.ryos, 0, 1e7, 0), obs: pTxt(m.obs, 600) }));
   o.comp = (Array.isArray(f.comp) ? f.comp : []).slice(0, 6).map(q => ({ n: pTxt(q.n, 40), nc: pNum(q.nc, 1, 20, 4), tam: TAMANHOS.some(t => t[0] === q.tam) ? q.tam : 'MÉDIO', vit: pNum(q.vit, 0, 999, 10), vitP: pNum(q.vitP, -999, 999, 0),
     cha: pNum(q.cha, 0, 999, 10), chaP: pNum(q.chaP, -999, 999, 0), desl: pNum(q.desl, 0, 99, 10), dur: pNum(q.dur, 0, 30, 0), at: Object.fromEntries(ATR.map(([k]) => [k, pNum((q.at || {})[k], 0, 40, 0)])), nota: pTxt(q.nota, 600) }));
+  o.shun = ['fumaca', 'folhas', 'areia', 'tinta', 'raio'].includes(f.shun) ? f.shun : 'fumaca';
+  o.selos = (Array.isArray(f.selos) ? f.selos : []).slice(-12).filter(s => s && typeof s.id === 'string' && okScene(s.s)).map(s => ({ id: pTxt(s.id, 12), s: s.s, n: pTxt(s.n, 40), u: typeof s.u === 'string' && okId(s.u) ? s.u : undefined, x: r2(+s.x || 0), y: r2(+s.y || 0) }));
   if (typeof f.gm === 'string') o.gm = pTxt(f.gm, 4000);
   return o;
 }
@@ -4054,6 +4121,7 @@ const ABA_FN = {
     D.ex.alc = 'Alcance corpo a corpo pelo tamanho.'; D.ex.abs = 'Absorção da armadura vestida.'; D.ex.dur = 'Dureza da armadura mais a dureza extra.';
     c.append(g);
     const g2 = h('div', 'grade2'); g2.append(seletor('Tamanho', F.tam, TAMANHOS.map(t => t[0]), (f, v) => { f.tam = v; }), campo('Sensor', F.sensor, (f, v) => { f.sensor = v.slice(0, 40); }, { lista: 'pvSensores' }),
+      seletor('Efeito do Shunshin', F.shun, [['fumaca', 'Fumaça'], ['folhas', 'Folhas'], ['areia', 'Areia'], ['tinta', 'Tinta'], ['raio', 'Raio']], (f, v) => { f.shun = v; }),
       campo('Dureza extra', F.durM, (f, v) => { f.durM = Math.max(0, Math.min(20, Math.round(v))); }, { tipo: 'number', cls: 'mini' })); c.append(g2);
     c.append(titulo('Marcadores que mudam números'));
     const mk = h('div', 'marcas');
@@ -4200,6 +4268,230 @@ if (pvEl) {
 }
 persPicker();
 
+
+// ---------- ações de exploração e jutsus básicos ----------
+// Modos de andar (andar, correr, agachar), voo acima das nuvens, Shunshin, Bunshin, Hiraishin, queda e descanso.
+// Regras: Livro Básico 4.1b (Shunshin p. 125, Clone p. 76, Deus do Trovão e Hiraishin p. 244, Combate Aéreo p. 270,
+// Dano de Queda p. 275, Cura e Chakra p. 260). O descanso curto é regra da mesa: 1 hora, metade do que a noite dá.
+const ac = { modo: 'andar', voo: false, clones: [], selClone: -1, mira: null, fx: [] };
+const VEL = { andar: 4.5, correr: 9, agachar: 2.25, voo: 13.5 };
+const emCombate = () => !!(me.c && combateAqui() && entrada('c:' + me.c));
+function velMe() { if (emCombate()) return 4.5; return ac.voo ? VEL.voo : VEL[ac.modo] || 4.5; }
+function presExtra() {
+  return { md: ac.voo ? 'v' : ac.modo === 'correr' ? 'r' : ac.modo === 'agachar' ? 'a' : '', sp: velMe(),
+    k: ac.clones.map(q => [r2(q.x), r2(q.y), q.path.slice(0, 40).map(p => [r2(p[0]), r2(p[1])])]) };
+}
+// ---------- quem pode o quê (pela ficha) ----------
+const aptTem = (F, re) => !!F && F.apt.some(a => re.test(semAc(a.n)));
+const podTem = (F, re) => !!F && F.pod.some(p => p.nv > 0 && re.test(semAc(p.ef + ' ' + p.n)));
+function podeVoar(c) { const F = persDe(c); return aptTem(F, /\bVOO\b|VOAR|KUJAKU/) || podTem(F, /MONTARIA|\bVOO\b/) || (F && F.cfg.includes('voo')); }
+function tipoClone(c) { const F = persDe(c); if (!F) return null; const a = F.apt.find(q => /^CLONE\b|BUNSHIN/.test(semAc(q.n))); if (!a) return null;
+  const s = semAc(a.n + ' ' + a.d); return s.includes('KAGE') ? 'kage' : s.includes('IWA') ? 'iwa' : s.includes('MIZU') ? 'mizu' : s.includes('SUMI') ? 'sumi' : s.includes('NENDO') ? 'nendo' : 'clone'; }
+const temHiraishin = c => aptTem(persDe(c), /DEUS DO TROVAO|HIRAISHIN/) && !aptTem(persDe(c), /^NAO DISPONIVEL/);
+function vooDe(id) {
+  if (!id || !id.startsWith('c:')) return false; const c = id.slice(2); if (c === me.c) return ac.voo;
+  for (const p of peers) if (p.presence && p.presence.c === c) return p.presence.md === 'v'; return false;
+}
+// gasta chakra/vitalidade da ficha de c (o jogador da ficha ou o mestre)
+function gasta(c, cha, vit, motivo) {
+  const F0 = persDe(c); if (!F0) return true; const D = persCalc(F0);
+  if (cha > 0 && D.chaA < cha) { say(`Chakra insuficiente para ${motivo}: precisa ${cha}, tem ${D.chaA}`); return false; }
+  if (vit > 0 && D.vitA <= vit) { say(`Vitalidade insuficiente para ${motivo}`); return false; }
+  if (!podeEditar(c)) return true;
+  const F = JSON.parse(JSON.stringify(F0)); F.en.chaP += cha || 0; F.en.vitP += vit || 0; persGrava(c, F); return true;
+}
+function acoesGastaTecnica(quem, custo) {
+  if (!quem || !quem.startsWith('c:') || !custo) return; const c = quem.slice(2), F = persDe(c); if (!F || !podeEditar(c)) return;
+  const D = persCalc(F); if (D.chaA < custo) say(`${nome(c)} ficou sem chakra suficiente (${D.chaA} de ${custo})`);
+  const G = JSON.parse(JSON.stringify(F)); G.en.chaP += custo; persGrava(c, G);
+}
+// ---------- efeitos na tela ----------
+const FX_COR = { fumaca: ['#e8e4dc', '#c9c3b8', '#a49d92'], folhas: ['#6aa84f', '#93c47d', '#38761d'], areia: ['#e0c48a', '#c9a86a', '#a8874e'], raio: ['#fff7c2', '#ffd84a', '#ffffff'], tinta: ['#2b2b33', '#45454f', '#16161c'] };
+function puff(x, y, tipo) { const n = tipo === 'raio' ? 18 : 22; for (let i = 0; i < n; i++) { const a = rnd(i, x * 7 | 0, y * 13 | 0) * 6.283, v = 0.6 + rnd(i, 3, x | 0) * 1.6;
+  ac.fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v * 0.5 - (tipo === 'folhas' ? 0.6 : 0.3), t0: performance.now(), dur: 650 + rnd(i, 9, 1) * 400, cor: FX_COR[tipo][i % 3], raio: tipo === 'raio' }); } }
+function acoesTopo(now) {
+  // marcas dos clones (só o dono e o mestre sabem quem é cópia) e selos de Hiraishin
+  const meus = me.c ? ac.clones : [];
+  meus.forEach((q, i) => { const [sx, sy] = unitScreen(q.x, q.y); ctx.strokeStyle = i === ac.selClone ? 'rgba(255,220,120,.95)' : 'rgba(255,255,255,.55)'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.ellipse(Math.round(sx), Math.round(sy), 7, 3.5, 0, 0, 6.283); ctx.stroke(); ctx.setLineDash([]); });
+  if (ehMestre() && MESA) for (const p of peers) { const k = p.presence && Array.isArray(p.presence.k) ? p.presence.k : []; if (!k.length || p.presence.s !== scene.id) continue;
+    for (const q of clonesDe(p)) { const [sx, sy] = unitScreen(q[0], q[1]); ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.ellipse(Math.round(sx), Math.round(sy), 7, 3.5, 0, 0, 6.283); ctx.stroke(); ctx.setLineDash([]); } }
+  for (const s of selosVisiveis()) { if (s.s !== scene.id) continue; const p = posSelo(s); if (!p) continue; const [sx, sy] = unitScreen(p[0], p[1]); const pul = 0.6 + 0.4 * Math.sin(now / 300);
+    ctx.fillStyle = `rgba(255,214,74,${0.35 + 0.35 * pul})`; ctx.fillRect(Math.round(sx) - 3, Math.round(sy) - 2, 7, 3); ctx.fillStyle = '#fff3b0'; ctx.fillRect(Math.round(sx) - 1, Math.round(sy) - 4, 3, 7); }
+  // partículas
+  ac.fx = ac.fx.filter(f => now - f.t0 < f.dur);
+  for (const f of ac.fx) { const k = (now - f.t0) / f.dur, [sx, sy] = unitScreen(f.x, f.y), px = Math.round(sx + f.vx * k * 14), py = Math.round(sy - 10 + f.vy * k * 14);
+    ctx.globalAlpha = 1 - k; ctx.fillStyle = f.cor; const s = f.raio ? 1 : k < 0.5 ? 2 : 3; ctx.fillRect(px, py, s, s); }
+  if (ac.fx.some(f => f.raio && now - f.t0 < 120)) { ctx.globalAlpha = 0.25; ctx.fillStyle = '#fff6c8'; ctx.fillRect(-1e5, -1e5, 2e5, 2e5); }
+  ctx.globalAlpha = 1;
+  if (ac.mira && mouse.ok) { const g = chaoEm(...mouseMundo()); if (g) { const [sx, sy] = unitScreen(g[0], g[1]); ctx.strokeStyle = ac.mira === 'shunshin' ? 'rgba(255,255,255,.9)' : 'rgba(255,214,74,.95)'; ctx.beginPath(); ctx.ellipse(Math.round(sx), Math.round(sy), 9, 4.5, 0, 0, 6.283); ctx.stroke(); } }
+}
+// ---------- movimento: passos dos meus clones e queda ----------
+function acoesPasso(dt) {
+  let mudou = false;
+  for (const q of ac.clones) { q.mv = false; let rem = dt * 4.5;
+    while (rem > 0 && q.path.length) { const [tx, ty] = q.path[0], dx = tx - q.x, dy = ty - q.y, d = Math.hypot(dx, dy); if (d < 1e-3) { q.path.shift(); continue; }
+      q.mv = true; q.dx = dx; q.dy = dy; if (d <= rem) { q.x = tx; q.y = ty; rem -= d; q.path.shift(); if (!q.path.length) mudou = true; } else { q.x += dx / d * rem; q.y += dy / d * rem; rem = 0; } } }
+  if (mudou) sendPresence();
+}
+function queda(m) {                       // Livro p. 275: 1 de dano por metro, no máximo 2× Vigor; Acrobacia amortece 1 m a cada 2 pontos acima de 9
+  if (!me.c || ac.voo || opt.kinobori || m <= 2) return; const F = persDe(me.c); if (!F) { say(`Queda de ${m} m`); return; }
+  const D = persCalc(F), acro = D.per.acrobacia || 0;
+  const r = rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: acro, desc: `Acrobacia: queda de ${m} m`, quem: quemDe('c:' + me.c) });
+  const tot = r.dados.reduce((s, d) => s + d.v * (d.s || 1), 0) + r.bonus, amort = Math.max(0, Math.floor((tot - 9) / 2)), dano = Math.min(2 * F.at.vig, Math.max(0, m - amort));
+  if (dano > 0) aplicaDano(me.c, dano);
+  say(`Queda de ${m} m: Acrobacia ${tot} amorteceu ${Math.min(m, amort)} m · ${dano} de dano`);
+}
+function aplicaDano(c, n) { const F = persDe(c); if (!F || !podeEditar(c) || !n) return; const G = JSON.parse(JSON.stringify(F)); G.en.vitP += n; persGrava(c, G); }
+// ---------- clones dos outros ----------
+function clonesDe(p) {
+  const st = p.presence, k = st && Array.isArray(st.k) ? st.k.slice(0, 4) : []; const out = [], passou = Math.max(0, Date.now() - (p.updatedAt || Date.now())) / 1000 * 4.5;
+  for (const q of k) { if (!Array.isArray(q) || !okXY(+q[0], +q[1])) continue; let x = +q[0], y = +q[1], dx = 1, dy = 1, mv = false, rem = passou;
+    for (const w of (Array.isArray(q[2]) ? q[2] : [])) { if (!Array.isArray(w) || !okXY(+w[0], +w[1])) break; const ddx = w[0] - x, ddy = w[1] - y, d = Math.hypot(ddx, ddy); if (d < 1e-3) continue; dx = ddx; dy = ddy;
+      if (rem >= d) { x = +w[0]; y = +w[1]; rem -= d; } else { x += ddx / d * rem; y += ddy / d * rem; mv = true; break; } }
+    out.push([x, y, dx, dy, mv]); }
+  return out;
+}
+function cloneEm(wx, wy) {                 // um clone na tela se comporta como o original (a mini-ficha abre a do dono)
+  const perto = (x, y) => { const [sx, sy] = unitScreen(x, y); return wx >= sx - 8 && wx <= sx + 8 && wy >= sy - 28 && wy <= sy + 3; };
+  if (me.c) for (const q of ac.clones) if (perto(q.x, q.y)) return { id: 'c:' + me.c };
+  for (const p of peers) { const st = p.presence; if (!st || st.s !== scene.id || !CHARS.includes(st.c)) continue; for (const q of clonesDe(p)) if (perto(q[0], q[1])) return { id: 'c:' + st.c }; }
+  return null;
+}
+// ---------- selos de Hiraishin (na ficha do dono; só ele e o mestre veem) ----------
+function selosVisiveis() { const out = []; for (const c of CHARS) { if (!(ehMestre() || c === me.c)) continue; const F = persDe(c); if (F && Array.isArray(F.selos)) for (const s of F.selos) out.push(s); } return out; }
+function posSelo(s) { if (s.u) { const p = posDe(s.u); return p ? [p.x, p.y] : null; } return [s.x, s.y]; }
+function poeSelo(alvo) {
+  const c = me.c; if (!gasta(c, 1, 0, 'o selo')) return;
+  const F = JSON.parse(JSON.stringify(persDe(c))); F.selos = (F.selos || []).slice(-11);
+  const s = alvo ? { id: rid(), s: scene.id, u: alvo, n: nomeDe(alvo) } : { id: rid(), s: scene.id, x: r2(me.x), y: r2(me.y), n: `${nomeCena(scene.id)} (${me.x | 0}, ${me.y | 0})` };
+  F.selos.push(s); F.en.chaP += 0; persGrava(c, F); say(alvo ? `Selo posto em ${s.n}` : 'Selo posto aqui'); acoesUI();
+}
+function tiraSelo(id) { const F = JSON.parse(JSON.stringify(persDe(me.c))); F.selos = (F.selos || []).filter(s => s.id !== id); persGrava(me.c, F); acoesUI(); }
+function vaiSelo(s) {
+  const p = posSelo(s); if (!p) { say('Esse selo não está em lugar nenhum agora'); return; }
+  if (s.s !== scene.id) { say('Esse selo está em outro lugar: vá até lá primeiro'); return; }
+  const mm = meuMovimento(); if (mm.msg) { say(mm.msg); return; }
+  let g = [p[0] | 0, p[1] | 0]; if (s.u) { const w = nearestWalkable(g[0], g[1], 2); if (w) g = w; }
+  if (!gasta(me.c, 2, 0, 'o Hiraishin')) return;
+  teleporta(g[0] + 0.5, g[1] + 0.5, 'raio', mm.turno); say('Hiraishin');
+}
+// ---------- Shunshin e teleporte ----------
+function teleporta(x, y, tipo, gastaMov) {
+  const de = [me.x, me.y]; puff(me.x, me.y, tipo); me.x = x; me.y = y; me.path = []; pet.x = x - 0.6; pet.y = y + 0.3; puff(x, y, tipo); cam.follow = true;
+  if (gastaMov && combateAqui()) lockMov = { r: cmb.r, visto: false };
+  sendPresence(); if (mesa) mesa.sendEvent({ k: 'acao', a: 'puff', de, para: [x, y], fx: tipo, s: scene.id }).catch(() => {});
+}
+function fxShunshin(c) { const F = persDe(c); return F && FX_COR[F.shun] ? F.shun : 'fumaca'; }
+function shunshinClique(wx, wy) {
+  const g = chaoEm(wx, wy); if (!g) return; const D = persDe(me.c) ? persCalc(persDe(me.c)) : { desl: 10 };
+  const dist = Math.hypot(g[0] - me.x, g[1] - me.y) * M_CASA; if (dist > D.desl + 1) { say(`Longe demais: o Shunshin vai até ${D.desl} m`); return; }
+  const w = ac.voo ? [g[0] | 0, g[1] | 0] : nearestWalkable(g[0] | 0, g[1] | 0, 1); if (!w) { say('Escolha um chão livre'); return; }
+  const livre = (persDe(me.c) || { cfg: [] }).cfg.includes('shunjutsu1'); const mm = meuMovimento();
+  if (!livre && mm.msg) { say(mm.msg); return; }
+  if (!gasta(me.c, 1, 0, 'o Shunshin')) return;
+  ac.mira = null; teleporta(w[0] + 0.5, w[1] + 0.5, fxShunshin(me.c), !livre && mm.turno); acoesUI();
+}
+// ---------- Bunshin ----------
+function criaClones(real) {
+  if (!me.c) return; const c = me.c, tipo = real ? tipoClone(c) : 'ilusao'; const max = 2 - ac.clones.length; if (max <= 0) { say('Já há 2 clones: desfaça um antes'); return; }
+  const n = real ? 1 : max;
+  if (tipo === 'kage') { if (!gasta(c, 0, 3, 'o Kage Bunshin')) return; } else if (!gasta(c, 1, 0, 'o clone')) return;
+  for (let i = 0; i < n; i++) { const w = nearestWalkable((me.x | 0) + (i ? -1 : 1), (me.y | 0) + (i ? 1 : 0), 3) || [me.x | 0, me.y | 0]; ac.clones.push({ x: w[0] + 0.5, y: w[1] + 0.5, path: [], dx: me.dx, dy: me.dy, mv: false, tipo });
+    puff(w[0] + 0.5, w[1] + 0.5, tipo === 'sumi' ? 'tinta' : 'fumaca'); }
+  if (mesa) mesa.sendEvent({ k: 'acao', a: 'puff', de: null, para: [ac.clones[ac.clones.length - 1].x, ac.clones[ac.clones.length - 1].y], fx: 'fumaca', s: scene.id }).catch(() => {});
+  say(tipo === 'ilusao' ? 'Bunshin no Jutsu: as cópias somem ao serem tocadas e não causam dano' : tipo === 'kage' ? 'Kage Bunshin: 3 de Vitalidade por cópia, e o chakra fica dividido com elas' : 'Clone: 1 de Vitalidade, −3 em todos os testes, sem técnicas');
+  sendPresence(); acoesUI();
+}
+function desfazClones(i) { const L = i == null ? ac.clones : [ac.clones[i]]; for (const q of L) if (q) puff(q.x, q.y, q.tipo === 'sumi' ? 'tinta' : 'fumaca'); if (i == null) ac.clones = []; else ac.clones.splice(i, 1); ac.selClone = -1; sendPresence(); acoesUI(); }
+// ---------- clique no mapa ----------
+function acoesClique(wx, wy) {
+  if (ac.mira === 'shunshin') { shunshinClique(wx, wy); return true; }
+  if (ac.mira === 'selar') { const u = unidadeEm(wx, wy); ac.mira = null; acoesUI();
+    if (!u || u.id === 'c:' + me.c) { poeSelo(null); return true; }
+    const p = posDe(u.id); if (!p || Math.hypot(p.x - me.x, p.y - me.y) * M_CASA > 3) { say('Para selar alguém é preciso tocá-lo: chegue a até 1 casa'); return true; }
+    if (u.id.startsWith('n:')) { const st = statsDe('c:' + me.c), alvo = 9 + (statsDe(u.id).esq || 0); const r = rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: st.cc, alvo, desc: 'Toque do selo (CC)', quem: quemDe('c:' + me.c) });
+      const tot = r.dados.reduce((s, d) => s + d.v * (d.s || 1), 0) + r.bonus; if (tot < alvo) { say(`Errou o toque (${tot} contra ${alvo})`); return true; } }
+    poeSelo(u.id); return true; }
+  if (!me.c) return false;
+  // tocar um clone meu escolhe ele; o próximo toque no chão o move
+  const i = ac.clones.findIndex(q => { const [sx, sy] = unitScreen(q.x, q.y); return wx >= sx - 8 && wx <= sx + 8 && wy >= sy - 28 && wy <= sy + 3; });
+  if (i >= 0) { ac.selClone = ac.selClone === i ? -1 : i; acoesUI(); if (ac.selClone >= 0) say('Clone escolhido: toque no chão para movê-lo'); return true; }
+  if (ac.selClone >= 0) { const q = ac.clones[ac.selClone]; const g = chaoEm(wx, wy); if (!g) return true; const goal = nearestWalkable(g[0] | 0, g[1] | 0, 4); if (!goal) return true;
+    const D = persDe(me.c) ? persCalc(persDe(me.c)) : { desl: 10 };
+    if (combateAqui() && Math.hypot(goal[0] - q.x, goal[1] - q.y) * M_CASA > D.desl + 1) { say(`O clone anda até ${D.desl} m por rodada`); return true; }
+    const p = astar(q.x | 0, q.y | 0, goal[0], goal[1]); if (p && p.length) { q.path = p; sendPresence(); } ac.selClone = -1; acoesUI(); return true; }
+  if (ac.voo && !emCombate()) { const g = chaoEm(wx, wy); if (!g) return true; me.path = [[Math.max(0.5, Math.min(N - 0.5, g[0])), Math.max(0.5, Math.min(N - 0.5, g[1]))]]; cam.follow = true; sendPresence(); return true; }
+  return false;
+}
+// ---------- voo ----------
+function alternaVoo() {
+  if (!me.c) return; if (!ac.voo && !scene.outdoor) { say('Só dá para voar ao ar livre'); return; }
+  if (!ac.voo && !podeVoar(me.c)) { say('A ficha não tem voo nem montaria voadora'); return; }
+  ac.voo = !ac.voo; me.path = [];
+  if (ac.voo) { if (emCombate()) { const mm = meuMovimento(); if (mm.turno) lockMov = { r: cmb.r, visto: false }; say('Levantar voo usa a ação de movimento. No ar: alcance contra você, do chão, cai à metade'); } else say('Voando acima das nuvens'); }
+  else { const w = walkable(me.x | 0, me.y | 0, hEff(me.x | 0, me.y | 0)) ? null : nearestWalkable(me.x | 0, me.y | 0, 12); if (w) me.path = [[w[0] + 0.5, w[1] + 0.5]]; say('Pousou'); }
+  sendPresence(); acoesUI();
+}
+let nuvem = null;
+function vooPasse(vl, vt, now) {
+  if (ac.voo && scene.outdoor) { nuvem = nuvem || { k: 'cena', cor: '#eef', d: 64, alt: 1, dir: 1, vel: 1, esc: 5, vis: 0, oc: 0 };
+    const img = ctx.getImageData(0, 0, W, HH), u = new Uint32Array(img.data.buffer); const tudo = nvTudo; nvTudo = false; nevoaPinta(u, nuvem, vl, vt, now); nvTudo = tudo; ctx.putImageData(img, 0, 0); }
+  if (!VOO.length) return; ctx.save(); ctx.setTransform(1, 0, 0, 1, -vl, -vt); for (const it of VOO) it.draw(); ctx.restore(); VOO.length = 0;
+}
+// ---------- descanso (só o mestre, ou sem mesa) ----------
+function descansar(horas, quem) {
+  if (cmb && cmb.on) { say('Não dá para descansar com o combate aberto'); return; }
+  const linhas = [];
+  for (const c of quem) { const F = persDe(c); if (!F) continue; const a = F.at, longo = horas >= 8;
+    const rv = longo ? 10 + 2 * a.vig : Math.ceil((10 + 2 * a.vig) / 2), rc = longo ? 5 + 2 * a.esp : Math.ceil((5 + 2 * a.esp) / 2);
+    const G = JSON.parse(JSON.stringify(F)), v0 = G.en.vitP, c0 = G.en.chaP; G.en.vitP = Math.max(0, G.en.vitP - rv); G.en.chaP = Math.max(0, G.en.chaP - rc);
+    persGrava(c, G); linhas.push(`${nome(c)} +${v0 - G.en.vitP} Vit, +${c0 - G.en.chaP} Chakra`); }
+  setClock((worldMin() + horas * 60) % DAYMIN); if (mesa && mesa.isGM) gmPublish();
+  const txt = `Descanso ${horas >= 8 ? 'longo (8 h)' : 'curto (1 h)'}: ` + (linhas.join(' · ') || 'ninguém com ficha');
+  say(txt); desfazClones(); if (mesa) mesa.sendEvent({ k: 'acao', a: 'aviso', txt, fim: 1 }).catch(() => {});
+}
+function acaoRecebe(msg) {
+  if (msg.a === 'puff' && msg.s === scene.id && Array.isArray(msg.para) && okXY(+msg.para[0], +msg.para[1])) { const tipo = FX_COR[msg.fx] ? msg.fx : 'fumaca';
+    if (Array.isArray(msg.de) && okXY(+msg.de[0], +msg.de[1])) puff(+msg.de[0], +msg.de[1], tipo); puff(+msg.para[0], +msg.para[1], tipo); }
+  if (msg.a === 'aviso' && typeof msg.txt === 'string') { say(msg.txt.slice(0, 200)); if (msg.fim) desfazClones(); }
+}
+// ---------- barra de ações ----------
+const acEl = $('acoes');
+function acoesUI() {
+  if (!acEl) return; const c = me.c, temF = !!persDe(c); acEl.hidden = !c; if (!c) return;
+  const comb = emCombate(), set = (id, on, vis = true) => { const b = $(id); b.hidden = !vis; b.classList.toggle('on', !!on); b.setAttribute('aria-pressed', !!on); };
+  set('acAndar', !ac.voo && ac.modo === 'andar', !comb); set('acCorrer', !ac.voo && ac.modo === 'correr', !comb); set('acAgachar', !ac.voo && ac.modo === 'agachar', !comb);
+  set('acVoar', ac.voo, podeVoar(c) && scene.outdoor); set('acShun', ac.mira === 'shunshin'); set('acBun', ac.clones.length > 0); set('acHira', !!ac.mira && ac.mira !== 'shunshin', temHiraishin(c));
+  const sub = $('acMenu'); sub.textContent = ''; sub.hidden = !ac.menu; if (!ac.menu) return;
+  const bt = (t, fn, dica) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; if (dica) b.title = dica; b.onclick = fn; sub.appendChild(b); };
+  if (ac.menu === 'bun') { bt('Ilusões (1 de chakra)', () => { ac.menu = null; criaClones(false); }, 'Bunshin no Jutsu: 1 ou 2 cópias que somem ao serem tocadas');
+    const tc = tipoClone(c); if (tc) bt(`Clone ${{ kage: 'das Sombras', iwa: 'de Pedra', mizu: 'de Água', sumi: 'de Tinta', nendo: 'de Argila', clone: '' }[tc]} (${tc === 'kage' ? '3 de Vit' : '1 de chakra'})`.replace('  ', ' '), () => { ac.menu = null; criaClones(true); });
+    if (ac.clones.length) bt('Desfazer clones', () => { ac.menu = null; desfazClones(); });
+    if (ac.selClone >= 0) bt('Desfazer o escolhido', () => { ac.menu = null; desfazClones(ac.selClone); }); }
+  if (ac.menu === 'hira') { bt('Selar aqui ou em alguém (1 de chakra)', () => { ac.menu = null; ac.mira = 'selar'; say('Toque em você ou em alguém a até 1 casa'); acoesUI(); });
+    const F = persDe(c); for (const s of (F && F.selos) || []) { bt('Ir: ' + s.n, () => { ac.menu = null; vaiSelo(s); acoesUI(); }, '2 de chakra'); bt('×', () => tiraSelo(s.id), 'Tirar o selo ' + s.n); } }
+  if (ac.menu === 'aga') { const F = persDe(c), f = F ? persCalc(F).per.furtividade || 0 : 0;
+    bt(`Rolar Furtividade (+${f})`, () => { ac.menu = null; rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: f, desc: 'Furtividade', quem: quemDe('c:' + c) }); acoesUI(); }); }
+}
+if (acEl) {
+  const modo = m => { if (ac.voo) { say('Pouse antes de trocar o passo'); return; } ac.modo = ac.modo === m && m !== 'andar' ? 'andar' : m; ac.menu = m === 'agachar' && ac.modo === 'agachar' ? 'aga' : null; sendPresence(); acoesUI(); };
+  $('acAndar').onclick = () => modo('andar'); $('acCorrer').onclick = () => modo('correr'); $('acAgachar').onclick = () => modo('agachar'); $('acVoar').onclick = alternaVoo;
+  $('acShun').onclick = () => { ac.menu = null; ac.mira = ac.mira === 'shunshin' ? null : 'shunshin'; if (ac.mira) say('Shunshin: toque no destino (1 de chakra)'); acoesUI(); };
+  $('acBun').onclick = () => { ac.mira = null; ac.menu = ac.menu === 'bun' ? null : 'bun'; acoesUI(); };
+  $('acHira').onclick = () => { ac.mira = null; ac.menu = ac.menu === 'hira' ? null : 'hira'; acoesUI(); };
+  addEventListener('keydown', e => { if (/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '') || e.ctrlKey || e.metaKey || !me.c) return;
+    const k = e.key.toLowerCase(); if (k === 'shift') modo('correr'); else if (k === 'c') modo('agachar'); else if (k === 'v') alternaVoo(); else if (k === 'escape' && (ac.mira || ac.menu || ac.selClone >= 0)) { ac.mira = ac.menu = null; ac.selClone = -1; acoesUI(); } });
+  setInterval(acoesUI, 1500);
+}
+// ---------- descanso: painel do mestre ----------
+if ($('dsCurto')) { const abre = h => { const box = $('dsLista'); box.textContent = ''; for (const c of CHARS) { const F = persDe(c); if (!F) continue; const D = persCalc(F); const l = document.createElement('label'); l.className = 'chk';
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = true; cb.value = c; l.append(cb, ` ${nome(c)} · Vit ${D.vitA}/${D.vit} · Chakra ${D.chaA}/${D.cha}`); box.appendChild(l); }
+    $('dsOk').textContent = h >= 8 ? 'Descansar 8 horas' : 'Descansar 1 hora'; $('dsOk').onclick = () => { descansar(h, [...box.querySelectorAll('input:checked')].map(i => i.value)); $('descanso').hidden = true; };
+    $('dsTit').textContent = h >= 8 ? 'Descanso longo: uma noite (8 h)' : 'Descanso curto (1 h)';
+    $('dsInfo').textContent = h >= 8 ? 'Recupera 10 + 2 × Vigor de Vitalidade e 5 + 2 × Espírito de Chakra (Livro Básico, p. 260).' : 'Regra da mesa: metade do que uma noite recupera.'; $('descanso').hidden = false; };
+  $('dsCurto').onclick = () => abre(1); $('dsLongo').onclick = () => abre(8); $('dsFecha').onclick = () => { $('descanso').hidden = true; }; }
+acoesUI();
+function acoesTroca() { ac.voo = false; ac.clones = []; ac.selClone = -1; ac.mira = ac.menu = null; ac.modo = 'andar'; acoesUI(); }
 
 // ---------- névoa: efeito de cena do mestre ----------
 // O mestre põe névoas na cena (a cena inteira ou uma área); elas vão no estado assinado e todas as telas desenham igual.
@@ -4368,10 +4660,10 @@ function moradorEm(wx, wy) {
   return best;
 }
 function alvoInspecao(wx, wy) {
-  const u = unidadeEm(wx, wy); if (u) return { t: 'u', id: u.id };
+  const u = unidadeEm(wx, wy) || cloneEm(wx, wy); if (u) return { t: 'u', id: u.id };
   const v = moradorEm(wx, wy); return v ? { t: 'v', k: vilK(v[2]), m: v[3], x: v[0], y: v[1], vid: v[4] } : null;
 }
-function fiDistancia(x, y) { return me.c ? Math.round(Math.hypot(x - me.x, y - me.y) * M_CASA) : null; }
+function fiDistancia(x, y) { if (!me.c) return null; const dz = hEff(x | 0, y | 0) - hEff(me.x | 0, me.y | 0); return Math.round(Math.hypot(x - me.x, y - me.y) * M_CASA) + (dz ? `, ${Math.abs(dz)} m ${dz > 0 ? 'acima' : 'abaixo'}` : ''); }
 function fichaMonta() {
   const a = fiAlvo; if (!a) return; const corpo = $('fiCorpo'); corpo.textContent = '';
   const h = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
@@ -4431,7 +4723,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape' && fiAlvo) abreFicha(n
 // ---------- o clique no mapa: névoa a pôr, dois cliques, e depois o de sempre ----------
 let ultC = null;
 function cliqueMapa(wx, wy, cx, cy) {
-  if (nevoaClique(wx, wy)) { ultC = null; return; }
+  if (nevoaClique(wx, wy) || acoesClique(wx, wy)) { ultC = null; return; }
   const agora = performance.now(), mira = !!(tec.aberto && tec.quem && tqOrigem());
   if (!mira && ultC && agora - ultC.t < 420 && Math.abs(cx - ultC.x) + Math.abs(cy - ultC.y) < 18) { const alvo = alvoInspecao(wx, wy);
     if (alvo) { const c0 = ultC; ultC = null;
@@ -4448,18 +4740,18 @@ function cliqueMapa(wx, wy, cx, cy) {
 fichaPronta = true;
 
 ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'persBtn'].forEach(id => $(id).style.display = '');
-$('cbrow').style.display = $('nvrow').style.display = MESA ? 'none' : ''; $('load').style.display = 'none';
+$('cbrow').style.display = $('nvrow').style.display = $('dsrow').style.display = MESA ? 'none' : ''; $('load').style.display = 'none';
 $('solorow').style.display = (!MESA && !(window.claude && typeof window.claude.use === 'function')) ? '' : 'none';
 $('lugarrow').style.display = MESA ? 'none' : '';
 if (Q.get('cena') && CENAS[Q.get('cena')]) await goScene({ para: Q.get('cena') });
 if (MESA) {
   try { await startMesa(); } catch (e) { $('net').textContent = 'Não deu para abrir a mesa: ' + (e && e.message || e); }
-  $('gmrow').style.display = mesa && mesa.isGM ? '' : 'none'; $('cbrow').style.display = $('nvrow').style.display = mesa && mesa.isGM ? '' : 'none'; aplicarCombate(); $('gjrow').style.display = mesa && mesa.isGM && CENAS.genjutsu ? '' : 'none'; gjChips(); $('lugarrow').style.display = mesa && mesa.isGM ? '' : 'none'; $('tempo').style.display = mesa && mesa.isGM ? '' : 'none'; $('tempoMestre').style.display = mesa && !mesa.isGM ? '' : 'none';
+  $('gmrow').style.display = mesa && mesa.isGM ? '' : 'none'; $('cbrow').style.display = $('nvrow').style.display = $('dsrow').style.display = mesa && mesa.isGM ? '' : 'none'; aplicarCombate(); $('gjrow').style.display = mesa && mesa.isGM && CENAS.genjutsu ? '' : 'none'; gjChips(); $('lugarrow').style.display = mesa && mesa.isGM ? '' : 'none'; $('tempo').style.display = mesa && mesa.isGM ? '' : 'none'; $('tempoMestre').style.display = mesa && !mesa.isGM ? '' : 'none';
   if (mesa && mesa.isGM && Q.get('novo')) { history.replaceState(null, '', location.href.replace(/&novo=1/, '')); showInvite(); }
   if (mesa && !mesa.isGM && !me.c) say('Escolha seu personagem no canto de cima');
   if (!me.c) { const [sx, sy] = unitScreen(me.x, me.y); cam.x = sx; cam.y = sy; cam.follow = false; }
 }
-if (Q.get('ui') === '0') ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'combate', 'nevoa', 'ficha', 'persBtn', 'pers'].forEach(id => $(id).style.display = 'none');
+if (Q.get('ui') === '0') ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'combate', 'nevoa', 'ficha', 'persBtn', 'pers', 'acoes'].forEach(id => $(id).style.display = 'none');
 if (Q.get('dados') === '1') abrePainel(true);
 if (Q.get('go')) { const [gx, gy] = Q.get('go').split(',').map(Number); const g = nearestWalkable(gx | 0, gy | 0, 7); const p = g && astar(me.x | 0, me.y | 0, g[0], g[1]); if (p) me.path = p; }
 requestAnimationFrame(draw);
