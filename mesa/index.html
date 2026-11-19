@@ -298,6 +298,14 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 .rolo.tec button.cnd{font:600 11.5px/1 system-ui,sans-serif;background:rgba(36,30,39,.1);color:var(--sumi);border:1px solid rgba(36,30,39,.3);border-radius:10px;padding:3px 8px;cursor:pointer}
 .rolo.tec button.cnd:hover{background:rgba(168,44,36,.15)}
 .rolo.tec button.cnd.feito{background:var(--sumi);color:var(--washi)}
+/* ---------- combate fechado e parceiros ---------- */
+#ficha .cddef{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:9px;font:500 12.5px/1.4 system-ui,sans-serif}
+#ficha .cddef .rt{color:#5a4f5c;min-width:52px}
+#ficha .cddef button{background:rgba(36,30,39,.08);color:var(--sumi);box-shadow:inset 0 0 0 1px rgba(36,30,39,.25);padding:5px 8px}
+#ficha .cddef button.on{background:var(--sumi);color:var(--washi)}
+#ficha .rt{font:500 12px system-ui,sans-serif;color:#5a4f5c}
+.tag.parc{background:rgba(30,34,26,.72);box-shadow:0 0 0 1px rgba(170,200,140,.55);font-size:10px;padding:0 6px}
+.rolo.tec.res .selo{background:#3a5a3a}
 /* ---------- movimento e jutsus básicos ---------- */
 #acoes{left:12px;bottom:72px;display:flex;flex-wrap:wrap;align-items:center;gap:3px;padding:4px;max-width:calc(100vw - 24px);box-sizing:border-box}
 #acoes[hidden]{display:none}
@@ -620,6 +628,10 @@ body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,bod
   <button id="acShun" type="button" title="Shunshin: 1 de chakra, até o seu deslocamento"><i>瞬</i><span>Shunshin</span></button>
   <button id="acBun" type="button" title="Bunshin e clones"><i>分</i><span>Bunshin</span></button>
   <button id="acHira" type="button" title="Hiraishin: selos e teleporte"><i>雷</i><span>Hiraishin</span></button>
+  <button id="acFerr" type="button" title="Ferramentas da bolsa: kunai, shuriken, tarjas, bombas e pílulas" hidden><i>具</i><span>Bolsa</span></button>
+  <button id="acInvoc" type="button" title="Invocar criaturas (pela ficha)" hidden><i>召</i><span>Invocar</span></button>
+  <span class="sep"></span>
+  <button id="acDef" type="button" title="A defesa que você anuncia antes dos ataques (toque para trocar)"><i>盾</i><span>Esquiva</span></button>
   <div id="acMenu" hidden></div>
 </div>
 <button id="tecBtn" class="ui" type="button" style="display:none" aria-expanded="false" aria-controls="tecnicas" title="Técnicas (T)"><canvas id="tecIco" width="22" height="22"></canvas><span>Técnicas</span></button>
@@ -1485,16 +1497,15 @@ function draw() {
     pushUnit(items, unitsAt, e, w[0], w[1], w[2], w[3], w[4], now + i * 131, true, sxdir < 0);
   }
   // ---- jogador e outros ----
+  const tagPos0 = [];
+  if (parcPronto) desenhaParc(items, unitsAt, tagPos0, now, vl, vt);                    // parceiros e invocações (antes de quem monta neles)
   if (me.c) { const eu = 'c:' + me.c, md = presExtra().md; modoUnidade(eu, md, now); pushUnit(items, unitsAt, spriteDe(visDe(me.c), eu, me.mv, (me.dx + me.dy) >= 0, md, now), me.x, me.y, me.dx, me.dy, me.mv, now, false, undefined, true); if (!PU.alt && items.length) items[items.length - 1].isMe = true; modoPU('');
     for (const q of ac.clones) { const kid = `k:${me.c}:${q.id}`; modoUnidade(kid, '', now); pushUnit(items, unitsAt, spriteDe(visDe(me.c), kid, q.mv, (q.dx + q.dy) >= 0, '', now), q.x, q.y, q.dx, q.dy, q.mv, now + 97, false, undefined, true); modoPU(''); } }
-  if (me.c === 'ichiro') pushUnit(items, unitsAt, E(`plantao_${pet.mv ? 'anda' : 'parado'}_${(pet.dx + pet.dy) >= 0 ? 'frente' : 'costas'}`), pet.x, pet.y, pet.dx, pet.dy, pet.mv, now);
-  const tagPos = [];
+  const tagPos = tagPos0;
   if (me.c) { const ct = condTag('c:' + me.c); if (ct) { const [sx, sy] = unitScreen(me.x, me.y); tagPos.push(['', (sx - vl) * zoom, (sy - vt - (condDeita('c:' + me.c) && !altDe('c:' + me.c) ? 14 : 31) - altDe('c:' + me.c)) * zoom, 'eu', ct]); } }   // as minhas condições, em cima de mim
   for (const p of peers) { const s = peerPos(p); if (!s || s.s !== scene.id || nevoaEsconde(s.x, s.y)) continue; const pid = 'c:' + s.c, pmd = p.presence.md; modoUnidade(pid, pmd, now); const altP = PU.alt; pushUnit(items, unitsAt, spriteDe(visDe(s.c), pid, s.mv, (s.dx + s.dy) >= 0, pmd, now), s.x, s.y, s.dx, s.dy, s.mv, now, false, undefined, true); modoPU('');
     for (const q of clonesDe(p)) { const kid = `k:${s.c}:${q[5]}`; modoUnidade(kid, '', now); pushUnit(items, unitsAt, spriteDe(visDe(s.c), kid, q[4], (q[2] + q[3]) >= 0, '', now), q[0], q[1], q[2], q[3], q[4], now + 97, false, undefined, true); modoPU(''); const [qx, qy] = unitScreen(q[0], q[1]); tagPos.push([s.c, (qx - vl) * zoom, (qy - vt - 31) * zoom, '', condTag(kid)]); }
     s.altP = altP;
-    if (s.c === 'ichiro') { const key = p.peer || 'x'; let pt = peerPets.get(key); if (!pt) { pt = { x: s.x - 1, y: s.y, dx: 1, dy: 1, mv: false }; peerPets.set(key, pt); }
-      followPet(pt, s.x, s.y, Math.min(0.1, dtLast)); pushUnit(items, unitsAt, E(`plantao_${pt.mv ? 'anda' : 'parado'}_${(pt.dx + pt.dy) >= 0 ? 'frente' : 'costas'}`), pt.x, pt.y, pt.dx, pt.dy, pt.mv, now); }
     const [sx, sy] = unitScreen(s.x, s.y); tagPos.push([s.c, (sx - vl) * zoom, (sy - vt - (condDeita('c:' + s.c) && !s.altP ? 14 : 31) - (s.altP || 0)) * zoom, '', condTag('c:' + s.c)]); }
   if (scene.npcs) for (const q of scene.npcs) { pushUnit(items, unitsAt, E(q[0] + '_parado_' + (q[3] ? 'frente' : 'costas')), q[1] + 0.5, q[2] + 0.5, 1, 1, false, now + q[1] * 131 + q[2] * 71, false); VTELA.push([q[1] + 0.5, q[2] + 0.5, q[0], 'p', -2]); }
   if (MESA) { const live = new Set(peers.map(p => p.presence.c)); if (me.c) live.add(me.c);
@@ -1598,7 +1609,7 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
       if (isPlayer && frameN % 1 === 0) { }
     } });
 }
-function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; }
+function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.voa = md === 'v'; }
 const DEIT = new Map();                                               // deitado: o quadro parado girado 90°, pixel a pixel, com os pés no chão
 function blitDeitado(c, e, sx, sy, flip) {
   const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + (flip ? 1 : 0); let k = DEIT.get(key);
@@ -1914,7 +1925,7 @@ async function startMesa() {
   mesa = await Mesa.join({ m: Q.get('m'), k: Q.get('k'), g: Q.get('g'), relays,
     onPresence(cid, msg) {
       const st = { c: CHARS.includes(msg.c) ? msg.c : null, s: okScene(msg.s) ? msg.s : 'vila', x: +msg.x, y: +msg.y, path: Array.isArray(msg.path) ? msg.path.slice(0, 300) : [], sp: +msg.sp || 4.5,
-        md: ['v', 'r', 'a'].includes(msg.md) ? msg.md : '', k: Array.isArray(msg.k) ? msg.k.slice(0, 2) : [] };      // modo de andar e clones
+        md: ['v', 'r', 'a'].includes(msg.md) ? msg.md : '', k: Array.isArray(msg.k) ? msg.k.slice(0, 2) : [], pc: Array.isArray(msg.pc) ? msg.pc.slice(0, 12) : [], mt: Number.isInteger(msg.mt) ? msg.mt : -1 };      // modo de andar, clones, parceiros e montaria
       if (!okXY(st.x, st.y)) return;
       let e = peerMap.get(cid); const isNew = !e; if (!e) { e = { peer: cid }; peerMap.set(cid, e); }
       e.presence = st; e.updatedAt = Date.now(); e.lastSeen = Date.now(); rebuildPeers();
@@ -2119,6 +2130,14 @@ function avaliar(r) {
 const sinal = n => (n < 0 ? '− ' : '+ ') + Math.abs(n);
 function formula(r) { const g = {}; for (const q of r.dados) { const k = (q.s < 0 ? '-' : '+') + 'd' + q.f; g[k] = (g[k] || 0) + 1; }
   let s = Object.entries(g).map(([k, n], i) => (k[0] === '-' ? (i ? ' − ' : '−') : (i ? ' + ' : '')) + n + k.slice(1)).join(''); if (r.bonus) s += ' ' + sinal(r.bonus); return s; }
+// o contexto de um ataque (combate fechado): quem ataca, alvos com o dano base de cada um, efeito, área, projétil, corpo a corpo
+const UNID_RE = /^(c:[a-z]+|n:[a-z0-9]{1,12}|k:[a-z]+:[a-z0-9]{1,8}|p:[a-z]+:[0-9]{1,2})$/;
+function limpaAx(a) {
+  if (!a || typeof a !== 'object' || typeof a.i !== 'string' || !UNID_RE.test(a.de) || !Array.isArray(a.al)) return null;
+  const al = a.al.slice(0, 12).filter(q => Array.isArray(q) && UNID_RE.test(q[0])).map(q => [q[0], Math.max(0, Math.min(999, Math.round(+q[1] || 0)))]); if (!al.length) return null;
+  return { i: a.i.slice(0, 40), de: a.de, al, fx: a.fx != null && Number.isFinite(+a.fx) ? Math.max(0, Math.min(999, Math.round(+a.fx))) : null, ef: /^[a-z_]{0,16}$/.test(a.ef || '') ? a.ef || '' : '',
+    ar: a.ar ? 1 : 0, pj: a.pj ? 1 : 0, cc: a.cc ? 1 : 0, nm: String(a.nm || 'Ataque').slice(0, 32), ex: /^[a-zA-Z]{1,16}$/.test(a.ex || '') ? a.ex : null };
+}
 function limpaRolagem(m) {
   if (!m || typeof m !== 'object' || !Array.isArray(m.dados) || !m.dados.length || m.dados.length > 12) return null;
   const k = TIPO[m.k] ? m.k : 'livre'; const dados = [];
@@ -2128,8 +2147,8 @@ function limpaRolagem(m) {
   const crit = [13, 14, 15, 16].includes(+m.crit) ? +m.crit : 15; const q = m.quem || {};
   const base = m.base != null && Number.isInteger(+m.base) && +m.base >= 0 && +m.base <= 999 ? +m.base : null;
   const aid = typeof m.aid === 'string' && /^(c:[a-z]+|n:[a-z0-9]{1,12})$/.test(m.aid) ? m.aid : null;         // quem o ataque mira (para o combate aéreo)
-  return { id: String(m.id || '').slice(0, 40) || 'r' + Date.now(), k, dados, bonus, alvo, crit, base, aid, sec: m.sec ? 1 : 0, oculta: m.oculta ? 1 : 0, vazia: m.vazia ? 1 : 0, minha: m.minha ? 1 : 0, at: Number.isFinite(+m.at) ? +m.at : Date.now(),
-    desc: String(m.desc || '').slice(0, 40), quem: { c: CHARS.includes(q.c) ? q.c : null, n: String(q.n || 'Alguém').slice(0, 28), gm: q.gm ? 1 : 0, spr: /^inimigo[0-3]_parado_frente$/.test(q.spr) ? q.spr : null } };
+  return { id: String(m.id || '').slice(0, 40) || 'r' + Date.now(), k, dados, bonus, alvo, crit, base, aid, ax: k === 'ataque' ? limpaAx(m.ax) : null, sec: m.sec ? 1 : 0, oculta: m.oculta ? 1 : 0, vazia: m.vazia ? 1 : 0, minha: m.minha ? 1 : 0, at: Number.isFinite(+m.at) ? +m.at : Date.now(),
+    desc: String(m.desc || '').slice(0, 40), quem: { c: CHARS.includes(q.c) ? q.c : null, n: String(q.n || 'Alguém').slice(0, 28), gm: q.gm ? 1 : 0, spr: /^(inimigo[0-3]_parado_frente|plantao_parado_frente|caogr[0-2]_senta|cr:[a-z_]+_parado_frente)$/.test(q.spr) ? q.spr : null } };
 }
 
 // ----- som (sintetizado; nada de arquivos) -----
@@ -2278,31 +2297,33 @@ function rolar() {
   const npcOc = !!(mesa && mesa.isGM && combatePronto && npcs.some(q => q.oc && q.nome === $('dqNome').value.trim()));       // rolando como um inimigo oculto: fica só com o mestre
   const marcada = !!(mesa && $('dqSec').checked), gmOculta = (marcada && mesa.isGM) || npcOc, sec = marcada && !mesa.isGM && !!gmEk;
   const r = { id: (mesa ? mesa.cid : 'solo') + '-' + Date.now().toString(36) + dN(9999), k: m.k, dados: m.dados.map(q => ({ f: q.f, v: dN(q.f), s: q.s })), bonus: m.bonus,
-    alvo: m.alvo, crit: m.crit, base: m.base, aid: m.k === 'ataque' ? dadosAid : null, desc: $('dqDesc').value.trim().slice(0, 40), quem: quemRola(), at: Date.now(), sec: sec ? 1 : 0, oculta: gmOculta ? 1 : 0 };
+    alvo: m.alvo, crit: m.crit, base: m.base, aid: m.k === 'ataque' ? dadosAid : null, ax: m.k === 'ataque' ? dadosAx : null, desc: $('dqDesc').value.trim().slice(0, 40), quem: quemRola(), at: Date.now(), sec: sec ? 1 : 0, oculta: gmOculta ? 1 : 0 };
   const lr = limpaRolagem(r); lr.minha = 1; registra(lr); mostraRolagem(lr, { own: true }); if (npcOc && !marcada) say('Rolagem só sua: esse inimigo está oculto');
-  const corpo = { k: r.k, dados: r.dados, bonus: r.bonus, alvo: r.alvo, crit: r.crit, base: r.base, aid: r.aid, desc: r.desc, quem: r.quem, at: r.at };
+  const corpo = { k: r.k, dados: r.dados, bonus: r.bonus, alvo: r.alvo, crit: r.crit, base: r.base, aid: r.aid, ax: r.ax, desc: r.desc, quem: r.quem, at: r.at };
   if (mesa && sec) Mesa.sealTo(gmEk, corpo).then(env => mesa.sendRoll({ sec: 1, quem: r.quem, at: r.at, rid: r.id, env })).catch(() => say('A rolagem ficou só com você: não deu para cifrar para o mestre'));
   else if (mesa && !gmOculta) mesa.sendRoll(Object.assign(corpo, { sec: 0, rid: r.id })).catch(() => {});
-  if (m.k === 'ataque') { if (dadosBase != null) usarBase(null); dadosAid = null; }
-  if (condPronto) condAtaque(lr);                        // no mestre: grau de dano 3 em quem voa pede Acrobacia
+  if (m.k === 'ataque') { if (dadosBase != null) usarBase(null); dadosAid = null; dadosAx = null; }
+  if (condPronto) condAtaque(lr);
+  if (ataquePronto) resolveAtaque(lr);                   // no mestre: defesa, dano e efeitos de cada alvo                        // no mestre: grau de dano 3 em quem voa pede Acrobacia
   if (animaPronto && lr.k === 'ataque') anima(idDeQuem(lr.quem), 'golpe');
   return lr;
 }
 // rolagem feita pelo sistema (iniciativa, por exemplo): mesma tira de papel e o mesmo histórico da mesa
 function rolarAuto(o) {
   const r = { id: (mesa ? mesa.cid : 'solo') + '-' + Date.now().toString(36) + dN(9999), k: o.k || 'livre', dados: o.dados.map(q => ({ f: q.f, v: dN(q.f), s: q.s || 1 })), bonus: o.bonus || 0,
-    alvo: o.alvo == null ? null : o.alvo, crit: o.crit || 15, base: o.base == null ? null : o.base, desc: String(o.desc || '').slice(0, 40), quem: o.quem || quemRola(), at: Date.now(), sec: 0, oculta: 0 };
+    alvo: o.alvo == null ? null : o.alvo, crit: o.crit || 15, base: o.base == null ? null : o.base, ax: o.ax || null, desc: String(o.desc || '').slice(0, 40), quem: o.quem || quemRola(), at: Date.now(), sec: 0, oculta: 0 };
   const lr = limpaRolagem(r); lr.minha = 1; registra(lr); if (!o.quieto) mostraRolagem(lr, { own: true, mudo: o.mudo });
-  if (mesa && !o.local) mesa.sendRoll({ k: r.k, dados: r.dados, bonus: r.bonus, alvo: r.alvo, crit: r.crit, base: r.base, desc: r.desc, quem: r.quem, at: r.at, sec: 0, rid: r.id, quieto: o.quieto ? 1 : 0 }).catch(() => {});   // local: a rolagem de um inimigo oculto fica com o mestre
+  if (lr.ax && ataquePronto) resolveAtaque(lr);
+  if (mesa && !o.local) mesa.sendRoll({ k: r.k, dados: r.dados, bonus: r.bonus, alvo: r.alvo, crit: r.crit, base: r.base, ax: r.ax, desc: r.desc, quem: r.quem, at: r.at, sec: 0, rid: r.id, quieto: o.quieto ? 1 : 0 }).catch(() => {});   // local: a rolagem de um inimigo oculto fica com o mestre
   return lr;
 }
 // a técnica deixa o ataque pronto no painel: tipo Ataque, precisão de CD, descrição e o dano base que o grau multiplica
-let dadosBase = null, dadosAid = null;
+let dadosBase = null, dadosAid = null, dadosAx = null;
 function usarBase(v) { dadosBase = v == null ? null : Math.max(0, Math.min(999, Math.round(v)));
   $('dqBaseRow').hidden = dadosBase == null; $('dqBaseTxt').textContent = dadosBase == null ? '' : `${dadosBase} · o grau multiplica`; atualizaBotao(); }
 function prepararAtaque(o) {
   abrePainel(true); setTipo('ataque'); $('dqBonus').value = o.bonus || 0; $('dqAlvo').value = o.alvo == null ? '' : o.alvo;
-  $('dqDesc').value = String(o.desc || '').slice(0, 40); usarBase(o.base); dadosAid = o.aid || null; if (o.quem && souMestre()) { $('dqNome').value = o.quem; dadosQuem(); }
+  $('dqDesc').value = String(o.desc || '').slice(0, 40); usarBase(o.base); dadosAid = o.aid || null; dadosAx = o.ax || null; if (o.quem && souMestre()) { $('dqNome').value = o.quem; dadosQuem(); }
   setTimeout(() => $('dqRolar').focus(), 40);
 }
 // rolagem cifrada para o mestre: só ele abre o envelope; os outros recebem um registro sem os dados
@@ -2310,7 +2331,7 @@ async function receberSecreta(msg) {
   const env = msg.env, id = msg.rid || msg.id; let r = null;
   if (mesa && mesa.isGM && ecdh) { const corpo = await Mesa.openSealed(ecdh.priv, ecdh.pub, env); if (corpo) r = limpaRolagem(Object.assign({}, corpo, { id, sec: 1, oculta: 0, vazia: 0, minha: 0 })); }
   if (!r) { r = limpaRolagem({ id, k: 'teste', dados: [{ f: 8, v: 1 }], quem: msg.quem, at: msg.at, sec: 1 }); if (r) r.vazia = 1; }
-  if (!r) return; if (registra(r)) { mostraRolagem(r, {}); if (!r.vazia && condPronto) condAtaque(r); }
+  if (!r) return; if (registra(r)) { mostraRolagem(r, {}); if (!r.vazia && condPronto) condAtaque(r); if (!r.vazia && ataquePronto) resolveAtaque(r); }
 }
 function receberRolagem(msg) {
   if (msg && msg.sec && msg.env) { receberSecreta(msg).catch(() => {}); return; }
@@ -2318,6 +2339,7 @@ function receberRolagem(msg) {
   const nova = registra(r); if (nova && !msg.quieto) mostraRolagem(r, {});
   if (combatePronto) rolagemCombate(r);
   if (nova && condPronto) condAtaque(r);
+  if (nova && ataquePronto) resolveAtaque(r);
   if (nova && animaPronto && r.k === 'ataque') anima(idDeQuem(r.quem), 'golpe');
 }
 function abrePainel(on) { pnl.hidden = !on; btn.setAttribute('aria-expanded', on); document.body.classList.toggle('painel', !!on || (combatePronto && tec.aberto)); if (on) { if (combatePronto) abreTecnicas(false); dadosQuem(); setTimeout(() => $('dqRolar').focus(), 30); } }
@@ -2922,7 +2944,7 @@ const GRAVE = { assustado: ['amedrontado'], amedrontado: ['aterrorizado'], aterr
   tonto: ['atordoado'], atordoado: ['indefeso'], impedido: ['indefeso'], indefeso: ['inconsciente'], inconsciente: ['estavel', 'morrendo'], estavel: ['morto'], morrendo: ['morto'],
   caido: ['inconsciente'] };
 const COND_ORD = Object.keys(COND);
-const okCondId = id => typeof id === 'string' && (/^k:[a-z]+:[a-z0-9]{1,8}$/.test(id) || okId(id));
+const okCondId = id => typeof id === 'string' && (/^k:[a-z]+:[a-z0-9]{1,8}$/.test(id) || /^p:[a-z]+:[0-9]{1,2}$/.test(id) || okId(id));
 function limpaCond(o) {
   const out = {}; if (!o || typeof o !== 'object') return out; let n = 0;
   for (const id of Object.keys(o)) { if (++n > 80) break; if (!okCondId(id) || !Array.isArray(o[id])) continue; const L = [];
@@ -2935,6 +2957,7 @@ function limpaCond(o) {
 function condVida(id) {                                   // Vitalidade e chakra atuais (da ficha ou do inimigo), quando existem
   if (id.startsWith('c:')) { const F = persDe(id.slice(2)); if (!F) return null; const D = persCalc(F); return { va: D.vitA, vt: D.vit, ca: D.chaA, ct: D.cha }; }
   if (id.startsWith('n:')) { const n = npcPorId(id); if (!n || !n.vit) return null; return { va: n.va, vt: n.vit, ca: n.ca, ct: n.cha }; }
+  if (id.startsWith('p:') && parcPronto) { const q = compDe(id); if (!q || !q.vit) return null; return { va: q.vit - (q.vitP || 0), vt: q.vit, ca: (q.cha || 0) - (q.chaP || 0), ct: q.cha || 0 }; }
   return null;
 }
 function condDerivadas(id, guardadas) {                   // Vitalidade em 0: indefeso; −1 a −10: inconsciente; −11 a −20: morrendo; −21: morto (p. 259)
@@ -3033,6 +3056,7 @@ function condPedido(m) {
 // Vitalidade e chakra: n > 0 tira, n < 0 devolve (nunca acima do total, p. 259)
 function danoEm(id, n, qual) {
   if (!n || !id) return false; const cha = qual === 'cha';
+  if (id.startsWith('p:')) { if (cha) compMuda(id, r => { r.chaP = Math.max(0, (r.chaP || 0) + n); }); else compDano(id, n); return true; }
   if (id.startsWith('c:')) { const c = id.slice(2), F = persDe(c); if (!F || !podeEditar(c)) return false; const G = JSON.parse(JSON.stringify(F)), k = cha ? 'chaP' : 'vitP';
     G.en[k] = Math.max(-999, Math.min(999, G.en[k] + n)); if (n < 0) G.en[k] = Math.max(0, G.en[k]); persGrava(c, G); condMudou(); return true; }
   if (id.startsWith('n:')) { const t = tab(); const q = t && (t.npcs || []).find(z => 'n:' + z.id === id); if (!q) return false; const mx = cha ? q.cha : q.vit; if (!mx) return false;
@@ -3047,7 +3071,7 @@ function condContaTurno(id, inicio) {
 }
 function condFimTurno(id) { if (id) condContaTurno(id, false); }
 function condInicioTurno(id) {
-  if (!id || !ehMestre()) return; condContaTurno(id, true); condMudou(); const C = condsDe(id);
+  if (!id || !ehMestre()) return; condContaTurno(id, true); condMudou(); if (ferrPronto) fumacaTurno(id); const C = condsDe(id);
   if (C.nv.sangrando > 0 && !C.ef.has('morto')) { const n = 2 * C.nv.sangrando; if (danoEm(id, n)) condAviso(`${nomeDe(id)} sangra: −${n} de Vitalidade`, id); }
   const sa = [...C.ef].find(k => COND[k].semAcao); if (sa) condAviso(`Vez de ${nomeDe(id)}, que não pode agir: ${nomeCond(sa).toLowerCase()}`, id);
   else if (C.ef.has('confuso')) { const r = rolarAuto({ k: 'livre', dados: [{ f: 8, s: 1 }], desc: 'Confuso: o que faz neste turno', quem: quemDe(id), local: ocultoId(id) }), v = r.dados[0].v;
@@ -3071,7 +3095,7 @@ function derruba(id, motivo) {                           // queda do voo: dano f
 // a rolagem de ataque com alvo chegou ao mestre: grau de dano 3 em quem voa pede Acrobacia (dif 4 + precisão do atacante); crítico derruba direto
 function acroDe(id) { const F = id.startsWith('c:') ? persDe(id.slice(2)) : null; return (F ? persCalc(F).per.acrobacia || 0 : statsDe(id).agi || 0) + condPen(id, 'per').v; }
 function condAtaque(r) {
-  if (!ehMestre() || !r || r.k !== 'ataque' || !r.aid || !vooDe(r.aid)) return; const av = avaliar(r);
+  if (!ehMestre() || !r || r.k !== 'ataque' || r.ax || !r.aid || !vooDe(r.aid)) return; const av = avaliar(r);      // com o ataque completo, quem resolve é o combate fechado
   if (av.tom === 'crit') { setTimeout(() => derruba(r.aid, 'acerto crítico: a Acrobacia falha sozinha'), 1200); return; }
   if (av.tom !== 'ok' || av.grau !== 3) return;
   setTimeout(() => { if (!vooDe(r.aid)) return; const dif = 4 + r.bonus;
@@ -3101,7 +3125,7 @@ function ataqueSalto(alvo) {
   me.path = [[w[0] + 0.5, w[1] + 0.5]]; cam.follow = true; sendPresence();
   pedeCond('poe', eu, 'guarda', { t: 1, i: 1 });
   const d = defesaDe(alvo, { cc: 1 });
-  prepararAtaque({ bonus: st.cc + condPen(eu, 'cc').v, alvo: d.v, desc: 'Ataque com salto (CC)', base: null, aid: alvo });
+  prepararAtaque({ bonus: st.cc + condPen(eu, 'cc').v, alvo: d.v, desc: 'Ataque com salto (CC)', base: danoCC(eu), aid: alvo, ax: axNovo(eu, [[alvo, danoCC(eu)]], { cc: 1, nm: 'Ataque com salto' }) });
   say('Salto! Role o ataque corpo a corpo no painel: sem o +1 da Investida, e a sua defesa fica −1 até o seu próximo turno'); cbRender();
 }
 function levantar() {
@@ -3247,8 +3271,8 @@ const TEC0 = {
   raiden: [['sumi', 'canhao'], ['sumi', 'coluna']],
   kaiser: [['nendo', 'canhao'], ['nendo', 'flechas'], ['doton', 'canhao'], ['doton', 'barreira']],
 };
-const NPC0 = { agi: 3, esp: 4, arte: 4, ini: 7, cc: 8, cd: 8, esq: 2, lm: 7, vig: 3, vit: 30, cha: 20 };       // vit 0: o mestre não controla a Vitalidade dele
-const CAMPOS_N = [['vig', 'Vig', 40], ['vit', 'Vit', 999], ['cha', 'Chakra', 999]];
+const NPC0 = { agi: 3, esp: 4, arte: 4, ini: 7, cc: 8, cd: 8, esq: 2, lm: 7, vig: 3, vit: 30, cha: 20, dano: 4 };       // vit 0: o mestre não controla a Vitalidade dele
+const CAMPOS_N = [['vig', 'Vig', 40], ['vit', 'Vit', 999], ['cha', 'Chakra', 999], ['dano', 'Dano', 99]];
 const CAMPOS = [['agi', 'Agi'], ['esp', 'Esp'], ['arte', 'Arte'], ['ini', 'Inic.'], ['cc', 'CC'], ['cd', 'CD'], ['esq', 'ESQ'], ['lm', 'LM']];
 const COR_NPC = '#b9584e';
 const deslocM = st => 10 + Math.ceil((st.agi || 0) / 2);            // metros por ação de movimento
@@ -3269,7 +3293,7 @@ function limpaNpcs(a) {
   for (const n of a.slice(0, 40)) { if (!n || !/^[a-z0-9]{1,12}$/.test(n.id) || !okXY(+n.x, +n.y)) continue;
     const vit = nnum(n.vit, 0, 999, NPC0.vit), cha = nnum(n.cha, 0, 999, NPC0.cha);
     out.push(Object.assign({ id: n.id, nome: String(n.nome || 'Inimigo').slice(0, 24), spr: nnum(n.spr, 0, 3, 0), s: okScene(n.s) ? n.s : 'vila', x: r2(+n.x), y: r2(+n.y), oc: n.oc ? 1 : 0, voo: n.voo ? 1 : 0,
-      vig: nnum(n.vig, 0, 40, NPC0.vig), vit, va: nnum(n.va, -99, vit, vit), cha, ca: nnum(n.ca, -99, cha, cha) }, limpaStats(n, NPC0))); }
+      vig: nnum(n.vig, 0, 40, NPC0.vig), vit, va: nnum(n.va, -99, vit, vit), cha, ca: nnum(n.ca, -99, cha, cha), dano: nnum(n.dano, 0, 99, NPC0.dano), def: ['esq', 'ant', 'blo'].includes(n.def) ? n.def : 'esq' }, limpaStats(n, NPC0))); }
   return out;
 }
 function limpaCmb(c) {
@@ -3298,7 +3322,7 @@ function limpaNevoa(a) {
   for (const f of a.slice(0, 12)) { if (!f || typeof f.id !== 'string' || !/^[a-z0-9]{1,12}$/.test(f.id)) continue;
     const k = f.k === 'area' ? 'area' : 'cena'; if (k === 'area' && !okPt(f.c)) continue;
     out.push({ id: f.id, s: okScene(f.s) ? f.s : 'vila', k, c: k === 'area' ? [r2(+f.c[0]), r2(+f.c[1])] : null, r: nnum(f.r, 1, 40, 8), cor: typeof f.cor === 'string' && /^#[0-9a-f]{3}$/.test(f.cor) ? f.cor : '#dde',
-      d: nnum(f.d, 5, 100, 55), alt: f.alt ? 1 : 0, dir: nnum(f.dir, 0, 7, 1), vel: nnum(f.vel, 0, 6, 2), esc: nnum(f.esc, 1, 5, 3), vis: nnum(f.vis, 0, 60, 0), oc: f.oc ? 1 : 0 }); }
+      d: nnum(f.d, 5, 100, 55), alt: f.alt ? 1 : 0, dir: nnum(f.dir, 0, 7, 1), vel: nnum(f.vel, 0, 6, 2), esc: nnum(f.esc, 1, 5, 3), vis: nnum(f.vis, 0, 60, 0), oc: f.oc ? 1 : 0, ...(typeof f.fu === 'string' && okUnid(f.fu) ? { fu: f.fu, tt: nnum(f.tt, 0, 9, 3), exp: nnum(f.exp, 0, 9e15, 0) } : {}) }); }
   return out;
 }
 function salvaSolo() { try { localStorage.setItem('mvila:solo:combate', JSON.stringify({ cmb: SOLO.cmb, npcs: SOLO.npcs, ficha: SOLO.ficha, zonas: SOLO.zonas, nevoa: SOLO.nevoa, cond: SOLO.cond })); } catch (e) {} }
@@ -3331,18 +3355,22 @@ function alternaOculto(id) {
 const rid = () => Math.random().toString(36).slice(2, 9);
 const npcPorId = id => npcs.find(n => 'n:' + n.id === id) || null;
 function statsDe(id) {
+  if (id && id.startsWith('p:')) return compStats(id);                          // parceiro: a ficha do dono 2 níveis abaixo
+  if (id && id.startsWith('k:')) { const st = statsDe('c:' + id.split(':')[1]); return Object.assign({}, st, { cc: Math.max(0, st.cc - 3), cd: Math.max(0, st.cd - 3), esq: Math.max(0, st.esq - 3), lm: Math.max(0, st.lm - 3) }); }   // clone: −3
   if (id && id.startsWith('c:')) { const c = id.slice(2), P = persDe(c); if (P) return Object.assign({ pod: {} }, FICHA0[c] || NPC0, persCalc(P).stats);      // a ficha do personagem manda
     return Object.assign({ pod: {} }, FICHA0[c] || NPC0, (ficha || {})[c] || {}, { pod: (FICHA0[c] || {}).pod || {} }); }
   return Object.assign({ pod: {} }, NPC0, npcPorId(id) || {});
 }
-function nomeDe(id) { if (!id) return ''; if (id.startsWith('c:')) return nome(id.slice(2)); if (id.startsWith('k:')) return 'Clone de ' + nome(id.split(':')[1]); const n = npcPorId(id); return n ? n.nome : 'Inimigo'; }
-function corDeId(id) { return id && id.startsWith('c:') ? (COR_C[id.slice(2)] || COR_GM) : COR_NPC; }
+function nomeDe(id) { if (!id) return ''; if (id.startsWith('c:')) return nome(id.slice(2)); if (id.startsWith('p:')) return nomeComp(id); if (id.startsWith('k:')) return 'Clone de ' + nome(id.split(':')[1]); const n = npcPorId(id); return n ? n.nome : 'Inimigo'; }
+function corDeId(id) { return id && /^[ckp]:/.test(id) ? (COR_C[id.startsWith('c:') ? id.slice(2) : id.split(':')[1]] || COR_GM) : COR_NPC; }
 function sprDe(id, mv, front) { if (id.startsWith('c:')) return charSprite(id.slice(2), mv, front); const n = npcPorId(id); return E(`inimigo${n ? n.spr : 0}_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`); }
-function quemDe(id) { if (id && id.startsWith('c:')) { const c = id.slice(2); return { c, n: nome(c), gm: ehMestre() && MESA ? 1 : 0 }; }
+function quemDe(id) { if (id && id.startsWith('p:')) return quemComp(id); if (id && id.startsWith('k:')) return quemDe('c:' + id.split(':')[1]); if (id && id.startsWith('c:')) { const c = id.slice(2); return { c, n: nome(c), gm: ehMestre() && MESA ? 1 : 0 }; }
   const n = npcPorId(id); return { c: null, n: n ? n.nome : 'Inimigo', gm: 1, spr: `inimigo${n ? n.spr : 0}_parado_frente` }; }
 const vivo = c => me.c === c || peers.some(p => p.presence && p.presence.c === c);
 function posDe(id) {
   if (!id) return null;
+  if (id.startsWith('p:')) return posComp(id);
+  if (id.startsWith('k:')) { const q = clonesTodos().find(z => z.id === id); return q ? { x: q.x, y: q.y, s: q.s } : null; }
   if (id.startsWith('c:')) { const c = id.slice(2);
     if (me.c === c) return { x: me.x, y: me.y, s: scene.id };
     for (const p of peers) { const s = peerPos(p); if (s && s.c === c && !ehGen(s.s)) return { x: s.x, y: s.y, s: s.s }; }
@@ -3354,9 +3382,11 @@ function unidades() {                                       // todos que estão 
   const out = [];
   for (const c of CHARS) { const p = posDe('c:' + c); if (p && p.s === scene.id) out.push({ id: 'c:' + c, x: p.x, y: p.y }); }
   for (const n of npcs) if (n.s === scene.id) { const p = posDe('n:' + n.id); out.push({ id: 'n:' + n.id, x: p.x, y: p.y }); }
+  if (parcPronto) { for (const u of parcTodos()) if (u.s === scene.id && !u.mt) out.push({ id: u.id, x: u.x, y: u.y });   // parceiros e invocações
+    for (const q of clonesTodos()) if (q.s === scene.id) out.push({ id: q.id, x: q.x, y: q.y }); }                                      // e os clones
   return out;
 }
-function controlo(id) { if (!id) return false; if (id.startsWith('n:')) return ehMestre(); const c = id.slice(2); if (me.c === c) return true; return ehMestre() && !vivo(c); }
+function controlo(id) { if (!id || /^[kp]:/.test(id)) return false; if (id.startsWith('n:')) return ehMestre(); const c = id.slice(2); if (me.c === c) return true; return ehMestre() && !vivo(c); }
 const entrada = id => cmb && cmb.ordem ? cmb.ordem.find(e => e.id === id) || null : null;
 const combateAqui = () => !!(cmb && cmb.on && cmb.s === scene.id);
 function unidadeAtiva() { if (!cmb || !cmb.on || cmb.r < 1 || (cmb.oc && !ehMestre())) return null; const e = cmb.ordem[cmb.vez]; return e ? e.id : null; }
@@ -3678,8 +3708,8 @@ function limpaEvento(m) {
   const n = v => Number.isFinite(+v) ? +v : null;
   const p = m.p || {}; const out = { tipo: 'tec', id: String(m.tid || m.id || '').slice(0, 40), q: m.q, el: m.el, ef: m.ef, nv: nnum(m.nv, 1, 10, 1), s: m.s, o: [+m.o[0], +m.o[1]],
     a: okPt(m.a) ? [+m.a[0], +m.a[1]] : null, d: Array.isArray(m.d) && Number.isFinite(+m.d[0]) && Number.isFinite(+m.d[1]) ? [+m.d[0], +m.d[1]] : null, forma: m.forma === 'circulo' ? 'circulo' : 'meia',
-    alvos: (Array.isArray(m.alvos) ? m.alvos : []).slice(0, 12).filter(a => Array.isArray(a) && okId(a[0]) && okXY(+a[1], +a[2])).map(a => [a[0], +a[1], +a[2], nnum(a[3], 1, 10, 1)]),
-    af: (Array.isArray(m.af) ? m.af : []).filter(okId).slice(0, 30),
+    alvos: (Array.isArray(m.alvos) ? m.alvos : []).slice(0, 12).filter(a => Array.isArray(a) && okUnid(a[0]) && okXY(+a[1], +a[2])).map(a => [a[0], +a[1], +a[2], nnum(a[3], 1, 10, 1)]),
+    af: (Array.isArray(m.af) ? m.af : []).filter(okUnid).slice(0, 30),
     p: { alc: nnum(p.alc, 0, 999, 0), tam: nnum(p.tam, 0, 999, 1), dano: p.dano == null || n(p.dano) == null ? null : nnum(p.dano, 0, 999, 0), fixo: p.fixo == null || n(p.fixo) == null ? null : nnum(p.fixo, 0, 99, 0), dif: nnum(p.dif, 0, 99, 9), dureza: nnum(p.dureza, 0, 99, 0), custo: nnum(p.custo, 0, 99, 0) },
     seed: nnum(m.seed, 0, 2e9, 1), at: Number.isFinite(+m.at) ? +m.at : Date.now(), qn: String(m.qn || '').slice(0, 24) };
   if (out.d) { const l = Math.hypot(out.d[0], out.d[1]); out.d = l > 0.01 ? [out.d[0] / l, out.d[1] / l] : null; }
@@ -4095,7 +4125,7 @@ function mostraTecnica(ev, meu) {
   const ids = F.t === 'area' ? ev.af : ev.alvos.map(a => a[0]);
   const at = document.createElement('div'); at.className = 'rs at';
   const dOp = { area: F.t === 'area', dist: F.t !== 'area', voa: vooDe(ev.q) };      // a defesa de cada alvo com as condições dele (caído, desprevenido...)
-  at.textContent = F.t === 'pessoal' ? 'Em si mesmo' : ids.length ? 'Atinge: ' + ids.map(id => { const d = defesaDe(id, dOp); const a = ev.alvos.find(q => q[0] === id); return `${nomeDe(id)}${F.t === 'flechas' && a ? ' ×' + a[3] : ''} (${d.auto ? d.txt : 'Esquiva ' + d.v + (d.txt ? ': ' + d.txt : '')})`; }).join(', ') : (F.t === 'area' ? 'Ninguém na área' : '—');
+  at.textContent = F.t === 'pessoal' ? 'Em si mesmo' : ids.length ? 'Atinge: ' + ids.map(id => { const d = defesaDe(montariaDe(id) || id, dOp); const a = ev.alvos.find(q => q[0] === id); return `${nomeVisto(id)}${F.t === 'flechas' && a ? ' ×' + a[3] : ''} (${d.auto ? d.txt : 'Esquiva ' + d.v + (d.txt ? ': ' + d.txt : '')})`; }).join(', ') : (F.t === 'area' ? 'Ninguém na área' : '—');
   mio.appendChild(at);
   if (F.def !== 'nenhuma') { const df = document.createElement('div'); df.className = 'rs df'; df.textContent = 'Defesas: ' + defesasTxt(F); mio.appendChild(df); }
   const sl = document.createElement('div'); sl.className = 'selo'; sl.textContent = Em.k; el.appendChild(sl);
@@ -4104,10 +4134,12 @@ function mostraTecnica(ev, meu) {
     const unico = ids.length === 1 ? defesaDe(ids[0], dOp) : null; const flechasUm = F.t === 'flechas' && ev.alvos.length === 1;
     const base = p.dano == null ? null : F.t === 'flechas' ? (flechasUm ? p.dano * ev.alvos[0][3] + Em.dano : null) : F.t === 'varios' && ev.alvos.length > 1 ? Math.floor(p.dano / ev.alvos.length) : p.dano;
     bt.textContent = `Rolar ataque · CD ${sinal(st.cd + pen.v).replace(' ', '')}`; if (pen.v) bt.title = 'Com as condições: ' + pen.txt;
-    bt.onclick = e => { e.stopPropagation(); prepararAtaque({ bonus: st.cd + pen.v, alvo: unico ? unico.v : null, desc: `${F.n} ${Em.n} ${ev.nv}`, base, quem: ehMestre() && ev.q.startsWith('n:') ? nomeDe(ev.q) : null, aid: ids.length === 1 ? ids[0] : null }); };
+    const axA = ids.map(id => { const a = ev.alvos.find(q => q[0] === id); return [id, p.dano == null ? 0 : F.t === 'flechas' ? p.dano * (a ? a[3] : 1) + Em.dano : F.t === 'varios' && ev.alvos.length > 1 ? Math.floor(p.dano / ev.alvos.length) : p.dano]; });
+    bt.onclick = e => { e.stopPropagation(); prepararAtaque({ bonus: st.cd + pen.v, alvo: unico ? unico.v : null, desc: `${F.n} ${Em.n} ${ev.nv}`, base, quem: ehMestre() && ev.q.startsWith('n:') ? nomeDe(ev.q) : null, aid: ids.length === 1 ? ids[0] : null,
+      ax: ids.length ? axNovo(ev.q, axA, { fx: p.fixo, ef: ev.ef, ar: F.t === 'area', pj: F.def !== 'area', nm: `${F.n} de ${Em.n}` }) : null }); };
     mio.appendChild(bt); }
   // o mestre marca a condição que a técnica deixa em quem falhou na defesa (ou em quem está na área)
-  const CT = { tremor: ['caido', 'Quem falhou fica caído'], algemar: ['impedido', 'Algemado fica impedido'], restringente: ['lento', 'Na área fica lento'], nuvem: ['lento', 'Quem falhou no Vigor fica lento'] }[ev.ef];
+  const CT = { restringente: ['lento', 'Na área fica lento'], nuvem: ['lento', 'Quem falhou no Vigor fica lento'] }[ev.ef];      // Tremor e Algemar: o combate fechado aplica em quem falhou a defesa
   if (CT && ehMestre() && ids.length) { const cr = document.createElement('div'); cr.className = 'rs cnd'; const lb = document.createElement('span'); lb.textContent = CT[1] + ':'; cr.appendChild(lb);
     for (const id of ids) { const b = document.createElement('button'); b.type = 'button'; b.className = 'cnd'; b.textContent = nomeDe(id); b.title = `Pôr ${nomeCond(CT[0]).toLowerCase()} em ${nomeDe(id)}`;
       b.onclick = e => { e.stopPropagation(); condPoe(id, CT[0]); b.disabled = true; b.classList.add('feito'); }; cr.appendChild(b); }
@@ -4199,14 +4231,21 @@ function limpaPers(f, c) {
   o.apt = (Array.isArray(f.apt) ? f.apt : []).slice(0, 60).map(a => ({ n: pTxt(a.n, 60), d: pTxt(a.d, 1500), custo: pNum(a.custo, 0, 20, 0), g: a.g ? 1 : 0 }));
   const iv = f.inv || {}, arm = iv.arm;
   o.inv = { ryos: pNum(iv.ryos, 0, 1e7, 0), guard: pNum(iv.guard, 0, 1e7, 0),
-    arm: arm && typeof arm === 'object' ? { n: pTxt(arm.n, 50), abs: pNum(arm.abs, 0, 30, 0), dur: pNum(arm.dur, 0, 30, 0), pen: pNum(arm.pen, -10, 0, 0), tipo: arm.tipo === 'PESADA' ? 'PESADA' : 'LEVE', comp: pNum(arm.comp, 0, 20, 0) } : null,
+    arm: arm && typeof arm === 'object' ? { n: pTxt(arm.n, 50), abs: pNum(arm.abs, 0, 30, 0), absP: pNum(arm.absP, 0, 30, 0), dur: pNum(arm.dur, 0, 30, 0), pen: pNum(arm.pen, -10, 0, 0), tipo: arm.tipo === 'PESADA' ? 'PESADA' : 'LEVE', comp: pNum(arm.comp, 0, 20, 0) } : null,
     armas: (Array.isArray(iv.armas) ? iv.armas : []).slice(0, 20).map(w => ({ n: pTxt(w.n, 50), dano: pNum(w.dano, 0, 40, 0), usa: ['forca', 'des', 'esp'].includes(w.usa) ? w.usa : 'forca', alc: pTxt(w.alc, 20), crit: pTxt(w.crit || '15~16', 10), tipo: pTxt(w.tipo, 6), comp: Math.max(0, Math.min(20, +w.comp || 0)), d: pTxt(w.d, 300) })),
     itens: (Array.isArray(iv.itens) ? iv.itens : []).slice(0, 60).map(i => ({ n: pTxt(i.n, 50), q: pNum(i.q, 0, 999, 1), comp: Math.max(0, Math.min(20, +i.comp || 0)), d: pTxt(i.d, 300) })) };
   o.en = { vitP: pNum((f.en || {}).vitP, -999, 999, 0), chaP: pNum((f.en || {}).chaP, -999, 999, 0) };
   o.bio = pTxt(f.bio, 8000); o.cur = pTxt(f.cur, 4000); o.xp0 = pNum(f.xp0, 0, 99999, 0);
   o.mis = (Array.isArray(f.mis) ? f.mis : []).slice(0, 120).map(m => ({ t: pTxt(m.t, 80), rank: RANKS.includes(m.rank) ? m.rank : 'D', exp: pNum(m.exp, 0, 9999, 0), ryos: pNum(m.ryos, 0, 1e7, 0), obs: pTxt(m.obs, 600) }));
   o.comp = (Array.isArray(f.comp) ? f.comp : []).slice(0, 6).map(q => ({ n: pTxt(q.n, 40), nc: pNum(q.nc, 1, 20, 4), tam: TAMANHOS.some(t => t[0] === q.tam) ? q.tam : 'MÉDIO', vit: pNum(q.vit, 0, 999, 10), vitP: pNum(q.vitP, -999, 999, 0),
-    cha: pNum(q.cha, 0, 999, 10), chaP: pNum(q.chaP, -999, 999, 0), desl: pNum(q.desl, 0, 99, 10), dur: pNum(q.dur, 0, 30, 0), at: Object.fromEntries(ATR.map(([k]) => [k, pNum((q.at || {})[k], 0, 40, 0)])), nota: pTxt(q.nota, 600) }));
+    cha: pNum(q.cha, 0, 999, 10), chaP: pNum(q.chaP, -999, 999, 0), desl: pNum(q.desl, 0, 99, 10), dur: pNum(q.dur, 0, 30, 0), at: Object.fromEntries(ATR.map(([k]) => [k, pNum((q.at || {})[k], 0, 40, 0)])), nota: pTxt(q.nota, 600),
+    vis: typeof q.vis === 'string' && /^(plantao|caogr[0-2]|cr:(tinta|argila)_[a-z]+)$/.test(q.vis) ? q.vis : 'plantao', def: ['esq', 'ant', 'blo'].includes(q.def) ? q.def : 'esq', voa: q.voa ? 1 : 0, dano: pNum(q.dano, 0, 20, 0) }));
+  // invocações ativas (Kuchiyose, criaturas de tinta e de argila): ficam na ficha enquanto existem
+  o.invoc = (Array.isArray(f.invoc) ? f.invoc : []).slice(0, 6).map(q => ({ n: pTxt(q.n, 40), vis: typeof q.vis === 'string' && /^(plantao|caogr[0-2]|cr:(tinta|argila)_[a-z]+)$/.test(q.vis) ? q.vis : 'plantao',
+    tam: TAMANHOS.some(t => t[0] === q.tam) ? q.tam : 'PEQUENO', vit: pNum(q.vit, 1, 999, 1), vitP: pNum(q.vitP, -999, 999, 0), desl: pNum(q.desl, 0, 99, 10), voa: q.voa ? 1 : 0, def: ['esq', 'ant', 'blo'].includes(q.def) ? q.def : 'esq', at: {} }));
+  o.def = ['esq', 'ant', 'blo'].includes(f.def) ? f.def : 'esq';
+  o.pil = (Array.isArray(f.pil) ? f.pil : []).slice(-7).map(p => ({ at: pNum(p && p.at, 0, 1439, 0), f: p && p.f ? 1 : 0 }));                 // pílulas do soldado tomadas
+  o.tarjas = (Array.isArray(f.tarjas) ? f.tarjas : []).slice(-6).filter(t => t && okScene(t.s)).map(t => ({ id: pTxt(t.id, 8), s: t.s, x: r2(+t.x || 0), y: r2(+t.y || 0) }));   // tarjas plantadas
   o.shun = ['fumaca', 'folhas', 'areia', 'tinta', 'raio'].includes(f.shun) ? f.shun : 'fumaca';
   o.selos = (Array.isArray(f.selos) ? f.selos : []).slice(-12).filter(s => s && typeof s.id === 'string' && okScene(s.s)).map(s => ({ id: pTxt(s.id, 12), s: s.s, n: pTxt(s.n, 40), u: typeof s.u === 'string' && okId(s.u) ? s.u : undefined, x: r2(+s.x || 0), y: r2(+s.y || 0) }));
   if (typeof f.gm === 'string') o.gm = pTxt(f.gm, 4000);
@@ -4282,7 +4321,7 @@ function persCalc(F) {
     .map(([n, v, mx, f]) => ({ n, v, mx, f, nota: Math.ceil(v / mx * 500) / 100 }));
   D.dbTotal = Math.round(D.db.reduce((s, q) => s + Math.min(5, q.nota), 0) * 100) / 100;
   // para o combate da mesa
-  D.stats = { agi: a.agi, esp: a.esp, arte: D.per.arte || 0, ini: D.ini, cc: D.cc, cd: D.cd, esq: D.esq, lm: D.lm, pod: D.pod };
+  D.stats = { agi: a.agi, esp: a.esp, forca: a.forca, des: a.des, vig: a.vig, arte: D.per.arte || 0, ini: D.ini, cc: D.cc, cd: D.cd, esq: D.esq, lm: D.lm, pod: D.pod };
   // avisos de regra
   const av = (t, erro, aba) => D.avisos.push({ t, erro: !!erro, aba });
   const conta = (g, p, nome, aba) => { if (g < p) av(`Sobram ${p - g} ${nome}`, 0, aba); else if (g > p) av(`${nome[0].toUpperCase() + nome.slice(1)}: ${g} gastos de ${p}`, 1, aba); };
@@ -4337,11 +4376,18 @@ function persGrava(c, F) {
 // mestre aplicou enquanto a mudança do jogador viajava não se perde)
 function persEnvia(c) { const p = persPend[c]; if (!p || !mesa) return; mesa.sendEvent({ k: 'pers', c, f: persPublicaObj(p.f), en0: p.en0 || null, quem: nome(me.c) || 'Jogador' }).catch(() => {}); }
 // no mestre: proposta de um jogador
+const persPropU = {};                         // a última edição aplicada de cada personagem: { u, en0, en }
 function persRecebeProposta(msg) {
   if (!mesa || !mesa.isGM || !table || !CHARS.includes(msg.c)) return; const c = msg.c, velha = table.pers[c];
   const F = limpaPers(msg.f, c); if (!F) return;
+  // a mesma edição chegando de novo (reenvio) não conta duas vezes; edições em sequência a partir da mesma ficha contam só o que mudou
+  const PU0 = persPropU[c]; if (PU0 && F.u && PU0.u === F.u) return;
+  const enJog = { vitP: F.en.vitP, chaP: F.en.chaP };
   if (velha) { F.nc = velha.nc; F.rp = velha.rp; if (velha.gm) F.gm = velha.gm;                // NC e regra de pontos são do mestre
-    if (msg.en0 && typeof msg.en0 === 'object') for (const k of ['vitP', 'chaP']) { const d = F.en[k] - pNum(msg.en0[k], -999, 999, F.en[k]); F.en[k] = Math.max(-999, Math.min(999, velha.en[k] + d)); } }
+    if (msg.en0 && typeof msg.en0 === 'object') { const e0 = { vitP: pNum(msg.en0.vitP, -999, 999, 0), chaP: pNum(msg.en0.chaP, -999, 999, 0) };
+      const base = PU0 && PU0.en0.vitP === e0.vitP && PU0.en0.chaP === e0.chaP ? PU0.en : e0;
+      for (const k of ['vitP', 'chaP']) F.en[k] = Math.max(-999, Math.min(999, velha.en[k] + F.en[k] - base[k]));
+      persPropU[c] = { u: F.u, en0: e0, en: enJog }; } }
   else { F.nc = Math.max(...Object.values(table.pers).map(q => q.nc), 4); }
   persHistPoe(c, velha ? JSON.parse(JSON.stringify(velha)) : null, pTxt(msg.quem, 30) || nome(c));
   table.pers[c] = F; table.persFresh = 0; saveTable(); persPublica(c); persMudou(c);
@@ -4699,16 +4745,17 @@ const emCombate = () => !!(me.c && combateAqui() && entrada('c:' + me.c));
 function velMe() { if (emCombate()) return 4.5; return ac.voo ? VEL.voo : VEL[ac.modo] || 4.5; }
 function presExtra() {
   return { md: ac.voo ? 'v' : ac.modo === 'correr' ? 'r' : ac.modo === 'agachar' ? 'a' : '', sp: velMe(),
-    k: ac.clones.map(q => [r2(q.x), r2(q.y), q.path.slice(0, 40).map(p => [r2(p[0]), r2(p[1])]), q.id, q.tipo, q.cha || 0]) };     // id, tipo e chakra do clone
+    k: ac.clones.map(q => [r2(q.x), r2(q.y), q.path.slice(0, 40).map(p => [r2(p[0]), r2(p[1])]), q.id, q.tipo, q.cha || 0]), ...(parcPronto ? parcPres() : {}) };     // id, tipo e chakra do clone; parceiros
 }
 // ---------- quem pode o quê (pela ficha) ----------
 const aptTem = (F, re) => !!F && F.apt.some(a => re.test(semAc(a.n)));
 const podTem = (F, re) => !!F && F.pod.some(p => p.nv > 0 && re.test(semAc(p.ef + ' ' + p.n)));
-function podeVoar(c) { const F = persDe(c); return aptTem(F, /\bVOO\b|VOAR|KUJAKU/) || podTem(F, /MONTARIA|\bVOO\b/) || (F && F.cfg.includes('voo')); }
+function podeVoar(c) { const F = persDe(c); if (c === me.c && parcPronto && montadoMeu() != null && (compDe(idParc(c, montadoMeu())) || {}).voa) return true; return aptTem(F, /\bVOO\b|VOAR|KUJAKU/) || podTem(F, /MONTARIA|\bVOO\b/) || (F && F.cfg.includes('voo')); }
 function tipoClone(c) { const F = persDe(c); if (!F) return null; const a = F.apt.find(q => /^CLONE\b|BUNSHIN/.test(semAc(q.n))); if (!a) return null;
   const s = semAc(a.n + ' ' + a.d); return s.includes('KAGE') ? 'kage' : s.includes('IWA') ? 'iwa' : s.includes('MIZU') ? 'mizu' : s.includes('SUMI') ? 'sumi' : s.includes('NENDO') ? 'nendo' : 'clone'; }
 const temHiraishin = c => aptTem(persDe(c), /DEUS DO TROVAO|HIRAISHIN/) && !aptTem(persDe(c), /^NAO DISPONIVEL/);
 function vooDe(id) {
+  if (id && id.startsWith('p:')) return parcPronto && vooParc(id);
   if (id && id.startsWith('n:')) { const n = npcPorId(id); return !!(n && n.voo); }
   if (!id || !id.startsWith('c:')) return false; const c = id.slice(2); if (c === me.c) return ac.voo;
   for (const p of peers) if (p.presence && p.presence.c === c) return p.presence.md === 'v'; return false;
@@ -4727,7 +4774,7 @@ function acoesGastaTecnica(quem, custo) {
   const G = JSON.parse(JSON.stringify(F)); G.en.chaP += custo; persGrava(c, G);
 }
 // ---------- efeitos na tela ----------
-const FX_COR = { fumaca: ['#e8e4dc', '#c9c3b8', '#a49d92'], folhas: ['#6aa84f', '#93c47d', '#38761d'], areia: ['#e0c48a', '#c9a86a', '#a8874e'], raio: ['#fff7c2', '#ffd84a', '#ffffff'], tinta: ['#2b2b33', '#45454f', '#16161c'] };
+const FX_COR = { fogo: ['#ffd36b', '#ff7a33', '#fff2b0'], fumaca: ['#e8e4dc', '#c9c3b8', '#a49d92'], folhas: ['#6aa84f', '#93c47d', '#38761d'], areia: ['#e0c48a', '#c9a86a', '#a8874e'], raio: ['#fff7c2', '#ffd84a', '#ffffff'], tinta: ['#2b2b33', '#45454f', '#16161c'] };
 function puff(x, y, tipo) { const n = tipo === 'raio' ? 18 : 22; for (let i = 0; i < n; i++) { const a = rnd(i, x * 7 | 0, y * 13 | 0) * 6.283, v = 0.6 + rnd(i, 3, x | 0) * 1.6;
   ac.fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v * 0.5 - (tipo === 'folhas' ? 0.6 : 0.3), t0: performance.now(), dur: 650 + rnd(i, 9, 1) * 400, cor: FX_COR[tipo][i % 3], raio: tipo === 'raio' }); } }
 function acoesTopo(now) {
@@ -4736,6 +4783,8 @@ function acoesTopo(now) {
   meus.forEach((q, i) => { const [sx, sy] = unitScreen(q.x, q.y); ctx.strokeStyle = i === ac.selClone ? 'rgba(255,220,120,.95)' : 'rgba(255,255,255,.55)'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.ellipse(Math.round(sx), Math.round(sy), 7, 3.5, 0, 0, 6.283); ctx.stroke(); ctx.setLineDash([]); });
   if (ehMestre() && MESA) for (const p of peers) { const k = p.presence && Array.isArray(p.presence.k) ? p.presence.k : []; if (!k.length || p.presence.s !== scene.id) continue;
     for (const q of clonesDe(p)) { const [sx, sy] = unitScreen(q[0], q[1]); ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.ellipse(Math.round(sx), Math.round(sy), 7, 3.5, 0, 0, 6.283); ctx.stroke(); ctx.setLineDash([]); } }
+  if (ferrPronto) for (const t of tarjasVisiveis()) { if (t.s !== scene.id) continue; const [sx, sy] = unitScreen(t.x, t.y); const pul = Math.floor(now / 400) % 2;   // tarjas plantadas
+    ctx.fillStyle = '#efe6cf'; ctx.fillRect(Math.round(sx) - 2, Math.round(sy) - 3, 4, 5); ctx.fillStyle = pul ? '#c33' : '#822'; ctx.fillRect(Math.round(sx) - 1, Math.round(sy) - 2, 2, 3); }
   for (const s of selosVisiveis()) { if (s.s !== scene.id) continue; const p = posSelo(s); if (!p) continue; const [sx, sy] = unitScreen(p[0], p[1]); const pul = 0.6 + 0.4 * Math.sin(now / 300);
     ctx.fillStyle = `rgba(255,214,74,${0.35 + 0.35 * pul})`; ctx.fillRect(Math.round(sx) - 3, Math.round(sy) - 2, 7, 3); ctx.fillStyle = '#fff3b0'; ctx.fillRect(Math.round(sx) - 1, Math.round(sy) - 4, 3, 7); }
   // partículas
@@ -4753,6 +4802,7 @@ function acoesPasso(dt) {
     while (rem > 0 && q.path.length) { const [tx, ty] = q.path[0], dx = tx - q.x, dy = ty - q.y, d = Math.hypot(dx, dy); if (d < 1e-3) { q.path.shift(); continue; }
       q.mv = true; q.dx = dx; q.dy = dy; if (d <= rem) { q.x = tx; q.y = ty; rem -= d; q.path.shift(); if (!q.path.length) mudou = true; } else { q.x += dx / d * rem; q.y += dy / d * rem; rem = 0; } } }
   if (mudou) sendPresence();
+  if (parcPronto) parcPasso(dt);
 }
 function queda(m) {                       // Livro p. 275: 1 de dano por metro, no máximo 2× Vigor; Acrobacia amortece 1 m a cada 2 pontos acima de 9
   if (!me.c || ac.voo || opt.kinobori || m <= 2) return; const F = persDe(me.c); if (!F) { say(`Queda de ${m} m`); return; }
@@ -4865,6 +4915,7 @@ function aterrissa(caiu) {
 // ---------- clique no mapa ----------
 function acoesClique(wx, wy) {
   if (ac.mira === 'shunshin') { shunshinClique(wx, wy); return true; }
+  if (ac.mira && ac.mira.startsWith('f:')) { ferrClique(wx, wy); return true; }                // ferramentas da bolsa
   if (ac.mira === 'selar') { const u = unidadeEm(wx, wy); ac.mira = null; acoesUI();
     if (!u || u.id === 'c:' + me.c) { poeSelo(null); return true; }
     const p = posDe(u.id); if (!p || Math.hypot(p.x - me.x, p.y - me.y) * M_CASA > 3) { say('Para selar alguém é preciso tocá-lo: chegue a até 1 casa'); return true; }
@@ -4873,6 +4924,7 @@ function acoesClique(wx, wy) {
       const tot = r.dados.reduce((s, d) => s + d.v * (d.s || 1), 0) + r.bonus; if (tot < alvo) { say(`Errou o toque (${tot} contra ${alvo})`); return true; } }
     poeSelo(u.id); return true; }
   if (!me.c) return false;
+  if (parcPronto && parcClique(wx, wy)) return true;                         // meus parceiros e invocações
   // tocar um clone meu escolhe ele; o próximo toque no chão o move
   const i = ac.clones.findIndex(q => { const [sx, sy] = unitScreen(q.x, q.y); return wx >= sx - 8 && wx <= sx + 8 && wy >= sy - 28 && wy <= sy + 3; });
   if (i >= 0) { ac.selClone = ac.selClone === i ? -1 : i; acoesUI(); if (ac.selClone >= 0) say('Clone escolhido: toque no chão para movê-lo'); return true; }
@@ -4907,7 +4959,7 @@ function descansar(horas, quem) {
     const rv = longo ? 10 + 2 * a.vig : Math.ceil((10 + 2 * a.vig) / 2), rc = kage ? 0 : longo ? 5 + 2 * a.esp : Math.ceil((5 + 2 * a.esp) / 2);
     if (longo) { const t = tab(), L = t && t.cond ? t.cond['c:' + c] : null; if (L) { const n0 = L.length; t.cond['c:' + c] = L.filter(q => !((q.k === 'fatigado' || q.k === 'exausto') && q.t == null)); if (t.cond['c:' + c].length !== n0) { condMudou(); linhas.push(`${nome(c)} acordou sem o cansaço`); } } }
     if (kage) linhas.push(`${nome(c)} não recupera chakra: tem Kage Bunshin ativo`);
-    const G = JSON.parse(JSON.stringify(F)), v0 = G.en.vitP, c0 = G.en.chaP; G.en.vitP = Math.max(0, G.en.vitP - rv); G.en.chaP = Math.max(0, G.en.chaP - rc);
+    const G = JSON.parse(JSON.stringify(F)), v0 = G.en.vitP, c0 = G.en.chaP; if (longo && Array.isArray(G.pil)) G.pil = [];   /* a noite tira o efeito das pílulas */ G.en.vitP = Math.max(0, G.en.vitP - rv); G.en.chaP = Math.max(0, G.en.chaP - rc);
     persGrava(c, G); linhas.push(`${nome(c)} +${v0 - G.en.vitP} Vit, +${c0 - G.en.chaP} Chakra`); }
   setClock((worldMin() + horas * 60) % DAYMIN); if (mesa && mesa.isGM) gmPublish();
   const txt = `Descanso ${horas >= 8 ? 'longo (8 h)' : 'curto (1 h)'}: ` + (linhas.join(' · ') || 'ninguém com ficha');
@@ -4921,6 +4973,9 @@ function acaoRecebe(msg) {
   if (msg.a === 'desfazClone' && msg.c === me.c && typeof msg.q === 'string') desfazClones(msg.q);    // o golpe acertou o clone
   if (msg.a === 'cond' && ehMestre()) condPedido(msg);
   if (msg.a === 'desfez' && ehMestre()) cansacoVolta(msg.c, msg.ids);
+  if ((msg.a === 'fumaca' || msg.a === 'luminosa') && ehMestre()) ferrRecebe(msg);
+  if (msg.a === 'desfazInv' && msg.c === me.c && /^1[0-5]$/.test(msg.q)) desfazInvoc(`p:${me.c}:${msg.q}`);   // a invocação ficou sem Vitalidade
+  if (msg.a === 'res' && msg.r && typeof msg.r === 'object' && !ehMestre()) mostraResultado({ i: String(msg.r.i || '').slice(0, 40), de: okUnid(msg.r.de) ? msg.r.de : null, nm: String(msg.r.nm || '').slice(0, 32), l: Array.isArray(msg.r.l) ? msg.r.l.slice(0, 12).map(t => String(t).slice(0, 200)) : [] }, false);
 }
 // o mestre manda desfazer um clone (o dono desfaz e devolve o chakra)
 function mandaDesfazer(cloneId) { const [, c, cid] = cloneId.split(':'); if (c === me.c) { desfazClones(cid); return; } if (mesa) mesa.sendEvent({ k: 'acao', a: 'desfazClone', c, q: cid }).catch(() => {}); say('Clone desfeito'); }
@@ -4930,7 +4985,8 @@ function acoesUI() {
   if (!acEl) return; const c = me.c, temF = !!persDe(c); acEl.hidden = !c; if (!c) return;
   const comb = emCombate(), set = (id, on, vis = true) => { const b = $(id); b.hidden = !vis; b.classList.toggle('on', !!on); b.setAttribute('aria-pressed', !!on); };
   set('acAndar', !ac.voo && ac.modo === 'andar', !comb); set('acCorrer', !ac.voo && ac.modo === 'correr', !comb); set('acAgachar', !ac.voo && ac.modo === 'agachar', !comb);
-  set('acVoar', ac.voo, podeVoar(c) && scene.outdoor); set('acLevantar', false, condsDe('c:' + c).ef.has('caido') && !condsDe('c:' + c).flag('semAcao')); set('acShun', ac.mira === 'shunshin'); set('acBun', ac.clones.length > 0); set('acHira', !!ac.mira && ac.mira !== 'shunshin', temHiraishin(c));
+  set('acFerr', ac.menu === 'ferr', temF);
+  set('acVoar', ac.voo, podeVoar(c) && scene.outdoor); set('acInvoc', !!ac.menu && ac.menu === 'inv', parcPronto && invocaveis(c).length > 0); set('acDef', false); if (ataquePronto) $('acDef').querySelector('span').textContent = DEFS[defesaEscolhida('c:' + c)]; set('acLevantar', false, condsDe('c:' + c).ef.has('caido') && !condsDe('c:' + c).flag('semAcao')); set('acShun', ac.mira === 'shunshin'); set('acBun', ac.clones.length > 0); set('acHira', !!ac.mira && ac.mira !== 'shunshin', temHiraishin(c));
   const sub = $('acMenu'); sub.textContent = ''; sub.hidden = !ac.menu; if (!ac.menu) return;
   const bt = (t, fn, dica) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; if (dica) b.title = dica; b.onclick = fn; sub.appendChild(b); };
   if (ac.menu === 'bun') { bt('Ilusões (1 de chakra)', () => { ac.menu = null; criaClones(false); }, 'Bunshin no Jutsu: 1 ou 2 cópias que somem ao serem tocadas');
@@ -4940,6 +4996,15 @@ function acoesUI() {
     if (ac.selClone >= 0) bt('Desfazer o escolhido', () => { ac.menu = null; desfazClones(ac.selClone); }); }
   if (ac.menu === 'hira') { bt('Selar aqui ou em alguém (1 de chakra)', () => { ac.menu = null; ac.mira = 'selar'; say('Toque em você ou em alguém a até 1 casa'); acoesUI(); });
     const F = persDe(c); for (const s of (F && F.selos) || []) { bt('Ir: ' + s.n, () => { ac.menu = null; vaiSelo(s); acoesUI(); }, '2 de chakra'); bt('×', () => tiraSelo(s.id), 'Tirar o selo ' + s.n); } }
+  if (ac.menu === 'ferr' && ferrPronto) { const q = k => bolsa(c, k);
+    bt(`Kunai (${q('kunai')})`, () => ferrMira('kunai'), 'CD, até 15 m; dano Destreza ÷ 2 + 1'); bt(`Shuriken ×3 (${q('shuriken')})`, () => ferrMira('shuriken'), 'CD, até 20 m; as 3 somam o dano');
+    bt(`Kunai com tarja (${Math.min(q('kunai'), q('tarja'))})`, () => ferrMira('ktarja'), 'Explosão de 5 m, 4 de dano base; o grau vem do arremesso'); bt(`Plantar tarja (${q('tarja')})`, () => ferrMira('plantar'), 'Só você e o mestre a veem; explode quando você mandar, a até 15 m');
+    for (const t of (persDe(c) || {}).tarjas || []) bt('Explodir tarja', () => { ac.menu = null; explodeTarja(t.id); }, `Em ${nomeCena(t.s)}: 2d8 dão o grau`);
+    bt(`Bomba de fumaça (${q('fumaca')})`, () => ferrMira('fumaca'), 'Camuflagem parcial de 10 m por 3 turnos'); bt(`Bomba luminosa (${q('luminosa')})`, () => ferrMira('luminosa'), 'Ofusca quem estiver a 5 m por 3 turnos');
+    bt(`Pílula do soldado (${q('pilula')})`, () => { ac.menu = null; tomaPilula(); acoesUI(); }, 'Chakra igual à metade do Espírito; 1 hora depois, fatigado');
+    if (Object.keys(FERR).some(k => !q(k))) bt('Pôr o básico na bolsa', () => kitBasico(), 'As armas básicas são dadas pela vila'); }
+  if (ac.menu === 'inv') { for (const k of invocaveis(c)) bt(CRIATURAS[k][0], () => { ac.menu = null; invocar(k); }, `${CRIATURAS[k][1].toLowerCase()}${CRIATURAS[k][2] ? ', voa' : ''}`);
+    for (const r of parcRegs(c).filter(r => r.inv)) bt('Desfazer: ' + r.q.n, () => { ac.menu = null; desfazInvoc(idParc(c, r.slot)); }); }
   if (ac.menu === 'aga') { const F = persDe(c), f = (F ? persCalc(F).per.furtividade || 0 : 0) + condPen('c:' + c, 'per').v;
     bt(`Rolar Furtividade (+${f})`, () => { ac.menu = null; rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: f, desc: 'Furtividade', quem: quemDe('c:' + c) }); acoesUI(); }); }
 }
@@ -4949,6 +5014,9 @@ if (acEl) {
   $('acShun').onclick = () => { ac.menu = null; ac.mira = ac.mira === 'shunshin' ? null : 'shunshin'; if (ac.mira) say('Shunshin: toque no destino (1 de chakra)'); acoesUI(); };
   $('acBun').onclick = () => { ac.mira = null; ac.menu = ac.menu === 'bun' ? null : 'bun'; acoesUI(); };
   $('acHira').onclick = () => { ac.mira = null; ac.menu = ac.menu === 'hira' ? null : 'hira'; acoesUI(); };
+  $('acFerr').onclick = () => { ac.mira = null; ac.menu = ac.menu === 'ferr' ? null : 'ferr'; acoesUI(); };
+  $('acInvoc').onclick = () => { ac.mira = null; ac.menu = ac.menu === 'inv' ? null : 'inv'; acoesUI(); };
+  $('acDef').onclick = () => { const id = 'c:' + me.c, ks = Object.keys(DEFS), k = ks[(ks.indexOf(defesaEscolhida(id)) + 1) % ks.length]; trocaDefesa(id, k); setTimeout(acoesUI, 50); };
   addEventListener('keydown', e => { if (/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '') || e.ctrlKey || e.metaKey || !me.c) return;
     const k = e.key.toLowerCase(); if (k === 'shift') modo('correr'); else if (k === 'c') modo('agachar'); else if (k === 'v') alternaVoo(); else if (k === 'escape' && (ac.mira || ac.menu || ac.selClone >= 0)) { ac.mira = ac.menu = null; ac.selClone = -1; acoesUI(); } });
   setInterval(acoesUI, 1500);
@@ -4985,9 +5053,10 @@ function altEase(id, alvo, now, cai) {
 const altDe = id => (ALT_.get(id) || { v: 0 }).v;
 // modo de desenho de uma unidade: altura, deitado, agachado, correndo, tremendo de medo, esmaecido se morto
 function modoUnidade(id, md, now) {
-  modoPU(md === 'v' ? '' : md, false); const C = condsDe(id);
-  PU.alt = Math.round(altEase(id, md === 'v' ? 34 : 0, now, C.ef.has('caido')));
-  PU.deit = C.flag('deita') && PU.alt === 0;
+  modoPU(md === 'v' ? '' : md, false); const C = condsDe(id), mt = parcPronto ? montariaDe(id) : null;
+  let a = Math.round(altEase(id, md === 'v' ? 34 : 0, now, C.ef.has('caido'))); PU.voa = a > 0 && !mt;
+  if (mt) { const q = compDe(mt); a += selaDe(q && VIS_PARC.test(q.vis || '') ? q.vis : 'plantao'); PU.aga = false; PU.run = false; }     // montado: em cima da montaria
+  PU.alt = a; PU.deit = C.flag('deita') && PU.alt === 0;
   if (C.ef.has('morto')) PU.cinza = 1;
   if (C.ef.has('assustado') || C.ef.has('amedrontado') || C.ef.has('aterrorizado')) PU.jx = (Math.floor(now / 70) % 3) - 1;
 }
@@ -4997,7 +5066,7 @@ function spriteDe(base, id, mv, front, md, now) {
   if (a) { const el = now - a.t0; if (a.k === 'dano') PU.flash = el < 130 ? 1 - el / 130 : 0;
     const e = E(`${base}_${a.k === 'levanta' ? 'ajoelha' : a.k}_${v}`);
     if (e && !PU.deit) { PU.fr = a.k === 'selo' ? Math.floor(el / 80) % 4 : a.k === 'golpe' ? Math.min(2, Math.floor(el / 130)) : a.k === 'dano' ? (el < 190 ? 0 : 1) : 0; PU.aga = false; return e; } }
-  if (PU.alt > 0) { const e = E(`${base}_voa_${v}`); if (e) { PU.fr = Math.floor(now / 260) % 2; return e; } }
+  if (PU.voa) { const e = E(`${base}_voa_${v}`); if (e) { PU.fr = Math.floor(now / 260) % 2; return e; } }
   if (md === 'r' && mv) { const e = E(`${base}_corre_${v}`); if (e) return e; }
   return E(`${base}_${mv ? 'anda' : 'parado'}_${v}`);
 }
@@ -5086,6 +5155,471 @@ function treinoVila(k, front, now, sid) {
 // as lanternas e janelas tremeluzem um pouco
 const tremeluz = (x, y, now) => 1 + 0.06 * Math.sin(now / 95 + x * 0.71) * Math.sin(now / 237 + y * 0.53);
 animaPronto = true;
+
+// ---------- parceiros: companheiro animal (da ficha) e invocações (Kuchiyose, criaturas de Sumi Ninpou e de Kibaku Nendo) ----------
+// Livro Básico, p. 269: o parceiro não tem iniciativa e age no turno do dono. Companheiro Animal (p. 163): a ficha do dono com 2 níveis
+// a menos. Montaria (p. 270): Grande ou maior; quem está montado se defende com a montaria. Cada parceiro segue o dono ou fica onde
+// foi mandado; o dono anda sem ele, e ele anda sem o dono. id: p:dono:vaga (0–5 companheiros da ficha, 10–15 invocações).
+var parcPronto = false;
+const CRIATURAS = {
+  'cr:tinta_pardal': ['Pardal de tinta', 'PEQUENO', 1], 'cr:tinta_borboleta': ['Borboleta de tinta', 'MIÚDO', 1], 'cr:tinta_rato': ['Rato de tinta', 'MIÚDO', 0],
+  'cr:tinta_peixe': ['Peixe de tinta', 'PEQUENO', 0], 'cr:tinta_serpente': ['Serpente de tinta', 'MÉDIO', 0], 'cr:tinta_lobo': ['Lobo de tinta', 'MÉDIO', 0],
+  'cr:tinta_tigre': ['Tigre de tinta', 'GRANDE', 0], 'cr:tinta_grou': ['Grou de tinta', 'ENORME', 1],
+  'cr:argila_passaro': ['Pássaro de argila', 'PEQUENO', 1], 'cr:argila_aranha': ['Aranha de argila', 'MIÚDO', 0], 'cr:argila_toupeira': ['Toupeira de argila', 'PEQUENO', 0],
+  'cr:argila_centopeia': ['Centopeia de argila', 'MÉDIO', 0], 'cr:argila_cavalo': ['Cavalo de argila', 'GRANDE', 0], 'cr:argila_falcao': ['Falcão de argila', 'ENORME', 1],
+  caogr0: ['Cão de guerra', 'GRANDE', 0], caogr1: ['Cão de guerra malhado', 'GRANDE', 0], caogr2: ['Cão de guerra escuro', 'GRANDE', 0],
+};
+const VIS_PARC = /^(plantao|caogr[0-2]|cr:(tinta|argila)_[a-z]+)$/;
+const GRANDES = ['GRANDE', 'ENORME', 'IMENSO', 'COLOSSAL'];
+const ac2 = { st: {}, sel: null, mont: null, mov: {} };          // estado das minhas unidades: vaga -> { x, y, path, dx, dy, mv, seg, vo }
+// ---------- o que cada um pode invocar (pela ficha) ----------
+function invocaveis(c) {
+  const F = persDe(c); if (!F) return []; const out = [];
+  if (podTem(F, /SUMI/)) for (const k of Object.keys(CRIATURAS)) if (k.startsWith('cr:tinta')) out.push(k);
+  if (podTem(F, /NENDO|ARGILA/)) for (const k of Object.keys(CRIATURAS)) if (k.startsWith('cr:argila')) out.push(k);
+  if (aptTem(F, /KUCHIYOSE|INVOCACAO/)) out.push('caogr0', 'caogr1', 'caogr2');
+  return out;
+}
+// ---------- dados: os registros ficam na ficha do dono ----------
+function parcRegs(c) {
+  const F = persDe(c); if (!F) return []; const out = [];
+  (F.comp || []).forEach((q, i) => out.push({ slot: i, q, inv: 0 }));
+  (F.invoc || []).forEach((q, i) => out.push({ slot: 10 + i, q, inv: 1 }));
+  return out;
+}
+const idParc = (c, slot) => `p:${c}:${slot}`;
+const donoDe = id => id.split(':')[1];
+function compDe(id) { const [, c, s] = id.split(':'), F = persDe(c); if (!F) return null; const k = +s; return k >= 10 ? (F.invoc || [])[k - 10] || null : (F.comp || [])[k] || null; }
+function compMuda(id, fn) {
+  const [, c, s] = id.split(':'), F0 = persDe(c); if (!F0 || !podeEditar(c)) return false; const F = JSON.parse(JSON.stringify(F0)), k = +s;
+  const q = k >= 10 ? (F.invoc || [])[k - 10] : (F.comp || [])[k]; if (!q) return false; fn(q, F); persGrava(c, F); condMudou(); return true;
+}
+const compControlo = id => ehMestre() || donoDe(id) === me.c;
+function compStats(id) {                                     // a ficha do dono com 2 níveis a menos (Companheiro Animal, p. 163)
+  const q = compDe(id), dono = statsDe('c:' + donoDe(id)), m2 = v => Math.max(0, (v || 0) - 2); const at = (q && q.at) || {};
+  return { pod: {}, agi: at.agi || 0, esp: at.esp || 0, arte: 0, ini: m2(dono.ini), cc: m2(dono.cc), cd: m2(dono.cd), esq: m2(dono.esq), lm: m2(dono.lm),
+    vig: at.vig || 0, forca: at.forca || 0, dano: Math.ceil((at.forca || 0) / 2) + (q && q.dano ? q.dano : 0), desl: q ? q.desl : 10 };
+}
+const nomeComp = id => { const q = compDe(id); return q ? q.n || 'Parceiro' : 'Parceiro'; };
+const quemComp = id => { const q = compDe(id); return { c: donoDe(id), n: q ? q.n || 'Parceiro' : 'Parceiro', gm: 0 }; };
+function compDano(id, n) {
+  const q = compDe(id); if (!q || !n) return;
+  compMuda(id, r => { r.vitP = Math.max(-999, Math.min(999, (r.vitP || 0) + n)); if (n < 0) r.vitP = Math.max(0, r.vitP); });
+  const k = +id.split(':')[2]; if (k >= 10 && n > 0 && q.vit - (q.vitP || 0) - n <= 0) setTimeout(() => desfazInvoc(id), 700);   // invocação sem Vitalidade se desfaz
+}
+// ---------- as minhas: invocar, desfazer, seguir, montar ----------
+function invocar(vis) {
+  if (!me.c || !CRIATURAS[vis]) return; const c = me.c, F0 = persDe(c); if (!F0 || !podeEditar(c)) return;
+  const C = condsDe('c:' + c); if (C.flag('semAcao')) { say('Nessa condição não dá para invocar'); return; }
+  const F = JSON.parse(JSON.stringify(F0)); F.invoc = (F.invoc || []); if (F.invoc.length >= 6) { say('Já há 6 invocações: desfaça uma antes'); return; }
+  const [n, tam, voa] = CRIATURAS[vis]; F.invoc.push({ n, vis, tam, vit: 1, vitP: 0, desl: GRANDES.includes(tam) ? 14 : 10, voa, def: 'esq' }); persGrava(c, F);
+  const slot = 10 + F.invoc.length - 1, w = nearestWalkable((me.x | 0) + 1, (me.y | 0) + 1, 3) || [me.x | 0, me.y | 0];
+  ac2.st[slot] = { x: w[0] + 0.5, y: w[1] + 0.5, path: [], dx: 1, dy: 1, mv: false, seg: false, vo: false };
+  puff(w[0] + 0.5, w[1] + 0.5, vis.includes('tinta') ? 'tinta' : vis.includes('argila') ? 'areia' : 'fumaca'); anima('c:' + c, 'selo');
+  if (mesa) mesa.sendEvent({ k: 'acao', a: 'puff', de: null, para: [w[0] + 0.5, w[1] + 0.5], fx: vis.includes('tinta') ? 'tinta' : 'fumaca', s: scene.id, q: 'c:' + c }).catch(() => {});
+  say(`${n} invocado: toque nele para mandar; a Vitalidade começa em 1 (o mestre ajusta)`); sendPresence(); acoesUI();
+}
+function desfazInvoc(id) {
+  const [, c, s] = id.split(':'), k = +s; if (k < 10) return; if (c !== me.c && !ehMestre()) return;
+  const p = posComp(id); if (p) puff(p.x, p.y, 'fumaca');
+  if (c !== me.c) { if (mesa) mesa.sendEvent({ k: 'acao', a: 'desfazInv', c, q: String(k) }).catch(() => {}); return; }
+  const F0 = persDe(c); if (!F0) return; const F = JSON.parse(JSON.stringify(F0)); F.invoc = (F.invoc || []).filter((q, i) => i !== k - 10); persGrava(c, F);
+  const novo = {}; for (const [sl, v] of Object.entries(ac2.st)) { const n = +sl; if (n < 10 || n < k) novo[n] = v; else if (n > k) novo[n - 1] = v; } ac2.st = novo;
+  if (ac2.mont === k) ac2.mont = null; else if (ac2.mont > k) ac2.mont--; ac2.sel = null;
+  const t = tab(); if (t && t.cond) { delete t.cond[id]; condMudou(); }
+  if (mesa) mesa.sendEvent({ k: 'acao', a: 'puff', de: null, para: p ? [p.x, p.y] : [me.x, me.y], fx: 'fumaca', s: scene.id }).catch(() => {});
+  sendPresence(); acoesUI();
+}
+function parcEstado(slot) {                                  // o estado das minhas unidades, criado perto de mim
+  let s = ac2.st[slot]; if (!s) { const w = nearestWalkable((me.x | 0) - 1, (me.y | 0) + 1, 3) || [me.x | 0, me.y | 0]; s = ac2.st[slot] = { x: w[0] + 0.5, y: w[1] + 0.5, path: [], dx: 1, dy: 1, mv: false, seg: true, vo: false }; }
+  return s;
+}
+function parcMeus() { if (!me.c) return []; const R = parcRegs(me.c); for (const sl of Object.keys(ac2.st)) if (!R.some(r => r.slot === +sl)) delete ac2.st[sl]; return R.map(r => Object.assign({ id: idParc(me.c, r.slot), c: me.c, st: parcEstado(r.slot) }, r)); }
+function alternaSeguir(slot) { const s = ac2.st[slot]; if (!s) return; s.seg = !s.seg; s.path = []; say(s.seg ? 'Segue você' : 'Fica onde está'); sendPresence(); acoesUI(); }
+function alternaVooParc(slot) { const R = parcRegs(me.c).find(r => r.slot === slot), s = ac2.st[slot]; if (!R || !s || !R.q.voa) return; if (!s.vo && !scene.outdoor) { say('Só ao ar livre'); return; } s.vo = !s.vo; sendPresence(); acoesUI(); }
+function montarParc(slot) {
+  if (ac2.mont != null) { ac2.mont = null; const w = nearestWalkable(me.x | 0, me.y | 0, 3); if (w) { me.x = w[0] + 0.5; me.y = w[1] + 1.5; } say('Desmontou'); sendPresence(); acoesUI(); return; }
+  const R = parcRegs(me.c).find(r => r.slot === slot), s = ac2.st[slot]; if (!R || !s) return;
+  if (!GRANDES.includes(R.q.tam)) { say('Só dá para montar em parceiros Grandes ou maiores'); return; }
+  if (Math.hypot(s.x - me.x, s.y - me.y) * M_CASA > 4) { say('Chegue perto para montar'); return; }
+  ac2.mont = slot; s.seg = false; me.x = s.x; me.y = s.y; me.path = []; say(`Montado em ${R.q.n}: quem o atacar enfrenta a defesa dele`); sendPresence(); acoesUI();
+}
+const montadoMeu = () => ac2.mont != null && ac2.st[ac2.mont] ? ac2.mont : null;
+// ---------- presença: as minhas unidades vão junto ----------
+function parcPres() { return { pc: parcMeus().map(r => [r.slot, r2(r.st.x), r2(r.st.y), r.st.path.slice(0, 40).map(p => [r2(p[0]), r2(p[1])]), r.st.seg ? 1 : 0, r.st.vo ? 1 : 0]), mt: montadoMeu() == null ? -1 : montadoMeu() }; }
+function parcDe(p) {                                         // as unidades de outro jogador, andando entre as mensagens
+  const st = p.presence, L = st && Array.isArray(st.pc) ? st.pc.slice(0, 12) : []; const out = [], passou = Math.max(0, Date.now() - (p.updatedAt || Date.now())) / 1000 * 4.5;
+  for (const q of L) { if (!Array.isArray(q) || !okXY(+q[1], +q[2])) continue; let x = +q[1], y = +q[2], dx = 1, dy = 1, mv = false, rem = passou;
+    for (const w of (Array.isArray(q[3]) ? q[3] : [])) { if (!Array.isArray(w) || !okXY(+w[0], +w[1])) break; const ddx = w[0] - x, ddy = w[1] - y, d = Math.hypot(ddx, ddy); if (d < 1e-3) continue; dx = ddx; dy = ddy;
+      if (rem >= d) { x = +w[0]; y = +w[1]; rem -= d; } else { x += ddx / d * rem; y += ddy / d * rem; mv = true; break; } }
+    out.push({ slot: nnum(q[0], 0, 15, 0), x, y, dx, dy, mv, seg: !!q[4], vo: !!q[5] }); }
+  return out;
+}
+// todas as unidades parceiras que eu vejo: { id, c, slot, q, x, y, s, dx, dy, mv, vo, meu }
+function parcTodos() {
+  const out = [];
+  for (const r of parcMeus()) { const s = r.st; out.push({ id: r.id, c: me.c, slot: r.slot, q: r.q, x: s.x, y: s.y, s: scene.id, dx: s.dx, dy: s.dy, mv: s.mv, vo: s.vo || (ac2.mont === r.slot && ac.voo), meu: 1, mt: ac2.mont === r.slot }); }
+  for (const p of peers) { const st = p.presence; if (!st || !CHARS.includes(st.c) || st.c === me.c) continue; const R = parcRegs(st.c);
+    for (const u of parcDe(p)) { const r = R.find(z => z.slot === u.slot); if (!r) continue; out.push({ id: idParc(st.c, u.slot), c: st.c, slot: u.slot, q: r.q, x: u.x, y: u.y, s: okScene(st.s) ? st.s : 'vila', dx: u.dx, dy: u.dy, mv: u.mv, vo: u.vo || (st.mt === u.slot && st.md === 'v'), mt: st.mt === u.slot }); } }
+  return out;
+}
+function posComp(id) { const u = parcTodos().find(z => z.id === id); return u ? { x: u.x, y: u.y, s: u.s } : null; }
+function vooParc(id) { const u = parcTodos().find(z => z.id === id); return !!(u && u.vo); }
+// quem está montado em quê (para a defesa pela montaria)
+function montariaDe(id) {
+  if (!id || !id.startsWith('c:')) return null; const c = id.slice(2);
+  if (c === me.c) return montadoMeu() == null ? null : idParc(c, montadoMeu());
+  for (const p of peers) if (p.presence && p.presence.c === c && Number.isInteger(p.presence.mt) && p.presence.mt >= 0) return idParc(c, p.presence.mt);
+  return null;
+}
+// ---------- passos: seguir o dono, andar até onde foi mandado, carregar quem monta ----------
+function parcPasso(dt) {
+  if (!me.c) return; let mudou = false;
+  for (const r of parcMeus()) { const s = r.st; s.mv = false;
+    if (ac2.mont === r.slot) { s.dx = me.dx; s.dy = me.dy; s.mv = me.mv; s.x = me.x; s.y = me.y; s.path = []; continue; }
+    if (s.seg) { const i = Object.keys(ac2.st).indexOf(String(r.slot)), ox = [-0.7, 0.8, -1.4, 1.5, -2, 2][i % 6], oy = [0.4, 0.6, -0.5, -0.3, 0.9, 1.1][i % 6];
+      const tx = me.x + ox, ty = me.y + oy, dd = Math.hypot(tx - s.x, ty - s.y);
+      if (dd > 12) { s.x = tx; s.y = ty; continue; } if (dd > 0.9) { const k = Math.min(dd - 0.6, dt * 5.2); s.x += (tx - s.x) / dd * k; s.y += (ty - s.y) / dd * k; s.dx = tx - s.x; s.dy = ty - s.y; s.mv = true; } continue; }
+    let rem = dt * (s.vo ? 9 : 4.5);
+    while (rem > 0 && s.path.length) { const [tx, ty] = s.path[0], dx = tx - s.x, dy = ty - s.y, d = Math.hypot(dx, dy); if (d < 1e-3) { s.path.shift(); continue; }
+      s.mv = true; s.dx = dx; s.dy = dy; if (d <= rem) { s.x = tx; s.y = ty; rem -= d; s.path.shift(); if (!s.path.length) mudou = true; } else { s.x += dx / d * rem; s.y += dy / d * rem; rem = 0; } } }
+  if (ac2.mont != null && !ac2.st[ac2.mont]) ac2.mont = null;
+  if (mudou) sendPresence();
+}
+// tocar numa unidade minha a escolhe; o próximo toque no chão a manda (no combate, até o deslocamento dela, uma vez por rodada)
+function parcClique(wx, wy) {
+  if (!me.c) return false; const L = parcMeus().filter(r => ac2.mont !== r.slot);
+  const perto = s => { const [sx, sy] = unitScreen(s.x, s.y); return wx >= sx - 9 && wx <= sx + 9 && wy >= sy - 26 - (s.vo ? 34 : 0) && wy <= sy + 3 - (s.vo ? 34 : 0); };
+  const r = L.find(z => perto(z.st)); if (r) { ac2.sel = ac2.sel === r.slot ? null : r.slot; ac.selClone = -1; if (ac2.sel != null) say(`${r.q.n}: toque no chão para mandá-lo`); acoesUI(); return true; }
+  if (ac2.sel == null) return false; const R = L.find(z => z.slot === ac2.sel); if (!R) { ac2.sel = null; return false; }
+  const g = chaoEm(wx, wy); if (!g) return true; const s = R.st, id = idParc(me.c, R.slot);
+  const cm = condMov(id); if (cm.msg) { say(cm.msg); return true; }
+  if (combateAqui()) { if (ac2.mov[R.slot] === cmb.r) { say(`${R.q.n} já se deslocou nesta rodada`); return true; }
+    const desl = condDesl(id, R.q.desl || 10); if (Math.hypot(g[0] - s.x, g[1] - s.y) * M_CASA > desl + 1) { say(`${R.q.n} anda até ${desl} m por rodada`); return true; } ac2.mov[R.slot] = cmb.r; }
+  if (s.vo) s.path = [[Math.max(0.5, Math.min(N - 0.5, g[0])), Math.max(0.5, Math.min(N - 0.5, g[1]))]];
+  else { const goal = nearestWalkable(g[0] | 0, g[1] | 0, 4); if (!goal) return true; const p = astar(s.x | 0, s.y | 0, goal[0], goal[1]); if (!p || !p.length) return true; s.path = p; }
+  s.seg = false; ac2.sel = null; sendPresence(); acoesUI(); return true;
+}
+// ---------- desenho ----------
+function spriteParc(vis, mv, front) {
+  if (/^caogr/.test(vis)) return E(`${vis}_${mv ? 'anda' : 'senta'}`);
+  return E(`${vis}_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`) || E(`plantao_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`);
+}
+function desenhaParc(items, unitsAt, tagPos, now, vl, vt) {
+  for (const u of parcTodos()) { if (u.s !== scene.id || nevoaEsconde(u.x, u.y)) continue; const vis = VIS_PARC.test(u.q.vis || '') ? u.q.vis : 'plantao';
+    const lateral = /^caogr/.test(vis), front = (u.dx + u.dy) >= 0; modoUnidade(u.id, u.vo ? 'v' : '', now);
+    pushUnit(items, unitsAt, spriteParc(vis, u.mv, front), u.x, u.y, u.dx, u.dy, u.mv, now + u.slot * 61, lateral, lateral ? (u.dx - u.dy) < 0 : undefined); const alt = PU.alt; modoPU('');
+    if (u.meu && ac2.sel === u.slot) { const [sx, sy] = unitScreen(u.x, u.y); VOO.push({ draw() { ctx.strokeStyle = 'rgba(255,220,120,.95)'; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.ellipse(Math.round(sx), Math.round(sy), 8, 4, 0, 0, 6.283); ctx.stroke(); ctx.setLineDash([]); } }); }
+    const [sx, sy] = unitScreen(u.x, u.y), e = spriteParc(vis, false, true), h = e ? e[6] : 20;
+    if (!(u.meu && ac2.mont === u.slot)) tagPos.push([u.q.n || 'Parceiro', (sx - vl) * zoom, (sy - vt - Math.min(60, h + 4) - alt) * zoom, 'parc', condTag(u.id)]); }
+}
+const SELA = { 'cr:tinta_grou': 50, 'cr:argila_falcao': 48, 'cr:argila_cavalo': 22, 'cr:tinta_tigre': 24, 'cr:tinta_lobo': 14, 'cr:tinta_serpente': 8, 'cr:argila_centopeia': 8, caogr0: 10, caogr1: 10, caogr2: 10, plantao: 6 };
+const selaDe = vis => SELA[vis] != null ? SELA[vis] : 12;                                 // altura das costas de cada montaria, em px
+// ---------- a mini-ficha de um parceiro ----------
+function parcMiniFicha(corpo, id) {
+  const q = compDe(id), u = parcTodos().find(z => z.id === id); if (!q || !u) { abreFicha(null); return; }
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const bt = (txt, fn, dica) => { const b = el('button', null, txt); b.type = 'button'; if (dica) b.title = dica; b.onclick = e => { e.stopPropagation(); fn(); fichaMonta(); }; return b; };
+  const vis = VIS_PARC.test(q.vis || '') ? q.vis : 'plantao', inv = +id.split(':')[2] >= 10, meu = u.meu, gm = ehMestre();
+  const e = spriteParc(vis, false, true); retrato($('fiRet'), e ? { spr: /^caogr/.test(vis) ? `${vis}_senta` : `${vis}_parado_frente` } : { c: u.c }, 2);
+  fiEl.style.setProperty('--cor', corDeId('c:' + u.c)); $('fiNome').textContent = q.n || 'Parceiro';
+  $('fiSub').textContent = `${inv ? 'Invocação' : 'Companheiro'} de ${nome(u.c)} · ${(q.tam || 'PEQUENO').toLowerCase()}`; const d = meu ? null : fiDistancia(u.x, u.y); $('fiDist').textContent = d == null ? '' : `a ${d} m de você`;
+  const en = el('div', 'en'); for (const [rot, a, t, cor] of [['Vitalidade', (q.vit || 0) - (q.vitP || 0), q.vit || 0, '#c45a4a'], ['Chakra', (q.cha || 0) - (q.chaP || 0), q.cha || 0, '#4f7fc8']]) { if (!t) continue;
+    const b = el('div', 'enb'); b.style.setProperty('--c', cor); b.style.setProperty('--p', Math.max(0, Math.min(1, a / t))); b.append(el('span', null, rot), el('b', null, `${a} / ${t}`)); en.append(b); } corpo.appendChild(en);
+  condVidaFicha(corpo, id); condMiniFicha(corpo, id); ataqueFicha(corpo, id);
+  const st = compStats(id), dl = el('dl'); for (const [r, v] of [['Corpo a corpo', '+' + st.cc], ['Esquiva', defesaDe(id).auto ? '—' : defesaDe(id).v], ['Ler movimento', '+' + st.lm], ['Deslocamento', condDesl(id, q.desl || 10) + ' m']]) { dl.appendChild(el('dt', null, r)); dl.appendChild(el('dd', null, v)); }
+  corpo.appendChild(dl); corpo.appendChild(el('p', 'cdd', inv ? 'Invocação: age no turno do dono. Sem Vitalidade, se desfaz.' : 'Parceiro: age no turno do dono, com a ficha dele 2 níveis abaixo.'));
+  const ac = el('div', 'acoes');
+  if (meu) { ac.appendChild(bt(ac2.st[u.slot] && ac2.st[u.slot].seg ? 'Ficar aqui' : 'Seguir', () => alternaSeguir(u.slot), 'Segue você ou fica onde foi mandado'));
+    if (q.voa) ac.appendChild(bt(u.vo ? 'Pousar' : 'Voar', () => alternaVooParc(u.slot)));
+    if (GRANDES.includes(q.tam)) ac.appendChild(bt(ac2.mont === u.slot ? 'Desmontar' : 'Montar', () => montarParc(u.slot), 'Montaria: Grande ou maior; quem a atacar enfrenta a defesa dela'));
+    if (!inv) { const s = el('select'); s.setAttribute('aria-label', 'Aparência'); for (const [k, n] of [['plantao', 'Ninken'], ['caogr0', 'Cão grande'], ['caogr1', 'Cão grande malhado'], ['caogr2', 'Cão grande escuro'], ['cr:tinta_lobo', 'Lobo']]) { const o = el('option', null, n); o.value = k; s.appendChild(o); }
+      s.value = vis; s.onchange = () => { compMuda(id, r => { r.vis = s.value; }); fichaMonta(); }; const w = el('div', 'cdadd'); w.append(el('span', 'rt', 'Aparência'), s); corpo.appendChild(w); } }
+  if (inv && (meu || gm)) ac.appendChild(bt('Desfazer a invocação', () => { desfazInvoc(id); abreFicha(null); }));
+  if (inv && gm) { const w = el('div', 'cdvida'), i = el('input'); i.type = 'number'; i.min = 1; i.max = 999; i.value = q.vit || 1; i.setAttribute('aria-label', 'Vitalidade total');
+    i.onchange = () => { compMuda(id, r => { r.vit = nnum(i.value, 1, 999, r.vit); }); }; w.append(el('span', 'rt', 'Vit total'), i); corpo.appendChild(w); }
+  if (ac.children.length) corpo.appendChild(ac);
+}
+parcPronto = true;
+// ---------- combate fechado: ataque, defesa e dano (Livro Básico 4.1b, p. 249, 256–259, 263 e 273) ----------
+// O atacante rola no painel; a rolagem leva o contexto do ataque (quem ataca, os alvos e o dano base de cada um, o efeito).
+// O mestre resolve sozinho: cada alvo usa a defesa que deixou anunciada antes (Esquiva, Antecipar ou Bloqueio), porque no livro a
+// defesa é anunciada antes dos dados; Antecipar e Bloqueio rolam sozinhos, em teste contra teste. Crítico: sem defesa, grau 4 e
+// sangramento. Dano final = dano base × grau (+ fixo); a armadura absorve primeiro. Cobertura +3 e flanqueado −1 na defesa.
+var ataquePronto = false;
+const DEFS = { esq: 'Esquiva', ant: 'Antecipar', blo: 'Bloqueio' };
+const okUnid = v => typeof v === 'string' && /^(c:[a-z]+|n:[a-z0-9]{1,12}|k:[a-z]+:[a-z0-9]{1,8}|p:[a-z]+:[0-9]{1,2})$/.test(v);
+function defesaEscolhida(id) {
+  if (id.startsWith('c:')) { const F = persDe(id.slice(2)); return F && DEFS[F.def] ? F.def : 'esq'; }
+  if (id.startsWith('n:')) { const n = npcPorId(id); return n && DEFS[n.def] ? n.def : 'esq'; }
+  if (id.startsWith('p:')) { const q = compDe(id); return q && DEFS[q.def] ? q.def : 'esq'; }
+  return 'esq';
+}
+function trocaDefesa(id, k) {
+  if (!DEFS[k]) return;
+  if (id.startsWith('c:')) { const c = id.slice(2), F0 = persDe(c); if (!F0 || !podeEditar(c)) return; const F = JSON.parse(JSON.stringify(F0)); F.def = k; persGrava(c, F); }
+  else if (id.startsWith('n:')) { const t = tab(); const n = t && t.npcs.find(q => 'n:' + q.id === id); if (!n) return; n.def = k; publicar(true); }
+  else if (id.startsWith('p:')) compMuda(id, q => { q.def = k; });
+  say(`${nomeDe(id)} vai se defender com ${DEFS[k]}`); setTimeout(() => { try { acoesUI(); } catch (e) {} }, 0);
+}
+const armaCC = F => F && F.inv ? (F.inv.armas || []).find(w => w.usa === 'forca') || null : null;
+function armado(id) { if (id.startsWith('c:')) return !!armaCC(persDe(id.slice(2))); return id.startsWith('n:'); }
+// números de quem é atacado (clone: os do dono, −3; companheiro: os da ficha dele)
+const statsAlvo = id => statsDe(id);
+// dano base de um golpe corpo a corpo: metade da Força + dano da arma (p. 257); inimigo: o dano da ficha dele
+function danoCC(id) {
+  if (id.startsWith('c:')) { const F = persDe(id.slice(2)); if (!F) return 2; const w = armaCC(F); return Math.ceil(F.at.forca / 2) + (w ? w.dano : 0); }
+  if (id.startsWith('n:')) { const n = npcPorId(id); return n ? n.dano : 4; }
+  if (id.startsWith('p:')) { const s = compStats(id); return s.dano; }
+  return 2;
+}
+// cobertura (p. 273): algo que bloqueia (árvore, parede, prédio, um barranco) entre os dois, já perto do alvo; quem voa a ignora
+function cobertura(de, alvo) {
+  const a = posDe(de), b = posAlvo(alvo); if (!a || !b || vooDe(de)) return 0;
+  const d = Math.hypot(b.x - a.x, b.y - a.y); if (d < 1.6) return 0; const hmax = Math.max(hEff(a.x | 0, a.y | 0), hEff(b.x | 0, b.y | 0)) + 1;
+  for (let i = 1, n = Math.ceil(d * 4); i < n; i++) { const t = i / n; if ((1 - t) * d > 2.5) continue;
+    const xi = (a.x + (b.x - a.x) * t) | 0, yi = (a.y + (b.y - a.y) * t) | 0; if ((xi === (b.x | 0) && yi === (b.y | 0)) || (xi === (a.x | 0) && yi === (a.y | 0))) continue;
+    if (xi < 0 || yi < 0 || xi >= N || yi >= N) continue; const k = xi * N + yi;
+    if (occ[k] === 1 || TM[k] === 99 || treeAt(xi, yi) || hEff(xi, yi) > hmax) return 3; }
+  return 0;
+}
+const lado = id => id.startsWith('n:') ? 'n' : 'c';               // os jogadores (e o que é deles) contra os inimigos
+function flanqueado(de, alvo) {                                // um aliado do atacante do lado oposto do alvo, os dois corpo a corpo (p. 263)
+  const a = posDe(de), b = posAlvo(alvo); if (!a || !b || Math.hypot(a.x - b.x, a.y - b.y) * M_CASA > 3) return false;
+  for (const u of unidades()) { if (u.id === de || u.id === alvo || lado(u.id) !== lado(de) || Math.hypot(u.x - b.x, u.y - b.y) * M_CASA > 3) continue;
+    const v1 = [a.x - b.x, a.y - b.y], v2 = [u.x - b.x, u.y - b.y], cs = (v1[0] * v2[0] + v1[1] * v2[1]) / ((Math.hypot(...v1) * Math.hypot(...v2)) || 1);
+    if (cs < -0.7) return true; }
+  return false;
+}
+// camuflagem (p. 272): névoa de área ou fumaça no alvo dá 25% de falha (1d8: 1–2 erra); crítico ignora
+function camuflagem(alvo) {
+  const b = posAlvo(alvo); if (!b) return 0;
+  for (const f of nevoa || []) if (f.s === scene.id && f.k === 'area' && f.c && Math.hypot(b.x - f.c[0], b.y - f.c[1]) <= f.r) return 1;
+  return 0;
+}
+// onde está um alvo (unidade, clone ou companheiro)
+function posAlvo(id) {
+  if (id.startsWith('k:')) { const q = clonesTodos().find(z => z.id === id); return q ? { x: q.x, y: q.y, s: q.s } : null; }
+  if (id.startsWith('p:')) return posComp(id);
+  return posDe(id);
+}
+// ---------- o ataque que o painel leva ----------
+function axNovo(de, alvos, o) {
+  o = o || {}; return { i: (mesa ? mesa.cid : 'solo') + '-' + Date.now().toString(36) + rid().slice(0, 4), de, al: alvos.slice(0, 12).map(a => [a[0], Math.max(0, Math.round(a[1] || 0))]),
+    fx: o.fx == null ? null : Math.round(o.fx), ef: o.ef || '', ar: o.ar ? 1 : 0, pj: o.pj ? 1 : 0, cc: o.cc ? 1 : 0, nm: String(o.nm || 'Ataque').slice(0, 32), ex: o.ex || null };
+}
+// ---------- o mestre resolve ----------
+const RES = new Map();
+function grauDe(nat) { return nat >= 12 ? 3 : nat >= 9 ? 2 : 1; }
+function resolveAtaque(r) {
+  if (!ehMestre() || !r || r.k !== 'ataque' || !r.ax || RES.has(r.ax.i)) return; RES.set(r.ax.i, { linhas: [], desf: [] });
+  setTimeout(() => { try { resolveAgora(r); } catch (e) { say('Não consegui resolver o ataque: ' + e.message); } }, 900);
+}
+function resolveAgora(r) {
+  const ax = r.ax, nat = r.dados.reduce((s, q) => s + q.v * (q.s || 1), 0), tot = nat + r.bonus, crit = nat >= r.crit, falha = nat <= 3 && !crit, R = RES.get(ax.i);
+  const visivel = id => !ocultoId(id), lin = (id, t) => R.linhas.push({ id, t });
+  if ((ax.ex === 'tarja' || ax.ex === 'tarjaRemota') && typeof explosaoFx === 'function') explosaoFx(ax);
+  for (const [id, base] of ax.al) {
+    const p = posAlvo(id); if (!p) continue; const nome = nomeVisto(id);
+    if (id.startsWith('k:')) { const q = clonesTodos().find(z => z.id === id);           // clone: ilusão some ao ser tocada; os de verdade, com 1 de Vitalidade
+      if (q && (q.tipo === 'ilusao' || (!falha && (crit || tot >= 9 + (statsAlvo(id).esq || 0))))) { mandaDesfazer(id); lin(id, `${nome}: era um clone e sumiu`); }
+      else lin(id, `${nome}: desviou`); continue; }
+    const did = montariaDe(id) || id;                                 // montado: quem se defende é a montaria (p. 270)
+    let tipo = defesaEscolhida(did); const o = { cc: !!ax.cc, area: !!ax.ar, dist: !ax.cc && !ax.ar, voa: vooDe(ax.de) }, C = condsDe(did);
+    if (tipo === 'blo' && (ax.ar || ax.pj || !armado(did))) tipo = 'esq';            // bloqueio impossível aqui: vale a Esquiva
+    if (tipo === 'ant' && ax.ar && C.flag('def9Area')) tipo = 'esq';
+    const cob = ax.cc ? 0 : cobertura(ax.de, id), fl = ax.cc && flanqueado(ax.de, id) ? -1 : 0, extra = cob + fl, notas = [];
+    if (cob) notas.push('cobertura +3'); if (fl) notas.push('flanqueado −1'); if (did !== id) notas.push(`defesa de ${nomeComp(did)}`);
+    let acerto = false, grau = 0, dtxt = '';
+    if (ax.ex === 'tarjaRemota') { acerto = !falha; grau = crit ? 4 : grauDe(nat); dtxt = falha ? 'a explosão saiu fraca' : 'pego pela explosão'; }      // ativação remota: 2d8 só dão o grau
+    else if (crit) { acerto = true; grau = 4; dtxt = 'acerto crítico, sem defesa'; }
+    else if (falha) { dtxt = 'falha crítica do ataque'; }
+    else { const df = defesaDe(did, o);
+      if (df.auto) { acerto = true; dtxt = df.txt; }
+      else if (tipo === 'esq') { const dif = df.v + extra; acerto = tot >= dif; dtxt = `Esquiva ${dif}`; }
+      else { const st = statsAlvo(did), b = (tipo === 'ant' ? st.lm : st.cc) + condPen(did, 'def', o).v + extra; let dn = 0, dt = 0;
+        for (let k = 0; k < 3; k++) { const rr = rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: b, desc: `${DEFS[tipo]}: ${ax.nm}`, quem: quemAlvo(did), local: !visivel(id) });
+          dn = rr.dados[0].v + rr.dados[1].v; dt = dn + b; if (dn >= 15 || dn <= 3 || dt !== tot || b !== r.bonus) break; }     // empate com a mesma precisão: refaz
+        acerto = dn >= 15 ? false : dn <= 3 ? true : tot > dt || (tot === dt && r.bonus > b); dtxt = `${DEFS[tipo]} ${dt}${dn >= 15 ? ' (crítico)' : dn <= 3 ? ' (erro crítico)' : ''}`; }
+      if (acerto) grau = grauDe(nat); }
+    if (acerto && !crit && camuflagem(id)) { const c8 = rolarAuto({ k: 'livre', dados: [{ f: 8, s: 1 }], desc: 'Camuflagem: 1–2 erra', quem: quemDe(ax.de), local: !visivel(id) }).dados[0].v;
+      if (c8 <= 2) { acerto = false; dtxt += ', ia acertar'; notas.push(`camuflagem (${c8}): passou longe`); } else notas.push(`camuflagem (${c8})`); }
+    const D = { id, vit: 0, abs: 0, conds: [] };
+    if (!acerto) { lin(id, `${nome}: ${dtxt}${/ia acertar$/.test(dtxt) ? '' : ', defendeu'}${notas.length ? ' · ' + notas.join(', ') : ''}`); R.desf.push(D); continue; }
+    const dano = base * grau + (ax.fx || 0), ap = aplicaGolpe(id, dano); D.vit = ap.vit; D.abs = ap.abs;
+    let txt = `${nome}: ${dtxt} · acertou, grau ${grau}: ${dano} de dano` + (ap.abs ? ` (${ap.abs} na armadura)` : '');
+    if (crit && base > 0) { const n = Math.max(1, Math.floor(base / 4)); condPoe(id, 'sangrando', { n, quieto: 1 }); D.conds.push(['sangrando', n]); txt += `, sangrando ${n > 1 ? '×' + n : ''}`.trimEnd(); }
+    const EF = { tremor: 'caido', algemar: 'impedido' }[ax.ef]; if (EF) { condPoe(id, EF, { quieto: 1 }); D.conds.push([EF, 1]); txt += `, ${nomeCond(EF).toLowerCase()}`; }
+    if (ax.ex === 'luminosa') { condPoe(id, 'ofuscado', { t: 3, quieto: 1 }); D.conds.push(['ofuscado', 1]); }
+    if (notas.length) txt += ' · ' + notas.join(', ');
+    lin(id, txt); R.desf.push(D);
+    if (vooDe(id)) { if (crit) setTimeout(() => derruba(id, 'acerto crítico'), 600);                // no ar: grau 3 pede Acrobacia (p. 270)
+      else if (grau === 3) setTimeout(() => { const dif = 4 + r.bonus; const rr = rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: acroDe(id), alvo: dif, desc: 'Acrobacia: segurar-se no ar', quem: quemAlvo(id), local: !visivel(id) });
+        const t2 = avaliar(rr).tom; if (t2 === 'erro' || t2 === 'falha') setTimeout(() => derruba(id, `Acrobacia ${avaliar(rr).total} contra ${dif}`), 900); }, 600); }
+  }
+  const res = { i: ax.i, de: ax.de, nm: ax.nm, l: R.linhas.filter(q => visivel(q.id) || ehMestre()).map(q => q.t) };
+  setTimeout(() => { mostraResultado(res, true);
+    if (mesa) mesa.sendEvent({ k: 'acao', a: 'res', r: { i: res.i, de: visivel(ax.de) ? ax.de : null, nm: ax.nm, l: R.linhas.filter(q => visivel(q.id)).map(q => q.t) } }).catch(() => {}); }, 700);
+}
+// dano numa unidade: a armadura absorve primeiro (p. 135); clone acertado some; companheiro perde da ficha do dono
+function aplicaGolpe(id, dano) {
+  if (dano <= 0) return { vit: 0, abs: 0 };
+  if (id.startsWith('c:')) { const c = id.slice(2), F0 = persDe(c); if (!F0 || !podeEditar(c)) return { vit: 0, abs: 0 }; const F = JSON.parse(JSON.stringify(F0)), a = F.inv && F.inv.arm;
+    const livre = a ? Math.max(0, a.abs - (a.absP || 0)) : 0, abs = Math.min(livre, dano); if (abs) a.absP = (a.absP || 0) + abs;
+    F.en.vitP = Math.max(-999, Math.min(999, F.en.vitP + dano - abs)); persGrava(c, F); condMudou(); return { vit: dano - abs, abs }; }
+  if (id.startsWith('p:')) { compDano(id, dano); return { vit: dano, abs: 0 }; }
+  danoEm(id, dano); return { vit: dano, abs: 0 };
+}
+function desfazAtaque(i) {
+  const R = RES.get(i); if (!R || R.feito) return; R.feito = 1;
+  for (const D of R.desf) { if (D.vit) { if (D.id.startsWith('p:')) compDano(D.id, -D.vit); else danoEm(D.id, -D.vit); }
+    if (D.abs && D.id.startsWith('c:')) { const c = D.id.slice(2), F0 = persDe(c); if (F0 && F0.inv && F0.inv.arm) { const F = JSON.parse(JSON.stringify(F0)); F.inv.arm.absP = Math.max(0, (F.inv.arm.absP || 0) - D.abs); persGrava(c, F); } }
+    for (const [k, n] of D.conds) for (let j = 0; j < n; j++) condTira(D.id, k, true); }
+  condAviso('O mestre desfez o último resultado do ataque');
+}
+const nomeVisto = id => id.startsWith('k:') ? (ehMestre() || id.split(':')[1] === me.c ? nomeDe(id) : nome(id.split(':')[1])) : id.startsWith('p:') ? nomeComp(id) : nomeDe(id);
+const quemAlvo = id => id.startsWith('k:') ? quemDe('c:' + id.split(':')[1]) : id.startsWith('p:') ? quemComp(id) : quemDe(id);
+// a tira do resultado (todas as telas); o mestre tem o Desfazer
+function mostraResultado(res, meu) {
+  if (!res || !Array.isArray(res.l)) return; if (!meu && RES_VISTOS.has(res.i)) return; RES_VISTOS.add(res.i);
+  while (rolosEl.children.length >= 3) rolosEl.lastElementChild.remove();
+  const el = document.createElement('div'); el.className = 'rolo tec res'; el.style.setProperty('--cor', res.de ? corDeId(res.de) : COR_GM); el.setAttribute('role', 'status');
+  const mio = document.createElement('div'); mio.className = 'mio'; el.appendChild(mio);
+  const qn = document.createElement('div'); qn.className = 'qn'; const b = document.createElement('b'); b.textContent = String(res.nm || 'Ataque').slice(0, 32); qn.appendChild(b);
+  const tp = document.createElement('span'); tp.className = 'tp'; tp.textContent = 'Resultado'; qn.appendChild(tp); mio.appendChild(qn);
+  for (const t of res.l.slice(0, 12)) { const d = document.createElement('div'); d.className = 'rs'; d.textContent = String(t).slice(0, 200); mio.appendChild(d); }
+  if (!res.l.length) { const d = document.createElement('div'); d.className = 'rs'; d.textContent = 'Ninguém foi atingido'; mio.appendChild(d); }
+  const sl = document.createElement('div'); sl.className = 'selo'; sl.textContent = '判'; el.appendChild(sl);
+  if (meu && ehMestre() && RES.has(res.i)) { const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'atq'; bt.textContent = 'Desfazer'; bt.title = 'Devolve o dano e tira as condições deste resultado';
+    bt.onclick = e => { e.stopPropagation(); desfazAtaque(res.i); bt.disabled = true; bt.textContent = 'Desfeito'; }; mio.appendChild(bt); }
+  for (const o of rolosEl.children) o.classList.add('velho');
+  rolosEl.prepend(el); requestAnimationFrame(() => el.classList.add('selou')); setTimeout(() => el.classList.add('aberto'), 600);
+  let visto = 0, ult = Date.now(), pausa = false; el.addEventListener('mouseenter', () => pausa = true); el.addEventListener('mouseleave', () => pausa = false);
+  const sai = () => { el.classList.add('sai'); setTimeout(() => el.remove(), 320); }; el.addEventListener('click', e => { if (e.target.tagName !== 'BUTTON') sai(); });
+  const tick = () => { if (!el.isConnected) return; const ag = Date.now(); if (!pausa && !document.hidden) visto += Math.min(ag - ult, 1000); ult = ag; if (visto > 12000) sai(); else setTimeout(tick, 250); }; setTimeout(tick, 250);
+}
+const RES_VISTOS = new Set();
+// ---------- na mini-ficha: a defesa anunciada e o golpe corpo a corpo ----------
+function quemAtaca() {                                         // quem eu controlo para atacar: meu personagem; o mestre, o inimigo da vez ou o escolhido
+  if (ehMestre()) { const at = unidadeAtiva(); if (at && at.startsWith('n:')) return at; if (sel && sel.startsWith('n:')) return sel; }
+  return me.c ? 'c:' + me.c : null;
+}
+function ataqueFicha(corpo, id) {
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const pode = id.startsWith('c:') ? podeEditar(id.slice(2)) && !!persDe(id.slice(2)) : id.startsWith('n:') ? ehMestre() : id.startsWith('p:') ? compControlo(id) : false;
+  const d = defesaEscolhida(id), lin = el('div', 'cddef');
+  lin.appendChild(el('span', 'rt', 'Defesa'));
+  if (pode) for (const k of Object.keys(DEFS)) { const b = el('button', d === k ? 'on' : null, DEFS[k]); b.type = 'button'; b.setAttribute('aria-pressed', d === k);
+    b.title = k === 'esq' ? 'Sem teste: o atacante precisa de 9 + ESQ' : k === 'ant' ? 'Teste de Ler Movimento contra o ataque' : 'Teste de CC contra o ataque; precisa de arma e não vale contra área nem técnica de projétil';
+    b.onclick = e => { e.stopPropagation(); trocaDefesa(id, k); fichaMonta(); }; lin.appendChild(b); }
+  else lin.appendChild(el('span', 'pod', DEFS[d]));
+  corpo.appendChild(lin);
+  const at = quemAtaca(); if (!at || at === id || id.startsWith('k:')) return;
+  const a = posDe(at), b = posAlvo(id); if (!a || !b) return; const dist = Math.hypot(a.x - b.x, a.y - b.y) * M_CASA;
+  const ac = el('div', 'acoes');
+  if (dist <= 3) { const bt = el('button', null, `Golpe corpo a corpo${at !== 'c:' + me.c ? ' (' + nomeDe(at) + ')' : ''}`); bt.type = 'button';
+    const voo = vooDe(id) && !vooDe(at); if (voo) { bt.classList.add('apagado'); bt.title = 'Voando: só com o Ataque com Salto'; }
+    else bt.title = `CC contra a defesa de ${nomeVisto(id)}; dano base ${danoCC(at)}`;
+    bt.onclick = e => { e.stopPropagation(); if (voo) { say('Está voando: use o Ataque com Salto'); return; } golpeCC(at, id); abreFicha(null); }; ac.appendChild(bt); }
+  if (ac.children.length) corpo.appendChild(ac);
+}
+function golpeCC(at, alvo) {
+  const st = statsDe(at), pen = condPen(at, 'cc'); if (condsDe(at).flag('semAcao')) { say(`${nomeDe(at)} não pode agir agora`); return; }
+  if (condsDe(at).flag('semAtq')) { say(`${nomeDe(at)} está com medo demais para atacar`); return; }
+  prepararAtaque({ bonus: st.cc + pen.v, alvo: null, desc: 'Golpe corpo a corpo', base: danoCC(at), quem: at.startsWith('n:') ? nomeDe(at) : null, aid: alvo,
+    ax: axNovo(at, [[alvo, danoCC(at)]], { cc: 1, nm: 'Golpe corpo a corpo' }) });
+}
+ataquePronto = true;
+// ---------- ferramentas ninja da bolsa (Livro Básico 4.1b, Equipamentos p. 130–137; Dano de Combate p. 257) ----------
+// Kunai (CD, 15 m, dano Destreza ÷ 2 + 1), shuriken (3 por ação padrão, 20 m, soma o dano das armas), kunai com tarja (explosão de
+// 5 m com 4 de dano base, o grau vem do arremesso), tarja plantada (ativação remota a até 15 m: 2d8 dão o grau), bomba de fumaça
+// (camuflagem parcial, 10 m, 3 turnos), bomba luminosa (ofuscado 3 turnos, 10 m) e pílula do soldado (chakra = metade do Espírito;
+// 1 hora depois, fatigado até descansar; duas, exausto; três, inconsciente). A munição sai da bolsa (inventário da ficha).
+var ferrPronto = false;
+const FERR = {
+  kunai: { n: 'Kunai', re: /^KUNAIS?$/, alc: 15, kit: 10 }, shuriken: { n: 'Shuriken', re: /SHURIKEN/, alc: 20, kit: 10 },
+  tarja: { n: 'Tarja explosiva', re: /TARJA|KIBAKU/, alc: 15, kit: 3 }, fumaca: { n: 'Bomba de fumaça', re: /FUMACA/, alc: 15, kit: 2 },
+  luminosa: { n: 'Bomba luminosa', re: /LUMINOSA/, alc: 15, kit: 1 }, pilula: { n: 'Pílula do soldado', re: /PILULA/, alc: 0, kit: 3 },
+};
+function bolsa(c, k) { const F = persDe(c); if (!F || !F.inv) return 0; const it = (F.inv.itens || []).find(i => FERR[k].re.test(semAc(i.n).trim())); return it ? it.q : 0; }
+function gastaBolsa(c, k, n) {
+  const F0 = persDe(c); if (!F0 || !podeEditar(c)) return false; if (bolsa(c, k) < n) { say(`Sem ${FERR[k].n.toLowerCase()} suficiente na bolsa`); return false; }
+  const F = JSON.parse(JSON.stringify(F0)), it = F.inv.itens.find(i => FERR[k].re.test(semAc(i.n).trim())); it.q -= n; persGrava(c, F); return true;
+}
+function kitBasico() {                                         // as armas básicas a vila dá: põe o que faltar na bolsa
+  const c = me.c, F0 = persDe(c); if (!F0 || !podeEditar(c)) return; const F = JSON.parse(JSON.stringify(F0)); F.inv.itens = F.inv.itens || []; let n = 0;
+  for (const [k, f] of Object.entries(FERR)) if (!F.inv.itens.some(i => f.re.test(semAc(i.n).trim()))) { F.inv.itens.push({ n: f.n, q: f.kit, comp: 0, d: '' }); n++; }
+  persGrava(c, F); say(n ? 'Bolsa preenchida com o básico' : 'A bolsa já tem tudo'); acoesUI();
+}
+const desMeu = () => { const F = persDe(me.c); return F ? F.at.des : 2; };
+// ---------- mirar e lançar ----------
+function ferrMira(k) { ac.menu = null; ac.mira = 'f:' + k; say({ kunai: 'Kunai: toque no alvo (até 15 m)', shuriken: 'Shuriken: toque no alvo (até 20 m, 3 de uma vez)', ktarja: 'Kunai com tarja: toque no alvo ou no chão (até 15 m)', plantar: 'Tarja: toque no chão perto de você', fumaca: 'Bomba de fumaça: toque no chão (até 15 m)', luminosa: 'Bomba luminosa: toque no chão (até 15 m)' }[k]); acoesUI(); }
+function ferrClique(wx, wy) {
+  const k = ac.mira.slice(2), eu = 'c:' + me.c; ac.mira = null; acoesUI(); const C = condsDe(eu);
+  if (C.flag('semAcao')) { say('Nessa condição não dá para agir'); return; }
+  const u = unidadeEm(wx, wy), g = chaoEm(wx, wy), alvoP = u ? posDe(u.id) : g ? { x: g[0], y: g[1] } : null; if (!alvoP) return;
+  const dist = Math.hypot(alvoP.x - me.x, alvoP.y - me.y) * M_CASA, st = statsDe(eu), pen = condPen(eu, 'cd').v, alc = k === 'shuriken' ? 20 : k === 'plantar' ? 3 : 15;
+  if (dist > alc + 1) { say(`Longe demais: até ${alc} m`); return; }
+  if (u && vooDe(u.id) && !vooDe(eu) && dist > alc / 2 + 1) { say(`Voando: do chão o alcance cai para ${alc / 2} m`); return; }
+  if (k === 'kunai' || k === 'shuriken') {
+    if (!u || u.id === eu) { say('Toque em alguém'); return; } const n = k === 'shuriken' ? Math.min(3, bolsa(me.c, 'shuriken')) : 1; if (!gastaBolsa(me.c, k, n)) return;
+    const base = Math.ceil(desMeu() / 2) + n;                                                  // Destreza ÷ 2 + dano das armas (arremesso soma)
+    anima(eu, 'golpe'); prepararAtaque({ bonus: st.cd + pen, alvo: null, desc: k === 'kunai' ? 'Kunai' : `Shuriken ×${n}`, base, aid: u.id, ax: axNovo(eu, [[u.id, base]], { nm: k === 'kunai' ? 'Kunai' : `Shuriken ×${n}` }) });
+    return; }
+  if (k === 'ktarja') {
+    if (bolsa(me.c, 'kunai') < 1 || bolsa(me.c, 'tarja') < 1) { say('Precisa de kunai e de tarja na bolsa'); return; } gastaBolsa(me.c, 'kunai', 1); gastaBolsa(me.c, 'tarja', 1);
+    const al = unidades().filter(v => Math.hypot(v.x - alvoP.x, v.y - alvoP.y) <= 1.25 + CORPO && v.id !== eu).map(v => [v.id, 4]);
+    explode(alvoP.x, alvoP.y); anima(eu, 'golpe');
+    if (!al.length) { say('A tarja explodiu sem pegar ninguém'); return; }
+    prepararAtaque({ bonus: st.cd + pen, alvo: null, desc: 'Kunai com tarja', base: 4, ax: axNovo(eu, al, { ar: 1, ex: 'tarja', nm: 'Kunai com tarja' }) }); return; }
+  if (k === 'plantar') {
+    if (!gastaBolsa(me.c, 'tarja', 1)) return; const F = JSON.parse(JSON.stringify(persDe(me.c))); F.tarjas = (F.tarjas || []).slice(-5);
+    F.tarjas.push({ id: rid().slice(0, 6), s: scene.id, x: r2(alvoP.x), y: r2(alvoP.y) }); persGrava(me.c, F); say('Tarja plantada: só você e o mestre a veem'); acoesUI(); return; }
+  if (k === 'fumaca' || k === 'luminosa') { if (!gastaBolsa(me.c, k, 1)) return; anima(eu, 'golpe');
+    const m = { k: 'acao', a: k, x: r2(alvoP.x), y: r2(alvoP.y), s: scene.id, de: eu }; puff(alvoP.x, alvoP.y, k === 'fumaca' ? 'fumaca' : 'raio');
+    if (mesa) mesa.sendEvent({ k: 'acao', a: 'puff', de: null, para: [alvoP.x, alvoP.y], fx: k === 'fumaca' ? 'fumaca' : 'raio', s: scene.id }).catch(() => {});
+    if (ehMestre()) ferrRecebe(m); else if (mesa) mesa.sendEvent(m).catch(() => {}); }
+}
+function explode(x, y) { puff(x, y, 'fogo'); puff(x + 0.4, y - 0.3, 'fumaca'); if (mesa) mesa.sendEvent({ k: 'acao', a: 'puff', de: null, para: [r2(x), r2(y)], fx: 'fogo', s: scene.id }).catch(() => {}); }
+// tarja plantada: ativação remota a até 15 m (ação livre); 2d8 dão o grau e a explosão pega todos a 2,5 m
+function explodeTarja(tid) {
+  const F0 = persDe(me.c); if (!F0) return; const t = (F0.tarjas || []).find(q => q.id === tid); if (!t) return;
+  if (t.s !== scene.id) { say('Essa tarja está em outro lugar'); return; } if (Math.hypot(t.x - me.x, t.y - me.y) * M_CASA > 16) { say('Longe demais: a ativação alcança 15 m'); return; }
+  const F = JSON.parse(JSON.stringify(F0)); F.tarjas = F.tarjas.filter(q => q.id !== tid); persGrava(me.c, F); explode(t.x, t.y); acoesUI();
+  const al = unidades().filter(v => Math.hypot(v.x - t.x, v.y - t.y) <= 1.25 + CORPO).map(v => [v.id, 4]);
+  if (!al.length) { say('A tarja explodiu sem pegar ninguém'); return; }
+  rolarAuto({ k: 'ataque', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: 0, desc: 'Tarja explosiva', quem: quemDe('c:' + me.c), ax: axNovo('c:' + me.c, al, { ar: 1, ex: 'tarjaRemota', nm: 'Tarja explosiva' }) });
+}
+function tarjasVisiveis() { const out = []; for (const c of CHARS) { if (!(ehMestre() || c === me.c)) continue; const F = persDe(c); if (F && Array.isArray(F.tarjas)) for (const t of F.tarjas) out.push(t); } return out; }
+// ---------- pílula do soldado ----------
+function tomaPilula() {
+  const c = me.c, F0 = persDe(c); if (!F0 || !podeEditar(c)) return; if (bolsa(c, 'pilula') < 1) { say('Sem pílula na bolsa'); return; }
+  gastaBolsa(c, 'pilula', 1); const F = JSON.parse(JSON.stringify(persDe(c))); F.pil = (F.pil || []).slice(-6); const ja = F.pil.length;
+  const tm = Math.round(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN); F.pil.push({ at: tm, f: 0 });
+  if (ja < 3) { const ganho = Math.ceil(F.at.esp / 2); F.en.chaP = Math.max(0, F.en.chaP - ganho); say(`Pílula do soldado: +${ganho} de chakra. Daqui a 1 hora vem o cansaço`); }
+  else say('Mais de três pílulas: nada de chakra, e o corpo não aguenta');
+  persGrava(c, F);
+}
+// no mestre: a hora de cada pílula passou? (contada no relógio do dia)
+setInterval(() => { if (!ferrPronto || !ehMestre()) return; const tm = ((worldMin() % DAYMIN) + DAYMIN) % DAYMIN;
+  for (const c of CHARS) { const F0 = persDe(c); if (!F0 || !Array.isArray(F0.pil) || !F0.pil.length) continue; const devidas = F0.pil.map((p, i) => [p, i]).filter(([p]) => !p.f && ((tm - p.at + DAYMIN) % DAYMIN) >= 60);
+    const demais = F0.pil.length > 3 && !F0.pil[F0.pil.length - 1].f && F0.pil.length - 1 >= 3;
+    if (!devidas.length && !demais) continue; const F = JSON.parse(JSON.stringify(F0));
+    if (demais) { F.pil[F.pil.length - 1].f = 1; condPoe('c:' + c, 'inconsciente'); }
+    for (const [, i] of devidas) { if (F.pil[i].f) continue; F.pil[i].f = 1; condPoe('c:' + c, 'fatigado', { quieto: 0 }); }
+    persGrava(c, F); } }, 4000);
+// ---------- no mestre: fumaça e luz ----------
+function ferrRecebe(m) {
+  if (!ehMestre() || !okScene(m.s) || !okXY(+m.x, +m.y)) return; const x = +m.x, y = +m.y;
+  if (m.a === 'fumaca') { const t = tab(); if (!t) return; t.nevoa = (t.nevoa || []).concat([{ id: rid(), s: m.s, k: 'area', c: [r2(x), r2(y)], r: 3, cor: '#bbb', d: 88, alt: 1, dir: 1, vel: 1, esc: 2, vis: 0, oc: 0, fu: okUnid(m.de) ? m.de : null, tt: 3, exp: Date.now() + 20000 }]).slice(-12);
+    publicar(true); condAviso('Bomba de fumaça: camuflagem parcial por 3 turnos'); }
+  if (m.a === 'luminosa') { const ids = unidades().filter(u => Math.hypot(u.x - x, u.y - y) <= 2.5 + CORPO).map(u => u.id);
+    for (const id of ids) condPoe(id, 'ofuscado', { t: 3, quieto: 1 }); condAviso(`Bomba luminosa: ${ids.length ? ids.map(nomeVisto).join(', ') + ' ofuscado' + (ids.length > 1 ? 's' : '') : 'ninguém'} por 3 turnos`); }
+}
+// fumaça some: fora do combate em ~20 s; no combate, depois de 3 turnos de quem jogou
+function fumacaTurno(id) { const t = tab(); if (!t || !t.nevoa) return; let mudou = false; for (const f of t.nevoa) if (f.fu === id && f.tt) { f.tt--; mudou = true; } const n0 = t.nevoa.length; t.nevoa = t.nevoa.filter(f => !(f.fu && f.tt <= 0)); if (mudou || t.nevoa.length !== n0) publicar(true); }
+setInterval(() => { if (!ferrPronto || !ehMestre()) return; const t = tab(); if (!t || !t.nevoa || (cmb && cmb.on)) return; const n0 = t.nevoa.length; t.nevoa = t.nevoa.filter(f => !(f.fu && f.exp && Date.now() > f.exp)); if (t.nevoa.length !== n0) publicar(true); }, 2000);
+ferrPronto = true;
 
 // ---------- névoa: efeito de cena do mestre ----------
 // O mestre põe névoas na cena (a cena inteira ou uma área); elas vão no estado assinado e todas as telas desenham igual.
@@ -5254,7 +5788,9 @@ function moradorEm(wx, wy) {
   return best;
 }
 function alvoInspecao(wx, wy) {
-  const u = unidadeEm(wx, wy) || cloneEm(wx, wy); if (u) return u.k ? { t: 'k', id: u.k } : { t: 'u', id: u.id };
+  let u = unidadeEm(wx, wy) || cloneEm(wx, wy);
+  if (u && u.id.startsWith('k:')) { const dono = u.id.split(':')[1]; u = ehMestre() || dono === me.c ? { id: 'c:' + dono, k: u.id } : { id: 'c:' + dono }; }   // clone: só o dono e o mestre sabem
+  if (u) return u.k ? { t: 'k', id: u.k } : { t: 'u', id: u.id };
   const v = moradorEm(wx, wy); return v ? { t: 'v', k: vilK(v[2]), m: v[3], x: v[0], y: v[1], vid: v[4] } : null;
 }
 function fiDistancia(x, y) { if (!me.c) return null; const dz = hEff(x | 0, y | 0) - hEff(me.x | 0, me.y | 0); return Math.round(Math.hypot(x - me.x, y - me.y) * M_CASA) + (dz ? `, ${Math.abs(dz)} m ${dz > 0 ? 'acima' : 'abaixo'}` : ''); }
@@ -5277,6 +5813,7 @@ function fichaMonta() {
     condMiniFicha(corpo, a.id);
     const ac = h('div', 'acoes'); ac.appendChild(botao(q.meu ? 'Desfazer este clone' : 'Desfazer (o golpe acertou)', () => { mandaDesfazer(a.id); abreFicha(null); })); corpo.appendChild(ac); return; }
   const id = a.id, p = posDe(id); if (!p || p.s !== scene.id) { abreFicha(null); return; }
+  if (id.startsWith('p:')) { parcMiniFicha(corpo, id); return; }
   const ehN = id.startsWith('n:'), gm = ehMestre(), meu = id === 'c:' + me.c, c = ehN ? null : id.slice(2), st = statsDe(id), nq = ehN ? npcPorId(id) : null;
   retrato($('fiRet'), ehN ? { spr: `inimigo${nq ? nq.spr : 0}_parado_frente` } : { c }, 3); fiEl.style.setProperty('--cor', corDeId(id));
   $('fiNome').textContent = nomeDe(id);
@@ -5303,7 +5840,7 @@ function fichaMonta() {
     corpo.prepend(en); const ab = h('div', 'acoes'); ab.appendChild(botao('Abrir ficha completa', () => { abreFicha(null); abrePers(c); })); corpo.appendChild(ab); }
   // condições, Vitalidade dos inimigos, dano e cura, e o voo
   const pos = corpo.querySelector('.en') ? corpo.querySelector('.en').nextSibling : corpo.firstChild, tmp = document.createElement('div');
-  if (!(ehN && !gm)) condVidaFicha(tmp, id); condMiniFicha(tmp, id); condVooFicha(tmp, id);
+  if (!(ehN && !gm)) condVidaFicha(tmp, id); condMiniFicha(tmp, id); ataqueFicha(tmp, id); condVooFicha(tmp, id);
   for (const n of [...tmp.childNodes]) corpo.insertBefore(n, pos);
   if (cmb && cmb.on && e) { const k = cmb.ordem.indexOf(e) + 1, vez = unidadeAtiva() === id;
     corpo.appendChild(h('p', 'cmb' + (vez ? ' vez' : ''), cmb.r < 1 ? (e.ini == null ? 'No combate: ainda não rolou a iniciativa.' : `No combate: iniciativa ${e.ini}.`)
