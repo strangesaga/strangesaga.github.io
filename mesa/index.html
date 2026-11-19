@@ -949,7 +949,7 @@ body.emTitulo #cv{cursor:default}
     <label class="lb" for="tqEf">Efeito</label><select id="tqEf"></select>
     <label class="lb" for="tqNv">Nível usado</label>
     <span class="step"><button type="button" data-nv="-1" aria-label="Diminuir o nível">−</button><input id="tqNv" type="number" inputmode="numeric" min="1" max="10" value="1"><button type="button" data-nv="1" aria-label="Aumentar o nível">+</button></span>
-    <div class="lin" id="tqFormaRow" hidden><span class="lb">Forma</span><span class="seg2"><button type="button" data-forma="meia">Meia-esfera</button><button type="button" data-forma="circulo">Círculo duplo</button></span></div>
+    <div class="lin" id="tqFormaRow" hidden><span class="lb">Forma</span><span class="seg2"><button type="button" data-forma="meia" title="Meia-esfera com diâmetro igual ao tamanho">Meia-esfera</button><button type="button" data-forma="circulo" title="Círculo plano com o dobro do diâmetro (Livro Básico, Onda Explosiva)">Círculo (2× diâm.)</button></span></div>
   </div>
   <label class="chk" id="tqAlcRow"><input type="checkbox" id="tqNvAlc"><span>Alcance pelo nível usado (menor)</span></label>
   <label class="chk" id="tqTamRow"><input type="checkbox" id="tqNvTam"><span>Tamanho pelo nível usado (menor)</span></label>
@@ -3795,7 +3795,7 @@ condPronto = true;
 // ---------- Combate: iniciativa, turnos, deslocamento e técnicas com alcance e área (Shinobi no Sho 4.1b) ----------
 // 1 casa do mapa = 2 m. Iniciativa = 1 dado + Agilidade + Prontidão (p. 253). Deslocamento por ação de movimento =
 // 10 m + 1/2 da Agilidade, um deslocamento por rodada, nadando a 1/2 (perícia Natação, p. 39; decisão da mesa). Poderes: dano comum = nível usado +
-// 1/2 Espírito, dif = 9 + nível + 1/2 Espírito, alcance e tamanho do elemento, toda a área dentro do alcance, sem
+// 1/2 Espírito, dif = 9 + nível + 1/2 Espírito, alcance e tamanho do elemento, o centro da área (o núcleo) dentro do alcance (decisão da mesa; o livro, p. 87, pede a área toda), sem
 // Bloqueio contra área (p. 87, 92–94); Kibaku Nendo e Sumi Ninpou usam Arte no lugar do Espírito (Hijutsus vol. 2).
 var combatePronto = false, nevoaPronta = false, fichaPronta = false;                           // var: o painel de dados roda antes deste trecho
 const M_CASA = 2, CORPO = 0.25;                       // metros por casa; raio do corpo de um personagem médio (0,5 m), em casas
@@ -4242,9 +4242,10 @@ function tqEstado() {                                         // pronto para lan
   const us = unidades(); const ux = new Map(us.map(u => [u.id, u]));
   if (F.t === 'area') {
     const g = tqForma(); if (!g) return { msg: 'Mova o mouse no mapa para mirar' };
-    const fora = !daOrigem(tec.ef) && distMax(g, o) > A + 1e-6;
+    const c = tec.ponto || o, dzc = (hEff(c[0] | 0, c[1] | 0) - hEff(o[0] | 0, o[1] | 0)) / M_CASA;   // decisão da mesa: vale até onde o núcleo da área chega
+    const fora = !daOrigem(tec.ef) && Math.hypot(c[0] - o[0], c[1] - o[1], dzc) > A + 1e-6;
     const af = us.filter(u => naForma(g, u.x, u.y, CORPO) && !(u.id === tec.quem && (daOrigem(tec.ef) || tec.ef === 'nuvem')) && !nevoaEsconde(u.x, u.y)).map(u => u.id);
-    if (fora) return { g, af, msg: `Fora do alcance: a área toda precisa caber em ${p.alc} m` };
+    if (fora) return { g, af, msg: `Fora do alcance: o centro da área precisa estar a até ${p.alc} m` };
     if (!tec.fixo && !daOrigem(tec.ef)) return { g, af, msg: 'Clique no mapa para fixar a área', mira: true };
     if (!tec.fixo && daOrigem(tec.ef) && tec.ef !== 'onda_exp') return { g, af, msg: 'Clique para fixar a direção', mira: true };
     return { g, af, pronto: true };
