@@ -19,6 +19,14 @@ button:hover{background:#2e3852}
 button.on{background:#4b5e8c;border-color:#7b8fc0}
 button.sug{box-shadow:inset 0 -2px 0 #e9c46a}
 .clDif{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#c8cfdc;margin-left:4px}.clDif input[type=number]{width:44px;background:#141b2a;color:#fff;border:1px solid #3a4766;border-radius:6px;padding:2px 4px}
+#vgAviso{position:fixed;left:50%;bottom:118px;transform:translateX(-50%);background:rgba(28,34,52,.9);color:#f4ead2;border:1px solid #6d7ba6;border-radius:10px;padding:5px 12px;font-size:12.5px;z-index:30;pointer-events:none}
+#mdBtn,#ljBtn{position:fixed;top:140px;right:12px;z-index:20;padding:6px 12px;font-size:13px;font-weight:600;color:#efe9da;background:rgba(20,26,40,.86);border:1px solid #3f4d70;border-radius:10px;cursor:pointer}#ljBtn{right:84px}
+#mundo,#loja{position:fixed;right:12px;top:184px;width:min(460px,calc(100vw - 24px));max-height:calc(100vh - 200px);overflow:auto;background:#141b2a;color:#e8e4da;border:1px solid #3a4766;border-radius:12px;z-index:40;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#mundo header,#loja header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid #2b3550}#mundo h2,#loja h2{font-size:15px;margin:0}
+#mdCv{width:100%;height:auto;display:block;image-rendering:pixelated}#mdLista{padding:8px 12px 12px;font-size:13px}.mdDest{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid #222b40}.mdInfo{margin:2px 0 8px;color:#f2d16b}.mdLog{margin:0;padding-left:18px;color:#c8cfdc}
+#ljCorpo{padding:8px 12px 12px;font-size:13px}.ljAbas{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}.ljTopo{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:6px;color:#f2d16b}.ljMult input{width:52px}
+.ljLista h4{margin:10px 0 4px;font-size:12.5px;color:#9fb0d8}.ljIt{display:grid;grid-template-columns:1fr auto 48px auto;gap:6px;align-items:center;padding:3px 0;border-bottom:1px solid #1f2840}.ljNm i{color:#8a93a8;font-style:normal;font-size:11px}.ljPr{color:#f2d16b;white-space:nowrap}.ljQ{width:44px}.ljTroca{grid-template-columns:1fr 1fr 48px auto}.ljVazio{color:#aab}
+#troca{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);background:#1b2336;color:#f4ead2;border:1px solid #e9c46a;border-radius:12px;padding:14px 16px;z-index:60;text-align:center}#troca div{display:flex;gap:8px;justify-content:center;margin-top:8px}
 #clAviso{white-space:pre-line;position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:min(640px,80vw);background:rgba(60,40,20,.86);color:#f3e3c4;border:1px solid #a7825a;border-radius:10px;padding:6px 12px;font-size:12.5px;line-height:1.35;z-index:30;pointer-events:none;text-align:center}
 #chars{right:12px;top:12px;display:flex;gap:6px;align-items:center}
 #chars canvas{width:48px;height:48px;image-rendering:pixelated;border-radius:8px;background:#1b2234;border:2px solid transparent;cursor:pointer}
@@ -785,6 +793,8 @@ body.emTitulo #cv{cursor:default}
   <div class="row" id="dgrow" style="display:none"><span class="lbl">Dungeon</span><button id="dgPrep" title="Põe portas, baús, armadilhas e inimigos desta dungeon">Preparar</button><button id="dgEsc" title="Escuridão: só se vê onde há luz">Escuro</button><button id="dgNev" title="Névoa de guerra: cada um vê o que o personagem enxerga">Névoa de guerra</button><button id="dgTudo" title="Mostra aos jogadores a dungeon inteira">Mostrar tudo</button><button id="dgComo" title="Ver como o seu personagem vê (só na sua tela)">Ver como jogador</button><button id="dgTodos" title="Chama todos os jogadores para perto de você">Levar todos</button></div>
   <div class="row" id="clrow" style="display:none"><span class="lbl">Deserto</span><button id="clAr" title="Tempestade de areia: camuflagem para todos, Concentração Dif 8, Sobrevivência e Rastrear −4">Tempestade</button><button id="clCam" title="Força da tempestade (camuflagem parcial 25% ou total 50%, p. 273)" hidden>Camuflagem parcial</button><button id="clCalor" title="Teste de Vigor para todos aqui; quem falha fica fatigado (p. 276–277)">Calor</button><button id="clFrio" title="Noite fria: teste de Vigor; quem falha fica fatigado">Noite fria</button><button id="clMir" title="Clique no mapa: quem falha em Inteligência vê um oásis que some de perto">Miragem</button><button id="clMirX" title="Tira a miragem" hidden>Tirar miragem</button><label class="clDif" title="Dif dos testes de calor, frio, areia movediça e miragem (o livro não fixa: é do mestre)">Dif <input id="clDif" type="number" min="4" max="30" value="12"></label><label class="clDif" title="No calor, quem leva cantil ou água na bolsa não precisa testar"><input id="clAgua" type="checkbox" checked> água</label></div>
   <div class="row" id="mrrow" style="display:none"><span class="lbl">Mar</span><button id="mrNev" title="Névoa natural: pela hora (densa de manhã e à noite), forte ou sem">Névoa: pela hora</button><button id="mrCam" title="Força da névoa forte (camuflagem parcial 25% ou total 50%, p. 273)" hidden>Camuflagem parcial</button><button id="mrMare" title="Maré: pelo relógio (ciclo de 12 h 25 min), alta ou baixa">Maré: pelo relógio</button><button id="mrFrio" title="Frio do mar: Vigor para todos aqui; quem falha fica fatigado (p. 276–277)">Frio</button><button id="mrEnjoo" title="Enjoo no barco: Vigor; quem falha fica debilitado (penalidade genérica, p. 276)">Enjoo</button><label class="clDif" title="Dif dos testes de frio e enjoo (o livro não fixa: é do mestre)">Dif <input id="mrDif" type="number" min="4" max="30" value="12"></label></div>
+  <div class="row" id="tprow" style="display:none"><span class="lbl">Tempo</span><select id="tpSel" title="Clima deste lugar (visual e regras do livro no aviso)"><option value="sol">Sol</option><option value="nublado">Nublado</option><option value="chuva">Chuva</option><option value="tempestade">Tempestade</option><option value="neve">Neve</option><option value="neblina">Neblina</option></select></div>
+  <div class="row" id="vgrow" style="display:none"><span class="lbl">Viagem</span><button id="vgSob" title="Sobrevivência (Rastrear) por dia: acha o caminho e comida para o grupo (p. 46)">Sobrevivência</button><button id="vgEnc" title="Sorteia na tabela de encontros da região">Encontro</button><button id="vgPor" hidden title="Põe os inimigos sorteados perto do grupo">Pôr inimigos</button><button id="vgAcamp" title="Fim do dia: comida (ração ou o que acharam), 19h">Acampar</button><button id="vgVig" title="Vigília: Prontidão de cada um">Vigília</button><button id="vgCoz" title="Abre a cozinha do Ryōri no Sho">Cozinhar</button><button id="vgDorme" title="Descanso longo">Dormir</button><button id="vgDia">Próximo dia</button><button id="vgCancela" title="Cancela a viagem">Cancelar</button></div>
   <div class="row" id="dsrow" style="display:none"><span class="lbl">Descanso</span><button id="dsCurto" title="1 hora: metade do que a noite recupera">Curto</button><button id="dsLongo" title="Uma noite de 8 horas">Longo</button></div>
   <div class="row" id="lugarrow" style="display:none"><span class="lbl">Lugar</span><select id="lugares"></select></div>
   <div class="row" id="solorow" style="display:none"><button id="criar">Criar mesa (mestre)</button></div>
@@ -801,6 +811,12 @@ body.emTitulo #cv{cursor:default}
 </div>
 <div id="aviso"></div>
 <div id="clAviso" hidden></div>
+<div id="vgAviso" hidden></div>
+<button id="mdBtn" class="ui" type="button" title="Mapa do mundo e viagens">Mapa</button>
+<button id="ljBtn" class="ui" type="button" title="Lojas deste lugar" hidden>Lojas</button>
+<section id="mundo" class="ui" hidden aria-label="Mapa do mundo"><header><h2>Mapa do mundo</h2><button id="mdFecha" type="button" aria-label="Fechar">×</button></header><div class="mdCorpo"><canvas id="mdCv" width="420" height="300"></canvas><div id="mdLista"></div></div></section>
+<section id="loja" class="ui" hidden aria-label="Loja"><header><h2 id="ljTit">Loja</h2><button id="ljFecha" type="button" aria-label="Fechar">×</button></header><div id="ljCorpo"></div></section>
+<div id="troca" class="ui" hidden role="dialog" aria-label="Troca"><p id="trocaTxt"></p><div><button id="trocaSim" type="button">Aceitar</button><button id="trocaNao" type="button">Recusar</button></div></div>
 <div id="titulo" hidden aria-label="Tela de título"></div>
 <div id="obMenu" class="ui" hidden role="dialog" aria-label="Objeto"></div>
 <section id="obEd" class="ui" hidden aria-label="Editar objeto"></section>
@@ -1361,7 +1377,7 @@ let pet = { x: me.x - 1, y: me.y, dx: 1, dy: 1, mv: false };
 // contas: cada jogador entra com o próprio personagem e senha; o mestre, com a senha dele (tela de título)
 const CONTAS = MESA && (!Q.has('teste') || Q.has('titulo'));
 const DV = (() => { try { let v = localStorage.getItem('mvila:dv'); if (!/^[a-z0-9]{8}$/.test(v || '')) { v = Math.random().toString(36).slice(2, 10).padEnd(8, '0'); localStorage.setItem('mvila:dv', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10).padEnd(8, '0'); } })();
-let contasVer = {}, travVer = [], gkVer = null, estadoChegou = false, ultimoEstado = null, TIT = null, cenaPronto = false, bestPronto = false, dgPronto = false, climaPronto = false, climaVer = {}; const SESS = { c: null };
+let contasVer = {}, travVer = [], gkVer = null, estadoChegou = false, ultimoEstado = null, TIT = null, cenaPronto = false, bestPronto = false, dgPronto = false, climaPronto = false, climaVer = {}, lojasPronto = false, lojasVer = null, viagemPronto = false; const SESS = { c: null };
 const CORES_J = ['#e9c46a', '#e07a5f', '#81b29a', '#7cb7e8', '#c49bdc', '#f2a1b8', '#a8c66c', '#d9d4c7'];
 const PERFIL = (() => { try { const v = JSON.parse(localStorage.getItem('mvila:perfil') || '{}'); return { nm: String(v.nm || '').slice(0, 24), cor: Number.isInteger(v.cor) && v.cor >= 0 && v.cor < 8 ? v.cor : 0 }; } catch (e) { return { nm: '', cor: 0 }; } })();
 const CFG = (() => { const d = { vol: 0.8, leve: false, zoom: 0, calmo: !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) };
@@ -2396,7 +2412,7 @@ function say(t) { const el = $('aviso'); el.textContent = t; el.style.opacity = 
 function cleanTokens(o) { const out = {}; if (o && typeof o === 'object') for (const c of CHARS) { const t = o[c]; if (t && okXY(+t.x, +t.y)) out[c] = { s: okScene(t.s) ? t.s : 'vila', x: r2(+t.x), y: r2(+t.y) }; } return out; }
 function rebuildPeers() { peers = Array.from(peerMap.values()).filter(e => e.presence && e.presence.c); }
 function gmState(pub) { const P = pub ? estadoPublico(table) : table; return Object.assign(pub ? {} : { pers: table.pers, persHist: table.persHist }, { v: 1, rev: table.rev, gmCid: mesa.cid, clock: { wm: r2(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN), at: Date.now(), speed }, tokens: table.tokens, gen: table.gen || [], genCena: table.genCena || 'genjutsu',
-  cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], cond: P.cond || {}, ref: table.ref || {}, contas: table.contas || {}, trav: table.trav || [], obj: pub ? objPublicos(table.obj) : (table.obj || []), dgs: table.dgs || {}, clima: table.clima || {}, ek: ecdh ? ecdh.pub : undefined }, pub ? {} : { gk: table.gk || null, salvas: table.salvas || [], encontros: table.encontros || [] }); }
+  cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], cond: P.cond || {}, ref: table.ref || {}, contas: table.contas || {}, trav: table.trav || [], obj: pub ? objPublicos(table.obj) : (table.obj || []), dgs: table.dgs || {}, clima: table.clima || {}, lojas: table.lojas || null, viagem: table.viagem || null, ek: ecdh ? ecdh.pub : undefined }, pub ? {} : { gk: table.gk || null, salvas: table.salvas || [], encontros: table.encontros || [] }); }
 function saveTable() { try { localStorage.setItem('mvila:mesa:' + mesa.room, JSON.stringify(gmState())); } catch (e) {} }
 function gmPublish() { if (!mesa || !mesa.isGM) return; table.rev++; tableSentAt = Date.now(); tableDirty = false; saveTable(); mesa.sendState(gmState(true)).catch(() => {}); }
 function gmTrack(c, st) { if (st && ehGen(st.s)) return; combateTrack(c, st); if (cenaPronto) cenaTrilha(c, st); const end = st.path && st.path.length ? st.path[st.path.length - 1] : [st.x, st.y]; if (!okXY(end[0], end[1])) return;
@@ -2430,11 +2446,11 @@ async function startMesa() {
       ultimoEstado = st; contasVer = limpaContas(st.contas); travVer = limpaTrav(st.trav); estadoChegou = true; if (TIT) tituloEstado();
       tokens = cleanTokens(st.tokens); applyClock(st.clock, true); genPresos = cleanGen(st.gen); genCena = okGen(st.genCena); aplicarGenjutsu();
       { const ek = Mesa.okPub(st.ek) ? st.ek : null; if (ek !== gmEk) { gmEk = ek; if (dadosPronto) dadosQuem(); } }
-      cmb = limpaCmb(st.cmb); npcs = limpaNpcs(st.npcs).filter(n => !n.oc); ficha = limpaFicha(st.ficha); zonas = limpaZonas(st.zonas); nevoa = limpaNevoa(st.nevoa); conds = limpaCond(st.cond); refsVer = limpaRef(st.ref); obj = limpaObjs(st.obj); dgsVer = limpaDgs(st.dgs); climaVer = limpaClima(st.clima); aplicarCombate(); if (dgPronto) dgUI(); if (livroPronto) refMudou();
+      cmb = limpaCmb(st.cmb); npcs = limpaNpcs(st.npcs).filter(n => !n.oc); ficha = limpaFicha(st.ficha); zonas = limpaZonas(st.zonas); nevoa = limpaNevoa(st.nevoa); conds = limpaCond(st.cond); refsVer = limpaRef(st.ref); obj = limpaObjs(st.obj); dgsVer = limpaDgs(st.dgs); climaVer = limpaClima(st.clima); if (lojasPronto) lojasVer = limpaLojas(st.lojas); if (viagemPronto) viagemVer = limpaViagem(st.viagem); aplicarCombate(); if (dgPronto) dgUI(); if (livroPronto) refMudou();
     },
     onRoll(msg) { receberRolagem(msg); },
     onGk(gk) { gkVer = gk; if (mesa.isGM && table && !table.gk) { table.gk = gk; saveTable(); } if (TIT) tituloEstado(); },
-    onEvent(msg) { if (msg && msg.k === 'conta') contaEvento(msg); else if (msg && msg.k === 'cena') cenaEvento(msg); else if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else receberEvento(msg); },
+    onEvent(msg) { if (msg && msg.k === 'conta') contaEvento(msg); else if (msg && msg.k === 'cena') cenaEvento(msg); else if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else if (msg && msg.k === 'troca') { if (lojasPronto) trocaEvento(msg); } else receberEvento(msg); },
     onFicha(c, f, retained) { persRecebe(c, f, retained); },
     onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(() => { gmPublish(); persPublicaTudo(); if (table.gk) mesa.sendGk(table.gk).catch(() => {}); }, 1500); } } });
   if (mesa.isGM) await iniciaMestre(null);
@@ -2454,14 +2470,14 @@ function mestreRecupera(st) {
   const meus = (table.npcs || []).filter(n => n.oc), srv = limpaNpcs(st.npcs).map(n => Object.assign(n, { oc: 0 }));          // o servidor não guarda os ocultos: os deste navegador continuam
   table.cmb = limpaCmb(st.cmb); table.npcs = srv.concat(meus.filter(n => !srv.some(q => q.id === n.id))); table.ficha = limpaFicha(st.ficha); table.zonas = limpaZonas(st.zonas); table.nevoa = limpaNevoa(st.nevoa); table.ref = limpaRef(st.ref); table.cond = Object.assign(limpaCond(st.cond), Object.fromEntries(Object.entries(table.cond || {}).filter(([id]) => meus.some(n => 'n:' + n.id === id))));
   table.contas = limpaContas(st.contas); table.trav = limpaTrav(st.trav);
-  table.dgs = limpaDgs(st.dgs); table.clima = limpaClima(st.clima); const meusO = (table.obj || []).filter(objOculto), srvO = limpaObjs(st.obj); table.obj = srvO.concat(meusO.filter(o => !srvO.some(q => q.id === o.id)));   // armadilhas e ocultos ficam com este aparelho
+  table.dgs = limpaDgs(st.dgs); table.clima = limpaClima(st.clima); table.lojas = limpaLojas(st.lojas); table.viagem = limpaViagem(st.viagem); const meusO = (table.obj || []).filter(objOculto), srvO = limpaObjs(st.obj); table.obj = srvO.concat(meusO.filter(o => !srvO.some(q => q.id === o.id)));   // armadilhas e ocultos ficam com este aparelho
 }
 // este aparelho passa a ser o mestre: a mesa salva aqui, ou (aparelho novo) o que os jogadores já recebem do servidor
 async function iniciaMestre(seed) {
-  table = { rev: 0, tokens: {}, gen: [], genCena: 'genjutsu', cmb: null, npcs: [], ficha: {}, zonas: [], nevoa: [], cond: {}, ref: {}, contas: {}, trav: [], gk: null, obj: [], salvas: [], encontros: [], dgs: {}, clima: {}, pers: null, persHist: {} };
+  table = { rev: 0, tokens: {}, gen: [], genCena: 'genjutsu', cmb: null, npcs: [], ficha: {}, zonas: [], nevoa: [], cond: {}, ref: {}, contas: {}, trav: [], gk: null, obj: [], salvas: [], encontros: [], dgs: {}, clima: {}, lojas: null, viagem: null, pers: null, persHist: {} };
   try { const sv = JSON.parse(localStorage.getItem('mvila:mesa:' + mesa.room) || 'null'); if (sv) { table.rev = +sv.rev || 0; table.tokens = cleanTokens(sv.tokens); table.gen = cleanGen(sv.gen); table.genCena = okGen(sv.genCena); applyClock(sv.clock, false);
     table.cmb = limpaCmb(sv.cmb); table.npcs = limpaNpcs(sv.npcs); table.ficha = limpaFicha(sv.ficha); table.zonas = limpaZonas(sv.zonas); table.nevoa = limpaNevoa(sv.nevoa); table.cond = limpaCond(sv.cond); table.ref = limpaRef(sv.ref);
-    table.contas = limpaContas(sv.contas); table.trav = limpaTrav(sv.trav); table.gk = Mesa.okGk(sv.gk) ? sv.gk : null; table.obj = limpaObjs(sv.obj); table.dgs = limpaDgs(sv.dgs); table.clima = limpaClima(sv.clima);
+    table.contas = limpaContas(sv.contas); table.trav = limpaTrav(sv.trav); table.gk = Mesa.okGk(sv.gk) ? sv.gk : null; table.obj = limpaObjs(sv.obj); table.dgs = limpaDgs(sv.dgs); table.clima = limpaClima(sv.clima); table.lojas = limpaLojas(sv.lojas); table.viagem = limpaViagem(sv.viagem);
     table.salvas = Array.isArray(sv.salvas) ? sv.salvas.slice(0, 30) : []; table.encontros = Array.isArray(sv.encontros) ? sv.encontros.slice(0, 40) : []; persCarregaMesa(sv); } } catch (e) {}
   if (seed && +seed.rev > table.rev) { mestreRecupera(seed); if (!table.pers && Object.keys(PERS).length) { table.pers = {}; for (const c of Object.keys(PERS)) table.pers[c] = JSON.parse(JSON.stringify(PERS[c])); table.persFresh = 0; } }
   if (!table.gk && gkVer) table.gk = gkVer;
@@ -2496,7 +2512,7 @@ $('arq').onchange = async () => { const f = $('arq').files[0]; $('arq').value = 
   try { const j = JSON.parse(await f.text()); const t = j && j.mesa ? j.mesa : j; if (!t || typeof t.tokens !== 'object') throw new Error('x');
     table.tokens = cleanTokens(t.tokens); tokens = table.tokens; applyClock(t.clock, false); table.rev = Math.max(table.rev, +t.rev || 0);
     table.cmb = limpaCmb(t.cmb); table.npcs = limpaNpcs(t.npcs); table.ficha = limpaFicha(t.ficha); table.zonas = limpaZonas(t.zonas); table.nevoa = limpaNevoa(t.nevoa); table.cond = limpaCond(t.cond); table.ref = limpaRef(t.ref);
-    if (t.contas) table.contas = limpaContas(t.contas); if (t.trav) table.trav = limpaTrav(t.trav); table.obj = limpaObjs(t.obj); table.dgs = limpaDgs(t.dgs); table.clima = limpaClima(t.clima); if (Array.isArray(t.salvas)) table.salvas = t.salvas.slice(0, 30); if (Array.isArray(t.encontros)) table.encontros = t.encontros.slice(0, 40); persCarregaMesa(t, true); aplicarCombate(); gmPublish(); persPublicaTudo(); say('Mesa carregada do arquivo'); }
+    if (t.contas) table.contas = limpaContas(t.contas); if (t.trav) table.trav = limpaTrav(t.trav); table.obj = limpaObjs(t.obj); table.dgs = limpaDgs(t.dgs); table.clima = limpaClima(t.clima); table.lojas = limpaLojas(t.lojas); table.viagem = limpaViagem(t.viagem); if (Array.isArray(t.salvas)) table.salvas = t.salvas.slice(0, 30); if (Array.isArray(t.encontros)) table.encontros = t.encontros.slice(0, 40); persCarregaMesa(t, true); aplicarCombate(); gmPublish(); persPublicaTudo(); say('Mesa carregada do arquivo'); }
   catch (e) { say('Esse arquivo não é um salvamento da mesa'); } };
 function aplicarGenjutsu() {
   if (!me.c || !mesa || mesa.isGM || !CENAS[genCena]) return;
@@ -5197,10 +5213,16 @@ const ABA_FN = {
       r.append(cab, dn, campo('Descrição', w.d, (f, v) => { f.inv.armas[i].d = v.slice(0, 300); }, { max: 300 })); c.append(r); });
     c.append(somar('Somar arma', f => { f.inv.armas.push({ n: '', dano: 1, usa: 'forca', alc: '', crit: '15~16', tipo: 'P', comp: 0.5, d: '' }); }));
     c.append(titulo('Itens'));
-    F.inv.itens.forEach((it, i) => { const r = h('div', 'card'), cab = h('div', 'cardCab');
+    const ORD = ['arremesso', 'explosivo', 'municao', 'kit', 'comida', 'ingrediente', 'utensilio', 'item'], GN = { arremesso: 'Armas de arremesso', explosivo: 'Explosivos', municao: 'Munição', kit: 'Kits e remédios', comida: 'Comida e água', ingrediente: 'Ingredientes', utensilio: 'Utensílios de cozinha', item: 'Outros itens' };
+    const tipoIt = it => (typeof lojasPronto !== 'undefined' && lojasPronto) ? (ORD.includes(tipoDeItem(it.n)) ? tipoDeItem(it.n) : 'item') : 'item';
+    const ordem = F.inv.itens.map((it, i) => [i, tipoIt(it)]).sort((a, b) => ORD.indexOf(a[1]) - ORD.indexOf(b[1]) || a[0] - b[0]); let gAt = null;
+    for (const [i, tp] of ordem) { const it = F.inv.itens[i];                                   // agrupados por tipo, com quantidade e compartimentos do grupo
+      if (tp !== gAt && F.inv.itens.length > 3) { gAt = tp; const L = ordem.filter(q => q[1] === tp).map(q => F.inv.itens[q[0]]); const qt = L.reduce((s0, q) => s0 + (q.q || 1), 0), cp = L.reduce((s0, q) => s0 + (+q.comp || 0), 0);
+        c.append(h('p', 'nota grupoBolsa', `${GN[tp]} · ${qt} ${qt > 1 ? 'unidades' : 'unidade'} · ${Math.round(cp * 10) / 10} comp.` + (tp === 'ingrediente' ? ' · validade (Ryōri no Sho): cru 1 dia, cozido 2, defumado 7–14, seco ou salgado 10–30' : ''))); }
+      const r = h('div', 'card'), cab = h('div', 'cardCab');
       cab.append(campo('Item', it.n, (f, v) => { f.inv.itens[i].n = v.slice(0, 50); }), campo('Qtd.', it.q, (f, v) => { f.inv.itens[i].q = Math.max(0, Math.round(v)); }, { tipo: 'number', cls: 'mini' }),
         campo('Comp.', it.comp, (f, v) => { f.inv.itens[i].comp = Math.max(0, +v || 0); }, { tipo: 'number', cls: 'mini' }), campo('Descrição', it.d, (f, v) => { f.inv.itens[i].d = v.slice(0, 300); }), remover(f => { f.inv.itens.splice(i, 1); }, it.n || 'item'));
-      r.append(cab); c.append(r); });
+      r.append(cab); c.append(r); }
     c.append(somar('Somar item', f => { f.inv.itens.push({ n: '', q: 1, comp: 0, d: '' }); }));
   },
   missoes(c, F, D) {
@@ -7883,16 +7905,17 @@ function limpaClima(o) {
   const out = {}; if (!o || typeof o !== 'object') return out;
   for (const [k, v] of Object.entries(o).slice(0, 40)) { if (!CENAS[k] || !v || typeof v !== 'object') continue;
     const m = v.mir && Number.isFinite(+v.mir.x) && Number.isFinite(+v.mir.y) ? { x: r2(+v.mir.x), y: r2(+v.mir.y), ve: (Array.isArray(v.mir.ve) ? v.mir.ve : []).filter(c => CHARS.includes(c)).slice(0, 12), id: nnum(v.mir.id, 0, 1e9, 0) } : null;
-    out[k] = { ar: v.ar ? 1 : 0, cam: +v.cam === 2 ? 2 : 1, dif: nnum(v.dif, 4, 30, 12), mir: m, nv: ['a', 'f', 'n'].includes(v.nv) ? v.nv : 'a', mr: ['a', 'alta', 'baixa'].includes(v.mr) ? v.mr : 'a' }; }
+    out[k] = { ar: v.ar ? 1 : 0, cam: +v.cam === 2 ? 2 : 1, dif: nnum(v.dif, 4, 30, 12), mir: m, nv: ['a', 'f', 'n'].includes(v.nv) ? v.nv : 'a', mr: ['a', 'alta', 'baixa'].includes(v.mr) ? v.mr : 'a', tp: TEMPOS.includes(v.tp) ? v.tp : 'sol' }; }
   return out;
 }
-const CL0 = { ar: 0, cam: 1, dif: 12, mir: null, nv: 'a', mr: 'a' };
+const CL0 = { ar: 0, cam: 1, dif: 12, mir: null, nv: 'a', mr: 'a', tp: 'sol' };
+const TEMPOS = ['sol', 'nublado', 'chuva', 'tempestade', 'neve', 'neblina'];
 function climaCena(sid) { return climaAt()[sid || scene.id] || CL0; }
 function ehDeserto(sid) { const c = CENAS[sid || scene.id]; return !!(c && (c.cl === 'deserto' || (c.dg && c.dg.clima && c.dg.clima !== 'agua'))); }
 function ehMar(sid) { const c = CENAS[sid || scene.id]; return !!(c && (c.cl === 'agua' || (c.dg && c.dg.clima === 'agua'))); }
 function climaMuda(f) { if (!ehMestre()) return; const D = climaAt(), id = scene.id; D[id] = Object.assign({}, CL0, D[id] || {}); f(D[id]); publicar(true); climaUI(); }
 // tempestade: camuflagem para todos na cena (ataque.js pergunta aqui)
-function climaCamuf(sid) { const c = climaCena(sid); if (c.ar) return c.cam; if (ehMar(sid) && (CENAS[sid] || {}).reg && nevoaMar(sid) > 0.55) return c.nv === 'f' ? c.cam : 1; return 0; }
+function climaCamuf(sid) { const c = climaCena(sid); if (c.ar) return c.cam; if (c.tp === 'neblina' && (CENAS[sid] || {}).reg) return 1; if (ehMar(sid) && (CENAS[sid] || {}).reg && nevoaMar(sid) > 0.55) return c.nv === 'f' ? c.cam : 1; return 0; }
 
 // ---------- testes que o mestre pede para todos na cena: calor, frio, miragem ----------
 function climaPCs() { return unidades().filter(u => u.id.startsWith('c:')).map(u => u.id.slice(2)); }
@@ -7942,7 +7965,7 @@ function climaPedido(m) {
 function climaDesenha(now, vl, vt) {
   const cl = climaCena();
   if (cl.mir && (ehMestre() || (me.c && cl.mir.ve.includes(me.c)))) climaMiragem(cl.mir, now);
-  climaDesenhaMar(now, vl, vt);
+  climaDesenhaMar(now, vl, vt); climaDesenhaTempo(cl.tp, now, vl, vt);
   if (!cl.ar || !aoAr()) return;
   const t = now / 1000, [px, py] = me.c ? unitScreen(me.x, me.y) : [vl + W / 2, vt + HH / 2];
   const gr = ctx.createRadialGradient(px, py - 12, 30, px, py - 12, Math.max(W, HH) * 0.6);
@@ -8046,8 +8069,10 @@ function climaUIMar() {
 function climaAvisoTxt() {
   const cl = climaCena(), ar = aoAr(), L = [];
   if (cl.ar && ar) L.push(`Tempestade de areia: camuflagem ${cl.cam === 2 ? 'total (1d8: 1–4 erra)' : 'parcial (1d8: 1–2 erra)'} · Concentração contra distração Dif 8 (p. 40) · Sobrevivência e Rastrear −4 (p. 46)`);
+  if (ar && cl.tp !== 'sol' && cl.tp !== 'nublado') L.push({ chuva: 'Chuva: Rastrear −4, rastros em solo macio Dif 8 (p. 46)', tempestade: 'Tempestade: Concentração contra distração Dif 4 (p. 40) · Sobrevivência e Rastrear −4 (p. 46) · nadar Dif 16 (p. 39)',
+    neve: 'Neve: Concentração contra distração Dif 4 (p. 40) · Sobrevivência −4, rastros em neve Dif 8 (p. 46)', neblina: 'Neblina: camuflagem parcial (p. 273) · Rastrear −4 (p. 46)' }[cl.tp]);
   if (ehMar()) {
-    if (ar && climaCamuf(scene.id)) L.push(`Névoa densa: camuflagem ${climaCamuf(scene.id) === 2 ? 'total' : 'parcial'} (p. 273) · Rastrear −4 (p. 46)`);
+    if (ar && climaCamuf(scene.id) && cl.tp !== 'neblina') L.push(`Névoa densa: camuflagem ${climaCamuf(scene.id) === 2 ? 'total' : 'parcial'} (p. 273) · Rastrear −4 (p. 46)`);
     if (me.c && isWater(TM[(me.x | 0) * N + (me.y | 0)]) && !opt.tadayou) L.push('Nadando: Atletismo por turno (Dif 8 calma, 12 agitada, 16 tempestuosa), metade do deslocamento; falhar por 4 afunda (p. 39, sufocamento p. 278)');
     const c = CENAS[scene.id]; if (c && c.mare && c.mare.length) L.push(`Maré ${mareAlta() ? 'alta: o caminho de areia está debaixo d\'água' : 'baixa: o caminho de areia está aberto'}${climaCena().mr === 'a' ? ` (vira por volta das ${mareProx()})` : ''}`); }
   return L.join('\n');
@@ -8057,8 +8082,339 @@ $('mrCam').onclick = () => climaMuda(o => { o.cam = o.cam === 2 ? 1 : 2; });
 $('mrMare').onclick = () => climaMuda(o => { o.mr = o.mr === 'a' ? 'alta' : o.mr === 'alta' ? 'baixa' : 'a'; mareK = ''; });
 $('mrDif').onchange = () => climaMuda(o => { o.dif = nnum(+$('mrDif').value, 4, 30, 12); });
 $('mrFrio').onclick = () => climaRodadaMar('frio'); $('mrEnjoo').onclick = () => climaRodadaMar('enjoo');
-setInterval(() => { climaUI(); climaUIMar(); }, 800);
+function climaDesenhaTempo(tp, now, vl, vt) {
+  if (!aoAr() || !tp || tp === 'sol') return; const t = now / 1000;
+  if (tp === 'nublado' || tp === 'chuva' || tp === 'tempestade') { ctx.fillStyle = `rgba(40,50,64,${tp === 'nublado' ? 0.14 : tp === 'chuva' ? 0.22 : 0.32})`; ctx.fillRect(vl, vt, W, HH); }
+  if (tp === 'chuva' || tp === 'tempestade') { const n = tp === 'chuva' ? 220 : 420, inc = tp === 'chuva' ? 3 : 7; ctx.fillStyle = 'rgba(170,190,215,.55)';
+    for (let i = 0; i < n; i++) { const sp = 420 + rnd(i, 1, 61) * 260, x = vl + ((rnd(i, 2, 61) * (W + 80) + t * sp * inc / 10) % (W + 80)) - 40, y = vt + ((rnd(i, 3, 61) * (HH + 60) + t * sp) % (HH + 60)) - 30;
+      for (let k = 0; k < 6; k++) ctx.fillRect(Math.round(x - k * inc / 6), Math.round(y - k * 2), 1, 2); }
+    if (tp === 'tempestade') { const c = Math.floor(t / 7), f = t % 7; if (rnd(c, 9, 61) > 0.55 && f < 0.18) { ctx.fillStyle = `rgba(235,240,255,${0.35 * (1 - f / 0.18)})`; ctx.fillRect(vl, vt, W, HH); } } }
+  if (tp === 'neve') { ctx.fillStyle = 'rgba(220,228,240,.12)'; ctx.fillRect(vl, vt, W, HH);
+    for (let i = 0; i < 260; i++) { const sp = 20 + rnd(i, 1, 63) * 30, x = vl + ((rnd(i, 2, 63) * (W + 40) + Math.sin(t + i) * 12) % (W + 40)) - 20, y = vt + ((rnd(i, 3, 63) * (HH + 40) + t * sp) % (HH + 40)) - 20;
+      ctx.fillStyle = i % 3 ? '#eef' : '#fff'; ctx.fillRect(Math.round(x), Math.round(y), i % 4 ? 1 : 2, i % 4 ? 1 : 2); } }
+  if (tp === 'neblina' && !ehMar()) { const [px, py] = me.c ? unitScreen(me.x, me.y) : [vl + W / 2, vt + HH / 2], gr = ctx.createRadialGradient(px, py - 10, 40, px, py - 10, Math.max(W, HH) * 0.6);
+    gr.addColorStop(0, 'rgba(210,216,224,.08)'); gr.addColorStop(0.35, 'rgba(204,210,220,.4)'); gr.addColorStop(1, 'rgba(196,204,214,.76)'); ctx.fillStyle = gr; ctx.fillRect(vl, vt, W, HH); }
+}
+function climaUITempo() { const row = $('tprow'); if (!row) return; const v = aoAr() && ehMestre(); row.style.display = v ? '' : 'none'; if (v && document.activeElement !== $('tpSel')) $('tpSel').value = climaCena().tp; }
+$('tpSel').onchange = () => climaMuda(o => { o.tp = $('tpSel').value; });
+setInterval(() => { climaUI(); climaUIMar(); climaUITempo(); }, 800);
 climaPronto = true;
+
+// ---------- comércio: lojas com os preços do Livro Básico (p. 137–140) e os utensílios do Ryōri no Sho; trocas entre jogadores ----------
+// Comprar desconta os Ryōs da ficha; vender dá metade do preço (Livro Básico p. 100), e o mestre pode mudar a regra e o preço de cada
+// loja (água cara no deserto, peixe barato nas ilhas). Barganha (p. 55): o mestre aplica 10% ou 20% no desconto da loja.
+// Itens sem preço no livro (cantil, ingredientes, antídoto) ficam com um preço do mestre, marcado assim na lista.
+const CAT_LB = [   // [nome, preço, tipo, extra]   tipo: arma, arremesso, municao, explosivo, armadura, roupa, item, kit, comida, ingrediente, utensilio, servico
+  ['Espada Curta', 8, 'arma', { dano: 2, tipo: 'C' }], ['Tantō', 10, 'arma', { dano: 2, tipo: 'C' }], ['Tonfa (par)', 8, 'arma', { dano: 1, tipo: 'E' }],
+  ['Lança', 2, 'arma', { dano: 3, tipo: 'P', alc: '10m' }], ['Maça', 12, 'arma', { dano: 3, tipo: 'E' }], ['Ninja-tō', 20, 'arma', { dano: 3, tipo: 'C' }], ['Pique', 2, 'arma', { dano: 3, tipo: 'P' }],
+  ['Kunai', 2, 'arremesso', { comp: 0.1 }], ['Shuriken', 3, 'arremesso', { comp: 1 / 18 }], ['Senbon', 3, 'arremesso', { comp: 1 / 15 }],
+  ['Arco Curto', 30, 'arma', { dano: 1, tipo: 'P', alc: '25m', usa: 'des' }], ['Besta Leve', 35, 'arma', { dano: 2, tipo: 'P', alc: '25m', usa: 'des' }],
+  ['Tarja Explosiva', 10, 'explosivo', { comp: 1 / 6 }], ['Bomba de Fumaça', 10, 'explosivo', { comp: 1 / 6 }], ['Bomba Luminosa', 10, 'explosivo', { comp: 1 / 6 }],
+  ['Aian Nakkuru (par)', 100, 'arma', { dano: 1, tipo: 'C' }], ['Kousen (15m)', 2, 'item', {}], ['Nunchaku', 2, 'arma', { dano: 2, tipo: 'E' }], ['Sai (par)', 5, 'arma', { dano: 1, tipo: 'P' }], ['Wakizashi', 15, 'arma', { dano: 2, tipo: 'C' }],
+  ['Chicote', 1, 'arma', { dano: 0, tipo: 'C' }], ['Chokutō', 20, 'arma', { dano: 4, tipo: 'C' }], ['Cimitarra', 20, 'arma', { dano: 2, tipo: 'C', crit: '14~16' }], ['Corrente com Cravos', 25, 'arma', { dano: 1, tipo: 'P' }],
+  ['Espada Longa', 15, 'arma', { dano: 4, tipo: 'C' }], ['Florete', 20, 'arma', { dano: 2, tipo: 'P', crit: '14~16' }], ['Katana', 20, 'arma', { dano: 3, tipo: 'C' }], ['Machado', 10, 'arma', { dano: 3, tipo: 'C' }], ['Martelo de Guerra', 12, 'arma', { dano: 3, tipo: 'E' }],
+  ['Foice', 18, 'arma', { dano: 4, tipo: 'C', comp: 2 }], ['Leque Gigante', 100, 'arma', { dano: 2, tipo: 'E', comp: 2 }], ['Espada de Duas Lâminas', 100, 'arma', { dano: 2, tipo: 'C', comp: 2 }],
+  ['Espada Grande', 20, 'arma', { dano: 5, tipo: 'C', comp: 2 }], ['Machado Grande', 50, 'arma', { dano: 5, tipo: 'C', comp: 2 }],
+  ['Fuuma Shuriken: Gigante', 10, 'arma', { dano: 5, tipo: 'P', alc: '20m', usa: 'des' }], ['Fuuma Shuriken: Lâmina Reta', 15, 'arma', { dano: 3, tipo: 'P', alc: '20m', usa: 'des' }],
+  ['Arco Composto', 100, 'arma', { dano: 3, tipo: 'P', usa: 'des' }], ['Besta Pesada', 50, 'arma', { dano: 4, tipo: 'P', alc: '35m', usa: 'des' }],
+  ['Flechas', 1, 'municao', { comp: 0.05 }], ['Virotes', 1, 'municao', { comp: 0.05 }],
+  ['Roupa Comum', 10, 'roupa', { abs: 0, a: 'LEVE' }], ['Manopla', 5, 'roupa', { abs: 0, a: 'LEVE' }], ['Colete Ninja', 100, 'roupa', { abs: 0, a: 'LEVE' }], ['Colete Ninja Resistente', 150, 'armadura', { abs: 10, a: 'LEVE' }],
+  ['Armadura de Batalha', 250, 'armadura', { abs: 15, a: 'PESADA' }], ['Armadura de Batalha Reforçada', 600, 'armadura', { abs: 20, a: 'PESADA' }],
+  ['Algemas', 15, 'item', {}], ['Coldre/Bolsa com cinto', 1, 'item', {}], ['Corda (15m)', 1, 'item', {}], ['Kit de artesão (5 usos)', 30, 'kit', {}], ['Kit de ferramentas (5 usos)', 30, 'kit', {}],
+  ['Kit de medicamentos (5 usos)', 50, 'kit', {}], ['Kit de laboratório (5 usos)', 50, 'kit', {}], ['Instrumento musical', 50, 'item', {}], ['Lanterna', 7, 'item', {}], ['Mochila', 2, 'item', {}], ['Caneta', 1, 'item', { comp: 0 }],
+  ['Pergaminho (jutsus)', 10, 'item', {}], ['Pergaminho (escrita)', 1, 'item', { comp: 1 / 6 }], ['Tarja especial (selos)', 10, 'item', { comp: 1 / 6 }], ['Saco de dormir', 1, 'item', { comp: 2 }],
+  ['Ração de viagem', 1, 'comida', { comp: 1 / 6 }], ['Pílulas do Soldado (frasco com 10)', 50, 'kit', {}],
+  ['Bebida', 1, 'servico', {}], ['Refeição', 3, 'servico', {}], ['Estadia (por noite)', 5, 'servico', {}],
+];
+const CAT_MESTRE = [   // sem preço no livro: preço do mestre
+  ['Cantil', 2, 'comida', { comp: 0.5 }], ['Tocha', 1, 'item', {}], ['Antídoto', 20, 'kit', {}], ['Óleo para lanterna', 1, 'item', { comp: 0.2 }],
+  ['Ingredientes comuns (1 porção)', 1, 'ingrediente', { comp: 0.2 }], ['Ingredientes frescos (1 porção)', 3, 'ingrediente', { comp: 0.2 }], ['Ingredientes excelentes (1 porção)', 8, 'ingrediente', { comp: 0.2 }],
+];
+const CAT_RY = [['Kit de campo', 300], ['Jogo de facas', 450], ['Grelha dobrável', 200], ['Panela robusta', 350], ['Bolsa térmica', 650], ['Defumador portátil', 800]].map(([n, p]) => [n, p, 'utensilio', {}]);
+const CATALOGO = new Map(); for (const [n, p, t, x] of CAT_LB) CATALOGO.set(n, { n, p, t, x, fonte: 'livro' });
+for (const [n, p, t, x] of CAT_MESTRE) CATALOGO.set(n, { n, p, t, x, fonte: 'mestre' }); for (const [n, p, t, x] of CAT_RY) CATALOGO.set(n, { n, p, t, x, fonte: 'ryori' });
+const TIPO_LOJA = {
+  ferreiro: { n: 'Ferreiro', t: ['arma', 'arremesso', 'municao', 'armadura'] }, armazem: { n: 'Armazém', t: ['item', 'kit', 'explosivo', 'comida'] },
+  ervanario: { n: 'Ervanário', it: ['Kit de medicamentos (5 usos)', 'Kit de laboratório (5 usos)', 'Pílulas do Soldado (frasco com 10)', 'Antídoto'] },
+  alfaiate: { n: 'Alfaiate', t: ['roupa'], it: ['Saco de dormir', 'Mochila', 'Coldre/Bolsa com cinto'] },
+  mercado: { n: 'Mercado de ingredientes', t: ['ingrediente', 'utensilio'], it: ['Ração de viagem', 'Cantil'] },
+  estalagem: { n: 'Estalagem', t: ['servico'] },
+};
+// lojas por lugar; m = multiplicador de preço da loja (o mestre muda na tela)
+const LOJAS = {
+  vila: [['vl_ferreiro', 'ferreiro'], ['vl_armazem', 'armazem'], ['vl_ervas', 'ervanario'], ['vl_alfaiate', 'alfaiate'], ['vl_mercado', 'mercado'], ['vl_estalagem', 'estalagem']],
+  kisaragi: [['ks_armazem', 'armazem'], ['ks_alfaiate', 'alfaiate'], ['ks_mercado', 'mercado']], hachou: [['hc_mercado', 'mercado'], ['hc_estalagem', 'estalagem']],
+  aldeia_areia: [['aa_ferreiro', 'ferreiro', 1.2], ['aa_armazem', 'armazem', 1.2], ['aa_ervas', 'ervanario'], ['aa_mercado', 'mercado', 1.5], ['aa_estalagem', 'estalagem']],
+  oasis: [['oa_mercado', 'mercado', 1.3], ['oa_estalagem', 'estalagem']], rota_caravanas: [['rc_troca', 'armazem', 1.4]],
+  aldeia_nevoa: [['an_ferreiro', 'ferreiro'], ['an_armazem', 'armazem'], ['an_ervas', 'ervanario'], ['an_mercado', 'mercado', 0.7], ['an_estalagem', 'estalagem']],
+  vila_pescadores: [['vp_mercado', 'mercado', 0.6], ['vp_estalagem', 'estalagem']], porto_travessia: [['pt_armazem', 'armazem'], ['pt_mercado', 'mercado', 0.8]],
+};
+const NOME_LUGAR_LOJA = { aa_mercado: 'Mercado coberto', oa_mercado: 'Mercado de especiarias', rc_troca: 'Posto de troca', vp_estalagem: 'Casa da Bruma', an_mercado: 'Mercado do porto' };
+function lojasAt() { const t = tab(); return t ? (t.lojas || (t.lojas = { venda: 50, m: {} })) : (lojasVer || { venda: 50, m: {} }); }
+function limpaLojas(o) { const out = { venda: 50, m: {} }; if (!o || typeof o !== 'object') return out; out.venda = nnum(o.venda, 0, 100, 50);
+  if (o.m && typeof o.m === 'object') for (const [k, v] of Object.entries(o.m).slice(0, 80)) if (/^[a-z]{2}_[a-z]{3,10}$/.test(k)) out.m[k] = nnum(v, 10, 500, 100); return out; }
+function itensLoja(tipo) { const T = TIPO_LOJA[tipo]; const L = []; for (const it of CATALOGO.values()) if ((T.t || []).includes(it.t) || (T.it || []).includes(it.n)) L.push(it); return L; }
+function precoLoja(id, base, mult0) { const m = (lojasAt().m[id] != null ? lojasAt().m[id] : Math.round((mult0 || 1) * 100)) / 100; return Math.max(1, Math.round(base * m)); }
+// ----- comprar e vender (cada jogador mexe na própria ficha; o mestre, em qualquer uma) -----
+function lojaCompra(c, it, preco, q) {
+  const F0 = persDe(c); if (!F0) return; if (!podeEditar(c)) { say('Só o dono da ficha (ou o mestre) compra por ela'); return; } q = Math.max(1, q | 0);
+  if (it.t === 'servico') { if ((F0.inv.ryos || 0) < preco * q) { say(`Faltam Ryōs: custa ${preco * q}, ${nome(c)} tem ${F0.inv.ryos || 0}`); return; }
+    const F = JSON.parse(JSON.stringify(F0)); F.inv.ryos -= preco * q; persGrava(c, F); avisoLoja(`${nome(c)} pagou ${it.n.toLowerCase()} (${preco * q} Ryōs)`); return; }
+  const total = preco * q; if ((F0.inv.ryos || 0) < total) { say(`Faltam Ryōs: custa ${total}, ${nome(c)} tem ${F0.inv.ryos || 0}`); return; }
+  const F = JSON.parse(JSON.stringify(F0)); F.inv.ryos -= total; const x = it.x || {};
+  if (it.t === 'arma') for (let k = 0; k < q; k++) F.inv.armas.push({ n: it.n, dano: x.dano || 0, usa: x.usa || 'forca', alc: x.alc || '', crit: x.crit || '15~16', tipo: x.tipo || 'C', comp: x.comp || 1, d: 'Comprado na loja (Livro Básico p. 137–138).' });
+  else if (it.t === 'armadura' || (it.t === 'roupa' && x.abs != null && it.n !== 'Manopla')) { if (F.inv.arm) F.inv.itens.push({ n: F.inv.arm.n, q: 1, comp: 1, d: 'Armadura guardada' }); F.inv.arm = { n: it.n, abs: x.abs || 0, dur: 0, tipo: x.a || 'LEVE', comp: 0 }; }
+  else bolsaPoe(F, it.n, q, x.comp != null ? x.comp : 1, it.t);
+  persGrava(c, F); avisoLoja(`${nome(c)} comprou ${q > 1 ? q + ' × ' : ''}${it.n} por ${total} Ryōs`);
+}
+function bolsaPoe(F, n, q, comp, tipo) {
+  const L = F.inv.itens, j = L.findIndex(i => i.n === n); if (j >= 0) { L[j].q = (L[j].q || 1) + q; return; }
+  L.push({ n, q, comp: Math.round((comp || 0) * 100) / 100, d: tipo ? `(${TIPO_NOME[tipo] || tipo})` : '' }); if (L.length > 60) L.splice(0, L.length - 60);
+}
+function lojaVende(c, i, q, valor) {
+  const F0 = persDe(c); if (!F0 || !podeEditar(c)) return; const F = JSON.parse(JSON.stringify(F0)), it = F.inv.itens[i]; if (!it) return; q = Math.min(it.q || 1, Math.max(1, q | 0));
+  it.q = (it.q || 1) - q; if (it.q <= 0) F.inv.itens.splice(i, 1); F.inv.ryos = (F.inv.ryos || 0) + valor * q; persGrava(c, F); avisoLoja(`${nome(c)} vendeu ${q > 1 ? q + ' × ' : ''}${it.n} por ${valor * q} Ryōs`);
+}
+function avisoLoja(txt) { say(txt); if (mesa) mesa.sendEvent({ k: 'acao', a: 'aviso', txt }).catch(() => {}); }
+const TIPO_NOME = { arma: 'arma', arremesso: 'arma de arremesso', municao: 'munição', explosivo: 'explosivo', armadura: 'armadura', roupa: 'roupa', item: 'item', kit: 'kit', comida: 'comida', ingrediente: 'ingrediente', utensilio: 'utensílio', servico: 'serviço' };
+function tipoDeItem(n) { const it = CATALOGO.get(n); if (it) return it.t; const s = semAc(String(n)).toLowerCase();
+  if (/ingrediente|peixe|carne|alga|ervas?\b|cogumelo|tamara|fruta|ovo|sal\b|marisco|polvo/.test(s)) return 'ingrediente'; if (/racao|cantil|agua|rum|bebida/.test(s)) return 'comida';
+  if (/kunai|shuriken|senbon/.test(s)) return 'arremesso'; if (/tarja|bomba/.test(s)) return 'explosivo'; if (/kit|pilula|antidoto|remedio/.test(s)) return 'kit'; return 'item'; }
+// ----- a janela da loja -----
+let LJ = { id: null, lugar: null };
+function lojaAbre(id) {
+  const el = $('loja'); if (!id) { el.hidden = true; LJ.id = null; return; } LJ.id = id; el.hidden = false; lojaRender();
+}
+function lojasDoLugar(sid) { return (LOJAS[sid || scene.id] || []).map(([id, tipo, m]) => ({ id, tipo, m: m || 1, n: NOME_LUGAR_LOJA[id] || TIPO_LOJA[tipo].n })); }
+function lojaRender() {
+  const el = $('loja'), cont = $('ljCorpo'); cont.textContent = ''; const L = lojasDoLugar(), sh = L.find(s => s.id === LJ.id) || L[0];
+  if (!sh) { $('ljTit').textContent = 'Lojas'; cont.append(Object.assign(document.createElement('p'), { className: 'ljVazio', textContent: 'Não há lojas neste lugar. Vilas e aldeias têm ferreiro, armazém, ervanário, alfaiate, mercado e estalagem.' })); return; }
+  LJ.id = sh.id; $('ljTit').textContent = sh.n;
+  const abas = document.createElement('div'); abas.className = 'ljAbas';
+  for (const s of L) { const b = document.createElement('button'); b.textContent = s.n; b.classList.toggle('on', s.id === sh.id); b.onclick = () => { LJ.id = s.id; lojaRender(); }; abas.append(b); }
+  cont.append(abas);
+  const c = me.c || (ehMestre() ? CHARS.find(q => persDe(q)) : null), F = c && persDe(c);
+  const topo = document.createElement('div'); topo.className = 'ljTopo';
+  topo.append(Object.assign(document.createElement('span'), { textContent: F ? `${nome(c)}: ${F.inv.ryos || 0} Ryōs` : 'Escolha um personagem para comprar' }));
+  if (ehMestre()) { const m = document.createElement('label'); m.className = 'ljMult'; m.title = 'Preço desta loja em % do livro (Barganha, p. 55: 10% ou 20% a favor de quem ganha)';
+    const inp = document.createElement('input'); inp.type = 'number'; inp.min = 10; inp.max = 500; inp.step = 5; inp.value = lojasAt().m[sh.id] != null ? lojasAt().m[sh.id] : Math.round(sh.m * 100);
+    inp.onchange = () => { lojasAt().m[sh.id] = nnum(inp.value, 10, 500, 100); publicar(true); lojaRender(); }; m.append('Preço ', inp, '%');
+    const v = document.createElement('label'); v.className = 'ljMult'; v.title = 'Quanto do preço o jogador recebe ao vender (livro: metade, p. 100)'; const iv = document.createElement('input'); iv.type = 'number'; iv.min = 0; iv.max = 100; iv.step = 5; iv.value = lojasAt().venda;
+    iv.onchange = () => { lojasAt().venda = nnum(iv.value, 0, 100, 50); publicar(true); lojaRender(); }; v.append('Venda ', iv, '%'); topo.append(m, v); }
+  cont.append(topo);
+  const lista = document.createElement('div'); lista.className = 'ljLista';
+  const grupos = {}; for (const it of itensLoja(sh.tipo)) (grupos[it.t] = grupos[it.t] || []).push(it);
+  for (const [t, its] of Object.entries(grupos)) { lista.append(Object.assign(document.createElement('h4'), { textContent: (TIPO_NOME[t] || t)[0].toUpperCase() + (TIPO_NOME[t] || t).slice(1) }));
+    for (const it of its) { const p = precoLoja(sh.id, it.p, sh.m), r = document.createElement('div'); r.className = 'ljIt';
+      const nm = document.createElement('span'); nm.className = 'ljNm'; nm.textContent = it.n; if (it.fonte !== 'livro') nm.append(Object.assign(document.createElement('i'), { textContent: it.fonte === 'ryori' ? ' Ryōri no Sho' : ' preço do mestre' }));
+      const pr = document.createElement('span'); pr.className = 'ljPr'; pr.textContent = `${p} Ryō${p > 1 ? 's' : ''}`;
+      const q = document.createElement('input'); q.type = 'number'; q.min = 1; q.max = 99; q.value = 1; q.className = 'ljQ'; q.setAttribute('aria-label', 'Quantidade');
+      const bt = document.createElement('button'); bt.textContent = it.t === 'servico' ? 'Pagar' : 'Comprar'; bt.disabled = !F; bt.onclick = () => { lojaCompra(c, it, p, +q.value || 1); setTimeout(lojaRender, 60); };
+      r.append(nm, pr, q, bt); lista.append(r); } }
+  cont.append(lista);
+  if (F && F.inv.itens.length) {                                                              // vender o que está na bolsa
+    const vd = document.createElement('div'); vd.className = 'ljLista'; vd.append(Object.assign(document.createElement('h4'), { textContent: `Vender (${lojasAt().venda}% do preço)` }));
+    F.inv.itens.forEach((i, k) => { const base = CATALOGO.get(i.n); if (!base) return; const val = Math.floor(precoLoja(sh.id, base.p, sh.m) * lojasAt().venda / 100); if (val < 1) return;
+      const r = document.createElement('div'); r.className = 'ljIt'; const bt = document.createElement('button'); bt.textContent = 'Vender'; bt.onclick = () => { lojaVende(c, k, 1, val); setTimeout(lojaRender, 60); };
+      r.append(Object.assign(document.createElement('span'), { className: 'ljNm', textContent: `${i.n}${i.q > 1 ? ' × ' + i.q : ''}` }), Object.assign(document.createElement('span'), { className: 'ljPr', textContent: `${val} cada` }), bt); vd.append(r); });
+    if (vd.childElementCount > 1) cont.append(vd); }
+  cont.append(trocaUI(c));
+}
+// ----- trocas entre jogadores: quem dá propõe, quem recebe aceita; só aí as duas fichas mudam -----
+let TROCA = null;
+function trocaUI(c) {
+  const box = document.createElement('div'); box.className = 'ljLista'; box.append(Object.assign(document.createElement('h4'), { textContent: 'Dar para outro personagem' }));
+  const F = c && persDe(c); if (!F) return box;
+  const para = document.createElement('select'); for (const q of CHARS) if (q !== c && persDe(q)) para.append(new Option(nome(q), q));
+  const oq = document.createElement('select'); oq.append(new Option('Ryōs', '$')); F.inv.itens.forEach((i, k) => oq.append(new Option(`${i.n}${i.q > 1 ? ' (' + i.q + ')' : ''}`, String(k))));
+  const n = document.createElement('input'); n.type = 'number'; n.min = 1; n.value = 1; n.className = 'ljQ';
+  const bt = document.createElement('button'); bt.textContent = 'Propor'; bt.onclick = () => trocaPropoe(c, para.value, oq.value, +n.value || 1);
+  const r = document.createElement('div'); r.className = 'ljIt ljTroca'; r.append(para, oq, n, bt); box.append(r); return box;
+}
+function trocaPropoe(de, para, qual, n) {
+  const F = persDe(de); if (!F || !para || !podeEditar(de)) return; let o;
+  if (qual === '$') { n = Math.min(n, F.inv.ryos || 0); if (n < 1) { say('Sem Ryōs para dar'); return; } o = { ryos: n }; }
+  else { const it = F.inv.itens[+qual]; if (!it) return; n = Math.min(n, it.q || 1); o = { n: it.n, q: n, comp: it.comp || 0, d: it.d || '' }; }
+  const m = Object.assign({ k: 'troca', a: 'pede', de, para, tid: rid() }, o);
+  if (mesa) mesa.sendEvent(m).catch(() => {}); trocaEvento(m, true); say(`Proposta enviada para ${nome(para)}`);
+}
+function trocaEvento(m, minha) {
+  if (!m || !CHARS.includes(m.de) || !CHARS.includes(m.para)) return;
+  const oque = m.ryos ? `${m.ryos} Ryōs` : `${m.q > 1 ? m.q + ' × ' : ''}${String(m.n || '').slice(0, 40)}`;
+  if (m.a === 'pede' && me.c === m.para && !minha) {                                         // quem recebe decide
+    TROCA = m; $('trocaTxt').textContent = `${nome(m.de)} quer te dar ${oque}.`; $('troca').hidden = false; return; }
+  if (m.a === 'ok' && me.c === m.de) {                                                       // quem deu tira da própria ficha
+    const F0 = persDe(m.de); if (!F0) return; const F = JSON.parse(JSON.stringify(F0));
+    if (m.ryos) F.inv.ryos = Math.max(0, (F.inv.ryos || 0) - m.ryos); else { const j = F.inv.itens.findIndex(i => i.n === m.n); if (j >= 0) { F.inv.itens[j].q = (F.inv.itens[j].q || 1) - m.q; if (F.inv.itens[j].q <= 0) F.inv.itens.splice(j, 1); } }
+    persGrava(m.de, F); say(`${nome(m.para)} aceitou: ${oque}`); return; }
+  if (m.a === 'nao' && me.c === m.de) say(`${nome(m.para)} recusou ${oque}`);
+}
+$('trocaSim').onclick = () => { const m = TROCA; $('troca').hidden = true; TROCA = null; if (!m) return;
+  const F0 = persDe(m.para); if (F0 && podeEditar(m.para)) { const F = JSON.parse(JSON.stringify(F0)); if (m.ryos) F.inv.ryos = (F.inv.ryos || 0) + m.ryos; else bolsaPoe(F, String(m.n).slice(0, 40), nnum(m.q, 1, 999, 1), +m.comp || 0); persGrava(m.para, F); }
+  const r = Object.assign({}, m, { a: 'ok' }); if (mesa) mesa.sendEvent(r).catch(() => {}); trocaEvento(r, true); };
+$('trocaNao').onclick = () => { const m = TROCA; $('troca').hidden = true; TROCA = null; if (m && mesa) mesa.sendEvent(Object.assign({}, m, { a: 'nao' })).catch(() => {}); };
+$('ljBtn').onclick = () => lojaAbre($('loja').hidden ? (lojasDoLugar()[0] || { id: 'x' }).id : null);
+$('ljFecha').onclick = () => lojaAbre(null);
+setInterval(() => { const b = $('ljBtn'); if (b) { const v = lojasDoLugar().length > 0; if (b.hidden === v) b.hidden = !v; } }, 1000);
+lojasPronto = true;
+
+// ---------- mapa do mundo e viagens: dias de estrada, clima do dia, sobrevivência, encontros e acampamento ----------
+// Livro Básico 4.1b: Sobrevivência (Rastrear) é um teste por dia para avançar sem se perder e achar comida e abrigo para até seis
+// pessoas: Dif 12 planície e costa, 16 floresta e pântano, 20 deserto e montanha, −4 com clima ruim (p. 46). Ração de viagem custa
+// 1 Ryō por dia (p. 140). Quem passa o dia sem comida (nem ração, nem o que o grupo achou) testa Vigor com a Dif do mestre e, se falha,
+// fica fatigado — o livro deixa o mestre aplicar a condição pela narração (p. 276). Vigília: Prontidão de quem fica acordado.
+// Condução terrestre 1 Ryō por km e marítima 3 por km (p. 140): a mesa mostra, mas quem paga é o mestre que decide.
+const MUNDO = {
+  vila: { n: 'Vila (País do Fogo)', p: [0.6, 0.42], pais: 'fogo', cena: 'vila' },
+  posto_fronteira: { n: 'Posto de Fronteira (País do Vento)', p: [0.36, 0.58], pais: 'vento', cena: 'posto_fronteira' },
+  aldeia_areia: { n: 'Aldeia da Areia', p: [0.16, 0.66], pais: 'vento', cena: 'aldeia_areia' },
+  porto_travessia: { n: 'Porto da Travessia', p: [0.78, 0.5], pais: 'agua', cena: 'porto_travessia' },
+  aldeia_nevoa: { n: 'Aldeia da Névoa', p: [0.9, 0.7], pais: 'agua', cena: 'aldeia_nevoa' },
+  vila_pescadores: { n: 'Vila dos Pescadores', p: [0.86, 0.34], pais: 'agua', cena: 'vila_pescadores' },
+};
+const ESTRADAS = [['vila', 'posto_fronteira', 3, 'floresta', 90], ['posto_fronteira', 'aldeia_areia', 2, 'deserto', 60], ['vila', 'porto_travessia', 2, 'estrada', 60],
+  ['porto_travessia', 'aldeia_nevoa', 1, 'mar', 40], ['porto_travessia', 'vila_pescadores', 1, 'mar', 30], ['posto_fronteira', 'porto_travessia', 5, 'estrada', 150]];
+const TERRENO = { estrada: { n: 'estrada e planície', dif: 12 }, floresta: { n: 'floresta', dif: 16 }, deserto: { n: 'deserto', dif: 20 }, mar: { n: 'mar (de barco)', dif: 12 } };
+const TEMPO_TAB = { fogo: [['sol', 40], ['nublado', 25], ['chuva', 25], ['tempestade', 10]], vento: [['sol', 55], ['nublado', 10], ['areia', 25], ['chuva', 5], ['tempestade', 5]],
+  agua: [['neblina', 35], ['nublado', 20], ['chuva', 25], ['tempestade', 15], ['sol', 5]] };
+const ACHADOS = { fogo: ['Cogumelos (fresco)', 'Ervas silvestres (fresco)', 'Coelho (fresco)', 'Peixe de rio (fresco)', 'Frutas do mato (fresco)'],
+  vento: ['Tâmaras (fresco)', 'Carne de lagarto (fresco)', 'Polpa de cacto (fresco)', 'Sal do deserto (comum)'], agua: ['Peixe do mar (fresco)', 'Algas (fresco)', 'Mariscos (fresco)', 'Polvo (fresco)'] };
+const ENC = {   // [peso, 'b' bestiário + quantos | 't' acontecimento]
+  fogo: [[3, 'b', 'lobo', 3], [2, 'b', 'bandido', 3], [1, 'b', 'ronin', 1], [1, 'b', 'javali', 2], [2, 't', 'Mercador ambulante com uma carroça: vende o que um armazém vende, a 120%.'],
+    [2, 't', 'Viajantes pedem direções e contam um boato sobre o próximo lugar.'], [1, 't', 'A ponte caiu: Atletismo para atravessar o rio, ou meio dia de volta.'], [1, 't', 'O tempo vira: tempestade até a noite.']],
+  vento: [[3, 'b', 'escorpiao', 2], [2, 'b', 'saqueador', 4], [1, 'b', 'verme', 1], [1, 'b', 'abutre', 3], [2, 't', 'Uma caravana: água e especiarias a preço de oásis.'],
+    [1, 't', 'Brilho no horizonte: uma miragem (botão Miragem, na linha Deserto).'], [1, 't', 'Tempestade de areia chegando.'], [1, 't', 'Ossada antiga com um alforje esquecido.']],
+  agua: [[2, 'b', 'pirata', 4], [1, 'b', 'tubarao', 1], [1, 'b', 'enguia', 2], [1, 'b', 'crocodilo', 2], [2, 't', 'Um barco de pesca oferece peixe fresco barato.'],
+    [1, 't', 'A névoa fecha de repente.'], [1, 't', 'Correnteza: Atletismo Dif 12 para quem estiver na água.'], [1, 't', 'Destroços boiando com um baú pequeno.']],
+};
+function paisDe(sid) { const c = CENAS[sid || scene.id]; if (c && (c.cl === 'deserto' || (c.dg && c.dg.clima === 'deserto') || (c.dg && c.dg.clima === 'calor'))) return 'vento'; if (c && (c.cl === 'agua' || (c.dg && c.dg.clima === 'agua'))) return 'agua'; return 'fogo'; }
+function noDaCena(sid) { sid = sid || scene.id; for (const [k, v] of Object.entries(MUNDO)) if (v.cena === sid) return k; return { fogo: 'vila', vento: 'posto_fronteira', agua: 'porto_travessia' }[paisDe(sid)]; }
+function rotaEntre(a, b) {                                                     // menor soma de dias
+  const dist = { [a]: 0 }, prev = {}, Q = new Set(Object.keys(MUNDO));
+  while (Q.size) { let u = null; for (const q of Q) if (dist[q] != null && (u == null || dist[q] < dist[u])) u = q; if (u == null) break; Q.delete(u); if (u === b) break;
+    for (const r of ESTRADAS) { const v = r[0] === u ? r[1] : r[1] === u ? r[0] : null; if (!v || !Q.has(v)) continue; const d = dist[u] + r[2]; if (dist[v] == null || d < dist[v]) { dist[v] = d; prev[v] = [u, r]; } } }
+  if (dist[b] == null) return null; const legs = []; let v = b; while (v !== a) { const [u, r] = prev[v]; legs.unshift({ a: u, b: v, dias: r[2], ter: r[3], km: r[4] }); v = u; }
+  return { legs, dias: legs.reduce((s, l) => s + l.dias, 0), km: legs.reduce((s, l) => s + l.km, 0) };
+}
+let viagemVer = null;
+const viagemAt = () => { const t = tab(); return t ? t.viagem || null : viagemVer; };
+function limpaViagem(v) { if (!v || typeof v !== 'object' || !MUNDO[v.de] || !MUNDO[v.para]) return null; const R = rotaEntre(v.de, v.para); if (!R) return null;
+  return { de: v.de, para: v.para, dia: nnum(v.dia, 1, 60, 1), tempo: ['sol', 'nublado', 'chuva', 'tempestade', 'areia', 'neblina', 'neve'].includes(v.tempo) ? v.tempo : 'sol', comida: v.comida ? 1 : 0,
+    acamp: v.acamp ? 1 : 0, log: (Array.isArray(v.log) ? v.log : []).slice(-30).map(s => String(s).slice(0, 160)) }; }
+function viagemTrecho(v) { const R = rotaEntre(v.de, v.para); let d = v.dia; for (const l of R.legs) { if (d <= l.dias) return l; d -= l.dias; } return R.legs[R.legs.length - 1]; }
+function viagemMuda(f) { if (!ehMestre()) return; const t = tab(); if (!t.viagem) return; f(t.viagem); t.viagem.log = t.viagem.log.slice(-30); publicar(true); viagemUI(); }
+function sorteia(L) { const tot = L.reduce((s, q) => s + q[1], 0); let r = Math.random() * tot; for (const q of L) { r -= q[1]; if (r <= 0) return q[0]; } return L[0][0]; }
+function viagemTempoAplica(tp) {                                               // o clima do dia vai para o lugar onde o grupo está
+  if (!climaPronto) return; climaMuda(o => { o.tp = tp === 'areia' ? 'sol' : tp; o.ar = tp === 'areia' ? 1 : 0; if (ehMar() && tp === 'neblina') o.nv = 'f'; }); }
+function viagemParte(para) {
+  const de = noDaCena(), R = rotaEntre(de, para); if (!R || de === para) { say('Escolha outro destino'); return; }
+  const t = tab(); const tp = sorteia(TEMPO_TAB[MUNDO[de].pais]);
+  t.viagem = { de, para, dia: 1, tempo: tp, comida: 0, acamp: 0, log: [`Partida de ${MUNDO[de].n} para ${MUNDO[para].n}: ${R.dias} dia${R.dias > 1 ? 's' : ''}, uns ${R.km} km.`] };
+  setClock(7 * 60); viagemTempoAplica(tp); publicar(true); if (mesa && mesa.isGM) gmPublish();
+  avisoMesa(`A viagem começou: ${R.dias} dia${R.dias > 1 ? 's' : ''} até ${MUNDO[para].n}`); viagemUI(); mundoRender();
+}
+function viagemDia() {
+  const v = tab().viagem; if (!v) return; const R = rotaEntre(v.de, v.para);
+  if (!v.acamp) viagemComida();
+  if (v.dia >= R.dias) { viagemChega(); return; }
+  v.dia++; v.comida = 0; v.acamp = 0; const L = viagemTrecho(v); v.tempo = sorteia(TEMPO_TAB[MUNDO[L.b].pais] || TEMPO_TAB.fogo); v.log.push(`Dia ${v.dia}: ${TEMPO_NOME[v.tempo]}.`);
+  setClock(7 * 60); viagemTempoAplica(v.tempo); publicar(true); if (mesa && mesa.isGM) gmPublish(); avisoMesa(`Dia ${v.dia} de viagem: ${TEMPO_NOME[v.tempo]}`); viagemUI(); mundoRender();
+}
+const TEMPO_NOME = { sol: 'sol', nublado: 'nublado', chuva: 'chuva', tempestade: 'tempestade', areia: 'tempestade de areia', neblina: 'neblina', neve: 'neve' };
+function viagemSobrevivencia() {
+  const v = tab().viagem; if (!v) return; const L = viagemTrecho(v), T = TERRENO[L.ter], ruim = ['chuva', 'tempestade', 'areia', 'neve'].includes(v.tempo), dif = T.dif + (ruim ? 4 : 0);
+  const pais = MUNDO[L.b].pais; let algum = false; avisoMesa(`Sobrevivência (Rastrear) em ${T.n}: Dif ${T.dif}${ruim ? ' +4 pelo clima' : ''}`);
+  climaPCs().forEach((c, i) => setTimeout(() => {
+    const F = persDe(c); if (!F) return; const D = persCalc(F), b = D.per.rastrear != null ? D.per.rastrear : 0;
+    const r = rolarAuto({ k: 'teste', dados: [{ f: 8 }, { f: 8 }], bonus: b, alvo: dif, desc: 'Sobrevivência: Rastrear', quem: quemDe('c:' + c) }), av = avaliar(r);
+    if (av.tom === 'ok' || av.tom === 'crit') { algum = true; const ach = ACHADOS[pais][Math.floor(Math.random() * ACHADOS[pais].length)];
+      if (podeEditar(c)) { const G = JSON.parse(JSON.stringify(F)); bolsaPoe(G, ach, 1, 0.2, 'ingrediente'); persGrava(c, G); }
+      viagemMuda(q => { q.comida = 1; q.log.push(`${nome(c)} achou o caminho e comida: ${ach}.`); }); }
+  }, i * 380));
+}
+function viagemComida() {                                                      // no fim do dia: ração, ou o que o grupo achou, ou Vigor
+  const v = tab().viagem; if (!v || v.comida) { if (v) v.log.push('O grupo comeu o que achou no caminho.'); return; } const dif = climaCena().dif;
+  climaPCs().forEach((c, i) => setTimeout(() => {
+    const F = persDe(c); if (!F) return; const j = F.inv.itens.findIndex(q => /ra[cç][aã]o de viagem/i.test(q.n) && q.q > 0);
+    if (j >= 0) { if (podeEditar(c)) { const G = JSON.parse(JSON.stringify(F)); G.inv.itens[j].q--; if (G.inv.itens[j].q <= 0) G.inv.itens.splice(j, 1); persGrava(c, G); } condAviso(`${nome(c)} comeu uma ração de viagem`, 'c:' + c); return; }
+    const ok = climaTeste(c, 'vig', dif, 'Dia sem comida: Vigor'); if (!ok && condPronto) condPoe('c:' + c, 'fatigado', {}); else if (ok) condAviso(`${nome(c)} aguentou o dia sem comer`, 'c:' + c);
+  }, i * 380));
+}
+function viagemAcampa() {
+  const v = tab().viagem; if (!v) return; viagemComida(); setClock(19 * 60); if (mesa && mesa.isGM) gmPublish();
+  viagemMuda(q => { q.acamp = 1; q.log.push(`Dia ${q.dia}: acampamento.`); }); avisoMesa('Acampamento montado: vigília, cozinha e descanso');
+}
+function viagemVigilia() {
+  const dif = climaCena().dif; avisoMesa(`Vigília: Prontidão de quem fica acordado (Dif ${dif}, do mestre)`);
+  climaPCs().forEach((c, i) => setTimeout(() => { const F = persDe(c); if (!F) return; const D = persCalc(F);
+    rolarAuto({ k: 'teste', dados: [{ f: 8 }, { f: 8 }], bonus: D.per.prontidao || 0, alvo: dif, desc: `Vigília (${i + 1}º turno): Prontidão`, quem: quemDe('c:' + c) }); }, i * 380));
+}
+let ENC_ULT = null;
+function viagemEncontro() {
+  const v = tab().viagem, pais = v ? MUNDO[viagemTrecho(v).b].pais : paisDe(), L = ENC[pais], e = sorteia(L.map(q => [q, q[0]]));
+  ENC_ULT = e; let txt;
+  if (e[1] === 'b') { const B = bPorId(e[2]); txt = `Encontro: ${e[3] > 1 ? e[3] + ' × ' : ''}${B ? B.n : e[2]}`; } else txt = 'Na estrada: ' + e[2];
+  if (v) viagemMuda(q => { q.log.push(`Dia ${q.dia}: ${txt}`); }); avisoMesa(txt); viagemUI();
+}
+function viagemPoeEncontro() {
+  const e = ENC_ULT; if (!e || e[1] !== 'b' || !cenaPronto) return; const pcs = unidades().filter(u => u.id.startsWith('c:'));
+  const cx = pcs.length ? pcs.reduce((s, u) => s + u.x, 0) / pcs.length : scene.centro ? scene.centro[0] : N / 2, cy = pcs.length ? pcs.reduce((s, u) => s + u.y, 0) / pcs.length : scene.centro ? scene.centro[1] : N / 2;
+  let k = 0; for (let i = 0; i < e[3] * 4 && k < e[3]; i++) { const a = i * 2.4, r = 4 + (i % 3), x = Math.round(cx + Math.cos(a) * r), y = Math.round(cy + Math.sin(a) * r);
+    if (!walkable(x, y, hEff(x, y))) continue; czPoe({ k: 'npc', b: e[2] }, x, y); k++; }
+  say(k ? `${k} no mapa, perto do grupo` : 'Não achei lugar para pôr');
+}
+function viagemChega() {
+  const v = tab().viagem; if (!v) return; const D = MUNDO[v.para], c = CENAS[D.cena], ch = c && c.entrada ? c.entrada : null;
+  for (const p of peers) { const q = p.presence && p.presence.c; if (!q || p.presence.gm) continue;
+    if (mesa) mesa.sendEvent({ k: 'cena', a: 'leva', c: q, s: D.cena, x: (ch ? ch[0] : 0) + 0.5, y: (ch ? ch[1] : 0) + 0.5 }).catch(() => {}); }
+  tab().viagem = null; publicar(true); avisoMesa(`Chegada: ${D.n}`); goScene({ para: D.cena }); viagemUI(); mundoRender();
+}
+// ----- o mapa: terras desenhadas sem nada escrito; os nomes ficam na lista ao lado -----
+function mundoDesenha(cv) {
+  const g = cv.getContext('2d'), W2 = cv.width, H2 = cv.height; g.imageSmoothingEnabled = false;
+  g.fillStyle = '#2b4f6e'; g.fillRect(0, 0, W2, H2);
+  for (let i = 0; i < 90; i++) { g.fillStyle = 'rgba(255,255,255,.06)'; g.fillRect((rnd(i, 1, 9) * W2) | 0, (rnd(i, 2, 9) * H2) | 0, 6, 1); }
+  const terra = (cx, cy, rx, ry, cor, sd) => { g.fillStyle = cor; g.beginPath(); for (let a = 0; a <= 64; a++) { const t = a / 64 * 6.283, k = 1 + 0.12 * Math.sin(t * 5 + sd) + 0.07 * Math.sin(t * 11 + sd * 2);
+    const x = cx + Math.cos(t) * rx * k, y = cy + Math.sin(t) * ry * k; a ? g.lineTo(x, y) : g.moveTo(x, y); } g.fill(); };
+  terra(W2 * 0.55, H2 * 0.45, W2 * 0.2, H2 * 0.3, '#5f8f4e', 1); terra(W2 * 0.6, H2 * 0.4, W2 * 0.08, H2 * 0.1, '#4c7a3f', 4);          // País do Fogo: verde, com mata
+  terra(W2 * 0.22, H2 * 0.62, W2 * 0.18, H2 * 0.25, '#c9a86a', 2); terra(W2 * 0.18, H2 * 0.66, W2 * 0.06, H2 * 0.07, '#b5503a', 6);   // País do Vento: areia e o cânion
+  for (const [x, y, r] of [[0.88, 0.68, 0.06], [0.86, 0.34, 0.04], [0.95, 0.5, 0.025], [0.8, 0.82, 0.03]]) terra(W2 * x, H2 * y, W2 * r, H2 * r * 1.3, '#6f7f86', x * 10);   // País da Água: ilhas
+  g.fillStyle = 'rgba(220,230,240,.18)'; g.fillRect(W2 * 0.76, H2 * 0.2, W2 * 0.24, H2 * 0.7);                                      // a névoa sobre as ilhas
+  const v = viagemAt(), R = v ? rotaEntre(v.de, v.para) : null;
+  for (const r of ESTRADAS) { const a = MUNDO[r[0]].p, b = MUNDO[r[1]].p, on = R && R.legs.some(l => (l.a === r[0] && l.b === r[1]) || (l.a === r[1] && l.b === r[0]));
+    g.strokeStyle = on ? '#f2d16b' : r[3] === 'mar' ? 'rgba(190,220,255,.7)' : 'rgba(60,40,20,.75)'; g.lineWidth = on ? 3 : 2; g.setLineDash(r[3] === 'mar' ? [4, 4] : [6, 3]);
+    g.beginPath(); g.moveTo(a[0] * W2, a[1] * H2); g.lineTo(b[0] * W2, b[1] * H2); g.stroke(); } g.setLineDash([]);
+  const aqui = noDaCena(); for (const [k, n] of Object.entries(MUNDO)) { const x = n.p[0] * W2, y = n.p[1] * H2; g.fillStyle = k === aqui ? '#f2d16b' : '#f4efe4'; g.beginPath(); g.arc(x, y, k === aqui ? 6 : 4.5, 0, 6.283); g.fill(); g.strokeStyle = '#1b1b1b'; g.lineWidth = 1.5; g.stroke(); }
+  if (v && R) {                                                                             // onde o grupo está na estrada
+    let d = v.dia - 0.5; for (const l of R.legs) { if (d <= l.dias) { const a = MUNDO[l.a].p, b = MUNDO[l.b].p, t = d / l.dias; const x = (a[0] + (b[0] - a[0]) * t) * W2, y = (a[1] + (b[1] - a[1]) * t) * H2;
+        g.fillStyle = '#d33'; g.beginPath(); g.arc(x, y, 5, 0, 6.283); g.fill(); g.strokeStyle = '#fff'; g.stroke(); break; } d -= l.dias; } }
+}
+function mundoRender() {
+  const el = $('mundo'); if (!el || el.hidden) return; mundoDesenha($('mdCv'));
+  const lista = $('mdLista'); lista.textContent = ''; const v = viagemAt(), aqui = noDaCena();
+  if (v) { const R = rotaEntre(v.de, v.para); lista.append(Object.assign(document.createElement('p'), { className: 'mdInfo', textContent: `${MUNDO[v.de].n} → ${MUNDO[v.para].n} · dia ${v.dia} de ${R.dias} · ${TEMPO_NOME[v.tempo]}` }));
+    const lg = document.createElement('ul'); lg.className = 'mdLog'; for (const s of v.log.slice(-8)) lg.append(Object.assign(document.createElement('li'), { textContent: s })); lista.append(lg); return; }
+  lista.append(Object.assign(document.createElement('p'), { className: 'mdInfo', textContent: `Você está em: ${MUNDO[aqui].n}` }));
+  for (const k of Object.keys(MUNDO)) { if (k === aqui) continue; const R = rotaEntre(aqui, k); if (!R) continue;
+    const r = document.createElement('div'); r.className = 'mdDest'; const t = R.legs.map(l => TERRENO[l.ter].n).filter((s, i, a) => a.indexOf(s) === i).join(', ');
+    r.append(Object.assign(document.createElement('span'), { textContent: `${MUNDO[k].n} — ${R.dias} dia${R.dias > 1 ? 's' : ''} (${t}; ~${R.km} km)` }));
+    if (ehMestre()) { const b = document.createElement('button'); b.textContent = 'Partir'; b.onclick = () => viagemParte(k); r.append(b); } lista.append(r); }
+}
+function viagemUI() {
+  const v = viagemAt(), row = $('vgrow'), av = $('vgAviso');
+  if (row) { row.style.display = v && ehMestre() ? '' : 'none'; if (v && ehMestre()) { const R = rotaEntre(v.de, v.para); $('vgDia').textContent = v.dia >= R.dias ? 'Chegar' : 'Próximo dia'; $('vgPor').hidden = !(ENC_ULT && ENC_ULT[1] === 'b'); } }
+  if (av) { const R = v && rotaEntre(v.de, v.para), txt = v ? `Viagem para ${MUNDO[v.para].n} · dia ${v.dia} de ${R.dias} · ${TEMPO_NOME[v.tempo]}${v.comida ? ' · comida achada' : ''}` : '';
+    if (av.textContent !== txt) av.textContent = txt; av.hidden = !txt; }
+}
+$('mdBtn').onclick = () => { const el = $('mundo'); el.hidden = !el.hidden; mundoRender(); };
+$('mdFecha').onclick = () => { $('mundo').hidden = true; };
+$('vgDia').onclick = () => viagemDia(); $('vgSob').onclick = () => viagemSobrevivencia(); $('vgEnc').onclick = () => viagemEncontro(); $('vgPor').onclick = () => viagemPoeEncontro();
+$('vgAcamp').onclick = () => viagemAcampa(); $('vgVig').onclick = () => viagemVigilia();
+$('vgCoz').onclick = () => { abreLivro('coz'); };
+$('vgDorme').onclick = () => $('dsLongo').click();
+$('vgCancela').onclick = () => { if (!confirm('Cancelar a viagem? O grupo fica onde está.')) return; tab().viagem = null; publicar(true); viagemUI(); mundoRender(); };
+setInterval(() => { viagemUI(); if (!$('mundo').hidden) mundoRender(); }, 1500);
+viagemPronto = true;
 
 // ---------- Tela de título e contas ----------
 // Um só link para a mesa. Aqui cada jogador entra com o próprio personagem (senha) e o mestre com a senha de mestre.
