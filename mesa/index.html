@@ -1138,6 +1138,108 @@ function sortItems(items) {
 }
 // ---------- pássaros pousados ----------
 const flown = new Map();
+// ---------- chão guardado em blocos ----------
+// O chão parado (topo das casas, paredes dos desníveis, franjas) é desenhado uma vez por bloco de 16×16 casas numa tela à parte e
+// depois só colado; a cada quadro só se desenha o que se mexe (água, espuma, cachoeira, o brilho dos arrozais), por baixo dos blocos.
+// Num mapa de altura as casas de trás nunca cobrem as da frente, então a água por baixo e os blocos por cima dão a mesma imagem.
+const CHAO_ON = !Q.has('semcache'), GK = 16;
+let CHAO = null;
+function chaoTe(t, x, y) { const v = TE[t]; return v[(t === 30 ? h32(x >> 2, y >> 2, 5) : h32(x, y, 1)) % v.length]; }
+function chaoAnim(t, x, y) { return t === 15 || t === 16 || (TE[t] && chaoTe(t, x, y)[7] > 1); }
+function chaoEst(i, x, y, L) {                                            // a parte parada da casa (água inteira fica de fora)
+  const h = HM[i], t = TM[i]; if (t >= 98 || t === 25 || t === 15 || t === 16) return;
+  const wx = (x - y) * 16, wy = (x + y) * 8 - h * 8, hr = x + 1 < N ? HM[i + N] : 0, hl = y + 1 < N ? HM[i + 1] : 0, fk = FK[t];
+  if (hr < h) { const fs = FACE[fk + 'dir']; for (let k = 0; k < h - hr; k++) L.push(fs[(k + x) % fs.length], wx, wy + 8 * k); }
+  if (hl < h) { const fs = FACE[fk + 'esq']; for (let k = 0; k < h - hl; k++) L.push(fs[(k + y) % fs.length], wx, wy + 8 * k); }
+  const te = chaoTe(t, x, y); if (te[7] > 1) return;                       // topo animado: vai no quadro
+  L.push(te, wx, wy);
+  if (FRG[t]) {
+    if (x > 0 && TM[i - N] <= 1 && HM[i - N] === h) L.push(FRINGE.nw, wx, wy);
+    if (y > 0 && TM[i - 1] <= 1 && HM[i - 1] === h) L.push(FRINGE.ne, wx, wy);
+    if (x + 1 < N && TM[i + N] <= 1 && HM[i + N] === h) L.push(FRINGE.se, wx, wy);
+    if (y + 1 < N && TM[i + 1] <= 1 && HM[i + 1] === h) L.push(FRINGE.sw, wx, wy);
+  }
+}
+function chaoMov(i, x, y, wf, ff) {                                       // a parte que se mexe, desenhada a cada quadro
+  const h = HM[i], t = TM[i], wx = (x - y) * 16, wy = (x + y) * 8 - h * 8;
+  if (t === 15 || t === 16) {
+    const hr = x + 1 < N ? HM[i + N] : 0, hl = y + 1 < N ? HM[i + 1] : 0;
+    if (hr < h) { const fs = FACE.aguadir; for (let k = 0; k < h - hr; k++) blit(ctx, fs[0], ff, wx, wy + 8 * k); }
+    if (hl < h) { const fs = FACE.aguaesq; for (let k = 0; k < h - hl; k++) blit(ctx, fs[0], ff, wx, wy + 8 * k); }
+    blit(ctx, WATER[t === 15 ? 0 : 1][(x & 1) + 2 * (y & 1)], wf, wx, wy);
+    if (x > 0 && !isWater(TM[i - N]) && HM[i - N] > h) blit(ctx, FOAM.nw, ff, wx, wy);
+    if (y > 0 && !isWater(TM[i - 1]) && HM[i - 1] > h) blit(ctx, FOAM.ne, ff, wx, wy);
+    if (x + 1 < N && !isWater(TM[i + N]) && HM[i + N] > h) blit(ctx, FOAM.se, ff, wx, wy);
+    if (y + 1 < N && !isWater(TM[i + 1]) && HM[i + 1] > h) blit(ctx, FOAM.sw, ff, wx, wy);
+    return;
+  }
+  blit(ctx, chaoTe(t, x, y), wf, wx, wy);
+  if (FRG[t]) {
+    if (x > 0 && TM[i - N] <= 1 && HM[i - N] === h) blit(ctx, FRINGE.nw, 0, wx, wy);
+    if (y > 0 && TM[i - 1] <= 1 && HM[i - 1] === h) blit(ctx, FRINGE.ne, 0, wx, wy);
+    if (x + 1 < N && TM[i + N] <= 1 && HM[i + N] === h) blit(ctx, FRINGE.se, 0, wx, wy);
+    if (y + 1 < N && TM[i + 1] <= 1 && HM[i + 1] === h) blit(ctx, FRINGE.sw, 0, wx, wy);
+  }
+}
+function chaoInfo(cx, cy) {                                               // o que há no bloco: casas que se mexem, árvores, capim alto, alturas
+  const k = cx * CHAO.nk + cy; let f = CHAO.info[k]; if (f) return f;
+  const x0 = cx * GK, y0 = cy * GK, an = [], ar = [], gr = []; let hmin = 1e9, hmax = 0;
+  for (let s2 = 0; s2 <= 2 * (GK - 1); s2++) for (let a = Math.max(0, s2 - (GK - 1)); a <= Math.min(GK - 1, s2); a++) {
+    const x = x0 + a, y = y0 + s2 - a; if (x >= N || y >= N) continue; const i = x * N + y, t = TM[i], h = isWater(t) ? 0 : HM[i];
+    if (h < hmin) hmin = h; if (HM[i] > hmax) hmax = HM[i]; if (t >= 98 || t === 25) continue;
+    if (chaoAnim(t, x, y)) an.push(i); if ((t === 9 || t === 34) && treeAt(x, y)) ar.push(i); if (t === 2) gr.push(i);
+  }
+  const u0 = x0 - (y0 + GK - 1), u1 = x0 + GK - 1 - y0, d0 = x0 + y0, d1 = d0 + 2 * GK - 2;
+  f = CHAO.info[k] = { an, ar, gr, bx0: u0 * 16 - 48, bx1: u1 * 16 + 48, by0: d0 * 8 - hmax * 8 - 64, by1: d1 * 8 + 48, cv: null, ox: 0, oy: 0, uso: 0, k };
+  return f;
+}
+function chaoMonta(f, cx, cy) {                                           // desenha o bloco parado numa tela própria
+  const L = [], x0 = cx * GK, y0 = cy * GK;
+  for (let s2 = 0; s2 <= 2 * (GK - 1); s2++) for (let a = Math.max(0, s2 - (GK - 1)); a <= Math.min(GK - 1, s2); a++) {
+    const x = x0 + a, y = y0 + s2 - a; if (x < N && y < N) chaoEst(x * N + y, x, y, L); }
+  f.cv = null; if (!L.length) { f.vazio = 1; return; }
+  let mx0 = 1e9, my0 = 1e9, mx1 = -1e9, my1 = -1e9;
+  for (let j = 0; j < L.length; j += 3) { const e = L[j], fw = (e[3] / e[7]) | 0, rx = Math.round(L[j + 1] - e[5]), ry = Math.round(L[j + 2] - e[6]);
+    if (rx < mx0) mx0 = rx; if (ry < my0) my0 = ry; if (rx + fw > mx1) mx1 = rx + fw; if (ry + e[4] > my1) my1 = ry + e[4]; }
+  const cv2 = document.createElement('canvas'); cv2.width = Math.max(1, mx1 - mx0); cv2.height = Math.max(1, my1 - my0); const c2 = cv2.getContext('2d');
+  for (let j = 0; j < L.length; j += 3) { const e = L[j], fw = (e[3] / e[7]) | 0;
+    c2.drawImage(pages[e[0]], e[1], e[2], fw, e[4], Math.round(L[j + 1] - e[5]) - mx0, Math.round(L[j + 2] - e[6]) - my0, fw, e[4]); }
+  f.cv = cv2; f.ox = mx0; f.oy = my0; CHAO.vivos.add(f);
+}
+function chaoQuadro(items, vl, vt, vr, vb, wf, ff, gf) {
+  if (!CHAO || CHAO.sc !== scene) { if (CHAO) for (const f of CHAO.vivos) { if (f.cv) f.cv.width = 0; f.cv = null; }
+    let hm = 0; for (let i = 0; i < N * N; i++) if (HM[i] > hm) hm = HM[i];
+    CHAO = { sc: scene, nk: Math.ceil(N / GK), info: [], vivos: new Set(), hmax: hm }; }
+  const nk = CHAO.nk, vb2 = vb + CHAO.hmax * 8 + 64;
+  const tx0 = Math.floor((vt / 8 + vl / 16) / 2) - 2, tx1 = Math.ceil((vb2 / 8 + vr / 16) / 2) + 2, ty0 = Math.floor((vt / 8 - vr / 16) / 2) - 2, ty1 = Math.ceil((vb2 / 8 - vl / 16) / 2) + 2;
+  const vis = [];
+  for (let cx = Math.max(0, Math.floor(tx0 / GK)); cx <= Math.min(nk - 1, Math.floor(tx1 / GK)); cx++)
+    for (let cy = Math.max(0, Math.floor(ty0 / GK)); cy <= Math.min(nk - 1, Math.floor(ty1 / GK)); cy++) {
+      const f = chaoInfo(cx, cy); if (f.bx1 < vl || f.bx0 > vr || f.by1 < vt || f.by0 > vb) continue; f.cx = cx; f.cy = cy; vis.push(f); }
+  vis.sort((a, b) => (a.cx + a.cy) - (b.cx + b.cy) || a.cx - b.cx);
+  for (const f of vis) {                                                  // 1) o que se mexe, por baixo
+    for (const i of f.an) { const x = (i / N) | 0, y = i % N, h = HM[i], wx = (x - y) * 16, wy = (x + y) * 8 - h * 8;
+      if (wx + 20 < vl || wx - 20 > vr || wy > vb + 2) continue; const hr = x + 1 < N ? HM[i + N] : 0, hl = y + 1 < N ? HM[i + 1] : 0;
+      if (wy + 16 + Math.max(h - hr, h - hl, 0) * 8 < vt) continue; chaoMov(i, x, y, wf, ff); }
+    for (const i of f.ar) { const x = (i / N) | 0, y = i % N, d = x + y, wx = (x - y) * 16, wy = d * 8 - HM[i] * 8;      // 2) árvores e capim viram objetos
+      if (wx + 40 < vl || wx - 40 > vr || wy - 120 > vb || d * 8 < vt - 32) continue; const it = mkItem(treeAt(x, y), 0, x, y, 1, 1, wx, wy, false, d + 0.5); it.tree = 1; items.push(it); }
+    for (const i of f.gr) { const x = (i / N) | 0, y = i % N, d = x + y, wx = (x - y) * 16, wy = d * 8 - HM[i] * 8;
+      if (wx + 40 < vl || wx - 40 > vr || wy > vb + 2 || wy + 24 < vt) continue;
+      items.push({ bx0: x, by0: y, bx1: x + 1, by1: y + 1, rx0: wx - 16, ry0: wy - 8, rx1: wx + 16, ry1: wy + 24, depth: d + 0.5, grass: i, draw() { if (!grassCovered.has(this.grass)) { blit(ctx, GA[0], gf, wx, wy); blit(ctx, GA[1], gf, wx, wy); } else blit(ctx, GA[0], gf, wx, wy); } }); }
+  }
+  for (const f of vis) {                                                  // 3) os blocos parados, por cima
+    if (!f.cv && !f.vazio) chaoMonta(f, f.cx, f.cy); f.uso = frameN;
+    if (f.cv) ctx.drawImage(f.cv, f.ox, f.oy);
+  }
+  if (combatePronto && ovMask.length === N * N) {            // 4) marcas do combate (alcance, área, caminho)
+    const ks = new Set(); for (const c in OV) for (const k of OV[c].keys()) ks.add(k);
+    if (ks.size) { const arr = [...ks].sort((a, b) => ((a / N | 0) + a % N) - ((b / N | 0) + b % N));
+      for (const i of arr) { const x = (i / N) | 0, y = i % N, wx = (x - y) * 16, wy = (x + y) * 8 - HM[i] * 8; if (wx + 20 < vl || wx - 20 > vr || wy > vb + 2 || wy + 24 < vt) continue; ovTile(i, wx, wy); } }
+  }
+  const lim = Math.max(48, vis.length * 2 + 16);                          // guarda só os blocos usados há pouco (memória do celular)
+  if (CHAO.vivos.size > lim) { const v = [...CHAO.vivos].sort((a, b) => a.uso - b.uso);
+    for (let j = 0; j < v.length - lim; j++) { const f = v[j]; if (f.uso === frameN) break; if (f.cv) f.cv.width = 0; f.cv = null; CHAO.vivos.delete(f); } }
+}
 // ---------- mundo de genjutsu: o mesmo disco com três ilusões (espiral, floral, demoníaca) ----------
 // O tema vem da cena (scene.tema). Fundo e chão são desenhados aqui; os reflexos e as partículas também.
 const GJ = { c: [16, 16], R: 9.3, fundo: {}, flores: null, olhos: null, silh: null }; const GJR = [];
@@ -1408,38 +1510,40 @@ function draw() {
   const items = []; const unitsAt = new Map();
   const wf = Math.floor(now / 140) % 8, ff = Math.floor(now / 220) % 4, gf = Math.floor(now / 700) % 2;
   // ---- chão ----
-  const dmin = Math.max(0, Math.floor((vt - 24) / 8) - 1), dmax = Math.min(2 * N - 2, Math.ceil((vb + 100 * 8) / 8) + 1);
-  for (let d = dmin; d <= dmax; d++) {
-    const xs = Math.max(0, d - (N - 1), Math.floor((d + (vl - 40) / 16) / 2)), xe = Math.min(N - 1, d, Math.ceil((d + (vr + 40) / 16) / 2));
-    for (let x = xs; x <= xe; x++) {
-      const y = d - x, i = x * N + y, h = HM[i], t = TM[i]; if (t >= 98 || t === 25) continue;
-      const wx = (x - y) * 16, wy = d * 8 - h * 8;
-      if (wy - 120 > vb) continue;
-      const tree = (t === 9 || t === 34) ? treeAt(x, y) : null;
-      if (tree) { const it = mkItem(tree, 0, x, y, 1, 1, wx, wy, false, d + 0.5); it.tree = 1; items.push(it); }
-      if (wy > vb + 2) continue;
-      const hr = x + 1 < N ? HM[i + N] : 0, hl = y + 1 < N ? HM[i + 1] : 0;
-      if (wy + 16 + Math.max(h - hr, h - hl, 0) * 8 < vt) continue;
-      const fk = FK[t];
-      if (hr < h) { const fs = FACE[fk + 'dir']; for (let k = 0; k < h - hr; k++) blit(ctx, fs[(k + x) % fs.length], fk === 'agua' ? ff : 0, wx, wy + 8 * k); }
-      if (hl < h) { const fs = FACE[fk + 'esq']; for (let k = 0; k < h - hl; k++) blit(ctx, fs[(k + y) % fs.length], fk === 'agua' ? ff : 0, wx, wy + 8 * k); }
-      if (t === 15 || t === 16) {
-        blit(ctx, WATER[t === 15 ? 0 : 1][(x & 1) + 2 * (y & 1)], wf, wx, wy);
-        if (x > 0 && !isWater(TM[i - N]) && HM[i - N] > h) blit(ctx, FOAM.nw, ff, wx, wy);
-        if (y > 0 && !isWater(TM[i - 1]) && HM[i - 1] > h) blit(ctx, FOAM.ne, ff, wx, wy);
-        if (x + 1 < N && !isWater(TM[i + N]) && HM[i + N] > h) blit(ctx, FOAM.se, ff, wx, wy);
-        if (y + 1 < N && !isWater(TM[i + 1]) && HM[i + 1] > h) blit(ctx, FOAM.sw, ff, wx, wy);
-      } else {
-        const v = TE[t]; const te = v[(t === 30 ? h32(x >> 2, y >> 2, 5) : h32(x, y, 1)) % v.length]; blit(ctx, te, te[7] > 1 ? wf : 0, wx, wy);      // horta: um canteiro de cada verdura; arrozal: a água brilha
-        if (FRG[t]) {
-          if (x > 0 && TM[i - N] <= 1 && HM[i - N] === h) blit(ctx, FRINGE.nw, 0, wx, wy);
-          if (y > 0 && TM[i - 1] <= 1 && HM[i - 1] === h) blit(ctx, FRINGE.ne, 0, wx, wy);
-          if (x + 1 < N && TM[i + N] <= 1 && HM[i + N] === h) blit(ctx, FRINGE.se, 0, wx, wy);
-          if (y + 1 < N && TM[i + 1] <= 1 && HM[i + 1] === h) blit(ctx, FRINGE.sw, 0, wx, wy);
+  if (CHAO_ON) chaoQuadro(items, vl, vt, vr, vb, wf, ff, gf); else {
+    const dmin = Math.max(0, Math.floor((vt - 24) / 8) - 1), dmax = Math.min(2 * N - 2, Math.ceil((vb + 100 * 8) / 8) + 1);
+    for (let d = dmin; d <= dmax; d++) {
+      const xs = Math.max(0, d - (N - 1), Math.floor((d + (vl - 40) / 16) / 2)), xe = Math.min(N - 1, d, Math.ceil((d + (vr + 40) / 16) / 2));
+      for (let x = xs; x <= xe; x++) {
+        const y = d - x, i = x * N + y, h = HM[i], t = TM[i]; if (t >= 98 || t === 25) continue;
+        const wx = (x - y) * 16, wy = d * 8 - h * 8;
+        if (wy - 120 > vb) continue;
+        const tree = (t === 9 || t === 34) ? treeAt(x, y) : null;
+        if (tree) { const it = mkItem(tree, 0, x, y, 1, 1, wx, wy, false, d + 0.5); it.tree = 1; items.push(it); }
+        if (wy > vb + 2) continue;
+        const hr = x + 1 < N ? HM[i + N] : 0, hl = y + 1 < N ? HM[i + 1] : 0;
+        if (wy + 16 + Math.max(h - hr, h - hl, 0) * 8 < vt) continue;
+        const fk = FK[t];
+        if (hr < h) { const fs = FACE[fk + 'dir']; for (let k = 0; k < h - hr; k++) blit(ctx, fs[(k + x) % fs.length], fk === 'agua' ? ff : 0, wx, wy + 8 * k); }
+        if (hl < h) { const fs = FACE[fk + 'esq']; for (let k = 0; k < h - hl; k++) blit(ctx, fs[(k + y) % fs.length], fk === 'agua' ? ff : 0, wx, wy + 8 * k); }
+        if (t === 15 || t === 16) {
+          blit(ctx, WATER[t === 15 ? 0 : 1][(x & 1) + 2 * (y & 1)], wf, wx, wy);
+          if (x > 0 && !isWater(TM[i - N]) && HM[i - N] > h) blit(ctx, FOAM.nw, ff, wx, wy);
+          if (y > 0 && !isWater(TM[i - 1]) && HM[i - 1] > h) blit(ctx, FOAM.ne, ff, wx, wy);
+          if (x + 1 < N && !isWater(TM[i + N]) && HM[i + N] > h) blit(ctx, FOAM.se, ff, wx, wy);
+          if (y + 1 < N && !isWater(TM[i + 1]) && HM[i + 1] > h) blit(ctx, FOAM.sw, ff, wx, wy);
+        } else {
+          const v = TE[t]; const te = v[(t === 30 ? h32(x >> 2, y >> 2, 5) : h32(x, y, 1)) % v.length]; blit(ctx, te, te[7] > 1 ? wf : 0, wx, wy);      // horta: um canteiro de cada verdura; arrozal: a água brilha
+          if (FRG[t]) {
+            if (x > 0 && TM[i - N] <= 1 && HM[i - N] === h) blit(ctx, FRINGE.nw, 0, wx, wy);
+            if (y > 0 && TM[i - 1] <= 1 && HM[i - 1] === h) blit(ctx, FRINGE.ne, 0, wx, wy);
+            if (x + 1 < N && TM[i + N] <= 1 && HM[i + N] === h) blit(ctx, FRINGE.se, 0, wx, wy);
+            if (y + 1 < N && TM[i + 1] <= 1 && HM[i + 1] === h) blit(ctx, FRINGE.sw, 0, wx, wy);
+          }
+          if (t === 2) items.push({ bx0: x, by0: y, bx1: x + 1, by1: y + 1, rx0: wx - 16, ry0: wy - 8, rx1: wx + 16, ry1: wy + 24, depth: d + 0.5, grass: x * N + y, draw() { if (!grassCovered.has(this.grass)) { blit(ctx, GA[0], gf, wx, wy); blit(ctx, GA[1], gf, wx, wy); } else blit(ctx, GA[0], gf, wx, wy); } });
         }
-        if (t === 2) items.push({ bx0: x, by0: y, bx1: x + 1, by1: y + 1, rx0: wx - 16, ry0: wy - 8, rx1: wx + 16, ry1: wy + 24, depth: d + 0.5, grass: x * N + y, draw() { if (!grassCovered.has(this.grass)) { blit(ctx, GA[0], gf, wx, wy); blit(ctx, GA[1], gf, wx, wy); } else blit(ctx, GA[0], gf, wx, wy); } });
+        if (ovMask[i]) ovTile(i, wx, wy);
       }
-      if (ovMask[i]) ovTile(i, wx, wy);
     }
   }
   fxChao(now); combateChao(now);
