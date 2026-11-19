@@ -588,6 +588,95 @@ body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,bod
 #dados .base{display:flex;align-items:center;gap:6px;font-size:13px}
 @media (max-width:900px){body.painel #combate{display:none!important}#vez{top:10px}#vez b{font-size:16px}#combate{top:auto!important;bottom:64px;left:8px;width:min(280px,calc(100vw - 16px));max-height:38vh}#tecBtn{top:auto;bottom:12px;left:124px;right:auto}#tecnicas{left:8px;right:8px;top:auto;bottom:64px;width:auto;max-height:62vh}}
 @media (max-width:900px){#dadosBtn{top:auto;bottom:12px;left:12px;right:auto}#dados{left:8px;right:8px;top:auto;bottom:64px;width:auto;max-height:62vh}#rolos{top:22px}.rolo{grid-template-columns:48px 1fr auto;padding:10px 16px 10px 14px}.rolo .ret{width:48px}.rolo .ret canvas{width:auto!important;height:46px!important}}
+
+/* ---------- tela de título e contas ---------- */
+#titulo{position:fixed;inset:0;z-index:40;color:#efe6cf;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#titulo[hidden]{display:none}
+body.emTitulo .ui,body.emTitulo #tags,body.emTitulo #rolos,body.emTitulo #toast{visibility:hidden}
+body.emTitulo #cv{cursor:default}
+.tt-fundo{position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(10,12,22,.9) 0,rgba(10,12,22,.76) 30%,rgba(10,12,22,.22) 62%,rgba(10,12,22,0) 82%),linear-gradient(0deg,rgba(10,12,22,.6),rgba(10,12,22,0) 32%)}
+#titulo.jogando .tt-fundo{background:rgba(10,12,22,.74)}
+.tt-col{position:relative;box-sizing:border-box;width:min(470px,100%);min-height:100%;padding:clamp(28px,8vh,84px) clamp(18px,5vw,60px) 22px;display:flex;flex-direction:column;gap:22px}
+.tt-marca{position:relative;padding-right:56px}
+.tt-nome{margin:0;font-family:var(--mincho);font-weight:700;font-size:clamp(38px,6vw,60px);line-height:1;letter-spacing:-.01em;color:#f3ead2;text-shadow:0 2px 0 rgba(0,0,0,.35),0 10px 34px rgba(0,0,0,.5)}
+.tt-sub{margin:12px 0 0;font-size:13px;color:#cbc2aa}
+.tt-hanko{position:absolute;right:0;bottom:-4px;width:44px;height:44px;display:grid;place-items:center;background:var(--shu);color:#f7ebe4;font-family:var(--mincho);font-size:27px;line-height:1;border-radius:4px;transform:rotate(-7deg);box-shadow:inset 0 0 0 2px rgba(247,235,228,.5),0 3px 10px rgba(0,0,0,.35)}
+.tt-corpo{display:flex;flex-direction:column;gap:14px}
+.tt-menu{display:flex;flex-direction:column;gap:8px}
+#titulo .tt-op{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;box-sizing:border-box;text-align:left;padding:12px 16px 12px 19px;border-radius:3px;border:1px solid rgba(232,221,197,.22);background:rgba(16,20,34,.64);color:#efe6cf;font-family:var(--mincho);font-size:18px;line-height:1.2;cursor:pointer;transition:background .15s,border-color .15s}
+#titulo .tt-op::before{content:'';position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:2px;background:transparent}
+#titulo .tt-op:hover,#titulo .tt-op:focus-visible{background:rgba(30,36,58,.9);border-color:rgba(232,221,197,.45);outline:none}
+#titulo .tt-op:hover::before,#titulo .tt-op:focus-visible::before{background:var(--shu)}
+#titulo .tt-op.p{background:var(--washi);color:var(--sumi);border-color:transparent}
+#titulo .tt-op.p:hover,#titulo .tt-op.p:focus-visible{background:#f4ead4}
+#titulo .tt-op.q{background:none;border-color:transparent;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;padding:9px 19px;color:#c9c0a8}
+#titulo .tt-op.q:hover,#titulo .tt-op.q:focus-visible{color:#f3ead2;background:rgba(255,255,255,.05)}
+#titulo .tt-op:disabled{opacity:.6;cursor:wait}
+.tt-ops{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:12.5px;color:#aaa290}
+#titulo .tt-op.p .tt-ops{color:#5d5249}
+.tt-rede{margin:auto 0 0;padding-top:10px;font-size:12px;color:#9ea6b7}
+.tt-aviso{margin:0;padding:9px 12px;border-left:3px solid var(--shu);background:rgba(168,44,36,.18);color:#f6e6df;font-size:13.5px;line-height:1.4;border-radius:2px}
+.tt-aviso[hidden]{display:none}
+.tt-perfil{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.tt-perfil .tt-lb{grid-column:1/-1}
+.tt-lb{font-size:12.5px;color:#cbc2aa}
+.tt-in{box-sizing:border-box;width:100%;padding:10px 12px;border-radius:3px;border:1px solid rgba(232,221,197,.3);background:rgba(10,12,22,.72);color:#f3ead2;font:16px system-ui,-apple-system,"Segoe UI",sans-serif}
+.tt-in:focus{outline:2px solid #e9c46a;outline-offset:1px}
+.tt-cores{display:flex;gap:7px;flex-wrap:wrap;max-width:150px}
+#titulo .tt-cor{width:24px;height:24px;padding:0;border-radius:50%;background:var(--c);border:2px solid rgba(0,0,0,.4)}
+#titulo .tt-cor[aria-checked="true"]{box-shadow:0 0 0 2px #10131f,0 0 0 4px var(--c)}
+.tt-cartas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#titulo .tt-carta{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 6px 10px;border-radius:3px;border:1px solid rgba(36,30,39,.35);background:var(--washi);color:var(--sumi);cursor:pointer;font:inherit}
+#titulo .tt-carta:hover,#titulo .tt-carta:focus-visible{outline:2px solid #e9c46a;outline-offset:2px}
+.tt-ret{image-rendering:pixelated;image-rendering:crisp-edges;flex:none}
+.tt-carta .tt-ret{background:#d9cdb1;border-radius:2px}
+.tt-cn{font-family:var(--mincho);font-size:16px;font-weight:700;line-height:1.15;text-align:center}
+.tt-cs{font-size:11.5px;color:#5d5249;text-align:center;line-height:1.25}
+#titulo .tt-carta.ocup .tt-cs{color:var(--shu)}
+#titulo .tt-carta.meu{box-shadow:0 0 0 2px #e9c46a}
+#titulo .tt-carta.novo{background:rgba(16,20,34,.64);color:#efe6cf;border:1px dashed rgba(232,221,197,.45)}
+#titulo .tt-carta.novo .tt-cs{color:#aaa290}
+.tt-mais{width:64px;height:64px;display:grid;place-items:center;font-size:36px;font-family:var(--mincho);color:#e9c46a}
+.tt-cartao{display:flex;flex-direction:column;gap:10px;padding:18px 18px 14px;border-radius:4px;background:var(--washi);color:var(--sumi);margin:0;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.tt-cartao .tt-ret{background:#d9cdb1;border-radius:2px}
+.tt-h{margin:0;font-family:var(--mincho);font-size:22px;line-height:1.2}
+.tt-p{margin:0;font-size:14px;line-height:1.45;color:#3e353b}
+.tt-p.fraco{color:#6c6158;font-style:italic}
+.tt-cartao .tt-in{background:#fbf6ea;color:var(--sumi);border-color:#b7a98b}
+.tt-cartao .tt-lb{color:#5d5249}
+.tt-cartao .tt-aviso{color:#5c1813;background:rgba(168,44,36,.1)}
+.tt-chk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.35}
+.tt-chk input{margin:2px 0 0;accent-color:var(--shu);width:16px;height:16px;flex:none}
+.tt-linha{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#titulo .tt-linha .tt-op{width:auto}
+#titulo .tt-cartao .tt-op.p{background:var(--sumi);color:var(--washi)}
+#titulo .tt-cartao .tt-op.p:hover,#titulo .tt-cartao .tt-op.p:focus-visible{background:#3a3040}
+#titulo .tt-cartao .tt-op.q{color:#5d5249}
+#titulo .tt-cartao .tt-op.q:hover,#titulo .tt-cartao .tt-op.q:focus-visible{color:var(--sumi);background:rgba(36,30,39,.06)}
+#titulo .tt-cartao .tt-op .tt-ops{color:inherit;opacity:.75}
+.tt-cf{display:flex;flex-direction:column;gap:6px}
+.tt-rgw{display:flex;gap:10px;align-items:center}
+.tt-rg{flex:1;accent-color:var(--shu)}
+.tt-out{min-width:42px;font-variant-numeric:tabular-nums;font-size:13px}
+.tt-seg{display:flex;flex-wrap:wrap;gap:4px}
+#titulo .tt-seg button{background:#f6efdf;color:var(--sumi);border:1px solid #b7a98b;border-radius:3px;padding:6px 11px;font-size:13px}
+#titulo .tt-seg button[aria-checked="true"]{background:var(--sumi);color:var(--washi);border-color:var(--sumi)}
+.tt-dica{font-size:12px;color:#6c6158}
+@media (max-width:700px){.tt-fundo{background:linear-gradient(180deg,rgba(10,12,22,.86),rgba(10,12,22,.66) 55%,rgba(10,12,22,.84))}.tt-col{width:100%}}
+@media (max-width:420px){.tt-cartas{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){#titulo .tt-op{transition:none}}
+#menuBtn[hidden]{display:none}
+#convite{width:min(660px,calc(100vw - 40px))}
+#convite .jg-gk{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px;font-size:12.5px;color:#c9c5b8}
+#convite .jg-scroll{max-height:min(46vh,360px);overflow:auto;margin-top:10px}
+#convite .jg-tab{width:100%;border-collapse:collapse;font-size:12.5px}
+#convite .jg-tab th{text-align:left;color:#a9a69c;font-weight:500;padding:4px 6px;border-bottom:1px solid rgba(255,255,255,.1)}
+#convite .jg-tab td{padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle}
+#convite .jg-nm{display:flex;align-items:center;gap:7px}
+#convite .jg-nm .tt-ret{background:#1b2234;border-radius:4px}
+#convite .jg-ac{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+#convite .jg-res{margin-top:10px;font-size:12.5px;color:#c9c5b8}
+#convite .jg-res summary{cursor:pointer}
 </style>
 </head>
 <body>
@@ -603,7 +692,7 @@ body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,bod
   <div class="row"><button data-go="330">Amanhecer</button><button data-go="720">Meio-dia</button><button data-go="1080">Entardecer</button><button data-go="1350">Noite</button></div>
   </div>
   <div class="s" id="tempoMestre" style="display:none">A hora do dia é do mestre</div>
-  <div class="row"><button id="tada" class="on" title="Andar sobre a água (Tadayou)">Tadayou</button><button id="kino" title="Subir paredões e encostas (Kinobori)">Kinobori</button><button id="zin">＋</button><button id="zout">－</button></div>
+  <div class="row"><button id="menuBtn" type="button" title="Menu: personagem, configurações, sair" hidden>Menu</button><button id="tada" class="on" title="Andar sobre a água (Tadayou)">Tadayou</button><button id="kino" title="Subir paredões e encostas (Kinobori)">Kinobori</button><button id="zin">＋</button><button id="zout">－</button></div>
   <div class="row" id="gmrow" style="display:none"><button id="convidar">Convidar jogadores</button><button id="salvar">Salvar arquivo</button><button id="abrir">Abrir arquivo</button><input type="file" id="arq" accept=".json,application/json" hidden></div>
   <div class="row" id="gjrow" style="display:none" title="Quem estiver marcado vai para o Mundo de Genjutsu; o corpo fica parado onde estava"><span class="lbl">Genjutsu</span><span id="gjtemas" class="row" style="margin:0"></span><span id="gjchips" class="row" style="margin:0"></span></div>
   <div class="row" id="cbrow" style="display:none"><span class="lbl">Combate</span><button id="cbIniciar">Iniciar combate</button><button id="npcAdd" title="Põe um inimigo no centro da tela">Pôr inimigo</button><button id="npcAddOc" title="Põe um inimigo que só você vê, até revelar">Pôr oculto</button></div>
@@ -623,6 +712,7 @@ body.fichaAberta #combate,body.fichaAberta #tecnicas,body.fichaAberta #dados,bod
   <div class="row" style="justify-content:flex-end;margin-top:10px"><button id="fechaConvite">Fechar</button></div>
 </div>
 <div id="aviso"></div>
+<div id="titulo" hidden aria-label="Tela de título"></div>
 <div id="chars" class="ui" style="display:none"></div>
 <div id="mm" class="ui" style="display:none"><canvas id="mmc" width="512" height="256"></canvas></div>
 <div id="help" class="ui" style="display:none">Clique para andar · arraste para olhar · roda ou ＋/－ para o zoom · dois cliques em alguém abrem a ficha<br>Espaço centraliza · M mostra ou esconde o mapa · 1–6 trocam o personagem · 0 deixa só a câmera · R abre os dados · T abre as técnicas</div>
@@ -866,14 +956,38 @@ const Mesa = (() => {
     } catch (e) { return null; }
   }
 
+  // ----- senhas: PBKDF2 (SHA-256) + AES-GCM -----
+  // A senha de cada personagem vira um resumo com sal (fica no estado da mesa); a do mestre cifra a chave que assina a mesa.
+  const ITER = 150000;
+  async function bitsDe(senha, salt, it) {
+    const base = await crypto.subtle.importKey('raw', enc.encode(String(senha).normalize('NFC')), 'PBKDF2', false, ['deriveBits']);
+    return new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: it }, base, 256));
+  }
+  async function hashSenha(senha, s) { const salt = s ? b64u.dec(s) : rand(16); const h = await bitsDe(senha, cat([enc.encode('mvila/conta/1'), salt]), 100000); return { s: b64u.enc(salt), h: b64u.enc(h) }; }
+  async function cifraSenha(senha, txt) {
+    const salt = rand(16), iv = rand(12); const key = await crypto.subtle.importKey('raw', await bitsDe(senha, cat([enc.encode('mvila/gk/1'), salt]), ITER), 'AES-GCM', false, ['encrypt']);
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(txt))); return { s: b64u.enc(salt), iv: b64u.enc(iv), ct: b64u.enc(ct), it: ITER };
+  }
+  async function abreSenha(senha, o) {
+    try { const it = Math.min(Math.max(+o.it || ITER, 50000), 2000000);
+      const key = await crypto.subtle.importKey('raw', await bitsDe(senha, cat([enc.encode('mvila/gk/1'), b64u.dec(o.s)]), it), 'AES-GCM', false, ['decrypt']);
+      return dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64u.dec(o.iv) }, key, b64u.dec(o.ct))); } catch (e) { return null; }
+  }
+  const okGk = o => !!o && typeof o === 'object' && [o.s, o.iv, o.ct].every(v => typeof v === 'string' && /^[A-Za-z0-9_-]{8,200}$/.test(v));
+
   async function join(o) {
-    const m = o.m, k = o.k, g = o.g || null;
+    const m = o.m, k = o.k; let g = o.g || null;
     const aes = await crypto.subtle.importKey('raw', await sha('mvila/aes/' + m), 'AES-GCM', false, ['encrypt', 'decrypt']);
     const pubRaw = b64u.dec(k);
     const pub = await crypto.subtle.importKey('raw', pubRaw, { name: 'ECDSA', namedCurve: 'P-256' }, true, ['verify']);
+    // a chave do mestre só vale se assinar algo que a chave pública da mesa confirma
+    async function confereG(d) {
+      try { const p = await crypto.subtle.importKey('jwk', { kty: 'EC', crv: 'P-256', x: b64u.enc(pubRaw.slice(1, 33)), y: b64u.enc(pubRaw.slice(33, 65)), d, ext: true }, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+        const t = rand(16), sig = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, p, t);
+        return (await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, sig, t)) ? p : null; } catch (e) { return null; }
+    }
     let priv = null;
-    if (g) priv = await crypto.subtle.importKey('jwk', { kty: 'EC', crv: 'P-256', x: b64u.enc(pubRaw.slice(1, 33)), y: b64u.enc(pubRaw.slice(33, 65)), d: g, ext: true },
-      { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+    if (g) { priv = await confereG(g); if (!priv) g = null; }
     const room = hex(await sha('mvila/topic/' + m)).slice(0, 32);
     const base = 'mvila/1/' + room;
     const cid = hex(rand(5));
@@ -882,9 +996,12 @@ const Mesa = (() => {
     const open = async u8 => { if (u8.length < 29) return null; try { return JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: u8.subarray(0, 12) }, aes, u8.subarray(12)))); } catch (e) { return null; } };
     const will = { topic: base + '/p/' + cid, payload: await seal({ t: 'bye', cid, id: cid + '-bye' }) };
     const byeNow = await seal({ t: 'bye', cid, id: cid + '-bye2' });
-    const api = { cid, room, isGM: !!priv, links: null, conns: [], onPresence: o.onPresence, onBye: o.onBye, onState: o.onState, onRoll: o.onRoll || (() => {}), onEvent: o.onEvent || (() => {}), onChange: o.onChange || (() => {}), onFicha: o.onFicha || (() => {}) };
+    const api = { cid, room, m, k, isGM: !!priv, g, links: null, conns: [], onPresence: o.onPresence, onBye: o.onBye, onState: o.onState, onRoll: o.onRoll || (() => {}), onEvent: o.onEvent || (() => {}), onChange: o.onChange || (() => {}), onFicha: o.onFicha || (() => {}), onGk: o.onGk || (() => {}) };
     const pageUrl = location.href.split('#')[0];
     api.links = { player: `${pageUrl}#m=${m}&k=${k}`, gm: `${pageUrl}#m=${m}&k=${k}&g=${g || ''}` };
+    // entrar como mestre depois (senha do mestre): a mesma conexão passa a assinar o estado
+    api.virarMestre = async d => { const p = await confereG(d); if (!p) return false; priv = p; g = d; api.g = d; api.isGM = true; api.links.gm = `${pageUrl}#m=${m}&k=${k}&g=${d}`; return true; };
+    api.confere = async d => !!(await confereG(d));
     async function onMsg(topic, payload, retained) {
       if (!payload.length) return;
       const msg = await open(payload); if (!msg || typeof msg !== 'object') return;
@@ -896,6 +1013,10 @@ const Mesa = (() => {
       else if (msg.t === 's' && typeof msg.s === 'string' && typeof msg.sig === 'string') {
         let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode(msg.s)); } catch (e) {}
         if (!ok) return; let st = null; try { st = JSON.parse(msg.s); } catch (e) {} if (st) api.onState(st, retained);
+      }
+      else if (msg.t === 'gk' && typeof msg.s === 'string' && typeof msg.sig === 'string') {   // chave do mestre cifrada pela senha dele, assinada
+        let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode('gk|' + msg.s)); } catch (e) {}
+        if (!ok) return; let gk = null; try { gk = JSON.parse(msg.s); } catch (e) {} if (okGk(gk)) api.onGk(gk, retained);
       }
       else if (msg.t === 'f' && typeof msg.c === 'string' && typeof msg.s === 'string' && typeof msg.sig === 'string') {     // ficha de personagem, assinada pelo mestre
         let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode(msg.c + '|' + msg.s)); } catch (e) {}
@@ -920,13 +1041,19 @@ const Mesa = (() => {
       const p = await seal({ t: 'f', id: cid + '-f' + (++seq), c, s, sig: b64u.enc(sig) });
       for (const cn of api.conns) cn.publish(base + '/f/' + c, p, true);
     };
+    api.sendGk = async gk => {
+      if (!priv || !okGk(gk)) return; const s = JSON.stringify({ s: gk.s, iv: gk.iv, ct: gk.ct, it: gk.it });
+      const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, priv, enc.encode('gk|' + s)));
+      const p = await seal({ t: 'gk', id: cid + '-g' + (++seq), s, sig: b64u.enc(sig) });
+      for (const c of api.conns) c.publish(base + '/gk', p, true);
+    };
     api.sendRoll = async r => { const p = await seal(Object.assign({}, r, { t: 'r', cid, id: cid + '-r' + (++seq) })); for (const c of api.conns) c.publish(base + '/r', p, false); };
     // eventos passageiros da mesa (técnicas lançadas, animações): não ficam retidos no servidor
     api.sendEvent = async ev => { const p = await seal(Object.assign({}, ev, { t: 'e', cid, id: cid + '-e' + (++seq) })); for (const c of api.conns) c.publish(base + '/e', p, false); };
     api.leave = () => { for (const c of api.conns) c.publish(base + '/p/' + cid, byeNow, false); };
     return api;
   }
-  return { newTable, join, RELAYS, ecdhNew, sealTo, openSealed, okPub };
+  return { newTable, join, RELAYS, ecdhNew, sealTo, openSealed, okPub, hashSenha, cifraSenha, abreSenha, okGk };
 })();
 
 window.onerror = function (m, s, l, c, e) { const el = document.getElementById('err'); el.style.display = 'block'; el.textContent += (e && e.stack ? e.stack : m) + '\n'; };
@@ -936,6 +1063,9 @@ window.addEventListener('unhandledrejection', ev => { const el = document.getEle
 const PEL = document.getElementById('payload');
 const P = (PEL && PEL.textContent.trim().startsWith('{')) ? JSON.parse(PEL.textContent) : await (await fetch('dados.json')).json();
 let N = P.N; const NV = P.N;
+// abrir a página sem link entra na última mesa deste aparelho (o link é o mesmo para todos: quem é quem se decide na tela de título)
+try { if ((!location.hash || location.hash === '#') && !(window.claude && typeof window.claude.use === 'function')) { const u = JSON.parse(localStorage.getItem('mvila:ultima') || 'null');
+  if (u && /^[\w-]{10,40}$/.test(u.m) && /^[\w-]{80,100}$/.test(u.k)) history.replaceState(null, '', location.pathname + location.search + '#m=' + u.m + '&k=' + u.k); } } catch (e) {}
 const Q = new URLSearchParams(location.hash.slice(1));
 // ---------- utilidades ----------
 function b64u8(s) { const bin = atob(s); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
@@ -1126,6 +1256,16 @@ const ehGen = id => !!(CENAS[id] && CENAS[id].fx === 'genjutsu');
 const MESA = !!Q.get('m') && !!Q.get('k') && !(window.claude && typeof window.claude.use === 'function');
 let me = { c: CHARS.includes(Q.get('c')) ? Q.get('c') : (MESA ? null : CHARS[(Math.random() * 6) | 0]), x: +(Q.get('px') || 624.5), y: +(Q.get('py') || 669.5), path: [], dx: 1, dy: 1, mv: false };
 let pet = { x: me.x - 1, y: me.y, dx: 1, dy: 1, mv: false };
+// contas: cada jogador entra com o próprio personagem e senha; o mestre, com a senha dele (tela de título)
+const CONTAS = MESA && (!Q.has('teste') || Q.has('titulo'));
+const DV = (() => { try { let v = localStorage.getItem('mvila:dv'); if (!/^[a-z0-9]{8}$/.test(v || '')) { v = Math.random().toString(36).slice(2, 10).padEnd(8, '0'); localStorage.setItem('mvila:dv', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10).padEnd(8, '0'); } })();
+let contasVer = {}, travVer = [], gkVer = null, estadoChegou = false, ultimoEstado = null, TIT = null; const SESS = { c: null };
+const CORES_J = ['#e9c46a', '#e07a5f', '#81b29a', '#7cb7e8', '#c49bdc', '#f2a1b8', '#a8c66c', '#d9d4c7'];
+const PERFIL = (() => { try { const v = JSON.parse(localStorage.getItem('mvila:perfil') || '{}'); return { nm: String(v.nm || '').slice(0, 24), cor: Number.isInteger(v.cor) && v.cor >= 0 && v.cor < 8 ? v.cor : 0 }; } catch (e) { return { nm: '', cor: 0 }; } })();
+const CFG = (() => { const d = { vol: 0.8, leve: false, zoom: 0, calmo: !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) };
+  try { const v = JSON.parse(localStorage.getItem('mvila:cfg') || '{}'); return { vol: Number.isFinite(+v.vol) ? Math.max(0, Math.min(1, +v.vol)) : d.vol, leve: v.leve === undefined ? d.leve : !!v.leve, zoom: [1, 2, 3, 4].includes(+v.zoom) ? +v.zoom : 0, calmo: v.calmo === undefined ? d.calmo : !!v.calmo }; } catch (e) { return d; } })();
+let somMestre = null;
+function saidaSom() { if (!actx) return null; if (!somMestre || somMestre.context !== actx) { somMestre = actx.createGain(); somMestre.connect(actx.destination); } somMestre.gain.value = CFG.vol; return somMestre; }
 const peerPets = new Map();
 function followPet(pt, tx, ty, dt) { const ddx = tx - pt.x, ddy = ty - pt.y, dd = Math.hypot(ddx, ddy);
   if (dd > 12) { pt.x = tx - 1; pt.y = ty; pt.mv = false; return; }
@@ -1142,7 +1282,7 @@ function worldMin() { return clockAt + (Date.now() - clockBase) / 1000 * speed /
 function setClock(m, sp) { clockAt = worldMin(); clockBase = Date.now(); if (m !== undefined) clockAt = m; if (sp !== undefined) speed = sp; }
 // ---------- tela ----------
 const cv = document.getElementById('cv'); const ctx = cv.getContext('2d', { alpha: false });
-let zoom = +(Q.get('z') || (innerWidth > 1500 ? 3 : 2)), W = 0, HH = 0;
+let zoom = +(Q.get('z') || CFG.zoom || (innerWidth > 1500 ? 3 : 2)), W = 0, HH = 0;
 function resize() { W = Math.ceil(innerWidth / zoom); HH = Math.ceil(innerHeight / zoom); cv.width = W; cv.height = HH; cv.style.width = W * zoom + 'px'; cv.style.height = HH * zoom + 'px'; ctx.imageSmoothingEnabled = false; }
 resize(); addEventListener('resize', resize);
 function tw(x, y, h) { return [(x - y) * 16, (x + y) * 8 - h * 8]; }        // vértice de cima da casa
@@ -1568,8 +1708,10 @@ function blitNeg(ctx, e, frame, dx, dy, flip, alpha) {
 let tReal = performance.now(), frameN = 0, lastZoneLabel = '', perfAcc = 0;
 let AMB = P.amb;
 function draw() {
-  const now = performance.now(); const dt = Math.min(0.1, (now - tReal) / 1000); tReal = now; frameN++; dtLast = dt;
-  const wm = worldMin(); const day = Math.floor(wm / DAYMIN); const tm = ((wm % DAYMIN) + DAYMIN) % DAYMIN; const dk0 = darkness(tm); const dk = scene.fx === 'genjutsu' ? 0 : aoAr() ? dk0 : 0.12 + dk0 * 0.72;
+  const now = performance.now(); if (CFG.leve && now - tReal < 31) { requestAnimationFrame(draw); return; }        // gráficos leves: no máximo 30 quadros por segundo
+  const dt = Math.min(0.1, (now - tReal) / 1000); tReal = now; frameN++; dtLast = dt;
+  if (TIT && TIT.on) tituloPasso(dt);
+  const wm = TIT && TIT.on && !TIT.jogando ? TIT.hora : worldMin(); const day = Math.floor(wm / DAYMIN); const tm = ((wm % DAYMIN) + DAYMIN) % DAYMIN; const dk0 = darkness(tm); const dk = scene.fx === 'genjutsu' ? 0 : aoAr() ? dk0 : 0.12 + dk0 * 0.72;
   stepPlayer(dt); combateQuadro(now, dt); nevoaQuadro(); acoesPasso(dt); VTELA.length = 0;
   if (cam.follow && me.c) { const [sx, sy] = unitScreen(me.x, me.y); cam.x += (sx - cam.x) * Math.min(1, dt * 6); cam.y += (sy - cam.y) * Math.min(1, dt * 6); }
   const sk = fxSacode(now); const vl = Math.round(cam.x - W / 2) + sk[0], vt = Math.round(cam.y - HH / 2) + sk[1], vr = vl + W, vb = vt + HH;
@@ -2011,9 +2153,11 @@ for (const c of CHARS) { if (EXTRAS.includes(c)) continue; const k = document.cr
 if (MESA) { const k = document.createElement('div'); k.className = 'eye'; k.title = 'Só a câmera (0)'; k.dataset.c = '';
   k.innerHTML = '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>';
   k.onclick = () => pick(null); chars.insertBefore(k, chars.firstChild); }
-function takenBy(c) { for (const e of peerMap.values()) if (e.presence && e.presence.c === c) return e.peer; return null; }
-async function pick(c) {
-  if (MESA && c && c !== me.c && takenBy(c)) { say(`${nome(c)} está com outro jogador agora`); return; }
+function takenBy(c) { for (const e of peerMap.values()) if (e.presence && e.presence.c === c && e.presence.dv !== DV) return e.peer; return null; }
+async function pick(c, forca) {
+  if (CONTAS && c && mesa && !mesa.isGM && SESS.c !== c) { tituloAbre({ c }); return; }          // jogador: personagem só com a senha dele
+  if (MESA && c && c !== me.c && takenBy(c) && !forca) { say(`${nome(c)} está com outro jogador agora`); return; }
+  if (c !== me.c) me.ct = Date.now();
   if (MESA && c && c !== me.c) { const t = tokens[c];
     if (t && okXY(t.x, t.y)) { const ts = okScene(t.s) ? t.s : 'vila';
       if (ts !== scene.id) { if (ts === 'vila') useScene(SCN.vila); else { const sc = await getScene(ts); if (sc) useScene(sc); } updateLugar(); }
@@ -2043,11 +2187,13 @@ function ui(tm, wm) {
   if (lab !== lastZoneLabel) { lastZoneLabel = lab; const el = $('toast'); el.textContent = lab; el.style.opacity = lab ? 1 : 0; clearTimeout(ui.tt); ui.tt = setTimeout(() => el.style.opacity = 0, 2600); }
   if (mesa) {
     const n = mesa.connected(); $('net').textContent = n ? `Mesa conectada · ${n} de ${mesa.total()} servidores` : 'Conectando à mesa…'; $('net').classList.toggle('bad', !n);
-    const names = [mesa.isGM ? 'Mestre (você)' + (me.c ? ' · ' + nome(me.c) : '') : (me.c ? nome(me.c) + ' (você)' : 'Você')];
-    for (const e of peerMap.values()) { const c = e.presence && e.presence.c; const ls = e.presence && e.presence.s !== scene.id ? ` (${nomeCena(e.presence.s)})` : '';
-      names.push((e.peer === gmCid ? 'Mestre' + (c ? ' · ' + nome(c) : '') : (c ? nome(c) : 'escolhendo personagem')) + ls); }
+    const jn = n => n ? ` (${n})` : '';
+    const names = [mesa.isGM ? 'Mestre (você)' + (me.c ? ' · ' + nome(me.c) : '') : (me.c ? nome(me.c) + jn(PERFIL.nm) + ', você' : 'Você')];
+    for (const e of peerMap.values()) { const pr = e.presence || {}, c = pr.c; const ls = pr.s !== scene.id && c ? ` · ${nomeCena(pr.s)}` : '';
+      names.push((e.peer === gmCid || pr.gm ? 'Mestre' + (c ? ' · ' + nome(c) : '') : (c ? nome(c) + jn(pr.nm) : (pr.nm || 'Alguém') + (pr.tt ? ' na tela de título' : ' escolhendo personagem'))) + ls); }
     $('peers').textContent = 'Na mesa: ' + names.join(', ');
-    for (const k of chars.children) if (k.dataset.c) k.classList.toggle('taken', !!takenBy(k.dataset.c));
+    const soMeu = CONTAS && !mesa.isGM;
+    for (const k of chars.children) if (k.dataset.c) { k.classList.toggle('taken', !!takenBy(k.dataset.c)); k.hidden = soMeu && k.dataset.c !== me.c; }
   } else $('peers').textContent = room ? (peers.length ? `${peers.length} outro${peers.length > 1 ? 's' : ''} na vila agora` : 'Só você na vila agora') : '';
 }
 // ---------- presença de outros jogadores ----------
@@ -2062,7 +2208,7 @@ function packPath() {
   return out;
 }
 function sendPresence() {
-  if (mesa) { lastSent = Date.now(); const st = Object.assign({ c: me.c, s: scene.id, x: r2(me.x), y: r2(me.y), path: packPath(), gm: mesa.isGM ? 1 : 0 }, presExtra());
+  if (mesa) { lastSent = Date.now(); const st = Object.assign({ c: me.c, s: scene.id, x: r2(me.x), y: r2(me.y), path: packPath(), gm: mesa.isGM ? 1 : 0, nm: PERFIL.nm, cor: PERFIL.cor, ct: me.ct || 0, dv: DV, tt: TIT && TIT.on ? 1 : 0 }, presExtra());
     mesa.sendPresence(st).catch(() => {}); if (mesa.isGM && me.c) gmTrack(me.c, st); return; }
   if (!room) return; lastSent = Date.now();
   try { const pr = room.presence({ c: me.c, x: r2(me.x), y: r2(me.y), path: packPath(), sp: 4.5 }); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {} }
@@ -2087,7 +2233,7 @@ function say(t) { const el = $('aviso'); el.textContent = t; el.style.opacity = 
 function cleanTokens(o) { const out = {}; if (o && typeof o === 'object') for (const c of CHARS) { const t = o[c]; if (t && okXY(+t.x, +t.y)) out[c] = { s: okScene(t.s) ? t.s : 'vila', x: r2(+t.x), y: r2(+t.y) }; } return out; }
 function rebuildPeers() { peers = Array.from(peerMap.values()).filter(e => e.presence && e.presence.c); }
 function gmState(pub) { const P = pub ? estadoPublico(table) : table; return Object.assign(pub ? {} : { pers: table.pers, persHist: table.persHist }, { v: 1, rev: table.rev, gmCid: mesa.cid, clock: { wm: r2(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN), at: Date.now(), speed }, tokens: table.tokens, gen: table.gen || [], genCena: table.genCena || 'genjutsu',
-  cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], cond: P.cond || {}, ref: table.ref || {}, ek: ecdh ? ecdh.pub : undefined }); }
+  cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], cond: P.cond || {}, ref: table.ref || {}, contas: table.contas || {}, trav: table.trav || [], ek: ecdh ? ecdh.pub : undefined }, pub ? {} : { gk: table.gk || null }); }
 function saveTable() { try { localStorage.setItem('mvila:mesa:' + mesa.room, JSON.stringify(gmState())); } catch (e) {} }
 function gmPublish() { if (!mesa || !mesa.isGM) return; table.rev++; tableSentAt = Date.now(); tableDirty = false; saveTable(); mesa.sendState(gmState(true)).catch(() => {}); }
 function gmTrack(c, st) { if (st && ehGen(st.s)) return; combateTrack(c, st); const end = st.path && st.path.length ? st.path[st.path.length - 1] : [st.x, st.y]; if (!okXY(end[0], end[1])) return;
@@ -2103,40 +2249,32 @@ async function startMesa() {
   mesa = await Mesa.join({ m: Q.get('m'), k: Q.get('k'), g: Q.get('g'), relays,
     onPresence(cid, msg) {
       const st = { c: CHARS.includes(msg.c) ? msg.c : null, s: okScene(msg.s) ? msg.s : 'vila', x: +msg.x, y: +msg.y, path: Array.isArray(msg.path) ? msg.path.slice(0, 300) : [], sp: +msg.sp || 4.5,
-        md: ['v', 'r', 'a'].includes(msg.md) ? msg.md : '', k: Array.isArray(msg.k) ? msg.k.slice(0, 2) : [], pc: Array.isArray(msg.pc) ? msg.pc.slice(0, 12) : [], mt: Number.isInteger(msg.mt) ? msg.mt : -1 };      // modo de andar, clones, parceiros e montaria
+        md: ['v', 'r', 'a'].includes(msg.md) ? msg.md : '', k: Array.isArray(msg.k) ? msg.k.slice(0, 2) : [], pc: Array.isArray(msg.pc) ? msg.pc.slice(0, 12) : [], mt: Number.isInteger(msg.mt) ? msg.mt : -1,      // modo de andar, clones, parceiros e montaria
+        gm: msg.gm ? 1 : 0, nm: String(msg.nm || '').slice(0, 24), cor: Number.isInteger(msg.cor) && msg.cor >= 0 && msg.cor < 8 ? msg.cor : 0, ct: Number.isFinite(+msg.ct) ? +msg.ct : 0, dv: /^[a-z0-9]{8}$/.test(msg.dv || '') ? msg.dv : '', tt: msg.tt ? 1 : 0 };   // quem joga: nome, cor, hora em que pegou o personagem, aparelho
       if (!okXY(st.x, st.y)) return;
       let e = peerMap.get(cid); const isNew = !e; if (!e) { e = { peer: cid }; peerMap.set(cid, e); }
       e.presence = st; e.updatedAt = Date.now(); e.lastSeen = Date.now(); rebuildPeers();
-      if (me.c && st.c === me.c && cid < mesa.cid) { say(`${nome(me.c)} já estava com outro jogador`); pick(null); }
+      if (me.c && st.c === me.c && st.dv !== DV && (st.ct > (me.ct || 0) || (st.ct === (me.ct || 0) && cid > mesa.cid))) perdeuPersonagem();     // quem pegou o personagem por último fica com ele
+      if (mesa.isGM && st.gm && isNew) say('O mestre também está aberto em outro aparelho');
       if (mesa.isGM && st.c) gmTrack(st.c, st);
       if (isNew) sendPresence();
     },
     onBye(cid) { peerMap.delete(cid); rebuildPeers(); },
     onState(st, retained) {
       if (!st || typeof st !== 'object' || !Number.isFinite(+st.rev)) return;
-      if (mesa.isGM) { if (+st.rev > table.rev && st.gmCid !== mesa.cid) { table.rev = +st.rev; table.tokens = tokens = cleanTokens(st.tokens); table.gen = genPresos = cleanGen(st.gen); table.genCena = genCena = okGen(st.genCena); applyClock(st.clock, false);
-        const meus = (table.npcs || []).filter(n => n.oc), srv = limpaNpcs(st.npcs).map(n => Object.assign(n, { oc: 0 }));          // o servidor não guarda os ocultos: os deste navegador continuam
-        table.cmb = limpaCmb(st.cmb); table.npcs = srv.concat(meus.filter(n => !srv.some(q => q.id === n.id))); table.ficha = limpaFicha(st.ficha); table.zonas = limpaZonas(st.zonas); table.nevoa = limpaNevoa(st.nevoa); table.ref = limpaRef(st.ref); table.cond = Object.assign(limpaCond(st.cond), Object.fromEntries(Object.entries(table.cond || {}).filter(([id]) => meus.some(n => 'n:' + n.id === id))));
-        saveTable(); gjChips(); aplicarCombate(); say('Mesa recuperada do servidor'); } return; }
+      if (mesa.isGM) { if (+st.rev > table.rev && st.gmCid !== mesa.cid) { mestreRecupera(st); saveTable(); gjChips(); aplicarCombate(); say('Mesa recuperada do servidor'); } return; }
       if (+st.rev < lastStateRev) return; lastStateRev = +st.rev; gmCid = typeof st.gmCid === 'string' ? st.gmCid : null;
+      ultimoEstado = st; contasVer = limpaContas(st.contas); travVer = limpaTrav(st.trav); estadoChegou = true; if (TIT) tituloEstado();
       tokens = cleanTokens(st.tokens); applyClock(st.clock, true); genPresos = cleanGen(st.gen); genCena = okGen(st.genCena); aplicarGenjutsu();
       { const ek = Mesa.okPub(st.ek) ? st.ek : null; if (ek !== gmEk) { gmEk = ek; if (dadosPronto) dadosQuem(); } }
       cmb = limpaCmb(st.cmb); npcs = limpaNpcs(st.npcs).filter(n => !n.oc); ficha = limpaFicha(st.ficha); zonas = limpaZonas(st.zonas); nevoa = limpaNevoa(st.nevoa); conds = limpaCond(st.cond); refsVer = limpaRef(st.ref); aplicarCombate(); if (livroPronto) refMudou();
     },
     onRoll(msg) { receberRolagem(msg); },
-    onEvent(msg) { if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else receberEvento(msg); },
+    onGk(gk) { gkVer = gk; if (mesa.isGM && table && !table.gk) { table.gk = gk; saveTable(); } if (TIT) tituloEstado(); },
+    onEvent(msg) { if (msg && msg.k === 'conta') contaEvento(msg); else if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else receberEvento(msg); },
     onFicha(c, f, retained) { persRecebe(c, f, retained); },
-    onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(() => { gmPublish(); persPublicaTudo(); }, 1500); } } });
-  if (mesa.isGM) {
-    table = { rev: 0, tokens: {}, gen: [], genCena: 'genjutsu', cmb: null, npcs: [], ficha: {}, zonas: [], nevoa: [], cond: {}, ref: {}, pers: null, persHist: {} };
-    try { const sv = JSON.parse(localStorage.getItem('mvila:mesa:' + mesa.room) || 'null'); if (sv) { table.rev = +sv.rev || 0; table.tokens = cleanTokens(sv.tokens); table.gen = cleanGen(sv.gen); table.genCena = okGen(sv.genCena); applyClock(sv.clock, false);
-      table.cmb = limpaCmb(sv.cmb); table.npcs = limpaNpcs(sv.npcs); table.ficha = limpaFicha(sv.ficha); table.zonas = limpaZonas(sv.zonas); table.nevoa = limpaNevoa(sv.nevoa); table.cond = limpaCond(sv.cond); table.ref = limpaRef(sv.ref); persCarregaMesa(sv); } } catch (e) {}
-    if (!table.pers) persCarregaMesa(null);
-    genPresos = table.gen; genCena = table.genCena; gjChips();
-    try { let jwk = null; try { jwk = JSON.parse(localStorage.getItem('mvila:ecdh:' + mesa.room) || 'null'); } catch (e) {}      // a chave fica neste navegador: recarregar a página não perde as rolagens a caminho
-      ecdh = await Mesa.ecdhNew(jwk); try { localStorage.setItem('mvila:ecdh:' + mesa.room, JSON.stringify(ecdh.jwk)); } catch (e) {} } catch (e) { ecdh = null; }
-    tokens = table.tokens; aplicarCombate(); gmPublish();
-  }
+    onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(() => { gmPublish(); persPublicaTudo(); if (table.gk) mesa.sendGk(table.gk).catch(() => {}); }, 1500); } } });
+  if (mesa.isGM) await iniciaMestre(null);
   setInterval(() => {
     const now = Date.now(); let ch = false;
     for (const [cid, e] of peerMap) if (now - e.lastSeen > 16000) { peerMap.delete(cid); ch = true; }
@@ -2146,6 +2284,34 @@ async function startMesa() {
   }, 1000);
   addEventListener('pagehide', () => { try { mesa.leave(); } catch (e) {} });
   sendPresence(); carregaHist(); dadosQuem();
+}
+// o estado do servidor vira a mesa deste aparelho (mestre abrindo num aparelho novo, ou depois de outro aparelho do mestre)
+function mestreRecupera(st) {
+  table.rev = +st.rev; table.tokens = tokens = cleanTokens(st.tokens); table.gen = genPresos = cleanGen(st.gen); table.genCena = genCena = okGen(st.genCena); applyClock(st.clock, false);
+  const meus = (table.npcs || []).filter(n => n.oc), srv = limpaNpcs(st.npcs).map(n => Object.assign(n, { oc: 0 }));          // o servidor não guarda os ocultos: os deste navegador continuam
+  table.cmb = limpaCmb(st.cmb); table.npcs = srv.concat(meus.filter(n => !srv.some(q => q.id === n.id))); table.ficha = limpaFicha(st.ficha); table.zonas = limpaZonas(st.zonas); table.nevoa = limpaNevoa(st.nevoa); table.ref = limpaRef(st.ref); table.cond = Object.assign(limpaCond(st.cond), Object.fromEntries(Object.entries(table.cond || {}).filter(([id]) => meus.some(n => 'n:' + n.id === id))));
+  table.contas = limpaContas(st.contas); table.trav = limpaTrav(st.trav);
+}
+// este aparelho passa a ser o mestre: a mesa salva aqui, ou (aparelho novo) o que os jogadores já recebem do servidor
+async function iniciaMestre(seed) {
+  table = { rev: 0, tokens: {}, gen: [], genCena: 'genjutsu', cmb: null, npcs: [], ficha: {}, zonas: [], nevoa: [], cond: {}, ref: {}, contas: {}, trav: [], gk: null, pers: null, persHist: {} };
+  try { const sv = JSON.parse(localStorage.getItem('mvila:mesa:' + mesa.room) || 'null'); if (sv) { table.rev = +sv.rev || 0; table.tokens = cleanTokens(sv.tokens); table.gen = cleanGen(sv.gen); table.genCena = okGen(sv.genCena); applyClock(sv.clock, false);
+    table.cmb = limpaCmb(sv.cmb); table.npcs = limpaNpcs(sv.npcs); table.ficha = limpaFicha(sv.ficha); table.zonas = limpaZonas(sv.zonas); table.nevoa = limpaNevoa(sv.nevoa); table.cond = limpaCond(sv.cond); table.ref = limpaRef(sv.ref);
+    table.contas = limpaContas(sv.contas); table.trav = limpaTrav(sv.trav); table.gk = Mesa.okGk(sv.gk) ? sv.gk : null; persCarregaMesa(sv); } } catch (e) {}
+  if (seed && +seed.rev > table.rev) { mestreRecupera(seed); if (!table.pers && Object.keys(PERS).length) { table.pers = {}; for (const c of Object.keys(PERS)) table.pers[c] = JSON.parse(JSON.stringify(PERS[c])); table.persFresh = 0; } }
+  if (!table.gk && gkVer) table.gk = gkVer;
+  if (!table.pers) persCarregaMesa(null);
+  genPresos = table.gen; genCena = table.genCena; gjChips();
+  try { let jwk = null; try { jwk = JSON.parse(localStorage.getItem('mvila:ecdh:' + mesa.room) || 'null'); } catch (e) {}      // a chave fica neste navegador: recarregar a página não perde as rolagens a caminho
+    ecdh = await Mesa.ecdhNew(jwk); try { localStorage.setItem('mvila:ecdh:' + mesa.room, JSON.stringify(ecdh.jwk)); } catch (e) {} } catch (e) { ecdh = null; }
+  tokens = table.tokens; aplicarCombate(); gmPublish();
+}
+// a parte de cada papel na interface (o jogador pode virar mestre pela senha sem recarregar)
+function papelUI() {
+  const gm = !!(mesa && mesa.isGM);
+  $('gmrow').style.display = gm ? '' : 'none'; $('cbrow').style.display = $('nvrow').style.display = $('dsrow').style.display = gm ? '' : 'none'; aplicarCombate();
+  $('gjrow').style.display = gm && CENAS.genjutsu ? '' : 'none'; gjChips(); $('lugarrow').style.display = gm ? '' : 'none'; $('tempo').style.display = gm ? '' : 'none'; $('tempoMestre').style.display = mesa && !gm ? '' : 'none';
+  if (dadosPronto) dadosQuem();
 }
 function copyLink(inp) { const v = inp.value; const done = () => say('Link copiado');
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(done, () => { inp.select(); try { document.execCommand('copy'); done(); } catch (e) {} });
@@ -2163,7 +2329,8 @@ $('abrir').onclick = () => $('arq').click();
 $('arq').onchange = async () => { const f = $('arq').files[0]; $('arq').value = ''; if (!f) return;
   try { const j = JSON.parse(await f.text()); const t = j && j.mesa ? j.mesa : j; if (!t || typeof t.tokens !== 'object') throw new Error('x');
     table.tokens = cleanTokens(t.tokens); tokens = table.tokens; applyClock(t.clock, false); table.rev = Math.max(table.rev, +t.rev || 0);
-    table.cmb = limpaCmb(t.cmb); table.npcs = limpaNpcs(t.npcs); table.ficha = limpaFicha(t.ficha); table.zonas = limpaZonas(t.zonas); table.nevoa = limpaNevoa(t.nevoa); table.cond = limpaCond(t.cond); table.ref = limpaRef(t.ref); persCarregaMesa(t, true); aplicarCombate(); gmPublish(); persPublicaTudo(); say('Mesa carregada do arquivo'); }
+    table.cmb = limpaCmb(t.cmb); table.npcs = limpaNpcs(t.npcs); table.ficha = limpaFicha(t.ficha); table.zonas = limpaZonas(t.zonas); table.nevoa = limpaNevoa(t.nevoa); table.cond = limpaCond(t.cond); table.ref = limpaRef(t.ref);
+    if (t.contas) table.contas = limpaContas(t.contas); if (t.trav) table.trav = limpaTrav(t.trav); persCarregaMesa(t, true); aplicarCombate(); gmPublish(); persPublicaTudo(); say('Mesa carregada do arquivo'); }
   catch (e) { say('Esse arquivo não é um salvamento da mesa'); } };
 function aplicarGenjutsu() {
   if (!me.c || !mesa || mesa.isGM || !CENAS[genCena]) return;
@@ -2332,7 +2499,7 @@ function limpaRolagem(m) {
   const base = m.base != null && Number.isInteger(+m.base) && +m.base >= 0 && +m.base <= 999 ? +m.base : null;
   const aid = typeof m.aid === 'string' && /^(c:[a-z]+|n:[a-z0-9]{1,12})$/.test(m.aid) ? m.aid : null;         // quem o ataque mira (para o combate aéreo)
   return { id: String(m.id || '').slice(0, 40) || 'r' + Date.now(), k, dados, bonus, alvo, crit, base, aid, ax: k === 'ataque' ? limpaAx(m.ax) : null, sec: m.sec ? 1 : 0, oculta: m.oculta ? 1 : 0, vazia: m.vazia ? 1 : 0, minha: m.minha ? 1 : 0, at: Number.isFinite(+m.at) ? +m.at : Date.now(),
-    desc: String(m.desc || '').slice(0, 40), quem: { c: CHARS.includes(q.c) ? q.c : null, n: String(q.n || 'Alguém').slice(0, 28), gm: q.gm ? 1 : 0, spr: /^(inimigo[0-3]_parado_frente|plantao_parado_frente|caogr[0-2]_senta|cr:[a-z_]+_parado_frente)$/.test(q.spr) ? q.spr : null } };
+    desc: String(m.desc || '').slice(0, 40), quem: { c: CHARS.includes(q.c) ? q.c : null, n: String(q.n || 'Alguém').slice(0, 28), j: String(q.j || '').slice(0, 24), gm: q.gm ? 1 : 0, spr: /^(inimigo[0-3]_parado_frente|plantao_parado_frente|caogr[0-2]_senta|cr:[a-z_]+_parado_frente)$/.test(q.spr) ? q.spr : null } };
 }
 
 // ----- som (sintetizado; nada de arquivos) -----
@@ -2345,10 +2512,10 @@ function som(tom) {
       const buf = actx.createBuffer(1, Math.ceil(actx.sampleRate * len), actx.sampleRate), d = buf.getChannelData(0);
       for (let j = 0; j < d.length; j++) d[j] = (Math.random() * 2 - 1) * Math.pow(1 - j / d.length, 3);
       const src = actx.createBufferSource(); src.buffer = buf; const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1700 + Math.random() * 1500; bp.Q.value = 2.5;
-      const g = actx.createGain(); g.gain.value = .22 - i * .03; src.connect(bp).connect(g).connect(actx.destination); src.start(t); }
+      const g = actx.createGain(); g.gain.value = .22 - i * .03; src.connect(bp).connect(g).connect(saidaSom()); src.start(t); }
     if (tom === 'crit' || tom === 'falha') { const t = t0 + .62, o = actx.createOscillator(), g = actx.createGain(); o.type = 'triangle';
       o.frequency.setValueAtTime(tom === 'crit' ? 784 : 220, t); o.frequency.exponentialRampToValueAtTime(tom === 'crit' ? 1175 : 147, t + .18);
-      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.09, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .55); o.connect(g).connect(actx.destination); o.start(t); o.stop(t + .6); }
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.09, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .55); o.connect(g).connect(saidaSom()); o.start(t); o.stop(t + .6); }
   } catch (e) {}
 }
 
@@ -2361,6 +2528,7 @@ function mostraRolagem(r, opts) {
   const rc = document.createElement('div'); rc.className = 'ret'; rc.appendChild(retrato(novoCv(), r.quem, 2)); el.appendChild(rc);
   const mio = document.createElement('div'); mio.className = 'mio'; el.appendChild(mio);
   const qn = document.createElement('div'); qn.className = 'qn'; const b = document.createElement('b'); b.textContent = r.quem.n; qn.appendChild(b);
+  if (r.quem.j) { const jj = document.createElement('span'); jj.className = 'tp jog'; jj.textContent = r.quem.j; qn.appendChild(jj); }
   const tp = document.createElement('span'); tp.className = 'tp'; tp.textContent = TIPO[r.k]; qn.appendChild(tp);
   if (r.sec || r.oculta) { const sg = document.createElement('span'); sg.className = 'tp sg'; sg.textContent = r.oculta ? 'Oculta' : 'Para o mestre'; qn.appendChild(sg); }
   mio.appendChild(qn);
@@ -2412,7 +2580,7 @@ function quando(at) { const s = Math.round((Date.now() - at) / 1000); if (s < 45
 function itemHist(r) {
   const li = document.createElement('li'); li.style.setProperty('--cor', corDe(r.quem));
   const segredo = r.vazia || (r.sec && !(mesa && mesa.isGM) && !r.minha);
-  const top = document.createElement('div'); top.className = 'hq'; const b = document.createElement('b'); b.textContent = r.quem.n; top.appendChild(b);
+  const top = document.createElement('div'); top.className = 'hq'; const b = document.createElement('b'); b.textContent = r.quem.n + (r.quem.j ? ' · ' + r.quem.j : ''); top.appendChild(b);
   const tp = document.createElement('span'); tp.className = 'tp'; tp.textContent = r.oculta ? 'Oculta' : r.sec ? 'Para o mestre' : TIPO[r.k]; top.appendChild(tp);
   const tm = document.createElement('time'); tm.dataset.at = r.at; tm.textContent = quando(r.at); top.appendChild(tm); li.appendChild(top);
   if (segredo) { const d = document.createElement('div'); d.className = 'hd'; d.textContent = (mesa && mesa.isGM) ? 'Rolagem para você que não abriu' : 'Rolagem só para o mestre'; li.appendChild(d); return li; }
@@ -2442,7 +2610,7 @@ function quemRola() {
   if (souMestre()) { const n = $('dqNome').value.trim(); const npc = n && combatePronto ? npcs.find(q => q.nome === n) : null;
     if (npc) return { c: null, n, gm: 1, spr: `inimigo${npc.spr}_parado_frente` }; if (MESA) return { c: null, n: n || 'Mestre', gm: 1 };
     return { c: n ? null : me.c, n: n || (me.c ? nome(me.c) : 'Mestre'), gm: 0 }; }
-  return { c: me.c, n: me.c ? nome(me.c) : 'Jogador', gm: 0 };
+  return { c: me.c, n: me.c ? nome(me.c) : 'Jogador', gm: 0, j: PERFIL.nm };
 }
 function dadosQuem() {
   const q = quemRola(); retrato($('dqRet'), q, 1); $('dqFixo').textContent = q.n;
@@ -2984,7 +3152,7 @@ function fxTremor(ev) {
   prim(1.8, u => { const ga = ctx.globalAlpha; ctx.globalAlpha = ga * (u < 0.7 ? 1 : 1 - (u - 0.7) / 0.3); for (const p of rachas) poliLinha(p.slice(0, Math.ceil(p.length * Math.min(1, u * 6))), '#321', 1); ctx.globalAlpha = ga; }, true);
   novoFx(ev, 1, { tick(fx, t, dt) { if (t > 0.6) return; for (let k = Math.round(dt * 60); k > 0; k--) { const a = fx.rnd() * 6.283, d = fx.rnd() * 0.6; emite('doton', c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, 0, 0, 0, 30, 1, fx.rnd); } } });
 }
-function fxSacode(now) { if (now > tremorAte) return [0, 0]; const k = tremorForca * (tremorAte - now) / 700; return [Math.round((Math.random() - 0.5) * 2 * k), Math.round((Math.random() - 0.5) * 2 * k)]; }
+function fxSacode(now) { if (now > tremorAte || CFG.calmo) return [0, 0]; const k = tremorForca * (tremorAte - now) / 700; return [Math.round((Math.random() - 0.5) * 2 * k), Math.round((Math.random() - 0.5) * 2 * k)]; }
 // Energizar: o elemento gira em volta das mãos
 function fxAura(ev) {
   const el = ev.el, o = ev.o, hb = hChao(o[0], o[1]), [cx, cy] = telaDe(o[0], o[1], 0, hb), cor = (ANEL[el] || ANEL.ninpou);
@@ -4105,7 +4273,7 @@ function somVez() {
   if (!somOn) return;
   try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); const t0 = actx.currentTime + 0.02;
     for (const [f, d] of [[659, 0], [988, 0.12]]) { const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = f;
-      g.gain.setValueAtTime(0.0001, t0 + d); g.gain.exponentialRampToValueAtTime(0.08, t0 + d + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d + 0.5); o.connect(g).connect(actx.destination); o.start(t0 + d); o.stop(t0 + d + 0.55); } } catch (e) {}
+      g.gain.setValueAtTime(0.0001, t0 + d); g.gain.exponentialRampToValueAtTime(0.08, t0 + d + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d + 0.5); o.connect(g).connect(saidaSom()); o.start(t0 + d); o.stop(t0 + d + 0.55); } } catch (e) {}
 }
 
 // ---------- painel do combate ----------
@@ -4345,7 +4513,7 @@ function somTecnica(el) {
     for (let j = 0; j < d.length; j++) { const u = j / d.length; d[j] = (Math.random() * 2 - 1) * Math.pow(1 - u, el === 'raiton' ? 4 : 2) * (el === 'raiton' ? (Math.random() < 0.15 ? 1 : 0.3) : 1); }
     const src = actx.createBufferSource(); src.buffer = buf; const f = actx.createBiquadFilter();
     f.type = el === 'suiton' || el === 'fuuton' ? 'bandpass' : 'lowpass'; f.frequency.value = { katon: 900, fuuton: 1800, raiton: 4000, suiton: 700, doton: 260, ninpou: 1200, sumi: 500, nendo: 600 }[el] || 900; f.Q.value = 0.8;
-    const g = actx.createGain(); g.gain.value = 0.16; src.connect(f).connect(g).connect(actx.destination); src.start(t0); } catch (e) {}
+    const g = actx.createGain(); g.gain.value = 0.16; src.connect(f).connect(g).connect(saidaSom()); src.start(t0); } catch (e) {}
 }
 
 // ---------- atalhos de teclado ----------
@@ -4688,7 +4856,7 @@ function pvRender() {
     v.onclick = () => { pv.criar--; pv.aba = PASSOS[pv.criar][0]; pvRender(); corpo.scrollTop = 0; };
     n.onclick = () => { if (pv.criar === 0 && !pv.F.id.nome.trim()) { say('Dê um nome ao personagem'); return; }
       if (pv.criar < PASSOS.length - 1) { persGrava(pv.c, pv.F); pv.criar++; pv.aba = PASSOS[pv.criar][0]; pvRender(); corpo.scrollTop = 0; return; }
-      persGrava(pv.c, pv.F); const c = pv.c; pv.criar = -1; pv.aba = 'databook'; say(`${nomeNovo(c)} está pronto`); if (MESA && !(mesa && mesa.isGM)) pick(c); pvRender(); };
+      persGrava(pv.c, pv.F); const c = pv.c; pv.criar = -1; pv.aba = 'databook'; say(`${nomeNovo(c)} está pronto`); if (MESA && !(mesa && mesa.isGM)) { if (CONTAS) SESS.c = c; pick(c, true); if (CONTAS && !contasAt()[c]) setTimeout(() => tituloAbre({ c, aviso: 'Crie uma senha para o personagem novo.' }), 400); } pvRender(); };
     ps.append(v, h('span', null, `Passo ${pv.criar + 1} de ${PASSOS.length}`), n); }
   $('pvExplica').textContent = 'Toque num número para ver de onde ele vem.';
 }
@@ -6537,6 +6705,312 @@ function regrasRender(c) {
 }
 livroPronto = true;
 
+// ---------- Tela de título e contas ----------
+// Um só link para a mesa. Aqui cada jogador entra com o próprio personagem (senha) e o mestre com a senha de mestre.
+// A senha do personagem vira um resumo com sal guardado no estado da mesa (o mestre grava); a do mestre cifra a chave
+// que assina a mesa, e essa chave cifrada fica retida no servidor para o mestre entrar de qualquer aparelho.
+// Sem servidor próprio, as senhas dos jogadores evitam confusão e alguém entrar com o personagem errado; não são um cofre.
+function limpaContas(o) { const out = {}; if (o && typeof o === 'object') for (const c of CHARS) { const v = o[c]; if (v && /^[A-Za-z0-9_-]{16,32}$/.test(v.s) && /^[A-Za-z0-9_-]{43}$/.test(v.h)) out[c] = { s: v.s, h: v.h }; } return out; }
+function limpaTrav(a) { return Array.isArray(a) ? EXTRAS.filter(c => a.includes(c)) : []; }
+const contasAt = () => (mesa && mesa.isGM && table ? table.contas || (table.contas = {}) : contasVer);
+const travAt = () => (mesa && mesa.isGM && table ? table.trav || [] : travVer);
+const tituloLigado = () => !(window.claude && typeof window.claude.use === 'function') && (!Q.has('teste') || Q.has('titulo')) && Q.get('ui') !== '0';
+TIT = { on: false, hora: 1112, t: 0, tela: 'menu', c: null, aviso: '', jogando: false, el: null, ocupado: false };
+const ttEl = $('titulo');
+const ls = { get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const ss = { get(k) { try { return JSON.parse(sessionStorage.getItem(k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { if (v == null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const kSess = () => 'mvila:sess:' + mesa.room, kConta = () => 'mvila:conta:' + mesa.room, kGm = () => 'mvila:gm:' + mesa.room, kPend = c => 'mvila:contaPend:' + mesa.room + ':' + c;
+function tituloLembraMesa() {
+  ls.set('mvila:ultima', { m: mesa.m, k: mesa.k });
+  if (mesa.isGM && mesa.g && Q.get('g')) { try { localStorage.setItem(kGm(), mesa.g); } catch (e) {} ss.set(kSess(), { p: 'm' }); }   // abriu pelo link de mestre: este aparelho é do mestre
+}
+function loginLembrado() {
+  if (!mesa) return null;
+  const s = ss.get(kSess()); if (s && (s.p === 'm' ? !!(mesa.isGM || gLocal()) : CHARS.includes(s.c))) return s;
+  const l = ls.get(kConta()); if (l && l.p === 'j' && CHARS.includes(l.c)) return l;
+  if (mesa.isGM || gLocal()) return { p: 'm' };
+  return null;
+}
+function gLocal() { try { const g = localStorage.getItem(kGm()) || (ss.get(kSess()) || {}).g; return typeof g === 'string' && /^[A-Za-z0-9_-]{40,50}$/.test(g) ? g : null; } catch (e) { return null; } }
+function esqueceLogin(tudo) { if (!mesa) return; ss.set(kSess(), null); ls.set(kConta(), null); if (tudo) { try { localStorage.removeItem(kGm()); } catch (e) {} } }
+
+// ----- pedidos e avisos de conta (eventos da mesa) -----
+function contaPede(c, hs) {
+  if (mesa.isGM) { if (!contasAt()[c]) { table.contas[c] = { s: hs.s, h: hs.h }; gmPublish(); } return; }
+  ls.set(kPend(c), hs); mesa.sendEvent({ k: 'conta', a: 'nova', c, s: hs.s, h: hs.h }).catch(() => {});
+}
+function contaEvento(msg) {
+  if (!mesa || !msg) return;
+  if (msg.a === 'nova' && mesa.isGM && table && CHARS.includes(msg.c)) { const v = limpaContas({ [msg.c]: { s: msg.s, h: msg.h } })[msg.c];
+    if (v && !table.contas[msg.c]) { table.contas[msg.c] = v; gmPublish(); say(`${nome(msg.c)} criou a senha`); if (jogAberto()) jogadoresAbre(); } return; }
+  const de = peerMap.get(msg.cid), doMestre = !gmCid || msg.cid === gmCid || !!(de && de.presence && de.presence.gm);
+  if (msg.a === 'sai' && msg.alvo === mesa.cid && !mesa.isGM && doMestre) { esqueceLogin(); SESS.c = null; pick(null); tituloAbre({ aviso: 'O mestre tirou este aparelho da mesa.' }); }
+}
+function perdeuPersonagem() {
+  const c = me.c; if (mesa && mesa.isGM) { say(`${nome(c)} está com outro aparelho agora`); pick(null); return; }
+  if (!CONTAS) { say(`${nome(c)} já estava com outro jogador`); pick(null); return; }
+  SESS.c = null; ss.set(kSess(), null); pick(null); tituloAbre({ aviso: `${nome(c)} foi aberto em outro aparelho.` });
+}
+// a mesa mudou (estado, chave do mestre, presença): a tela de título acompanha
+function tituloEstado() {
+  if (!mesa) return;
+  if (!mesa.isGM) for (const c of CHARS) { const p = ls.get(kPend(c)); if (!p) continue; const v = contasVer[c];          // senha criada sem o mestre por perto: reenvia até ele gravar
+    if (v && v.h === p.h) ls.set(kPend(c), null); else if (!v && estadoChegou) mesa.sendEvent({ k: 'conta', a: 'nova', c, s: p.s, h: p.h }).catch(() => {}); }
+  if (TIT.on && ['menu', 'jog'].includes(TIT.tela)) tituloRender(true);
+}
+
+// ----- desenho -----
+const tth = (tag, cls, ...kids) => { const e = document.createElement(tag); if (cls) e.className = cls; for (const k of kids) if (k != null && k !== false) e.append(k); return e; };
+function retratoTt(c, px) {
+  const k = document.createElement('canvas'); k.width = k.height = 32; k.className = 'tt-ret'; k.style.width = k.style.height = px + 'px';
+  const e = E(visDe(c) + '_parado_frente'), kc = k.getContext('2d'); kc.imageSmoothingEnabled = false; if (e) kc.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32); return k;
+}
+function quemTem(c) { for (const e of peerMap.values()) { const p = e.presence; if (p && p.c === c && p.dv !== DV) return p; } return null; }
+const escolhiveis = () => CHARS.filter(c => !EXTRAS.includes(c) || (persDe(c) && !travAt().includes(c)));
+function op(txt, sub, fn, cls) { const b = tth('button', 'tt-op' + (cls ? ' ' + cls : ''), tth('span', 'tt-opt', txt), sub ? tth('span', 'tt-ops', sub) : null); b.type = 'button'; b.onclick = fn; return b; }
+function campoSenha(id, ph, auto) { const i = tth('input', 'tt-in'); i.type = 'password'; i.id = id; i.placeholder = ph; i.autocomplete = auto || 'current-password'; i.maxLength = 64; return i; }
+function avisoEl() { const a = tth('p', 'tt-aviso'); a.id = 'ttAviso'; a.setAttribute('role', 'status'); a.textContent = TIT.aviso || ''; a.hidden = !TIT.aviso; return a; }
+function avisa(t) { TIT.aviso = t || ''; const a = $('ttAviso'); if (a) { a.textContent = TIT.aviso; a.hidden = !TIT.aviso; } }
+function marca() {
+  const tt = tth('header', 'tt-marca');
+  tt.append(tth('h1', 'tt-nome', 'Path of the True Ninja!'), tth('p', 'tt-sub', 'Shinobi no Sho · mesa da campanha'));
+  const hk = tth('span', 'tt-hanko', '忍'); hk.setAttribute('aria-hidden', 'true'); tt.append(hk); return tt;
+}
+function tituloRender(soAtualiza) {
+  if (!TIT.on) return; const T = TIT.tela;
+  if (soAtualiza && T === 'jog') { const box = $('ttCartas'); if (box) cartas(box); return; }
+  if (soAtualiza && T === 'menu') { const sig = JSON.stringify([loginLembrado(), !!(mesa && mesa.isGM), TIT.jogando]); if (sig === TIT.sig) { redeTxt(); return; } }
+  if (T === 'menu') TIT.sig = JSON.stringify([loginLembrado(), !!(mesa && mesa.isGM), TIT.jogando]);
+  const col = tth('div', 'tt-col'); col.append(marca());
+  const corpo = tth('div', 'tt-corpo'); col.append(corpo);
+  ({ menu: telaMenu, jog: telaJog, senha: telaSenha, tomar: telaTomar, mestre: telaMestre, criaGk: telaCriaGk, link: telaLink, cfg: telaCfg })[T](corpo);
+  const rede = tth('p', 'tt-rede'); rede.id = 'ttRede'; col.append(rede);
+  ttEl.replaceChildren(tth('div', 'tt-fundo'), col); redeTxt();
+  const f = ttEl.querySelector('input.tt-in:not([type=hidden]), .tt-op, .tt-carta'); if (f && !soAtualiza && matchMedia('(pointer:fine)').matches) f.focus();
+}
+function redeTxt() {
+  const el = $('ttRede'); if (!el) return;
+  if (!MESA) { el.textContent = 'Sem mesa: a vila sozinha neste aparelho'; return; }
+  if (!mesa) { el.textContent = 'Abrindo a mesa…'; return; }
+  const n = mesa.connected(), q = peerMap.size; el.textContent = n ? `Mesa conectada · ${q ? q + (q > 1 ? ' pessoas' : ' pessoa') + ' por aqui' : 'ninguém mais por aqui ainda'}` : 'Conectando à mesa…';
+}
+setInterval(() => { if (!TIT.on) return; redeTxt(); if (TIT.tela === 'jog' || TIT.tela === 'menu') tituloRender(true); }, 1500);
+
+function telaMenu(c) {
+  c.append(avisoEl()); const m = tth('nav', 'tt-menu'); m.setAttribute('aria-label', 'Menu'); c.append(m);
+  if (TIT.jogando) m.append(op('Voltar ao jogo', null, tituloFecha, 'p'));
+  if (!MESA) {
+    if (!TIT.jogando) m.append(op('Jogar sozinho na vila', 'Explorar e testar, sem mesa', () => tituloFecha(), 'p'));
+    m.append(op('Criar uma mesa', 'Você vira o mestre e chama os jogadores', criaMesa), op('Entrar numa mesa', 'Cole o link que o mestre mandou', () => vai('link')));
+  } else {
+    const l = loginLembrado();
+    if (!TIT.jogando && l) m.append(l.p === 'm' ? op('Continuar como mestre', null, () => entraMestre('', null), 'p')
+      : op('Continuar como ' + nome(l.c), PERFIL.nm ? 'Jogando como ' + PERFIL.nm : null, () => continuaJog(l), 'p'));
+    if (!(mesa && mesa.isGM)) m.append(op(TIT.jogando ? 'Trocar de personagem' : 'Entrar como jogador', null, () => vai('jog'), !l && !TIT.jogando ? 'p' : ''));
+    if (mesa && mesa.isGM) { if (TIT.jogando) m.append(op('Jogadores', 'Link, senhas e quem está com quem', () => { tituloFecha(); jogadoresAbre(); })); }
+    else m.append(op('Entrar como mestre', null, () => vai('mestre')));
+  }
+  m.append(op('Configurações', null, () => vai('cfg'), 'q'));
+  if (MESA && mesa) m.append(op(mesa.isGM ? 'Sair como mestre' : 'Sair desta mesa', mesa.isGM ? 'Este aparelho esquece a chave do mestre' : 'Este aparelho esquece a mesa e o login', saiMesa, 'q'));
+}
+function vai(t, extra) { TIT.tela = t; Object.assign(TIT, extra || {}); TIT.aviso = (extra && extra.aviso) || ''; tituloRender(); }
+
+// ----- jogador -----
+function telaJog(c) {
+  const pf = tth('div', 'tt-perfil'); const lb = tth('label', 'tt-lb', 'Seu nome'); lb.htmlFor = 'ttNome';
+  const nm = tth('input', 'tt-in'); nm.id = 'ttNome'; nm.maxLength = 24; nm.placeholder = 'Como a mesa te chama'; nm.value = PERFIL.nm; nm.autocomplete = 'nickname';
+  nm.oninput = () => { PERFIL.nm = nm.value.trim().slice(0, 24); ls.set('mvila:perfil', PERFIL); };
+  const cores = tth('div', 'tt-cores'); cores.setAttribute('role', 'radiogroup'); cores.setAttribute('aria-label', 'Sua cor');
+  CORES_J.forEach((cor, i) => { const b = tth('button', 'tt-cor'); b.type = 'button'; b.style.setProperty('--c', cor); b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', PERFIL.cor === i); b.title = 'Cor ' + (i + 1);
+    b.onclick = () => { PERFIL.cor = i; ls.set('mvila:perfil', PERFIL); for (const x of cores.children) x.setAttribute('aria-checked', x === b); }; cores.append(b); });
+  pf.append(lb, nm, cores); c.append(pf, avisoEl());
+  const box = tth('div', 'tt-cartas'); box.id = 'ttCartas'; box.setAttribute('role', 'list'); c.append(box); cartas(box);
+  const v = tth('div', 'tt-linha'); v.append(op('Voltar', null, () => vai('menu'), 'q')); c.append(v);
+}
+function cartas(box) {
+  const foco = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.c : null;
+  box.replaceChildren(); const CT = contasAt();
+  for (const ch of escolhiveis()) {
+    const o = quemTem(ch), b = tth('button', 'tt-carta' + (o ? ' ocup' : '') + (ch === me.c ? ' meu' : '')); b.type = 'button'; b.dataset.c = ch; b.setAttribute('role', 'listitem');
+    const st = ch === me.c ? 'Você, neste aparelho' : o ? (o.nm ? 'Com ' + o.nm + ' agora' : 'Em outro aparelho agora') : CT[ch] ? 'Livre · tem senha' : 'Livre · sem senha ainda';
+    b.append(retratoTt(ch, 64), tth('span', 'tt-cn', nome(ch)), tth('span', 'tt-cs', st));
+    b.onclick = () => escolhe(ch); box.append(b); if (foco === ch) b.focus();
+  }
+  if (EXTRAS.some(q => !persDe(q))) { const b = tth('button', 'tt-carta novo'); b.type = 'button'; b.dataset.c = 'novo';
+    b.append(tth('span', 'tt-mais', '+'), tth('span', 'tt-cn', 'Personagem novo'), tth('span', 'tt-cs', 'Criar a ficha do zero')); b.onclick = () => { tituloFecha(); criaPers(); }; box.append(b); }
+}
+function escolhe(c) {
+  if (c === me.c && SESS.c === c) { tituloFecha(); return; }
+  if (quemTem(c)) { vai('tomar', { c }); return; }
+  vai('senha', { c });
+}
+function telaTomar(c) {
+  const o = quemTem(TIT.c); const ca = tth('div', 'tt-cartao'); ca.append(retratoTt(TIT.c, 72), tth('h2', 'tt-h', nome(TIT.c)));
+  ca.append(tth('p', 'tt-p', `${nome(TIT.c)} está aberto em outro aparelho${o && o.nm ? ' (' + o.nm + ')' : ''}. Se entrar aqui, o outro aparelho sai do personagem.`));
+  const l = tth('div', 'tt-linha'); l.append(op('Entrar mesmo assim', null, () => vai('senha', { c: TIT.c, tomar: 1 }), 'p'), op('Voltar', null, () => vai('jog'), 'q')); ca.append(l); c.append(ca);
+}
+function telaSenha(c) {
+  const ch = TIT.c, tem = contasAt()[ch]; const ca = tth('form', 'tt-cartao'); ca.noValidate = true;
+  ca.append(retratoTt(ch, 72), tth('h2', 'tt-h', nome(ch)));
+  if (!estadoChegou && !(mesa && mesa.isGM)) ca.append(tth('p', 'tt-p fraco', 'Esperando a mesa responder…'));
+  ca.append(tth('p', 'tt-p', tem ? 'Digite a senha deste personagem.' : 'Primeira vez com este personagem: crie uma senha. Ela vale em qualquer aparelho.'));
+  const s1 = campoSenha('ttS1', tem ? 'Senha' : 'Nova senha', tem ? 'current-password' : 'new-password'); ca.append(s1);
+  let s2 = null; if (!tem) { s2 = campoSenha('ttS2', 'Repita a senha', 'new-password'); ca.append(s2); }
+  const lem = tth('label', 'tt-chk'); const cb = tth('input'); cb.type = 'checkbox'; cb.id = 'ttLem'; cb.checked = true; lem.append(cb, tth('span', null, 'Lembrar neste aparelho')); ca.append(lem, avisoEl());
+  const ok = op(tem ? 'Entrar' : 'Criar senha e entrar', null, null, 'p'); ok.type = 'submit'; const l = tth('div', 'tt-linha'); l.append(ok, op('Voltar', null, () => vai('jog'), 'q')); ca.append(l);
+  ca.onsubmit = async ev => { ev.preventDefault(); if (TIT.ocupado) return;
+    if (!tem && s1.value !== s2.value) { avisa('As duas senhas não são iguais'); s2.focus(); return; }
+    TIT.ocupado = true; ok.disabled = true; avisa(tem ? 'Conferindo…' : 'Criando…');
+    try { const r = await entraJog(ch, s1.value, cb.checked); if (r) { avisa(r); s1.select(); } } finally { TIT.ocupado = false; ok.disabled = false; } };
+  c.append(ca);
+}
+async function entraJog(c, senha, lembrar) {
+  if (!estadoChegou && !(mesa && mesa.isGM)) { for (let i = 0; i < 20 && !estadoChegou; i++) await new Promise(r => setTimeout(r, 250)); }
+  const tem = contasAt()[c]; let hs;
+  if (tem) { hs = await Mesa.hashSenha(senha, tem.s); if (hs.h !== tem.h) return 'Senha errada'; }
+  else { if (senha.length < 4) return 'Use pelo menos 4 letras ou números'; hs = await Mesa.hashSenha(senha); contaPede(c, hs); }
+  const lg = { p: 'j', c, h: hs.h }; ss.set(kSess(), lg); ls.set(kConta(), lembrar ? lg : null);
+  entraComo(c); return null;
+}
+function entraComo(c) { SESS.c = c; tituloFecha(); if (me.c !== c) pick(c, true); else sendPresence(); say(`Você entrou como ${nome(c)}`); }
+async function continuaJog(l) {
+  if (!estadoChegou) { avisa('Esperando a mesa responder…'); for (let i = 0; i < 20 && !estadoChegou; i++) await new Promise(r => setTimeout(r, 250)); }
+  const tem = contasAt()[l.c];
+  if (!tem && estadoChegou) { vai('senha', { c: l.c, aviso: 'O mestre zerou a senha deste personagem: crie outra.' }); return; }
+  if (tem && tem.h !== l.h) { vai('senha', { c: l.c, aviso: 'A senha deste personagem mudou.' }); return; }
+  if (quemTem(l.c)) { vai('tomar', { c: l.c }); return; }
+  ss.set(kSess(), l); entraComo(l.c);
+}
+
+// ----- mestre -----
+function telaMestre(c) {
+  const ca = tth('form', 'tt-cartao'); ca.noValidate = true; ca.append(tth('h2', 'tt-h', 'Entrar como mestre'));
+  ca.append(tth('p', 'tt-p', gkVer ? 'Digite a senha do mestre.' : 'Procurando a chave do mestre na mesa… Se ela não aparecer, entre uma vez pelo link antigo de mestre e crie a senha.'));
+  const s1 = campoSenha('ttSM', 'Senha do mestre'); ca.append(s1);
+  const lem = tth('label', 'tt-chk'); const cb = tth('input'); cb.type = 'checkbox'; cb.id = 'ttLemM'; lem.append(cb, tth('span', null, 'Lembrar neste aparelho (só no seu)')); ca.append(lem, avisoEl());
+  const ok = op('Entrar', null, null, 'p'); ok.type = 'submit'; const l = tth('div', 'tt-linha'); l.append(ok, op('Voltar', null, () => vai('menu'), 'q')); ca.append(l);
+  ca.onsubmit = async ev => { ev.preventDefault(); if (TIT.ocupado) return; TIT.ocupado = true; ok.disabled = true; avisa('Conferindo…');
+    try { const r = await entraMestre(s1.value, cb.checked); if (r) { avisa(r); s1.select(); } } finally { TIT.ocupado = false; ok.disabled = false; } };
+  c.append(ca);
+}
+async function entraMestre(senha, lembrar) {
+  let g = null;
+  if (!senha) g = mesa.isGM ? mesa.g : gLocal();
+  if (!g) { if (!senha) { vai('mestre'); return null; }
+    for (let i = 0; i < 24 && !gkVer; i++) await new Promise(r => setTimeout(r, 250));
+    if (!gkVer) return 'A chave do mestre não chegou. Confira a internet ou use o link antigo de mestre.';
+    g = await Mesa.abreSenha(senha, gkVer); if (!g) return 'Senha errada'; }
+  if (!mesa.isGM) { const ok = await mesa.virarMestre(g); if (!ok) return 'Essa chave não é desta mesa';
+    await iniciaMestre(ultimoEstado); persPublicaTudo(); papelUI(); if (table.gk) mesa.sendGk(table.gk).catch(() => {}); }
+  ss.set(kSess(), { p: 'm', g }); if (lembrar === true) { try { localStorage.setItem(kGm(), g); } catch (e) {} }
+  if (!table.gk && !gkVer) { vai('criaGk', { aviso: '' }); return null; }
+  limpaLinkMestre(); tituloFecha(); say('Você entrou como mestre'); return null;
+}
+function limpaLinkMestre() { if (Q.get('g') && table && table.gk) history.replaceState(null, '', location.pathname + location.search + '#m=' + mesa.m + '&k=' + mesa.k); }
+function telaCriaGk(c) {
+  const ca = tth('form', 'tt-cartao'); ca.noValidate = true; const troca = !!(table && table.gk);
+  ca.append(tth('h2', 'tt-h', troca ? 'Trocar a senha do mestre' : 'Crie a senha do mestre'));
+  ca.append(tth('p', 'tt-p', 'Com ela você entra como mestre de qualquer aparelho, pelo mesmo link dos jogadores. Use uma senha forte: quem tem o link pode tentar adivinhá-la.'));
+  const s1 = campoSenha('ttG1', 'Nova senha do mestre', 'new-password'), s2 = campoSenha('ttG2', 'Repita a senha', 'new-password'); ca.append(s1, s2, avisoEl());
+  const ok = op(troca ? 'Trocar senha' : 'Criar senha', null, null, 'p'); ok.type = 'submit'; const l = tth('div', 'tt-linha');
+  l.append(ok, op(troca ? 'Cancelar' : 'Depois', troca ? null : 'O link antigo de mestre continua valendo', () => { tituloFecha(); if (Q.get('novo')) jogadoresAbre(); }, 'q')); ca.append(l);
+  ca.onsubmit = async ev => { ev.preventDefault(); if (TIT.ocupado) return;
+    if (s1.value.length < 8) { avisa('Use pelo menos 8 caracteres'); s1.focus(); return; } if (s1.value !== s2.value) { avisa('As duas senhas não são iguais'); s2.focus(); return; }
+    TIT.ocupado = true; ok.disabled = true; avisa('Cifrando a chave…');
+    try { const gk = await Mesa.cifraSenha(s1.value, mesa.g); table.gk = gk; gkVer = gk; saveTable(); await mesa.sendGk(gk); limpaLinkMestre(); tituloFecha(); say(troca ? 'Senha do mestre trocada' : 'Senha do mestre criada');
+      if (Q.get('novo')) jogadoresAbre(); } finally { TIT.ocupado = false; ok.disabled = false; } };
+  c.append(ca);
+}
+
+// ----- sem mesa: criar, colar link -----
+async function criaMesa() { const t = await Mesa.newTable(); location.hash = `m=${t.m}&k=${t.k}&g=${t.g}&novo=1`; location.reload(); }
+function telaLink(c) {
+  const ca = tth('form', 'tt-cartao'); ca.noValidate = true; ca.append(tth('h2', 'tt-h', 'Entrar numa mesa'), tth('p', 'tt-p', 'Cole aqui o link da mesa que o mestre mandou.'));
+  const i = tth('input', 'tt-in'); i.id = 'ttLink'; i.placeholder = 'https://…#m=…&k=…'; i.autocomplete = 'off'; i.spellcheck = false; ca.append(i, avisoEl());
+  const ok = op('Entrar', null, null, 'p'); ok.type = 'submit'; const l = tth('div', 'tt-linha'); l.append(ok, op('Voltar', null, () => vai('menu'), 'q')); ca.append(l);
+  ca.onsubmit = ev => { ev.preventDefault(); const v = i.value.trim(), h = v.includes('#') ? v.slice(v.indexOf('#') + 1) : v; const q = new URLSearchParams(h);
+    if (!/^[\w-]{10,40}$/.test(q.get('m') || '') || !/^[\w-]{80,100}$/.test(q.get('k') || '')) { avisa('Esse link não parece ser de uma mesa'); return; }
+    location.hash = 'm=' + q.get('m') + '&k=' + q.get('k') + (q.get('g') ? '&g=' + q.get('g') : ''); location.reload(); };
+  c.append(ca);
+}
+function saiMesa() {
+  if (mesa && mesa.isGM) { esqueceLogin(true); try { mesa.leave(); } catch (e) {} location.hash = 'm=' + mesa.m + '&k=' + mesa.k; location.reload(); return; }
+  esqueceLogin(true); ls.set('mvila:ultima', null); try { if (mesa) mesa.leave(); } catch (e) {} history.replaceState(null, '', location.pathname + location.search); location.reload();
+}
+
+// ----- configurações -----
+function telaCfg(c) {
+  const ca = tth('div', 'tt-cartao cfg'); ca.append(tth('h2', 'tt-h', 'Configurações'));
+  const grava = () => { ls.set('mvila:cfg', CFG); if (somMestre) somMestre.gain.value = CFG.vol; };
+  const vl = tth('label', 'tt-lb', 'Volume'); vl.htmlFor = 'ttVol'; const v = tth('input', 'tt-rg'); v.type = 'range'; v.id = 'ttVol'; v.min = 0; v.max = 100; v.step = 5; v.value = Math.round(CFG.vol * 100);
+  const vo = tth('output', 'tt-out', v.value + '%'); v.oninput = () => { CFG.vol = +v.value / 100; vo.textContent = v.value + '%'; grava(); };
+  ca.append(tth('div', 'tt-cf', vl, tth('span', 'tt-rgw', v, vo)));
+  const seg = (rot, opcoes, atual, fn, dica) => { const g = tth('div', 'tt-seg'); g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', rot);
+    for (const [val, t] of opcoes) { const b = tth('button', null, t); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', val === atual);
+      b.onclick = () => { for (const x of g.children) x.setAttribute('aria-checked', x === b); fn(val); grava(); }; g.append(b); }
+    return tth('div', 'tt-cf', tth('span', 'tt-lb', rot), g, dica ? tth('span', 'tt-dica', dica) : null); };
+  ca.append(seg('Gráficos', [[false, 'Completos'], [true, 'Leves']], CFG.leve, x => { CFG.leve = x; }, 'Leves: até 30 quadros por segundo, bom para celular fraco ou bateria.'));
+  ca.append(seg('Zoom ao abrir', [[0, 'Automático'], [1, '1×'], [2, '2×'], [3, '3×'], [4, '4×']], CFG.zoom, x => { CFG.zoom = x; if (x) setZoom(x); }));
+  const mm = tth('label', 'tt-chk'); const cb = tth('input'); cb.type = 'checkbox'; cb.checked = CFG.calmo; cb.onchange = () => { CFG.calmo = cb.checked; grava(); };
+  mm.append(cb, tth('span', null, 'Menos movimento: sem tremor de tela e sem o passeio da câmera aqui no título')); ca.append(mm);
+  const l = tth('div', 'tt-linha'); l.append(op('Pronto', null, () => vai('menu'), 'p')); ca.append(l); c.append(ca);
+}
+
+// ----- abrir e fechar -----
+const VISTA0 = [626, 666];
+function tituloAbre(o) {
+  o = o || {};
+  TIT.on = true; TIT.jogando = !!o.jogando || (!!o.c && !!me.c); TIT.aviso = o.aviso || ''; TIT.c = o.c || null; TIT.sig = '';
+  TIT.tela = o.c ? (quemTem(o.c) ? 'tomar' : 'senha') : 'menu';
+  if (!o.c && !o.jogando && Q.get('novo') && mesa && mesa.isGM && !gkVer && !(table && table.gk)) TIT.tela = 'criaGk';
+  if (!TIT.jogando) cam.follow = false;
+  ttEl.hidden = false; ttEl.classList.toggle('jogando', TIT.jogando); document.body.classList.add('emTitulo'); fechaPaineis(); tituloRender(); sendPresence();
+}
+function tituloFecha() {
+  TIT.on = false; ttEl.hidden = true; ttEl.replaceChildren(); document.body.classList.remove('emTitulo');
+  if (me.c) { snapCam(); cam.follow = true; } sendPresence(); try { if (dadosPronto) dadosQuem(); } catch (e) {}
+}
+function fechaPaineis() { try { if (pvAberto()) fechaPers(); } catch (e) {} try { if (!$('livro').hidden) fechaLivro(); } catch (e) {} $('convite').style.display = 'none'; }
+// a câmera passeia devagar pela vila ao entardecer
+function tituloPasso(dt) {
+  TIT.t += dt; if (TIT.jogando || scene.id !== 'vila') return; const [x0, y0] = unitScreen(VISTA0[0], VISTA0[1]);
+  if (CFG.calmo) { cam.x = x0; cam.y = y0; return; }
+  const t = TIT.t; cam.x = x0 + Math.sin(t * 0.021) * 300 + Math.sin(t * 0.007) * 120; cam.y = y0 + Math.sin(t * 0.016 + 1) * 110;
+}
+addEventListener('keydown', e => {
+  if (!TIT.on) return; if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.key === 'Escape' && TIT.jogando) tituloFecha(); else if (e.key === 'Escape' && TIT.tela !== 'menu') vai('menu');
+  e.stopImmediatePropagation();
+}, true);
+
+// ----- painel do mestre: jogadores -----
+const jogAberto = () => CONTAS && $('convite').style.display !== 'none' && $('convite').dataset.k === 'jog';
+function jogadoresAbre() {
+  const el = $('convite'); el.dataset.k = 'jog'; el.replaceChildren(); el.style.display = '';
+  el.append(tth('div', 't', 'Jogadores'), tth('div', 's', 'Mande este link para todo mundo, você inclusive. Cada um escolhe o personagem e cria a senha na primeira vez que entra.'));
+  const r1 = tth('div', 'row'); const i1 = tth('input'); i1.readOnly = true; i1.value = mesa.links.player; i1.id = 'lnkJog'; const b1 = tth('button', null, 'Copiar'); b1.type = 'button'; b1.onclick = () => copyLink(i1); r1.append(i1, b1); el.append(r1);
+  const gk = !!(table.gk || gkVer); const r2 = tth('div', 'jg-gk'); r2.append(tth('span', null, gk ? 'Senha do mestre criada.' : 'Senha do mestre ainda não criada: sem ela, só o link antigo te faz mestre.'));
+  const b2 = tth('button', gk ? null : 'on', gk ? 'Trocar' : 'Criar'); b2.type = 'button'; b2.onclick = () => { el.style.display = 'none'; tituloAbre({ jogando: true }); vai('criaGk'); }; r2.append(b2); el.append(r2);
+  const tb = tth('table', 'jg-tab'); const CT = contasAt(), TR = travAt();
+  tb.append(tth('thead', null, tth('tr', null, tth('th', null, 'Personagem'), tth('th', null, 'Com quem'), tth('th', null, 'Senha'), tth('th', null, ''))));
+  const corpo = tth('tbody'); tb.append(corpo);
+  for (const c of CHARS) { if (EXTRAS.includes(c) && !persDe(c)) continue; const o = quemTem(c) || (me.c === c ? { nm: 'você' } : null);
+    let quem = null; for (const e of peerMap.values()) if (e.presence && e.presence.c === c) quem = e;
+    const acts = tth('td', 'jg-ac');
+    if (CT[c]) { const z = tth('button', null, 'Zerar senha'); z.type = 'button'; z.title = 'Na próxima entrada o jogador cria outra'; z.onclick = () => { delete table.contas[c]; gmPublish(); say(`Senha de ${nome(c)} zerada`); jogadoresAbre(); }; acts.append(z); }
+    if (quem) { const x = tth('button', null, 'Tirar da mesa'); x.type = 'button'; x.onclick = () => { mesa.sendEvent({ k: 'conta', a: 'sai', alvo: quem.peer }).catch(() => {}); say(`${nome(c)} saiu da mesa`); setTimeout(jogadoresAbre, 800); }; acts.append(x); }
+    if (EXTRAS.includes(c)) { const tv = TR.includes(c), t = tth('button', null, tv ? 'Liberar' : 'Travar'); t.type = 'button'; t.title = tv ? 'Volta a aparecer na escolha dos jogadores' : 'Some da escolha dos jogadores';
+      t.onclick = () => { table.trav = tv ? TR.filter(q => q !== c) : TR.concat([c]); gmPublish(); jogadoresAbre(); }; acts.append(t); }
+    const nmTd = tth('td', 'jg-nm'); nmTd.append(retratoTt(c, 28), tth('span', null, nome(c) + (TR.includes(c) ? ' (travado)' : '')));
+    corpo.append(tth('tr', null, nmTd, tth('td', null, o ? (o.nm || 'online, sem nome') : '—'), tth('td', null, CT[c] ? 'Criada' : 'Sem senha'), acts)); }
+  el.append(tth('div', 'jg-scroll', tb));
+  const dt = tth('details', 'jg-res'); dt.append(tth('summary', null, 'Link antigo de mestre (reserva)'), tth('div', 's', 'Guarde só para você. Ele te faz mestre mesmo sem a senha.'));
+  const r3 = tth('div', 'row'); const i3 = tth('input'); i3.readOnly = true; i3.value = mesa.links.gm; i3.id = 'lnkMes'; const b3 = tth('button', null, 'Copiar'); b3.type = 'button'; b3.onclick = () => copyLink(i3); r3.append(i3, b3); dt.append(r3); el.append(dt);
+  const f = tth('div', 'row'); f.style.justifyContent = 'flex-end'; f.style.marginTop = '10px'; const bf = tth('button', null, 'Fechar'); bf.type = 'button'; bf.onclick = () => { el.style.display = 'none'; }; f.append(bf); el.append(f);
+}
+if (CONTAS) { $('convidar').textContent = 'Jogadores'; $('convidar').onclick = () => jogadoresAbre(); }
+if (tituloLigado()) { $('menuBtn').hidden = false; $('menuBtn').onclick = () => tituloAbre({ jogando: true }); }
+
 ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'persBtn', 'livroBtn'].forEach(id => $(id).style.display = '');
 $('cbrow').style.display = $('nvrow').style.display = $('dsrow').style.display = MESA ? 'none' : ''; $('load').style.display = 'none';
 $('solorow').style.display = (!MESA && !(window.claude && typeof window.claude.use === 'function')) ? '' : 'none';
@@ -6544,11 +7018,12 @@ $('lugarrow').style.display = MESA ? 'none' : '';
 if (Q.get('cena') && CENAS[Q.get('cena')]) await goScene({ para: Q.get('cena') });
 if (MESA) {
   try { await startMesa(); } catch (e) { $('net').textContent = 'Não deu para abrir a mesa: ' + (e && e.message || e); }
-  $('gmrow').style.display = mesa && mesa.isGM ? '' : 'none'; $('cbrow').style.display = $('nvrow').style.display = $('dsrow').style.display = mesa && mesa.isGM ? '' : 'none'; aplicarCombate(); $('gjrow').style.display = mesa && mesa.isGM && CENAS.genjutsu ? '' : 'none'; gjChips(); $('lugarrow').style.display = mesa && mesa.isGM ? '' : 'none'; $('tempo').style.display = mesa && mesa.isGM ? '' : 'none'; $('tempoMestre').style.display = mesa && !mesa.isGM ? '' : 'none';
-  if (mesa && mesa.isGM && Q.get('novo')) { history.replaceState(null, '', location.href.replace(/&novo=1/, '')); showInvite(); }
-  if (mesa && !mesa.isGM && !me.c) say('Escolha seu personagem no canto de cima');
+  papelUI(); if (mesa) tituloLembraMesa();
+  if (mesa && mesa.isGM && Q.get('novo') && !CONTAS) { history.replaceState(null, '', location.href.replace(/&novo=1/, '')); showInvite(); }
+  if (mesa && !mesa.isGM && !me.c && !CONTAS) say('Escolha seu personagem no canto de cima');
   if (!me.c) { const [sx, sy] = unitScreen(me.x, me.y); cam.x = sx; cam.y = sy; cam.follow = false; }
 }
+if (tituloLigado()) tituloAbre();
 if (Q.get('ui') === '0') ['tl', 'chars', 'mm', 'help', 'dadosBtn', 'tecBtn', 'combate', 'nevoa', 'ficha', 'persBtn', 'pers', 'acoes', 'livroBtn', 'livro'].forEach(id => $(id).style.display = 'none');
 if (Q.get('dados') === '1') abrePainel(true);
 if (Q.get('go')) { const [gx, gy] = Q.get('go').split(',').map(Number); const g = nearestWalkable(gx | 0, gy | 0, 7); const p = g && astar(me.x | 0, me.y | 0, g[0], g[1]); if (p) me.path = p; }
