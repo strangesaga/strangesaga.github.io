@@ -798,6 +798,71 @@ body.emTitulo #cv{cursor:default}
 #vez{z-index:31}
 }
 @media (max-width:900px) and (max-height:520px){#canto{bottom:auto;top:8px;right:8px}#tl{max-height:70vh}}
+/* editor de sprite */
+#sprEd{position:fixed;z-index:70;inset:16px max(16px,calc((100vw - 1240px)/2));display:grid;grid-template-columns:196px minmax(0,1fr) 272px;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"cab cab cab" "poses centro lado" "rod rod rod";background:#0d1322;color:#ece6d6;border-radius:8px;box-shadow:0 0 0 100vmax rgba(5,8,16,.62),0 24px 60px rgba(0,0,0,.6);overflow:hidden;font:13px system-ui,-apple-system,"Segoe UI",sans-serif}
+#sprEd[hidden]{display:none}
+#sprEd h2{margin:0;font-size:16px;font-weight:700}#sprEd h3{margin:0 0 2px;flex-basis:100%;font-size:12px;font-weight:600;color:#9aa3b8}
+#sprEd button{background:#151c30;border:1px solid #39435c;color:#d8d3c4;border-radius:6px;padding:6px 10px;font:600 12px system-ui,sans-serif;cursor:pointer;min-height:32px}
+#sprEd button:hover{border-color:#5a6788}#sprEd button:disabled{opacity:.4;cursor:default}
+#sprEd button.on{border-color:#e9c46a;color:#f2d98a;background:#211f1a}
+#sprEd button:focus-visible,#sprEd input:focus-visible{outline:2px solid #e9c46a;outline-offset:1px}
+.seCab{grid-area:cab;display:flex;align-items:center;gap:16px;padding:10px 12px 10px 18px;border-bottom:1px solid #222b42}
+.seEstilo{margin:0;flex:1;color:#8f98ad;font-size:12px}
+#sprEd #seFecha{min-width:36px;font-size:18px;line-height:1;padding:4px 10px}
+.sePosesBox{grid-area:poses;overflow:auto;padding:12px 10px;border-right:1px solid #222b42;scrollbar-width:thin;scrollbar-color:#39435c transparent}
+#sePoses{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+#sprEd .sePose{display:grid;grid-template-columns:40px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;background:transparent;border-color:transparent;padding:4px 6px}
+#sprEd .sePose.on{border-color:#e9c46a;background:#19202f;color:#ece6d6}
+.sePose canvas{grid-row:1/3;width:40px;height:40px;image-rendering:pixelated;background:#161d31;border-radius:4px}
+.sePose b{font-size:13px;align-self:end}.sePose small{color:#8a93a8;font-size:11px;font-weight:400;align-self:start}
+.seCentro{grid-area:centro;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:14px;min-width:0;min-height:0;background:radial-gradient(90% 70% at 50% 45%,#1b2338 0,#0d1322 100%)}
+.seLadoSel{display:flex;gap:4px}
+#seTela{image-rendering:pixelated;touch-action:none;border-radius:3px;box-shadow:0 0 0 1px #2b3550,0 10px 30px rgba(0,0,0,.45);cursor:crosshair}
+#seTela[data-ferr=conta]{cursor:copy}#seTela[data-ferr=balde]{cursor:cell}
+.seQuadrosBox{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+#seQuadros{display:flex;gap:6px}
+#sprEd .seQ{position:relative;padding:3px;background:#161d31}
+.seQ canvas{display:block;width:52px;height:52px;image-rendering:pixelated}
+.seQ span{position:absolute;right:5px;bottom:3px;font-size:10px;color:#8a93a8}
+.seQOps{display:flex;gap:6px}
+.seLado{grid-area:lado;overflow:auto;padding:12px;border-left:1px solid #222b42;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:#39435c transparent}
+.seGrupo{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+#sprEd .seFerrs [data-ferr]{display:inline-flex;align-items:center;gap:6px;flex:1 1 calc(50% - 6px)}
+.seFerrs svg{width:16px;height:16px;flex:none}
+#sprEd .seTg{flex:1 1 calc(50% - 6px)}
+.seSetas{display:grid;grid-template-columns:repeat(4,34px);gap:4px}
+#sprEd .seSetas button{padding:4px 0}
+.seCorLin{display:flex;gap:8px;align-items:center;flex-basis:100%}
+#seCorAtual{width:36px;height:36px;border-radius:6px;box-shadow:0 0 0 1px rgba(255,255,255,.18) inset}
+#seHex{width:80px;background:#11172a;color:#ece6d6;border:1px solid #39435c;border-radius:6px;padding:6px 8px;font:600 13px ui-monospace,Menlo,monospace}
+.seCanal{display:grid;grid-template-columns:14px 1fr 14px;gap:8px;align-items:center;flex-basis:100%;font-size:12px;color:#9aa3b8}
+.seCanal input{width:100%;accent-color:#e9c46a}.seCanal b{font-weight:600;color:#d8d3c4;text-align:right}
+#seSw{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;flex-basis:100%;margin-top:2px}
+#sprEd .seSwc{aspect-ratio:1;min-height:0;padding:0;border:1px solid rgba(0,0,0,.45);border-radius:4px}
+#sprEd .seSwc.on{outline:2px solid #e9c46a;outline-offset:1px}
+.sePrevs figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sePrevs canvas{width:96px;height:96px;image-rendering:pixelated;background:#161d31;border-radius:6px}
+.sePrevs figcaption{font-size:11px;color:#8a93a8}
+.seRod{grid-area:rod;display:flex;gap:8px;align-items:center;padding:10px 14px;border-top:1px solid #222b42;flex-wrap:wrap}
+.seRod .esp{flex:1}
+#sprEd #seSalva{background:#e9c46a;border-color:#e9c46a;color:#1b1608}#sprEd #seSalva:hover{background:#f2d36f}
+.pvBon .pvSprBtn{position:absolute;right:2px;top:2px;z-index:2;background:#11172a;border:1px solid #39435c;color:#e9c46a;border-radius:6px;padding:4px 8px;font:600 11px system-ui,sans-serif;cursor:pointer}
+.pvBon .pvSprBtn:focus-visible{outline:2px solid #e9c46a;outline-offset:1px}
+@media (max-width:900px){
+#sprEd{inset:0;border-radius:0;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto;grid-template-areas:"cab" "centro" "lado" "poses" "rod";overflow:auto;box-shadow:none}
+.seCab{position:sticky;top:0;z-index:2;background:#0d1322;padding:8px 10px 8px 14px}.seEstilo{display:none}
+.seCab h2{flex:1}
+.seCentro{padding:10px 8px;background:#121a2c;justify-content:flex-start}
+#sprEd>*{min-height:auto}
+.sePosesBox{border:none;border-top:1px solid #222b42;overflow:visible;padding:10px}
+#sePoses{flex-direction:row;overflow-x:auto;scrollbar-width:none}
+#sprEd .sePose{grid-template-columns:auto;grid-template-rows:auto auto;justify-items:center;text-align:center;flex:none;row-gap:2px}
+.sePose canvas{grid-row:auto}.sePose small{display:none}
+.seLado{border:none;border-top:1px solid #222b42;overflow:visible}
+#sprEd button{min-height:40px}
+.seRod{position:sticky;bottom:0;background:#0d1322;z-index:2}.seRod .esp{display:none}
+#sprEd .seRod button{flex:1 1 auto}
+}
 </style>
 </head>
 <body>
@@ -843,6 +908,36 @@ body.emTitulo #cv{cursor:default}
 <div id="canto"><button id="mdBtn" class="ui" type="button" title="Mapa do mundo e viagens">Mapa</button><button id="ljBtn" class="ui" type="button" title="Lojas deste lugar" hidden>Lojas</button><button id="msBtn" class="ui" type="button" title="Quadro de missões">Missões</button><button id="diBtn" class="ui" type="button" title="Diário da sessão">Diário</button></div>
 <section id="diario" class="ui" hidden aria-label="Diário da sessão"><header><h2>Diário da sessão</h2><button id="diFecha" type="button" aria-label="Fechar">×</button></header><div class="diBarra"><input id="diBusca" type="search" placeholder="Buscar no diário"><button id="diExporta" type="button">Exportar texto</button><button id="diCopia" type="button">Copiar</button><button id="diLimpa" type="button">Limpar</button></div><ul id="diLista"></ul></section>
 <section id="missoes" class="ui" hidden aria-label="Quadro de missões"><header><h2>Quadro de missões</h2><button id="msFecha" type="button" aria-label="Fechar">×</button></header><div id="msLista"></div></section>
+<section id="sprEd" hidden aria-label="Editor de sprite">
+  <header class="seCab"><h2 id="seTitulo">Sprite</h2><p class="seEstilo">Cores de 12 bits, sem contorno e sem rosto, como o resto da mesa. O pé fica no ponto dourado.</p><button id="seFecha" type="button" aria-label="Fechar o editor">×</button></header>
+  <nav class="sePosesBox" aria-label="Poses"><h3>Poses</h3><div id="sePoses"></div></nav>
+  <div class="seCentro">
+    <div class="seLadoSel" role="group" aria-label="Lado"><button type="button" data-lado="0">Frente</button><button type="button" data-lado="1">Costas</button></div>
+    <canvas id="seTela" width="384" height="384" aria-label="Quadro em edição"></canvas>
+    <div class="seQuadrosBox"><div id="seQuadros" role="group" aria-label="Quadros da pose"></div>
+      <div class="seQOps"><button type="button" id="seCopiar" title="Copiar o quadro (Ctrl+C)">Copiar</button><button type="button" id="seColar" title="Colar no quadro (Ctrl+V)">Colar</button><button type="button" id="seRepete" title="Pôr este desenho em todos os quadros da pose">Repetir na pose</button></div></div>
+  </div>
+  <aside class="seLado">
+    <div class="seGrupo seFerrs" role="group" aria-label="Ferramentas"><h3>Ferramenta</h3>
+      <button type="button" data-ferr="lapis" title="Lápis (B)"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 13.5l1-3.5 7.5-7.5 2.5 2.5-7.5 7.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>Lápis</span></button><button type="button" data-ferr="borracha" title="Borracha (E); o botão direito do mouse também apaga"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 10.5l6-6 4.5 4.5-4 4H5.5zM7 13h7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>Borracha</span></button>
+      <button type="button" data-ferr="balde" title="Balde (G): pinta a área da mesma cor"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 7.5l5-5 5 5-5 5zM13.5 9.5c.9 1.4.9 2.6 0 3.4-.9-.8-.9-2 0-3.4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>Balde</span></button><button type="button" data-ferr="conta" title="Conta-gotas (I): pega a cor de um pixel"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 2.5l3.5 3.5-2 2L8 4.5zM8.5 6l-5.5 5.5v1.5h1.5L10 7.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>Conta-gotas</span></button>
+      <button type="button" id="seEspelho" class="seTg" title="Desenhar dos dois lados ao mesmo tempo (X)">Espelhar traço</button><button type="button" id="seCasca" class="seTg" title="Mostrar o quadro anterior por baixo (O)">Ver quadro anterior</button></div>
+    <div class="seGrupo seQuadro"><h3>Quadro</h3>
+      <div class="seSetas" role="group" aria-label="Mover o desenho 1 pixel"><button type="button" data-move="0,-1" aria-label="Mover para cima">↑</button><button type="button" data-move="-1,0" aria-label="Mover para a esquerda">←</button><button type="button" data-move="1,0" aria-label="Mover para a direita">→</button><button type="button" data-move="0,1" aria-label="Mover para baixo">↓</button></div>
+      <button type="button" id="seVira" title="Espelhar o desenho deste quadro">Virar</button><button type="button" id="seLimpa" title="Apagar o quadro todo">Limpar</button></div>
+    <div class="seGrupo seCores"><h3>Cor</h3>
+      <div class="seCorLin"><span id="seCorAtual" aria-hidden="true"></span><input id="seHex" maxlength="7" spellcheck="false" aria-label="Cor em hexadecimal de 12 bits"></div>
+      <label class="seCanal"><span>R</span><input type="range" id="seR" min="0" max="15" step="1"><b></b></label>
+      <label class="seCanal"><span>G</span><input type="range" id="seG" min="0" max="15" step="1"><b></b></label>
+      <label class="seCanal"><span>B</span><input type="range" id="seB" min="0" max="15" step="1"><b></b></label>
+      <div id="seSw" aria-label="Cores do sprite"></div></div>
+    <div class="seGrupo sePrevs"><h3>Prévia</h3><figure><canvas id="sePrev" width="96" height="96"></canvas><figcaption>Assim</figcaption></figure><figure><canvas id="sePrev2" width="96" height="96"></canvas><figcaption>Espelhado</figcaption></figure></div>
+  </aside>
+  <footer class="seRod"><button type="button" id="seDesf" title="Desfazer (Ctrl+Z)">Desfazer</button><button type="button" id="seRef" title="Refazer (Ctrl+Y)">Refazer</button><span class="esp"></span>
+    <button type="button" id="seImporta" title="Abrir uma folha PNG de 256 × 256 ou 512 × 256">Importar PNG</button><button type="button" id="seExporta" title="Baixar a folha inteira com as quatro direções">Exportar PNG</button>
+    <button type="button" id="seOrig">Voltar ao original</button><button type="button" id="seSalva">Salvar na mesa</button></footer>
+  <input type="file" id="seArq" accept="image/png" hidden>
+</section>
 <div id="emotes" class="ui" hidden><button data-e="surpresa" type="button" title="Surpresa">!</button><button data-e="duvida" type="button" title="Dúvida">?</button><button data-e="raiva" type="button" title="Raiva">怒</button><button data-e="risada" type="button" title="Risada">ha</button><button data-e="coracao" type="button" title="Carinho">♥</button><button data-e="gota" type="button" title="Sem graça">…</button></div>
 <section id="mundo" class="ui" hidden aria-label="Mapa do mundo"><header><h2>Mapa do mundo</h2><button id="mdFecha" type="button" aria-label="Fechar">×</button></header><div class="mdCorpo"><canvas id="mdCv" width="420" height="300"></canvas><div id="mdLista"></div></div></section>
 <section id="loja" class="ui" hidden aria-label="Loja"><header><h2 id="ljTit">Loja</h2><button id="ljFecha" type="button" aria-label="Fechar">×</button></header><div id="ljCorpo"></div></section>
@@ -1142,7 +1237,7 @@ const Mesa = (() => {
     const open = async u8 => { if (u8.length < 29) return null; try { return JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: u8.subarray(0, 12) }, aes, u8.subarray(12)))); } catch (e) { return null; } };
     const will = { topic: base + '/p/' + cid, payload: await seal({ t: 'bye', cid, id: cid + '-bye' }) };
     const byeNow = await seal({ t: 'bye', cid, id: cid + '-bye2' });
-    const api = { cid, room, m, k, isGM: !!priv, g, links: null, conns: [], onPresence: o.onPresence, onBye: o.onBye, onState: o.onState, onRoll: o.onRoll || (() => {}), onEvent: o.onEvent || (() => {}), onChange: o.onChange || (() => {}), onFicha: o.onFicha || (() => {}), onGk: o.onGk || (() => {}) };
+    const api = { cid, room, m, k, isGM: !!priv, g, links: null, conns: [], onPresence: o.onPresence, onBye: o.onBye, onState: o.onState, onRoll: o.onRoll || (() => {}), onEvent: o.onEvent || (() => {}), onChange: o.onChange || (() => {}), onSprite: o.onSprite || (() => {}), onFicha: o.onFicha || (() => {}), onGk: o.onGk || (() => {}) };
     const pageUrl = location.href.split('#')[0];
     api.links = { player: `${pageUrl}#m=${m}&k=${k}`, gm: `${pageUrl}#m=${m}&k=${k}&g=${g || ''}` };
     // entrar como mestre depois (senha do mestre): a mesma conexão passa a assinar o estado
@@ -1168,6 +1263,10 @@ const Mesa = (() => {
         let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode(msg.c + '|' + msg.s)); } catch (e) {}
         if (!ok) return; let f = null; try { f = JSON.parse(msg.s); } catch (e) {} if (f) api.onFicha(msg.c, f, retained);
       }
+      else if (msg.t === 'v' && typeof msg.c === 'string' && typeof msg.s === 'string' && typeof msg.sig === 'string') {     // sprite desenhado de um personagem, assinado pelo mestre
+        let ok = false; try { ok = await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, pub, b64u.dec(msg.sig), enc.encode('v|' + msg.c + '|' + msg.s)); } catch (e) {}
+        if (!ok) return; let o = null; try { o = JSON.parse(msg.s); } catch (e) {} if (o) api.onSprite(msg.c, o, retained);
+      }
     }
     const relays = o.relays && o.relays.length ? o.relays : RELAYS;
     for (const url of relays) api.conns.push(new Conn(url, 'mv' + cid + hex(rand(2)), base + '/#', will, onMsg, () => api.onChange()));
@@ -1186,6 +1285,13 @@ const Mesa = (() => {
       const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, priv, enc.encode(c + '|' + s)));
       const p = await seal({ t: 'f', id: cid + '-f' + (++seq), c, s, sig: b64u.enc(sig) });
       for (const cn of api.conns) cn.publish(base + '/f/' + c, p, true);
+    };
+    // o sprite desenhado de cada personagem também fica retido no seu canal
+    api.sendSprite = async (c, o) => {
+      if (!priv || !/^[a-z0-9]{1,12}$/.test(c)) return; const s = JSON.stringify(o);
+      const sig = new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, priv, enc.encode('v|' + c + '|' + s)));
+      const p = await seal({ t: 'v', id: cid + '-v' + (++seq), c, s, sig: b64u.enc(sig) });
+      for (const cn of api.conns) cn.publish(base + '/v/' + c, p, true);
     };
     api.sendGk = async gk => {
       if (!priv || !okGk(gk)) return; const s = JSON.stringify({ s: gk.s, iv: gk.iv, ct: gk.ct, it: gk.it });
@@ -1425,7 +1531,7 @@ let pet = { x: me.x - 1, y: me.y, dx: 1, dy: 1, mv: false };
 // contas: cada jogador entra com o próprio personagem e senha; o mestre, com a senha dele (tela de título)
 const CONTAS = MESA && (!Q.has('teste') || Q.has('titulo'));
 const DV = (() => { try { let v = localStorage.getItem('mvila:dv'); if (!/^[a-z0-9]{8}$/.test(v || '')) { v = Math.random().toString(36).slice(2, 10).padEnd(8, '0'); localStorage.setItem('mvila:dv', v); } return v; } catch (e) { return Math.random().toString(36).slice(2, 10).padEnd(8, '0'); } })();
-let contasVer = {}, travVer = [], gkVer = null, estadoChegou = false, ultimoEstado = null, TIT = null, cenaPronto = false, bestPronto = false, dgPronto = false, climaPronto = false, climaVer = {}, lojasPronto = false, lojasVer = null, viagemPronto = false, extrasPronto = false; const SESS = { c: null };
+let contasVer = {}, travVer = [], gkVer = null, estadoChegou = false, ultimoEstado = null, TIT = null, cenaPronto = false, bestPronto = false, dgPronto = false, climaPronto = false, climaVer = {}, lojasPronto = false, lojasVer = null, viagemPronto = false, extrasPronto = false, sprPronto = false; const SESS = { c: null };
 const CORES_J = ['#e9c46a', '#e07a5f', '#81b29a', '#7cb7e8', '#c49bdc', '#f2a1b8', '#a8c66c', '#d9d4c7'];
 const PERFIL = (() => { try { const v = JSON.parse(localStorage.getItem('mvila:perfil') || '{}'); return { nm: String(v.nm || '').slice(0, 24), cor: Number.isInteger(v.cor) && v.cor >= 0 && v.cor < 8 ? v.cor : 0 }; } catch (e) { return { nm: '', cor: 0 }; } })();
 const CFG = (() => { const d = { vol: 0.8, leve: false, zoom: 0, calmo: !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches), amb: true };
@@ -2459,7 +2565,7 @@ if (window.claude && typeof window.claude.use === 'function') {
 function say(t) { const el = $('aviso'); el.textContent = t; el.style.opacity = 1; clearTimeout(say.tt); say.tt = setTimeout(() => el.style.opacity = 0, 3200); }
 function cleanTokens(o) { const out = {}; if (o && typeof o === 'object') for (const c of CHARS) { const t = o[c]; if (t && okXY(+t.x, +t.y)) out[c] = { s: okScene(t.s) ? t.s : 'vila', x: r2(+t.x), y: r2(+t.y) }; } return out; }
 function rebuildPeers() { peers = Array.from(peerMap.values()).filter(e => e.presence && e.presence.c); }
-function gmState(pub) { const P = pub ? estadoPublico(table) : table; return Object.assign(pub ? {} : { pers: table.pers, persHist: table.persHist }, { v: 1, rev: table.rev, gmCid: mesa.cid, clock: { wm: r2(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN), at: Date.now(), speed }, tokens: table.tokens, gen: table.gen || [], genCena: table.genCena || 'genjutsu',
+function gmState(pub) { const P = pub ? estadoPublico(table) : table; return Object.assign(pub ? {} : { pers: table.pers, persHist: table.persHist, spr: table.spr || {} }, { v: 1, rev: table.rev, gmCid: mesa.cid, clock: { wm: r2(((worldMin() % DAYMIN) + DAYMIN) % DAYMIN), at: Date.now(), speed }, tokens: table.tokens, gen: table.gen || [], genCena: table.genCena || 'genjutsu',
   cmb: P.cmb || null, npcs: P.npcs || [], ficha: table.ficha || {}, zonas: P.zonas || [], nevoa: table.nevoa || [], cond: P.cond || {}, ref: table.ref || {}, contas: table.contas || {}, trav: table.trav || [], obj: pub ? objPublicos(table.obj) : (table.obj || []), dgs: table.dgs || {}, clima: table.clima || {}, lojas: table.lojas || null, viagem: table.viagem || null, missoes: table.missoes || [], ek: ecdh ? ecdh.pub : undefined }, pub ? {} : { gk: table.gk || null, salvas: table.salvas || [], encontros: table.encontros || [], notas: table.notas || [] }); }
 function saveTable() { try { localStorage.setItem('mvila:mesa:' + mesa.room, JSON.stringify(gmState())); } catch (e) {} }
 function gmPublish() { if (!mesa || !mesa.isGM) return; table.rev++; tableSentAt = Date.now(); tableDirty = false; saveTable(); mesa.sendState(gmState(true)).catch(() => {}); }
@@ -2498,8 +2604,9 @@ async function startMesa() {
     },
     onRoll(msg) { receberRolagem(msg); },
     onGk(gk) { gkVer = gk; if (mesa.isGM && table && !table.gk) { table.gk = gk; saveTable(); } if (TIT) tituloEstado(); },
-    onEvent(msg) { if (msg && msg.k === 'conta') contaEvento(msg); else if (msg && msg.k === 'cena') cenaEvento(msg); else if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else if (msg && msg.k === 'troca') { if (lojasPronto) trocaEvento(msg); } else if (msg && msg.k === 'extra') { if (extrasPronto) extraEvento(msg); } else receberEvento(msg); },
+    onEvent(msg) { if (msg && msg.k === 'conta') contaEvento(msg); else if (msg && msg.k === 'cena') cenaEvento(msg); else if (msg && msg.k === 'pers') persRecebeProposta(msg); else if (msg && msg.k === 'acao') acaoRecebe(msg); else if (msg && msg.k === 'troca') { if (lojasPronto) trocaEvento(msg); } else if (msg && msg.k === 'extra') { if (extrasPronto) extraEvento(msg); } else if (msg && msg.k === 'spr') { if (sprPronto) sprEvento(msg); } else receberEvento(msg); },
     onFicha(c, f, retained) { persRecebe(c, f, retained); },
+    onSprite(c, o, retained) { if (sprPronto) sprRecebe(c, o, retained); else (window.__sprFila = window.__sprFila || []).push([c, o, retained]); },
     onChange() { if (!mesa || !mesa.connected()) return; setTimeout(sendPresence, 300); if (mesa.isGM) { clearTimeout(startMesa.gt); startMesa.gt = setTimeout(() => { gmPublish(); persPublicaTudo(); if (table.gk) mesa.sendGk(table.gk).catch(() => {}); }, 1500); } } });
   if (mesa.isGM) await iniciaMestre(null);
   setInterval(() => {
@@ -5051,6 +5158,7 @@ function pvPalco() {
   const cv = h('canvas', 'pvBoneco'); cv.width = 32; cv.height = 32; const e = E((EXTRAS.includes(pv.c) ? (F.vis || 'inimigo0') : pv.c) + '_parado_frente');
   if (e) { const x = cv.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32); }
   const bon = h('div', 'pvBon', cv); st.append(bon);
+  if (pv.criar < 0 && podeEditar(pv.c) && typeof sprAbre === 'function') { const ed = h('button', 'pvSprBtn', 'Editar sprite'); ed.type = 'button'; ed.title = 'Desenhar o sprite deste personagem: poses, frente e costas'; ed.onclick = () => sprAbre(pv.c); bon.append(ed); }
   st.append(h('div', 'pvNome', F.id.nome || 'Sem nome'), h('div', 'pvSub', [F.id.cla, F.id.patente, 'NC ' + F.nc].filter(Boolean).join(' · ')));
   const barra = (rot, a, t, cor, k) => { const b = h('div', 'pvBar ' + k); b.style.setProperty('--c', cor); const pct = t > 0 ? Math.max(0, Math.min(1, a / t)) : 0;
     const tr = h('div', 'tr'); tr.style.setProperty('--p', pct); const lb = h('span', 'lb', rot); const v = h('b', null, `${a} / ${t}`); v.dataset.ex = k;
@@ -8599,6 +8707,227 @@ for (const ev of ['pointerdown', 'keydown']) addEventListener(ev, () => { if (CF
   if (window.matchMedia && matchMedia('(max-width:900px)').matches) tl.classList.add('mini'); pinta();
   bt.onclick = e => { e.stopPropagation(); tl.classList.toggle('mini'); pinta(); }; }
 extrasPronto = true;
+
+// ---------- editor de sprite: cada jogador desenha o próprio personagem ----------
+// Folha de trabalho 256×256: uma linha por pose, colunas 0–3 de frente e 4–7 de costas, quadros de 32×32 com o pé em (16, 27).
+// Exporta 512×256 com as duas direções espelhadas (o jogo espelha sozinho). Cores presas em 12 bits, como a arte da mesa.
+const SP_POSES = [['parado', 'Parado', 2, 500], ['anda', 'Andando', 4, 140], ['corre', 'Correndo', 4, 90], ['selo', 'Selos', 4, 80],
+  ['golpe', 'Golpe', 3, 130], ['dano', 'Dano', 2, 190], ['voa', 'Voando', 2, 260], ['ajoelha', 'Ajoelhado', 1, 0]];
+const SP_LADOS = ['frente', 'costas'], SPQ = 32, SPW = 256;
+const SPR_MAN0 = {}, SPR_ON = new Map(), SPR_SEQ = {};          // entradas originais do atlas; personagem → folha aplicada
+const spNomes = c => SP_POSES.flatMap(([p]) => SP_LADOS.map(l => `${c}_${p}_${l}`));
+const okPng = p => p === null || (typeof p === 'string' && p.length < 160000 && /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(p));
+const _visDe = visDe; visDe = function (c) { return SPR_ON.has(c) ? c : _visDe(c); };   // personagem criado na mesa com sprite próprio usa o próprio
+// ----- aplicar uma folha: vira uma página nova do atlas e as entradas do personagem passam a apontar para ela -----
+async function sprAplica(c, png) {
+  if (!CHARS.includes(c)) return; const seq = SPR_SEQ[c] = (SPR_SEQ[c] || 0) + 1;
+  const v0 = _visDe(c); for (const n of spNomes(c)) if (!(n in SPR_MAN0)) SPR_MAN0[n] = MAN[n] || null;
+  if (!png) { for (const n of spNomes(c)) { if (SPR_MAN0[n]) MAN[n] = SPR_MAN0[n]; else delete MAN[n]; } SPR_ON.delete(c); spRefaz(c); return; }
+  let img; try { img = await loadImg(png); } catch (e) { return; } if (seq !== SPR_SEQ[c] || img.width < SPW || img.height < SPW) return;
+  const k = document.createElement('canvas'); k.width = k.height = SPW; k.getContext('2d').drawImage(img, 0, 0);
+  const pi = pages.length; pages.push(k); const o0 = SPR_MAN0[`${c}_parado_frente`] || MAN[`${v0}_parado_frente`];
+  SP_POSES.forEach(([p, , fr], r) => SP_LADOS.forEach((l, f) => { const n = `${c}_${p}_${l}`, o = SPR_MAN0[n] || o0;
+    MAN[n] = [pi, f * 128, r * SPQ, fr * SPQ, SPQ, o && o[3] / o[7] === SPQ ? o[5] : 16, o && o[4] === SPQ ? o[6] : 27, fr]; }));
+  SPR_ON.set(c, png); spRefaz(c);
+}
+function spRefaz(c) {                                            // retratos e botões que guardam o desenho antigo
+  for (const k of Object.keys(RET)) if (k.startsWith(c + '_')) delete RET[k];
+  const k = document.querySelector(`#chars canvas[data-c="${c}"]`), e = E(`${visDe(c)}_parado_frente`);
+  if (k && e) { const x = k.getContext('2d'); x.clearRect(0, 0, 32, 32); x.imageSmoothingEnabled = false; x.drawImage(pages[e[0]], e[1], e[2], 32, 32, 0, 0, 32, 32); }
+  try { persMudou(c); } catch (e) {}
+}
+// ----- guardar e espalhar: o jogador manda para o mestre, o mestre guarda e publica para todos (canal próprio, retido) -----
+const spSolo = () => { try { const o = JSON.parse(localStorage.getItem('mvila:solo:spr') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } };
+function sprSalva(c, png) {
+  if (!MESA) { const S = spSolo(); if (png) S[c] = png; else delete S[c]; try { localStorage.setItem('mvila:solo:spr', JSON.stringify(S)); } catch (e) { say('Sem espaço para guardar o sprite neste aparelho'); } sprAplica(c, png); return; }
+  if (mesa && mesa.isGM) { sprGmGuarda(c, png); return; }
+  if (mesa) mesa.sendEvent({ k: 'spr', c, png: png || null }).catch(() => {}); sprAplica(c, png);
+}
+function sprGmGuarda(c, png) { table.spr = table.spr || {}; if (png) table.spr[c] = png; else delete table.spr[c]; saveTable(); if (mesa) mesa.sendSprite(c, { png: png || null }).catch(() => {}); sprAplica(c, png); }
+function sprEvento(m) {                                          // no mestre: um jogador salvou o sprite
+  if (!mesa || !mesa.isGM || !m || !CHARS.includes(m.c) || !okPng(m.png === undefined ? null : m.png)) return;
+  sprGmGuarda(m.c, m.png || null); if (extrasPronto) diario(`${nome(m.c) || m.c} ${m.png ? 'redesenhou o sprite' : 'voltou ao sprite original'}`);
+}
+function sprRecebe(c, o, retained) {                             // em todos: a folha publicada pelo mestre
+  if (!CHARS.includes(c) || !o || !okPng(o.png === undefined ? null : o.png)) return;
+  if (mesa && mesa.isGM) { if (retained && o.png && table && !(table.spr || {})[c]) { table.spr = table.spr || {}; table.spr[c] = o.png; saveTable(); sprAplica(c, o.png); } return; }
+  if ((SPR_ON.get(c) || null) !== (o.png || null)) sprAplica(c, o.png || null);
+}
+{ const _ppt = persPublicaTudo; persPublicaTudo = function () { _ppt.apply(this, arguments); if (mesa && mesa.isGM && table && table.spr) for (const c of Object.keys(table.spr)) mesa.sendSprite(c, { png: table.spr[c] }).catch(() => {}); }; }
+{ const _pcm = persCarregaMesa; persCarregaMesa = function (sv) { const r = _pcm.apply(this, arguments);
+    if (table) { const s = sv && sv.spr; if (s && typeof s === 'object') { table.spr = {}; for (const c of CHARS) if (s[c] && okPng(s[c])) table.spr[c] = s[c]; } else if (!table.spr) table.spr = {};
+      for (const c of CHARS) if (table.spr[c] || SPR_ON.has(c)) sprAplica(c, table.spr[c] || null); }
+    return r; }; }
+// ----- o editor -----
+const SE = { c: null, d: null, orig: null, pose: 0, lado: 0, fr: 0, cor: [15, 15, 15], ferr: 'lapis', espelho: false, casca: true,
+  desf: [], ref: [], copia: null, sujo: false, arrasta: false, ult: null, hover: null, borr: false, Z: 12, raf: 0, recentes: [] };
+const seEl = $('sprEd'), seTela = $('seTela'), seCtx = seTela.getContext('2d'), seFolha = document.createElement('canvas'); seFolha.width = seFolha.height = SPW;
+const seFx = seFolha.getContext('2d');
+const corCss = c => `rgb(${c[0] * 17},${c[1] * 17},${c[2] * 17})`, hex12 = c => '#' + c.map(v => v.toString(16)).join('');
+const spEnt = (c, p, l, orig) => {                               // a entrada do atlas de onde a folha parte
+  if (!orig) { const v = visDe(c); return E(`${v}_${p}_${l}`) || E(`${v}_parado_${l}`) || E(`${v}_anda_${l}`); }
+  const v = _visDe(c), q = n => (n in SPR_MAN0 ? SPR_MAN0[n] : MAN[n]) || null; return q(`${v}_${p}_${l}`) || q(`${v}_parado_${l}`) || q(`${v}_anda_${l}`);
+};
+function spFolha(c, orig) {
+  const k = document.createElement('canvas'); k.width = k.height = SPW; const x = k.getContext('2d'); x.imageSmoothingEnabled = false;
+  SP_POSES.forEach(([p, , fr], r) => SP_LADOS.forEach((l, f) => { const e = spEnt(c, p, l, orig); if (!e) return; const fw = e[3] / e[7];
+    for (let i = 0; i < fr; i++) { const j = Math.min(i, e[7] - 1), cx = (f * 4 + i) * SPQ, cy = r * SPQ; x.save(); x.beginPath(); x.rect(cx, cy, SPQ, SPQ); x.clip();
+      x.drawImage(pages[e[0]], e[1] + j * fw, e[2], fw, e[4], cx + 16 - e[5], cy + 27 - e[6], fw, e[4]); x.restore(); } }));
+  return x.getImageData(0, 0, SPW, SPW);
+}
+const seCel = () => [(SE.lado * 4 + SE.fr) * SPQ, SE.pose * SPQ];
+const seN = () => SP_POSES[SE.pose][2];
+function seIdx(x, y) { const [cx, cy] = seCel(); return ((cy + y) * SPW + cx + x) * 4; }
+function sePega(x, y) { const b = SE.d.data, i = seIdx(x, y); return [b[i], b[i + 1], b[i + 2], b[i + 3]]; }
+function sePoe(x, y, rgba) { if (x < 0 || y < 0 || x >= SPQ || y >= SPQ) return; const b = SE.d.data, i = seIdx(x, y); b[i] = rgba[0]; b[i + 1] = rgba[1]; b[i + 2] = rgba[2]; b[i + 3] = rgba[3]; }
+const seTinta = () => SE.ferr === 'borracha' || SE.borr ? [0, 0, 0, 0] : [SE.cor[0] * 17, SE.cor[1] * 17, SE.cor[2] * 17, 255];
+function sePonto(x, y) { const t = seTinta(); sePoe(x, y, t); if (SE.espelho) sePoe(SPQ - 1 - x, y, t); }
+// desfazer: guarda o quadro (ou a folha inteira) antes de mudar
+function seGuarda(tudo) { const [cx, cy] = seCel(); SE.desf.push(tudo ? { tudo: new Uint8ClampedArray(SE.d.data) } : { cx, cy, q: seCopiaQ(cx, cy) }); if (SE.desf.length > 200) SE.desf.shift(); SE.ref.length = 0; }
+function seCopiaQ(cx, cy) { const q = new Uint8ClampedArray(SPQ * SPQ * 4), b = SE.d.data; for (let y = 0; y < SPQ; y++) q.set(b.subarray(((cy + y) * SPW + cx) * 4, ((cy + y) * SPW + cx + SPQ) * 4), y * SPQ * 4); return q; }
+function sePoeQ(cx, cy, q) { const b = SE.d.data; for (let y = 0; y < SPQ; y++) b.set(q.subarray(y * SPQ * 4, (y + 1) * SPQ * 4), ((cy + y) * SPW + cx) * 4); }
+function seVolta(de, para) { const s = de.pop(); if (!s) return; if (s.tudo) { para.push({ tudo: new Uint8ClampedArray(SE.d.data) }); SE.d.data.set(s.tudo); } else { para.push({ cx: s.cx, cy: s.cy, q: seCopiaQ(s.cx, s.cy) }); sePoeQ(s.cx, s.cy, s.q); } seMudou(); }
+// ferramentas
+function seBalde(x, y) {
+  const alvo = sePega(x, y), t = seTinta(); if (alvo[3] === 0 && t[3] === 0) return; if (alvo.every((v, i) => v === t[i])) return;
+  const igual = (a, b) => (a[3] === 0 && b[3] === 0) || (a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3]);
+  const pilha = [[x, y]], visto = new Uint8Array(SPQ * SPQ);
+  while (pilha.length) { const [px, py] = pilha.pop(); if (px < 0 || py < 0 || px >= SPQ || py >= SPQ || visto[py * SPQ + px]) continue; visto[py * SPQ + px] = 1;
+    if (!igual(sePega(px, py), alvo)) continue; sePoe(px, py, t); pilha.push([px + 1, py], [px - 1, py], [px, py + 1], [px, py - 1]); }
+}
+function seContaGotas(x, y) { const p = sePega(x, y); if (p[3] < 128) { seFerr('borracha'); return; } seCor([Math.round(p[0] / 17), Math.round(p[1] / 17), Math.round(p[2] / 17)]); seFerr('lapis'); }
+function seLinha(a, b) { let [x0, y0] = a; const [x1, y1] = b, dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1; let er = dx + dy;
+  for (;;) { sePonto(x0, y0); if (x0 === x1 && y0 === y1) break; const e2 = 2 * er; if (e2 >= dy) { er += dy; x0 += sx; } if (e2 <= dx) { er += dx; y0 += sy; } } }
+function seMove(dx, dy) { const [cx, cy] = seCel(), q = seCopiaQ(cx, cy); seGuarda(); for (let y = 0; y < SPQ; y++) for (let x = 0; x < SPQ; x++) { const sx = x - dx, sy = y - dy, i = (y * SPQ + x) * 4;
+    if (sx < 0 || sy < 0 || sx >= SPQ || sy >= SPQ) sePoe(x, y, [0, 0, 0, 0]); else { const j = (sy * SPQ + sx) * 4; sePoe(x, y, [q[j], q[j + 1], q[j + 2], q[j + 3]]); } } seMudou(); }
+function seVira() { const [cx, cy] = seCel(), q = seCopiaQ(cx, cy); seGuarda(); for (let y = 0; y < SPQ; y++) for (let x = 0; x < SPQ; x++) { const j = (y * SPQ + SPQ - 1 - x) * 4; sePoe(x, y, [q[j], q[j + 1], q[j + 2], q[j + 3]]); } seMudou(); }
+function seLimpa() { seGuarda(); for (let y = 0; y < SPQ; y++) for (let x = 0; x < SPQ; x++) sePoe(x, y, [0, 0, 0, 0]); seMudou(); }
+function seCopia() { const [cx, cy] = seCel(); SE.copia = seCopiaQ(cx, cy); $('seColar').disabled = false; say('Quadro copiado'); }
+function seCola() { if (!SE.copia) return; const [cx, cy] = seCel(); seGuarda(); sePoeQ(cx, cy, SE.copia); seMudou(); }
+function seRepete() { const [cx, cy] = seCel(), q = seCopiaQ(cx, cy); seGuarda(true); for (let i = 0; i < seN(); i++) if (i !== SE.fr) sePoeQ((SE.lado * 4 + i) * SPQ, cy, q); seMudou(); say('Quadro repetido na pose inteira'); }
+// cor e ferramenta
+function seCor(c) { SE.cor = c.map(v => Math.max(0, Math.min(15, v | 0))); const k = hex12(SE.cor); if (!SE.recentes.includes(k)) { SE.recentes.unshift(k); SE.recentes.length = Math.min(SE.recentes.length, 8); } sePaleta(); }
+function seFerr(f) { SE.ferr = f; for (const b of seEl.querySelectorAll('[data-ferr]')) b.classList.toggle('on', b.dataset.ferr === f); seTela.dataset.ferr = f; }
+function sePaleta() {
+  $('seCorAtual').style.background = corCss(SE.cor); $('seHex').value = hex12(SE.cor);
+  for (const [i, id] of [[0, 'seR'], [1, 'seG'], [2, 'seB']]) { $(id).value = SE.cor[i]; $(id).nextElementSibling.textContent = SE.cor[i].toString(16).toUpperCase(); }
+  const box = $('seSw'); box.textContent = ''; const vistos = new Set(), lista = [], b = SE.d.data;
+  for (let i = 0; i < b.length; i += 4) if (b[i + 3] >= 128) { const k = '#' + [b[i], b[i + 1], b[i + 2]].map(v => Math.round(v / 17).toString(16)).join(''); if (!vistos.has(k)) { vistos.add(k); lista.push(k); } }
+  for (const k of SE.recentes) if (!vistos.has(k)) { vistos.add(k); lista.push(k); }
+  const lum = k => { const v = k.slice(1).split('').map(h => parseInt(h, 16)); return v[0] * 3 + v[1] * 6 + v[2]; }; lista.sort((a, z) => lum(a) - lum(z));
+  for (const k of lista.slice(0, 64)) { const s = document.createElement('button'); s.type = 'button'; s.className = 'seSwc' + (k === hex12(SE.cor) ? ' on' : ''); s.style.background = '#' + k.slice(1).split('').map(h => h + h).join(''); s.title = k; s.setAttribute('aria-label', 'Cor ' + k);
+    s.onclick = () => { seCor(k.slice(1).split('').map(h => parseInt(h, 16))); seFerr('lapis'); }; box.append(s); }
+}
+// desenho da tela grande
+function seMede() { const larga = matchMedia('(max-width:900px)').matches, w = larga ? innerWidth - 32 : seEl.querySelector('.seCentro').clientWidth - 24, h = larga ? innerWidth : seEl.querySelector('.seCentro').clientHeight - 140;
+  SE.Z = Math.max(5, Math.min(18, Math.floor(Math.min(w, h) / SPQ))); const dpr = window.devicePixelRatio || 1, px = SE.Z * SPQ;
+  seTela.style.width = seTela.style.height = px + 'px'; seTela.width = seTela.height = Math.round(px * dpr); seDesenha(); }
+function seDesenha() {
+  if (!SE.c) return; const W = seTela.width, s = W / SPQ, x = seCtx; x.imageSmoothingEnabled = false; x.clearRect(0, 0, W, W);
+  for (let j = 0; j < SPQ; j += 2) for (let i = 0; i < SPQ; i += 2) { x.fillStyle = ((i + j) / 2) % 2 ? '#262e45' : '#1e253a'; x.fillRect(i * s, j * s, 2 * s, 2 * s); }
+  x.fillStyle = 'rgba(233,196,106,.10)'; x.fillRect(0, 27 * s, W, s);                                   // a linha do pé
+  const [cx, cy] = seCel(), n = seN();
+  if (SE.casca && n > 1) { const pf = (SE.fr + n - 1) % n; x.globalAlpha = 0.26; x.drawImage(seFolha, (SE.lado * 4 + pf) * SPQ, cy, SPQ, SPQ, 0, 0, W, W); x.globalAlpha = 1; }
+  x.drawImage(seFolha, cx, cy, SPQ, SPQ, 0, 0, W, W);
+  if (s >= 7) { x.strokeStyle = 'rgba(255,255,255,.06)'; x.lineWidth = 1; x.beginPath(); for (let i = 1; i < SPQ; i++) { const p = Math.round(i * s) + 0.5; x.moveTo(p, 0); x.lineTo(p, W); x.moveTo(0, p); x.lineTo(W, p); } x.stroke(); }
+  x.strokeStyle = 'rgba(233,196,106,.55)'; x.lineWidth = Math.max(1, s / 6); x.beginPath(); x.moveTo(16 * s, 27.5 * s - s * 0.9); x.lineTo(16 * s, 27.5 * s + s * 0.9); x.stroke();   // o ponto do pé
+  if (SE.espelho) { x.strokeStyle = 'rgba(233,196,106,.7)'; x.setLineDash([s / 2, s / 2]); x.beginPath(); x.moveTo(16 * s, 0); x.lineTo(16 * s, W); x.stroke(); x.setLineDash([]); }
+  if (SE.hover) { const [hx, hy] = SE.hover; x.strokeStyle = '#fff'; x.lineWidth = Math.max(1, s / 8); x.strokeRect(hx * s + 0.5, hy * s + 0.5, s - 1, s - 1); if (SE.espelho) x.strokeRect((SPQ - 1 - hx) * s + 0.5, hy * s + 0.5, s - 1, s - 1); }
+}
+function seMudou(leve) { seFx.putImageData(SE.d, 0, 0); SE.sujo = true; seDesenha(); if (!leve) { seQuadros(); sePoses(); sePaleta(); } $('seDesf').disabled = !SE.desf.length; $('seRef').disabled = !SE.ref.length; }
+function seMini(k, col, row) { const x = k.getContext('2d'); x.imageSmoothingEnabled = false; x.clearRect(0, 0, k.width, k.height); x.drawImage(seFolha, col * SPQ, row * SPQ, SPQ, SPQ, 0, 0, k.width, k.height); }
+function seQuadros() {
+  const box = $('seQuadros'); box.textContent = '';
+  for (let i = 0; i < seN(); i++) { const b = document.createElement('button'); b.type = 'button'; b.className = 'seQ' + (i === SE.fr ? ' on' : ''); b.setAttribute('aria-label', `Quadro ${i + 1}`);
+    const k = document.createElement('canvas'); k.width = k.height = SPQ; seMini(k, SE.lado * 4 + i, SE.pose); b.append(k, Object.assign(document.createElement('span'), { textContent: i + 1 }));
+    b.onclick = () => { SE.fr = i; seQuadros(); seDesenha(); }; box.append(b); }
+  for (const b of seEl.querySelectorAll('[data-lado]')) b.classList.toggle('on', +b.dataset.lado === SE.lado);
+}
+function sePoses() {
+  const box = $('sePoses'); box.textContent = '';
+  SP_POSES.forEach(([p, pn, n], r) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'sePose' + (r === SE.pose ? ' on' : '');
+    const k = document.createElement('canvas'); k.width = k.height = SPQ; seMini(k, SE.lado * 4, r);
+    b.append(k, Object.assign(document.createElement('b'), { textContent: pn }), Object.assign(document.createElement('small'), { textContent: n === 1 ? '1 quadro' : `${n} quadros` }));
+    b.onclick = () => { SE.pose = r; SE.fr = Math.min(SE.fr, n - 1); sePoses(); seQuadros(); seDesenha(); }; box.append(b); });
+}
+function seAnima(now) {                                          // as duas prévias tocam a pose no ritmo do jogo
+  if (!SE.c) return; const [p, , n, ms] = SP_POSES[SE.pose], f = ms ? Math.floor(now / ms) % n : 0;
+  for (const [id, esp] of [['sePrev', false], ['sePrev2', true]]) { const k = $(id), x = k.getContext('2d'), W = k.width; x.imageSmoothingEnabled = false; x.clearRect(0, 0, W, W);
+    x.fillStyle = 'rgba(0,0,0,.35)'; x.beginPath(); x.ellipse(W / 2, W * 27.5 / 32, W * 0.2, W * 0.06, 0, 0, 6.283); x.fill();
+    x.save(); if (esp) { x.translate(W, 0); x.scale(-1, 1); } x.drawImage(seFolha, (SE.lado * 4 + f) * SPQ, SE.pose * SPQ, SPQ, SPQ, 0, 0, W, W); x.restore(); }
+  SE.raf = requestAnimationFrame(seAnima);
+}
+// abrir e fechar
+function sprAbre(c) {
+  if (!CHARS.includes(c)) return; if (MESA && !(mesa && mesa.isGM) && me.c !== c) { say('Você só edita o sprite do seu personagem'); return; }
+  SE.c = c; SE.d = spFolha(c, false); SE.orig = spFolha(c, true); SE.desf = []; SE.ref = []; SE.sujo = false; SE.pose = 0; SE.lado = 0; SE.fr = 0; SE.hover = null;
+  seFx.putImageData(SE.d, 0, 0); $('seTitulo').textContent = `Sprite de ${nome(c) || c}`; $('seSalva').textContent = MESA ? 'Salvar na mesa' : 'Salvar';
+  seEl.hidden = false; seEl.scrollTop = 0; document.body.classList.add('spriteAberto'); seFerr(SE.ferr); seCor(SE.cor); $('seEspelho').classList.toggle('on', SE.espelho); $('seCasca').classList.toggle('on', SE.casca);
+  sePoses(); seQuadros(); sePaleta(); seMede(); $('seDesf').disabled = $('seRef').disabled = true; $('seColar').disabled = !SE.copia;
+  cancelAnimationFrame(SE.raf); SE.raf = requestAnimationFrame(seAnima);
+}
+function sprFecha(forca) { if (!SE.c) return; if (SE.sujo && !forca && !confirm('Fechar sem salvar o sprite?')) return; SE.c = null; seEl.hidden = true; document.body.classList.remove('spriteAberto'); cancelAnimationFrame(SE.raf); }
+function seIgualOrig() { const a = SE.d.data, b = SE.orig.data; for (let i = 0; i < a.length; i += 4) { if (a[i + 3] === 0 && b[i + 3] === 0) continue; if (a[i] !== b[i] || a[i + 1] !== b[i + 1] || a[i + 2] !== b[i + 2] || a[i + 3] !== b[i + 3]) return false; } return true; }
+function seSalvar() {
+  if (!SE.c) return; const png = seIgualOrig() ? null : seFolha.toDataURL('image/png');
+  if (png && png.length >= 160000) { say('O sprite ficou pesado demais para a mesa; use menos cores ou limpe pixels soltos'); return; }
+  sprSalva(SE.c, png); SE.sujo = false; say(png ? (MESA && !(mesa && mesa.isGM) ? 'Sprite enviado para a mesa' : 'Sprite salvo') : 'Sprite original de volta'); sprFecha(true);
+}
+function seExporta() {
+  const k = document.createElement('canvas'); k.width = SPW * 2; k.height = SPW; const x = k.getContext('2d'); x.drawImage(seFolha, 0, 0);
+  for (let col = 0; col < 8; col++) for (let r = 0; r < 8; r++) { x.save(); x.translate((8 + col) * SPQ + SPQ, r * SPQ); x.scale(-1, 1); x.drawImage(seFolha, col * SPQ, r * SPQ, SPQ, SPQ, 0, 0, SPQ, SPQ); x.restore(); }
+  const a = document.createElement('a'); a.href = k.toDataURL('image/png'); a.download = `${(nome(SE.c) || SE.c).toLowerCase().replace(/[^a-z0-9]+/g, '_')}_spritesheet.png`; a.click();
+}
+async function seImporta(f) {
+  let img; try { img = await loadImg(URL.createObjectURL(f)); } catch (e) { say('Não deu para abrir essa imagem'); return; }
+  if (img.width < SPW || img.height < SPW) { say('A folha precisa ter pelo menos 256 × 256 (8 poses, 4 quadros de frente e 4 de costas)'); return; }
+  const k = document.createElement('canvas'); k.width = k.height = SPW; const x = k.getContext('2d'); x.drawImage(img, 0, 0); const d = x.getImageData(0, 0, SPW, SPW), b = d.data;
+  for (let i = 0; i < b.length; i += 4) { if (b[i + 3] < 128) { b[i] = b[i + 1] = b[i + 2] = b[i + 3] = 0; continue; } b[i + 3] = 255; for (let j = 0; j < 3; j++) b[i + j] = Math.round(b[i + j] / 17) * 17; }   // 12 bits, sem meia transparência
+  seGuarda(true); SE.d.data.set(b); seMudou(); say('Folha importada; as cores foram ajustadas para 12 bits');
+}
+// toque e mouse na tela
+function seXY(e) { const r = seTela.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * SPQ), y = Math.floor((e.clientY - r.top) / r.height * SPQ); return x >= 0 && y >= 0 && x < SPQ && y < SPQ ? [x, y] : null; }
+seTela.addEventListener('pointerdown', e => { const p = seXY(e); if (!p) return; e.preventDefault(); seTela.setPointerCapture(e.pointerId); SE.borr = e.button === 2;
+  if (SE.ferr === 'conta' && !SE.borr) { seContaGotas(...p); return; }
+  if (SE.ferr === 'balde' && !SE.borr) { seGuarda(); seBalde(...p); if (SE.espelho) seBalde(SPQ - 1 - p[0], p[1]); seMudou(); return; }
+  seGuarda(); SE.arrasta = true; SE.ult = p; sePonto(...p); seMudou(true); });
+seTela.addEventListener('pointermove', e => { const p = seXY(e); SE.hover = e.pointerType === 'mouse' ? p : null; if (SE.arrasta && p) { seLinha(SE.ult, p); SE.ult = p; seMudou(true); } else seDesenha(); });
+for (const ev of ['pointerup', 'pointercancel']) seTela.addEventListener(ev, () => { if (SE.arrasta) { SE.arrasta = false; seMudou(); } SE.borr = false; });
+seTela.addEventListener('pointerleave', () => { SE.hover = null; seDesenha(); });
+seTela.addEventListener('contextmenu', e => e.preventDefault());
+// botões
+for (const b of seEl.querySelectorAll('[data-ferr]')) b.onclick = () => seFerr(b.dataset.ferr);
+for (const b of seEl.querySelectorAll('[data-lado]')) b.onclick = () => { SE.lado = +b.dataset.lado; seQuadros(); sePoses(); seDesenha(); };
+for (const b of seEl.querySelectorAll('[data-move]')) b.onclick = () => { const [dx, dy] = b.dataset.move.split(',').map(Number); seMove(dx, dy); };
+$('seEspelho').onclick = () => { SE.espelho = !SE.espelho; $('seEspelho').classList.toggle('on', SE.espelho); seDesenha(); };
+$('seCasca').onclick = () => { SE.casca = !SE.casca; $('seCasca').classList.toggle('on', SE.casca); seDesenha(); };
+$('seVira').onclick = seVira; $('seLimpa').onclick = seLimpa; $('seCopiar').onclick = seCopia; $('seColar').onclick = seCola; $('seRepete').onclick = seRepete;
+$('seDesf').onclick = () => seVolta(SE.desf, SE.ref); $('seRef').onclick = () => seVolta(SE.ref, SE.desf);
+$('seOrig').onclick = () => { if (!confirm('Trocar o desenho pelo sprite original do personagem? Dá para desfazer.')) return; seGuarda(true); SE.d.data.set(SE.orig.data); seMudou(); };
+$('seExporta').onclick = seExporta; $('seImporta').onclick = () => $('seArq').click(); $('seArq').onchange = () => { const f = $('seArq').files[0]; $('seArq').value = ''; if (f) seImporta(f); };
+$('seSalva').onclick = seSalvar; $('seFecha').onclick = () => sprFecha();
+for (const [i, id] of [[0, 'seR'], [1, 'seG'], [2, 'seB']]) $(id).oninput = () => { const c = SE.cor.slice(); c[i] = +$(id).value; seCor(c); };
+$('seHex').onchange = () => { const m = /^#?([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec($('seHex').value.trim()) || /^#?([0-9a-f])[0-9a-f]([0-9a-f])[0-9a-f]([0-9a-f])[0-9a-f]$/i.exec($('seHex').value.trim());
+  if (m) seCor([1, 2, 3].map(j => parseInt(m[j], 16))); else sePaleta(); };
+addEventListener('keydown', e => {                                // atalhos só com o editor aberto; o mapa não recebe as teclas
+  if (!SE.c) return; const t = e.target; if (t && /INPUT|TEXTAREA|SELECT/.test(t.tagName) && t.type !== 'range') return;
+  const k = e.key.toLowerCase(), ctl = e.ctrlKey || e.metaKey; let feito = true;
+  if (ctl && k === 'z') seVolta(e.shiftKey ? SE.ref : SE.desf, e.shiftKey ? SE.desf : SE.ref); else if (ctl && k === 'y') seVolta(SE.ref, SE.desf);
+  else if (ctl && k === 'c') seCopia(); else if (ctl && k === 'v') seCola();
+  else if (ctl) feito = false;
+  else if (k === 'b') seFerr('lapis'); else if (k === 'e') seFerr('borracha'); else if (k === 'g') seFerr('balde'); else if (k === 'i') seFerr('conta');
+  else if (k === 'x') $('seEspelho').click(); else if (k === 'o') $('seCasca').click();
+  else if (e.key === 'ArrowRight') { SE.fr = (SE.fr + 1) % seN(); seQuadros(); seDesenha(); } else if (e.key === 'ArrowLeft') { SE.fr = (SE.fr + seN() - 1) % seN(); seQuadros(); seDesenha(); }
+  else if (e.key === 'ArrowDown') { SE.pose = (SE.pose + 1) % SP_POSES.length; SE.fr = Math.min(SE.fr, seN() - 1); sePoses(); seQuadros(); seDesenha(); }
+  else if (e.key === 'ArrowUp') { SE.pose = (SE.pose + SP_POSES.length - 1) % SP_POSES.length; SE.fr = Math.min(SE.fr, seN() - 1); sePoses(); seQuadros(); seDesenha(); }
+  else if (e.key === 'Escape') sprFecha(); else feito = false;
+  e.stopImmediatePropagation(); if (feito) e.preventDefault();             // nenhuma tecla anda com o personagem enquanto se desenha
+}, true);
+addEventListener('keyup', e => { if (SE.c) e.stopImmediatePropagation(); }, true);
+addEventListener('resize', () => { if (SE.c) seMede(); });
+// começo: o modo solo lembra os sprites deste aparelho; mensagens que chegaram antes do editor existir
+if (!MESA) for (const [c, p] of Object.entries(spSolo())) if (okPng(p)) sprAplica(c, p);
+sprPronto = true; for (const [c, o, r] of (window.__sprFila || []).splice(0)) sprRecebe(c, o, r);
 
 // ---------- Tela de título e contas ----------
 // Um só link para a mesa. Aqui cada jogador entra com o próprio personagem (senha) e o mestre com a senha de mestre.
