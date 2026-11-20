@@ -2302,7 +2302,7 @@ function mkItem(e, frame, x, y, fx, fy, wx, wy, flip, depth) {
   const fw = e[3] / e[7]; const rx0 = wx - e[5], ry0 = wy - e[6];
   return { bx0: x, by0: y, bx1: x + fx, by1: y + fy, rx0, ry0, rx1: rx0 + fw, ry1: ry0 + e[4], depth, draw() { blit(ctx, e, frame, wx, wy, flip); } };
 }
-const PU = { alt: 0, aga: false, run: false, deit: false, fr: null, flash: 0, jx: 0, cinza: 0 }, VOO = [];   // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo, deitado (caído, inconsciente)
+const PU = { alt: 0, aga: false, run: false, deit: false, fr: null, flash: 0, jx: 0, cinza: 0, ex: 0, ey: 0 }, VOO = [];   // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo, deitado (caído, inconsciente)
 // paredão dos rostos: o quarto rosto vai sendo esculpido aos poucos, de 19/11/2026 até ficar pronto em 5 semanas de verdade
 // (#obra=0..1 na URL força uma etapa). De dia, dois escultores batem o cinzel na tábua do andaime logo abaixo do corte.
 const OBRA_T0 = Date.UTC(2026, 10, 19, 15), OBRA_DIAS = 35, OBRA_TAB = [13, 23, 33, 43], OBRA_ESC = 5;
@@ -2327,7 +2327,7 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
   if (!e || ((NVOC.length || DGV.on) && nevoaEsconde(x, y))) return; const ti = (x | 0) * N + (y | 0); const onWater = isWater(TM[ti]) && !PU.alt; const alt = PU.alt ? PU.alt + Math.round(Math.sin(t / 400 + x) * 2) : 0, aga = PU.aga, deit = PU.deit && !PU.alt;
   let [sx, sy] = unitScreen(x, y); const fw = e[3] / e[7];
   const frame = PU.fr != null ? PU.fr % e[7] : mv ? Math.floor(t / (PU.run ? 80 : 130)) % e[7] : Math.floor(t / 600) % e[7];
-  const fl = PU.flash, cz = PU.cinza; if (PU.jx) sx += PU.jx;
+  const fl = PU.flash, cz = PU.cinza; if (PU.jx) sx += PU.jx; if (PU.ex || PU.ey) { sx += PU.ex; sy += PU.ey; }
   const flip = flipOverride !== undefined ? flipOverride : (dx - dy) < 0 ? (dx + dy) >= 0 : (dx + dy) < 0;
   if (TM[ti] === 2) unitsAt.set(ti, 1);
   if (TM[ti] === 25) GJR.push([e, frame, sx, sy, flip, sy, false]);
@@ -2342,7 +2342,7 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
       if (isPlayer && frameN % 1 === 0) { }
     } });
 }
-function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.voa = md === 'v'; }
+function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.ex = 0; PU.ey = 0; PU.voa = md === 'v'; }
 const DEIT = new Map();                                               // deitado: o quadro parado girado 90°, pixel a pixel, com os pés no chão
 function blitDeitado(c, e, sx, sy, flip) {
   const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + (flip ? 1 : 0); let k = DEIT.get(key);
@@ -3569,6 +3569,18 @@ function fxTremor(ev) {
   tremorAte = performance.now() + 700; tremorForca = 2;
   prim(1.8, u => { const ga = ctx.globalAlpha; ctx.globalAlpha = ga * (u < 0.7 ? 1 : 1 - (u - 0.7) / 0.3); for (const p of rachas) poliLinha(p.slice(0, Math.ceil(p.length * Math.min(1, u * 6))), '#321', 1); ctx.globalAlpha = ga; }, true);
   novoFx(ev, 1, { tick(fx, t, dt) { if (t > 0.6) return; for (let k = Math.round(dt * 60); k > 0; k--) { const a = fx.rnd() * 6.283, d = fx.rnd() * 0.6; emite('doton', c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, 0, 0, 0, 30, 1, fx.rnd); } } });
+}
+// impacto de um golpe que acertou: estrela de raios curtos e faíscas saindo para o lado de onde veio o golpe
+function impactoFx(x, y, vx, vy, forte, crit) {
+  const hb = hChao(x, y), R = forte ? 11 : 8, cor = crit ? ['#fff', '#f84', '#c21'] : ['#fff', '#fe8', '#fb3'];
+  prim(0.22, u => { const [cx, cy] = telaDe(x, y, 12, hb), r = R * (0.4 + u * 0.8), ga = ctx.globalAlpha; ctx.globalAlpha = ga * (1 - u);
+    for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4 + 0.39, l = k % 2 ? r * 0.55 : r;
+      for (let i = Math.round(r * 0.35); i <= l; i++) { ctx.fillStyle = i > l - 2 ? cor[2] : i > l * 0.6 ? cor[1] : cor[0]; ctx.fillRect(Math.round(cx + Math.cos(a) * i), Math.round(cy + Math.sin(a) * i * 0.8), 1, 1); } }
+    ctx.fillStyle = cor[0]; ctx.fillRect(Math.round(cx) - 2, Math.round(cy) - 2, 4, 4); ctx.globalAlpha = ga; });
+  const wx = vx / 16 + vy / 8, wy = vy / 8 - vx / 16;                         // a direção da tela levada para o chão do mapa
+  for (let k = 0; k < (forte ? 14 : 8); k++) { const a = Math.atan2(wy, wx) + (Math.random() - 0.5) * 2.2, v = 1.5 + Math.random() * 2.5;
+    pt({ x, y, z: 10 + Math.random() * 4, hb, vx: Math.cos(a) * v, vy: Math.sin(a) * v, vz: 20 + Math.random() * 30, g: 120, vida: 0.25 + Math.random() * 0.2, s0: 1, c: cor, f: 'q' }); }
+  if (crit && !CFG.calmo) { tremorAte = performance.now() + 260; tremorForca = 1.5; }
 }
 function fxSacode(now) { if (now > tremorAte || CFG.calmo) return [0, 0]; const k = tremorForca * (tremorAte - now) / 700; return [Math.round((Math.random() - 0.5) * 2 * k), Math.round((Math.random() - 0.5) * 2 * k)]; }
 // Energizar: o elemento gira em volta das mãos
@@ -5804,6 +5816,7 @@ function acaoRecebe(msg) {
   if (msg.a === 'puff' && msg.s === scene.id && Array.isArray(msg.para) && okXY(+msg.para[0], +msg.para[1])) { const tipo = FX_COR[msg.fx] ? msg.fx : 'fumaca';
     if (Array.isArray(msg.de) && okXY(+msg.de[0], +msg.de[1])) puff(+msg.de[0], +msg.de[1], tipo); puff(+msg.para[0], +msg.para[1], tipo); if (okId(msg.q)) anima(msg.q, 'selo', msg.de ? 320 : 640); }
   if (msg.a === 'aviso' && typeof msg.txt === 'string') { say(msg.txt.slice(0, 200)); if (msg.fim) desfazClones(null, ['kage']); }
+  if (msg.a === 'porrada' && !ehMestre() && animaPronto && okUnid(msg.de) && okUnid(msg.al)) porrada(msg.de, msg.al, Math.max(1, Math.min(4, +msg.g || 1)), !!msg.c, !!msg.cc);
   if (msg.a === 'cai' && msg.c === me.c) aterrissa(true);                                    // o mestre derrubou quem voava
   if (msg.a === 'desfazClone' && msg.c === me.c && typeof msg.q === 'string') desfazClones(msg.q);    // o golpe acertou o clone
   if (msg.a === 'cond' && ehMestre()) condPedido(msg);
@@ -5877,6 +5890,20 @@ function animDe(id, now) { const a = ANI.get(id); if (!a) return null; if (now -
 function idDeQuem(q) {                 // de quem é uma rolagem: personagem, ou inimigo pelo nome
   if (!q) return null; if (q.c) return 'c:' + q.c; const n = q.spr && npcs.find(z => z.nome === q.n); return n ? 'n:' + n.id : null;
 }
+// ---------- porrada: o golpe que acerta ----------
+// Quem bate avança uns pixels na direção do alvo e volta; quem leva recua para trás (mais no grau 3 e no crítico), pisca e solta
+// uma estrela de impacto com faíscas; o crítico treme a tela. O mestre resolve o ataque e manda para todas as telas.
+const EMP = new Map();
+function empurraPU(id, now) { const q = EMP.get(id); if (!q) return; const el = now - q.t0; if (el > q.dur) { EMP.delete(id); return; }
+  const u = el / q.dur, k = q.ida ? Math.sin(Math.PI * u) : Math.pow(1 - u, 2); PU.ex = Math.round(q.vx * k); PU.ey = Math.round(q.vy * k); }
+function porrada(de, al, grau, crit, cc) {
+  const pos = id => (typeof posAlvo === 'function' ? posAlvo(id) : posDe(id)); const a = pos(de), b = pos(al); if (!b || b.s !== scene.id) return;
+  let vx = 1, vy = 0; if (a && a.s === scene.id) { const [ax, ay] = unitScreen(a.x, a.y), [bx, by] = unitScreen(b.x, b.y), l = Math.hypot(bx - ax, by - ay) || 1; vx = (bx - ax) / l; vy = (by - ay) / l; }
+  const t = performance.now(), forte = crit || grau >= 3;
+  if (cc && a) { anima(de, 'golpe'); EMP.set(de, { t0: t, dur: 260, vx: vx * 7, vy: vy * 7, ida: 1 }); }
+  setTimeout(() => { const t2 = performance.now(); anima(al, 'dano'); EMP.set(al, { t0: t2, dur: forte ? 420 : 300, vx: vx * (forte ? 7 : 4), vy: vy * (forte ? 7 : 4) });
+    if (typeof impactoFx === 'function') impactoFx(b.x, b.y, vx, vy, forte, crit); }, cc && a ? 120 : 0);
+}
 // altura do voo, em px: sobe e pousa em ~0,3 s; quem cai do voo (caído) despenca acelerando
 const ALT_ = new Map();
 function altEase(id, alvo, now, cai) {
@@ -5898,6 +5925,7 @@ function modoUnidade(id, md, now) {
 }
 // o quadro de uma unidade: base é o nome do visual (kaiser, inimigo2, aldeao22...)
 function spriteDe(base, id, mv, front, md, now) {
+  empurraPU(id, now);
   const v = front ? 'frente' : 'costas', a = animDe(id, now); PU.fr = null; PU.flash = 0;
   if (a) { const el = now - a.t0; if (a.k === 'dano') PU.flash = el < 130 ? 1 - el / 130 : 0;
     const e = E(`${base}_${a.k === 'levanta' ? 'ajoelha' : a.k}_${v}`);
@@ -6290,6 +6318,8 @@ function resolveAgora(r) {
     if (ax.ex === 'luminosa') { condPoe(id, 'ofuscado', { t: 3, quieto: 1 }); D.conds.push(['ofuscado', 1]); }
     if (notas.length) txt += ' · ' + notas.join(', ');
     lin(id, txt); R.desf.push(D);
+    if (!ax.ef && animaPronto) { porrada(ax.de, id, grau, crit, !!ax.cc);                        // a porrada na tela de todo mundo
+      if (mesa && visivel(id) && visivel(ax.de)) mesa.sendEvent({ k: 'acao', a: 'porrada', de: ax.de, al: id, g: grau, c: crit ? 1 : 0, cc: ax.cc ? 1 : 0 }).catch(() => {}); }
     if (vooDe(id)) { if (crit) setTimeout(() => derruba(id, 'acerto crítico'), 600);                // no ar: grau 3 pede Acrobacia (p. 270)
       else if (grau === 3) setTimeout(() => { const dif = 4 + r.bonus; const rr = rolarAuto({ k: 'teste', dados: [{ f: 8, s: 1 }, { f: 8, s: 1 }], bonus: acroDe(id), alvo: dif, desc: 'Acrobacia: segurar-se no ar', quem: quemAlvo(id), local: !visivel(id) });
         const t2 = avaliar(rr).tom; if (t2 === 'erro' || t2 === 'falha') setTimeout(() => derruba(id, `Acrobacia ${avaliar(rr).total} contra ${dif}`), 900); }, 600); }
@@ -7630,6 +7660,7 @@ setInterval(() => { if (!ehMestre() || !cenaPronto) return;
 // visual de cada NPC: corpo de ninja, morador, criança, bicho ou criatura
 function npcBase(n) { return n && n.vis && E(n.vis + '_parado_frente') ? n.vis : 'inimigo' + (n ? n.spr : 0); }
 function npcSprite(n, nid, mv, front, md, now) {
+  empurraPU(nid, now);
   const v = n.vis || ''; let m = /^(cao\d|caogr\d|gato\d|galinha\d|filhote\d)$/.exec(v);
   if (m) { PU.fr = null; const e = E(`${v}_${mv ? 'anda' : (v.startsWith('galinha') ? 'bica' : 'senta')}`) || E(`${v}_anda`); return e; }
   if (v.startsWith('cr:')) { PU.fr = null; return E(`${v}_${mv ? 'anda' : 'parado'}_${front ? 'frente' : 'costas'}`); }
