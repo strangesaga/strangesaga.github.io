@@ -1633,7 +1633,7 @@ function vilState(v, t, day) { return vilAt(v, t, day) || (v.n ? vilAt(v, t + 14
 const EXTRAS = ['novoa', 'novob', 'novoc', 'novod'];                 // vagas para personagens novos criados pela ficha
 const CHARS = ['masato', 'kazuki', 'izumi', 'ichiro', 'raiden', 'kaiser'].concat(EXTRAS);
 // gerado por gen_pers.py: fichas importadas das planilhas do Drive e a tabela de poderes da Ficha Base (Mangá)
-const FICHAS0 = {"masato":{"c":"masato","nc":7,"id":{"nome":"Masato Uchiha","cla":"Uchiha / Genialidade","patente":"Genin","filiacao":"Aldeia Oculta da Folha","genero":"Masculino","tendencia":"Perder","idade":"11","nasc":"Aldeia Oculta da Folha","sexualidade":"Sim","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":2,"int":5,"esp":5},"rm":[],"base":{"cc":3,"cd":4,"esq":1,"lm":4},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[3,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[3,0,0],"escapar":[0,0,0],"furtividade":[3,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[3,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[2,0,0],"veneficio":[0,0,0]},"soc":{"yin":[0,"MUDAR ATITUDE"],"yang":[0,"ATUAÇÃO"]},"cfg":["acuidade"],"pod":[{"n":"Katon","nv":3,"ef":"Canhão; Dano Contínuo; Flechas; Energizar (ainda não tem); Sopro Destrutivo","custo":3,"tec":["canhao","flechas","sopro"]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Elemento Natural: Katon","d":"","custo":0,"g":1},{"n":"Sharingan","d":"","custo":0,"g":1},{"n":"Acuidade","d":"","custo":0,"g":1},{"n":"Henge Perfeito","d":"","custo":2,"g":0},{"n":"Miragem","d":"","custo":2,"g":0},{"n":"Nidan Sharingan","d":"","custo":2,"g":0},{"n":"Fascinar","d":"","custo":2,"g":0},{"n":"Ilusão Profunda","d":"","custo":2,"g":0},{"n":"Ponto Cego","d":"","custo":2,"g":0},{"n":"Controle Perfeito","d":"Perdi","custo":0,"g":0},{"n":"Sandan Sharingan","d":"Perdi","custo":0,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"masato","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"kazuki":{"c":"kazuki","nc":7,"id":{"nome":"Kazuki","cla":"","patente":"Genin","filiacao":"Konohagakure","genero":"Masculino","tendencia":"Bom Caótico","idade":"12","nasc":"Konohagakure","sexualidade":"Limosine","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":3,"int":2,"esp":7},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[3,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[3,0,0],"cultura":[3,0,0],"disfarce":[0,0,0],"escapar":[0,0,0],"furtividade":[0,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[3,0,0],"prestidigitacao":[3,0,0],"procurar":[2,0,0],"prontidao":[3,0,0],"rastrear":[0,0,0],"veneficio":[0,0,0]},"soc":{"yin":[2,"ETIQUETA"],"yang":[2,"ATUAÇÃO"]},"cfg":[],"pod":[{"n":"Fuuton","nv":3,"ef":"Canhão (1), Raio (2). Ricochete (3). Energizar (4). Carregar (4) Correnteza (5). Lâmina de Vento (5). Afiar (6). Carregar (7). Míssil (7). Míssil (8). Carregar (9). Míssil (9). Lâmina de Vento (10). Sopro de Navalha (10).","custo":3,"tec":["canhao","raio","ricochete"]},{"n":"Invocação (NC 12)","nv":0,"ef":"Doninha. Técnica: Estilo Vento: Dança da Grande Decapitadora Rápida (Potencializar + Poderosa).","custo":0,"tec":[]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"De Pé","d":"","custo":0,"g":1},{"n":"Lutar às Cegas","d":"","custo":0,"g":1},{"n":"Luva Sanrei","d":"","custo":0,"g":0},{"n":"Kai Perfeito","d":"","custo":2,"g":0},{"n":"Mestre dos Leques","d":"","custo":2,"g":0},{"n":"Saque Rápido","d":"","custo":0,"g":0},{"n":"Acuidade","d":"","custo":0,"g":0},{"n":"Amortecer Queda","d":"","custo":0,"g":0},{"n":"Potencializar","d":"","custo":0,"g":0},{"n":"Leque Refletor","d":"","custo":0,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"kazuki","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"izumi":{"c":"izumi","nc":8,"id":{"nome":"Izumi Uzumaki","cla":"Uzumaki (Op. 2) · Magen","patente":"Genin","filiacao":"Aldeia da Folha","genero":"Feminino","tendencia":"Leal e Neutro","idade":"11","nasc":"País da Grama","sexualidade":"","jeito":"Encontrar meu próprio caminho e proteger quem escolhi."},"at":{"forca":2,"des":8,"agi":2,"per":8,"vig":2,"int":8,"esp":6},"rm":[],"sensor":"KAGURA SHINGAN","base":{"cc":3,"cd":4,"esq":1,"lm":4},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[4,0,0],"escapar":[4,0,0],"furtividade":[0,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[4,0,0],"ocultismo":[0,0,0],"prestidigitacao":[0,0,0],"procurar":[4,0,0],"prontidao":[4,0,0],"rastrear":[4,0,1],"veneficio":[0,0,0]},"soc":{"yin":[1,"ACALMAR"],"yang":[1,"ATUAÇÃO"]},"cfg":["acuidade","diligente"],"pod":[{"n":"Magen (Ilusão Demoníaca)","nv":4,"ef":"Êxtase (1) · Segurar (2) · Adormecer (3) · Falsa Posição (4)","custo":4,"tec":[]},{"n":"Fuuinjutsu (Selamento)","nv":2,"ef":"Armazenamento / Armazenamento Maior","custo":2,"tec":[]}],"bio":"Izumi nasceu em uma comunidade de refugiados do clã Uzumaki próxima à fronteira do País do Fogo. Após a dispersão de sobreviventes durante os conflitos na região, parte das crianças foi resgatada por jovens shinobi de Konoha. Izumi chegou à vila separadamente, acompanhada e protegida por Shido. Recebeu atendimento médico, conheceu Hiruzen junto à Grande Cerejeira e encontrou na Folha a promessa de um lar. Sob a tutela de Kanen Otoribashi, retomou os estudos e o treinamento. Sua sensibilidade às assinaturas de Chakra, conhecida como Kagura Shingan, combina-se à aptidão para Genjutsu (Magen) e ao estudo de Fūinjutsu. Ainda está aprendendo a confiar nas pessoas e a decidir o que fazer com seu talento.","cur":"Gosta de observar os ambientes antes de se apresentar e costuma notar presenças pelo Chakra antes de reconhecer rostos. Não consegue ler pensamentos: interpreta flutuações e emoções, às vezes de maneira equivocada. Treina com pequenos pergaminhos, senbons e ilusões discretas. Sua história em Konoha — Shido, a clínica, a Grande Cerejeira, Hiruzen e Kanen — permanece como foi jogada. Ainda não domina Iryō Ninjutsu nem Regeneração de Vigor.","mis":[],"xp0":0,"apt":[{"n":"Fascinar","d":"Genjutsu mental básico; exige INT 4.","custo":0,"g":1},{"n":"Miragem","d":"Ilusão externa visual; exige INT 2.","custo":0,"g":1},{"n":"Acuidade","d":"CC usa Destreza (armas leves, desarmado e toque).","custo":0,"g":1},{"n":"Ilusão Profunda","d":"Magen: +1 na resistência já incluso na Dif; +2 contra Kai.","custo":2,"g":0},{"n":"Perito: Rastrear","d":"+2 de precisão nos TESTES de Rastrear; não altera alcance/parâmetros nem pré-requisitos.","custo":2,"g":0},{"n":"Kagura Shingan","d":"Sentir Chakra · Rastrear nível 8 · Ryoushitsu: 104m ativo / 52m passivo. Não lê pensamentos.","custo":2,"g":0},{"n":"NC8 · Seimei no Uzu (futuro)","d":"Regeneração de Vigor: toque da palma e cicatrizes espiraladas; NÃO ADQUIRIDA. Comprar no NC8 (2 PP).","custo":0,"g":0},{"n":"NC8 · Regeneração (futura)","d":"Uzumaki Op. 2: Regeneração opcional para aquisição futura; não está ativa nem paga.","custo":0,"g":0},{"n":"Ryoushitsu Kagura Shingan","d":"Rastrear 6; alcance normal ×2. Progressivo: 100m por nível de Rastrear após 20 rodadas imóvel/concentrada. Supressão de chakra.","custo":2,"g":0},{"n":"Diligente","d":"+3 Iniciativa; repetir uma rolagem de Iniciativa por cena, aceitando o segundo resultado.","custo":2,"g":0},{"n":"Duro de Matar","d":"1×/dia, evita cair a 0 Vit por golpe não crítico; Vit residual conforme Vigor, segundo regra.","custo":2,"g":0}],"v":1,"comp":[],"tam":"MÉDIO","rp":3,"vis":"izumi","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"ichiro":{"c":"ichiro","nc":7,"id":{"nome":"Ichiro Inuzuka","cla":"Inuzuka","patente":"Genin","filiacao":"Konoha","genero":"Masculino","tendencia":"Autenticidade","idade":"12","nasc":"Konoha","sexualidade":"Heterossexual","jeito":"Cadê a matilha?"},"at":{"forca":7,"des":2,"agi":2,"per":7,"vig":7,"int":2,"esp":3},"rm":[],"base":{"cc":5,"cd":1,"esq":3,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[0,0,0],"atletismo":[3,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[3,0,0],"escapar":[0,0,0],"furtividade":[2,0,0],"animais":[3,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[0,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[3,0,0],"veneficio":[0,0,0]},"soc":{"yin":[1,"COMPOSTURA"],"yang":[3,"CONVENCER"]},"cfg":["diligente","shikakyu"],"pod":[{"n":"Shikakyu","nv":3,"ef":"","custo":3,"tec":[]}],"sensor":"HAKKEN NO JUTSU","bio":"História completa: https://docs.google.com/document/d/1b7zUiGI2mmm5V0wsLWqdVpDaFNYu8Trk6vqmOd3LsUE/edit?usp=sharing","cur":"- 1 Ovo Dourado: 2 Kobans\n- 1 Ovo Vermelho: 1 Koban","comp":[{"n":"Plantão","nc":5,"tam":"PEQUENO","vit":47,"cha":13,"chaP":3,"desl":7,"dur":2,"at":{"forca":5,"des":0,"agi":0,"per":5,"vig":5,"int":0,"esp":1},"nota":"Hakken no Jutsu 20 m"}],"mis":[],"xp0":0,"apt":[{"n":"Hakken no Jutsu","d":"Ativar ou desativar o Hakken é uma ação livre, requer 2 pontos de chakra e tem duração contínua.\nTeste: Não é necessário teste a menos que existam situações que atrapalhem (ventos, chuva ou a presença de cheiros muito fortes), necessário teste de Percepção.\nAlerta contra Surpresa: O personagem também tem direito a um teste de Rastrear para notar a presença do oponente quando estiver prestes a receber um ataque surpresa, adicional a quaisquer outros.\nOlfato Apurado: Enquanto estiver com o Hakken ativo, você ainda recebe -1 nível de dificuldade em testes de Prontidão, Rastrear e Procurar sempre que a situação permitir utilizar seu olfato.","custo":0,"g":1},{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"Companheiro Animal","d":"","custo":0,"g":1},{"n":"Diligente","d":"","custo":2,"g":0},{"n":"Lutador","d":"","custo":2,"g":0},{"n":"Derrubar Agressivo","d":"","custo":2,"g":0},{"n":"Rasteira","d":"","custo":2,"g":0},{"n":"Crítico Aprimorado","d":"","custo":2,"g":0},{"n":"Velocista","d":"","custo":0,"g":0}],"v":1,"tam":"MÉDIO","rp":3,"vis":"ichiro","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"raiden":{"c":"raiden","nc":8,"id":{"nome":"Raiden Sumi","cla":"Chouju-Giga / Tensai","patente":"Genin","filiacao":"Konoha","genero":"Masculino","tendencia":"Leal e Neutro","idade":"12","nasc":"Desconhecido","sexualidade":"Heterossexual","jeito":"Se eu não herdei um nome... farei Konoha lembrar do meu"},"at":{"forca":2,"des":8,"agi":2,"per":8,"vig":2,"int":8,"esp":6},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":2},"per":{"acrobacia":[0,0,0],"arte":[4,1,1],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[0,0,0],"escapar":[4,0,0],"furtividade":[0,0,0],"animais":[1,0,1],"mecanismo":[0,0,0],"medicina":[2,0,0],"ocultismo":[4,0,0],"prestidigitacao":[4,0,0],"procurar":[0,0,0],"prontidao":[4,0,0],"rastrear":[1,0,0],"veneficio":[0,0,0]},"soc":{"yin":[2,"ENGANAR"],"yang":[2,"OBTER INFO."]},"cfg":["acuidade","diligente"],"pod":[{"n":"Sumi Ninpou","nv":4,"ef":"Canhão; Montaria (Nv. 2); Desenhos Rastreadores; Coluna.","custo":4,"tec":["canhao","coluna"]},{"n":"Pergaminho da Super Besta","nv":4,"ef":"As técnicas do Pergaminho da Super Besta, inspiradas nas caricaturas de animais antropomorfizados (Chōjū-jinbutsu-giga) do Templo de Kozan-Ji, também conhecido como “O Primeiro Mangá”, são a base do uso artístico em forma de ninpou para combate e missões. O usuário usa um pergaminho e tinta para dar vida a suas criações e lutar com elas.","custo":4,"tec":[]},{"n":"Fuuinjutsu","nv":2,"ef":"Nv. 1: Selo de Armazenamento. Nv. 2: Selo de Armazenamento Maior.","custo":2,"tec":[]}],"bio":"RAIDEN SUMI  |  UM NOME FEITO DE TINTA\n\nORIGENS — Encontrado ainda bebê nos portões de Konoha, acompanhado apenas de um pergaminho, um pincel e tinta preta. Cresceu no orfanato sob os cuidados de Ayame Shizuno, que incentivou sua curiosidade. A amizade e rivalidade com Haru Senda, os estudos com Iori Takeda e as lições de Daichi Kurogane marcaram sua formação.\n\nA ARTE COMO CAMINHO — Quieto e observador, encontrou no desenho uma linguagem própria. Inspirado pelo espírito inventivo de Tobirama Senju, estudou controle de chakra, mecanismos, caligrafia, substâncias e técnicas de selamento. Aos poucos, suas criaturas de tinta deixaram de ser simples desenhos e se tornaram ninjutsu.\n\nVIDA DE GENIN — Aos 12 anos, Raiden representa Konoha como Genin. Sobreviveu à guerra e participou de investigações envolvendo símbolos antigos, recipientes de chakra e o Templo do Fogo. Costuma registrar suas descobertas num pergaminho-diário, procurando entender antes de agir.\n\nFAMÍLIA E PRESENTE — Graças às pistas reunidas em seus relatórios, Hiruzen conseguiu localizar seus pais biológicos; o reencontro aconteceu em Konoha. O garoto ainda tem perguntas sobre o passado, mas agora também constrói vínculos no presente. Para Raiden, criar algo novo continua sendo tão importante quanto descobrir de onde veio.","cur":"✦ Guarda ideias, pesquisas e lembranças em um pergaminho-diário.\n✦ É competitivo consigo mesmo: quase sempre acha que um desenho pode ficar melhor.\n✦ Admira Tobirama Senju pelo conhecimento e pela criação de técnicas, não apenas pelo poder.\n✦ Gosta de investigar química de tintas, mecanismos, selos e padrões difíceis de perceber.\n✦ Estudou venenos, antídotos e cuidados básicos influenciado pelas conversas com Kaede.\n✦ Seu primeiro grande orgulho foi vestir a bandana da Folha; Konoha segue sendo seu lar.\n✦ Recebeu uma pequena aquarela dos pais durante o Festival das Flores.","mis":[{"t":"Guerra no País das Neves","rank":"A","exp":0,"obs":"","ryos":0},{"t":"Templo do Fogo","rank":"A","exp":0,"obs":"","ryos":0},{"t":"Templo do Fogo (limpeza)","rank":"C","exp":0,"obs":"","ryos":0},{"t":"Restaurante","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Missão chata dos velhos","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Família Haruno","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Vila do Chá","rank":"C","exp":0,"obs":"","ryos":0}],"xp0":0,"apt":[{"n":"Arte de Combate","d":"Permite obter e evoluir Sumi Ninpō. Concede Perito: Arte e Perícia Inata: Arte gratuitamente; ao usar Sustento com Arte, recebe o dobro de ryō. Fonte: Hijutsus Vol. 2.","custo":0,"g":1},{"n":"Acuidade","d":"Usa Destreza no cálculo da precisão de Combate Corporal para ataques desarmados, técnicas de toque e armas permitidas (como kunai em CC). Não altera o dano. Fonte: Básico 4.1b, p. 61.","custo":0,"g":1},{"n":"Duro de Matar","d":"CONSULTA • 1 vez/dia, ao sofrer dano que o reduziria a 0 ou menos de Vitalidade, pode permanecer com Vit igual ao nível de Vigor (ou 1, conforme a situação). Não funciona contra acertos críticos. Aquisição não confirmada.","custo":0,"g":1},{"n":"De Pé","d":"Levanta-se como ação livre no próprio turno, em vez de gastar uma ação de movimento. Uma vez por cena, pode levantar-se como reação imediatamente após ser derrubado por um oponente. Básico 4.1b, p. 63.","custo":2,"g":0},{"n":"Desenhos Rastreadores","d":"EFEITO DE SUMI NINPŌ • Cria pequenos desenhos exploradores (pássaros, insetos, peixes etc.). Ação padrão; 2 Chakra; alcance de 20 m por desenho; duração de 5 turnos. Fazem varredura visual e transmitem informações; não combatem nem detectam chakra. Hijutsus Vol. 2, pp. 25–26.","custo":0,"g":0},{"n":"Ponto Cego","d":"Permite Fintar como ação de movimento, em vez de ação padrão. Também se aplica a fintas especiais de poderes e técnicas, como Flechas e Bunshin. Pré-requisito: Agilidade 6 ou Prestidigitação 6. Básico 4.1b, p. 65.","custo":2,"g":0},{"n":"Técnica do Clone de Tinta","d":"REFERÊNCIA • Sumi Bunshin no Jutsu (Rank C). Requer a aptidão Clone, que não está identificada na lista atual. Cria clones de tinta (1 Chakra por clone); um único clone não sofre a penalidade comum de precisão em CC/ESQ. Pode receber Henge na criação, compartilhar informações e visão; ao ser destruído, espalha tinta. Não ativar sem confirmar pré-requisito e aquisição.","custo":0,"g":0},{"n":"Talento Natural","d":"PLANEJAMENTO • Tensai — Talento Natural: escolhe um efeito permitido adicional de poder versátil ou Hibon Ninpō, com evoluções gratuitas quando alcançar o nível necessário. A opção anotada é Míssil  (Nv. 4), ainda acima do Sumi Ninpō 3 atual. Confirmar compra e compatibilidade antes de ativar. Básico 4.1b, p. 243.","custo":0,"g":0},{"n":"Técnica Avançada","d":"PLANEJAMENTO • Tensai — Técnica Poderosa concede duas aptidões de técnica, desde que seus pré-requisitos sejam atendidos. Opções anotadas: Técnica Acelerada (Espírito ou Inteligência 12) e Potencializar (Espírito ou Inteligência 8). Valores atuais não cumprem esses requisitos. Básico 4.1b, pp. 74 e 243.","custo":0,"g":0},{"n":"Capacidade","d":"NÃO DISPONÍVEL • Tensai — Capacidade: exige Espírito 8 (Raiden tem 3). Concede +1 no dano base de efeitos de Ninpō/elementos, com restrições, e possui evolução própria. Manter como referência futura; nenhum bônus aplicado. Básico 4.1b, p. 244.","custo":0,"g":0},{"n":"Hiraishin","d":"NÃO DISPONÍVEL • Hiraishin depende de Deus do Trovão, que exige Fūinjutsu 8 e Inteligência 14. Raiden possui Fūinjutsu 2 e Inteligência 7. Entrada mantida apenas como planejamento; nenhuma técnica ou teleporte concedido. Básico 4.1b, p. 244.","custo":0,"g":0},{"n":"Saque Rápido","d":"Pode sacar ou guardar arma/munição como ação livre e sacar arma corpo a corpo durante reação de Bloqueio. Em circunstâncias permitidas, facilita formar selos enquanto porta arma. Básico 4.1b, pp. 65–66.","custo":2,"g":0},{"n":"Trabalho em Equipe","d":"REGRA DA CAMPANHA • Ao auxiliar um parceiro num esforço, a ajuda concede vantagem (3d8) em vez do bônus usual de +2. Mantida a redação e o funcionamento registrados na ficha.","custo":0,"g":0},{"n":"Leitura de Selos","d":"REGRA DA CAMPANHA • Você recebe +2 nos testes para identificar técnicas inimigas ao observar seus selos de mão.\nLimitação: É necessário enxergar os gestos do adversário. A aptidão não reduz o tempo de execução de jutsus nem permite antecipar técnicas automaticamente.","custo":0,"g":0},{"n":"Resistência Maior: Inteligência","d":"","custo":0,"g":0},{"n":"Diligente","d":"(Aptidão ganha no treino de hoje.)","custo":2,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"raiden","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"kaiser":{"c":"kaiser","nc":7,"id":{"nome":"Kaiser Kusakabe","cla":"Kibaku Nendo","patente":"Genin","filiacao":"Vila Oculta da Folha","genero":"Masculino","tendencia":"Caótico e Neutro","idade":"12","nasc":"","sexualidade":"","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":2,"int":7,"esp":3},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[3,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[3,0,0],"cultura":[0,0,0],"disfarce":[0,0,0],"escapar":[3,0,0],"furtividade":[0,0,0],"animais":[2,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[3,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[0,0,0],"veneficio":[0,0,0]},"soc":{"yin":[0,"MUDAR ATITUDE"],"yang":[0,"ATUAÇÃO"]},"cfg":["diligente"],"pod":[{"n":"Kibaku Nendo","nv":3,"ef":"Canhão (1), Montaria (2), Flechas (3)","custo":3,"tec":["canhao","flechas"]},{"n":"Doton","nv":3,"ef":"Canhão (1), Repelir (2), Barreira (3)","custo":2,"tec":["canhao","barreira"]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"Diligente","d":"","custo":0,"g":1},{"n":"De Pé","d":"","custo":0,"g":1},{"n":"Ponto Cego","d":"","custo":2,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"kaiser","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0}};
+const FICHAS0 = {"masato":{"c":"masato","nc":7,"id":{"nome":"Masato Uchiha","cla":"Uchiha / Genialidade","patente":"Genin","filiacao":"Aldeia Oculta da Folha","genero":"Masculino","tendencia":"Perder","idade":"11","nasc":"Aldeia Oculta da Folha","sexualidade":"Sim","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":2,"int":5,"esp":5},"rm":[],"base":{"cc":3,"cd":4,"esq":1,"lm":4},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[3,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[3,0,0],"escapar":[0,0,0],"furtividade":[3,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[3,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[2,0,0],"veneficio":[0,0,0]},"soc":{"yin":[0,"MUDAR ATITUDE"],"yang":[0,"ATUAÇÃO"]},"cfg":["acuidade"],"pod":[{"n":"Katon","nv":3,"ef":"Canhão; Dano Contínuo; Flechas; Energizar (ainda não tem); Sopro Destrutivo","custo":3,"tec":["canhao","dano_cont","flechas","sopro"]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Elemento Natural: Katon","d":"","custo":0,"g":1},{"n":"Sharingan","d":"","custo":0,"g":1},{"n":"Acuidade","d":"","custo":0,"g":1},{"n":"Henge Perfeito","d":"","custo":2,"g":0},{"n":"Miragem","d":"","custo":2,"g":0},{"n":"Nidan Sharingan","d":"","custo":2,"g":0},{"n":"Fascinar","d":"","custo":2,"g":0},{"n":"Ilusão Profunda","d":"","custo":2,"g":0},{"n":"Ponto Cego","d":"","custo":2,"g":0},{"n":"Controle Perfeito","d":"Perdi","custo":0,"g":0},{"n":"Sandan Sharingan","d":"Perdi","custo":0,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"masato","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"kazuki":{"c":"kazuki","nc":7,"id":{"nome":"Kazuki","cla":"","patente":"Genin","filiacao":"Konohagakure","genero":"Masculino","tendencia":"Bom Caótico","idade":"12","nasc":"Konohagakure","sexualidade":"Limosine","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":3,"int":2,"esp":7},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[3,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[3,0,0],"cultura":[3,0,0],"disfarce":[0,0,0],"escapar":[0,0,0],"furtividade":[0,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[3,0,0],"prestidigitacao":[3,0,0],"procurar":[2,0,0],"prontidao":[3,0,0],"rastrear":[0,0,0],"veneficio":[0,0,0]},"soc":{"yin":[2,"ETIQUETA"],"yang":[2,"ATUAÇÃO"]},"cfg":[],"pod":[{"n":"Fuuton","nv":3,"ef":"Canhão (1), Raio (2). Ricochete (3). Energizar (4). Carregar (4) Correnteza (5). Lâmina de Vento (5). Afiar (6). Carregar (7). Míssil (7). Míssil (8). Carregar (9). Míssil (9). Lâmina de Vento (10). Sopro de Navalha (10).","custo":3,"tec":["canhao","raio","ricochete"]},{"n":"Invocação (NC 12)","nv":0,"ef":"Doninha. Técnica: Estilo Vento: Dança da Grande Decapitadora Rápida (Potencializar + Poderosa).","custo":0,"tec":[]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"De Pé","d":"","custo":0,"g":1},{"n":"Lutar às Cegas","d":"","custo":0,"g":1},{"n":"Luva Sanrei","d":"","custo":0,"g":0},{"n":"Kai Perfeito","d":"","custo":2,"g":0},{"n":"Mestre dos Leques","d":"","custo":2,"g":0},{"n":"Saque Rápido","d":"","custo":0,"g":0},{"n":"Acuidade","d":"","custo":0,"g":0},{"n":"Amortecer Queda","d":"","custo":0,"g":0},{"n":"Potencializar","d":"","custo":0,"g":0},{"n":"Leque Refletor","d":"","custo":0,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"kazuki","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"izumi":{"c":"izumi","nc":8,"id":{"nome":"Izumi Uzumaki","cla":"Uzumaki (Op. 2) · Magen","patente":"Genin","filiacao":"Aldeia da Folha","genero":"Feminino","tendencia":"Leal e Neutro","idade":"11","nasc":"País da Grama","sexualidade":"","jeito":"Encontrar meu próprio caminho e proteger quem escolhi."},"at":{"forca":2,"des":8,"agi":2,"per":8,"vig":2,"int":8,"esp":6},"rm":[],"sensor":"KAGURA SHINGAN","base":{"cc":3,"cd":4,"esq":1,"lm":4},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[0,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[4,0,0],"escapar":[4,0,0],"furtividade":[0,0,0],"animais":[0,0,0],"mecanismo":[0,0,0],"medicina":[4,0,0],"ocultismo":[0,0,0],"prestidigitacao":[0,0,0],"procurar":[4,0,0],"prontidao":[4,0,0],"rastrear":[4,0,1],"veneficio":[0,0,0]},"soc":{"yin":[1,"ACALMAR"],"yang":[1,"ATUAÇÃO"]},"cfg":["acuidade","diligente"],"pod":[{"n":"Magen (Ilusão Demoníaca)","nv":4,"ef":"Êxtase (1) · Segurar (2) · Adormecer (3) · Falsa Posição (4)","custo":4,"tec":[]},{"n":"Fuuinjutsu (Selamento)","nv":2,"ef":"Armazenamento / Armazenamento Maior","custo":2,"tec":[]}],"bio":"Izumi nasceu em uma comunidade de refugiados do clã Uzumaki próxima à fronteira do País do Fogo. Após a dispersão de sobreviventes durante os conflitos na região, parte das crianças foi resgatada por jovens shinobi de Konoha. Izumi chegou à vila separadamente, acompanhada e protegida por Shido. Recebeu atendimento médico, conheceu Hiruzen junto à Grande Cerejeira e encontrou na Folha a promessa de um lar. Sob a tutela de Kanen Otoribashi, retomou os estudos e o treinamento. Sua sensibilidade às assinaturas de Chakra, conhecida como Kagura Shingan, combina-se à aptidão para Genjutsu (Magen) e ao estudo de Fūinjutsu. Ainda está aprendendo a confiar nas pessoas e a decidir o que fazer com seu talento.","cur":"Gosta de observar os ambientes antes de se apresentar e costuma notar presenças pelo Chakra antes de reconhecer rostos. Não consegue ler pensamentos: interpreta flutuações e emoções, às vezes de maneira equivocada. Treina com pequenos pergaminhos, senbons e ilusões discretas. Sua história em Konoha — Shido, a clínica, a Grande Cerejeira, Hiruzen e Kanen — permanece como foi jogada. Ainda não domina Iryō Ninjutsu nem Regeneração de Vigor.","mis":[],"xp0":0,"apt":[{"n":"Fascinar","d":"Genjutsu mental básico; exige INT 4.","custo":0,"g":1},{"n":"Miragem","d":"Ilusão externa visual; exige INT 2.","custo":0,"g":1},{"n":"Acuidade","d":"CC usa Destreza (armas leves, desarmado e toque).","custo":0,"g":1},{"n":"Ilusão Profunda","d":"Magen: +1 na resistência já incluso na Dif; +2 contra Kai.","custo":2,"g":0},{"n":"Perito: Rastrear","d":"+2 de precisão nos TESTES de Rastrear; não altera alcance/parâmetros nem pré-requisitos.","custo":2,"g":0},{"n":"Kagura Shingan","d":"Sentir Chakra · Rastrear nível 8 · Ryoushitsu: 104m ativo / 52m passivo. Não lê pensamentos.","custo":2,"g":0},{"n":"NC8 · Seimei no Uzu (futuro)","d":"Regeneração de Vigor: toque da palma e cicatrizes espiraladas; NÃO ADQUIRIDA. Comprar no NC8 (2 PP).","custo":0,"g":0},{"n":"NC8 · Regeneração (futura)","d":"Uzumaki Op. 2: Regeneração opcional para aquisição futura; não está ativa nem paga.","custo":0,"g":0},{"n":"Ryoushitsu Kagura Shingan","d":"Rastrear 6; alcance normal ×2. Progressivo: 100m por nível de Rastrear após 20 rodadas imóvel/concentrada. Supressão de chakra.","custo":2,"g":0},{"n":"Diligente","d":"+3 Iniciativa; repetir uma rolagem de Iniciativa por cena, aceitando o segundo resultado.","custo":2,"g":0},{"n":"Duro de Matar","d":"1×/dia, evita cair a 0 Vit por golpe não crítico; Vit residual conforme Vigor, segundo regra.","custo":2,"g":0}],"v":1,"comp":[],"tam":"MÉDIO","rp":3,"vis":"izumi","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"ichiro":{"c":"ichiro","nc":7,"id":{"nome":"Ichiro Inuzuka","cla":"Inuzuka","patente":"Genin","filiacao":"Konoha","genero":"Masculino","tendencia":"Autenticidade","idade":"12","nasc":"Konoha","sexualidade":"Heterossexual","jeito":"Cadê a matilha?"},"at":{"forca":7,"des":2,"agi":2,"per":7,"vig":7,"int":2,"esp":3},"rm":[],"base":{"cc":5,"cd":1,"esq":3,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[0,0,0],"atletismo":[3,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[3,0,0],"escapar":[0,0,0],"furtividade":[2,0,0],"animais":[3,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[0,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[3,0,0],"veneficio":[0,0,0]},"soc":{"yin":[1,"COMPOSTURA"],"yang":[3,"CONVENCER"]},"cfg":["diligente","shikakyu"],"pod":[{"n":"Shikakyu","nv":3,"ef":"","custo":3,"tec":[]}],"sensor":"HAKKEN NO JUTSU","bio":"História completa: https://docs.google.com/document/d/1b7zUiGI2mmm5V0wsLWqdVpDaFNYu8Trk6vqmOd3LsUE/edit?usp=sharing","cur":"- 1 Ovo Dourado: 2 Kobans\n- 1 Ovo Vermelho: 1 Koban","comp":[{"n":"Plantão","nc":5,"tam":"PEQUENO","vit":47,"cha":13,"chaP":3,"desl":7,"dur":2,"at":{"forca":5,"des":0,"agi":0,"per":5,"vig":5,"int":0,"esp":1},"nota":"Hakken no Jutsu 20 m"}],"mis":[],"xp0":0,"apt":[{"n":"Hakken no Jutsu","d":"Ativar ou desativar o Hakken é uma ação livre, requer 2 pontos de chakra e tem duração contínua.\nTeste: Não é necessário teste a menos que existam situações que atrapalhem (ventos, chuva ou a presença de cheiros muito fortes), necessário teste de Percepção.\nAlerta contra Surpresa: O personagem também tem direito a um teste de Rastrear para notar a presença do oponente quando estiver prestes a receber um ataque surpresa, adicional a quaisquer outros.\nOlfato Apurado: Enquanto estiver com o Hakken ativo, você ainda recebe -1 nível de dificuldade em testes de Prontidão, Rastrear e Procurar sempre que a situação permitir utilizar seu olfato.","custo":0,"g":1},{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"Companheiro Animal","d":"","custo":0,"g":1},{"n":"Diligente","d":"","custo":2,"g":0},{"n":"Lutador","d":"","custo":2,"g":0},{"n":"Derrubar Agressivo","d":"","custo":2,"g":0},{"n":"Rasteira","d":"","custo":2,"g":0},{"n":"Crítico Aprimorado","d":"","custo":2,"g":0},{"n":"Velocista","d":"","custo":0,"g":0}],"v":1,"tam":"MÉDIO","rp":3,"vis":"ichiro","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"raiden":{"c":"raiden","nc":8,"id":{"nome":"Raiden Sumi","cla":"Chouju-Giga / Tensai","patente":"Genin","filiacao":"Konoha","genero":"Masculino","tendencia":"Leal e Neutro","idade":"12","nasc":"Desconhecido","sexualidade":"Heterossexual","jeito":"Se eu não herdei um nome... farei Konoha lembrar do meu"},"at":{"forca":2,"des":8,"agi":2,"per":8,"vig":2,"int":8,"esp":6},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":2},"per":{"acrobacia":[0,0,0],"arte":[4,1,1],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[0,0,0],"cultura":[0,0,0],"disfarce":[0,0,0],"escapar":[4,0,0],"furtividade":[0,0,0],"animais":[1,0,1],"mecanismo":[0,0,0],"medicina":[2,0,0],"ocultismo":[4,0,0],"prestidigitacao":[4,0,0],"procurar":[0,0,0],"prontidao":[4,0,0],"rastrear":[1,0,0],"veneficio":[0,0,0]},"soc":{"yin":[2,"ENGANAR"],"yang":[2,"OBTER INFO."]},"cfg":["acuidade","diligente"],"pod":[{"n":"Sumi Ninpou","nv":4,"ef":"Canhão; Montaria (Nv. 2); Desenhos Rastreadores; Coluna.","custo":4,"tec":["canhao","coluna"]},{"n":"Pergaminho da Super Besta","nv":4,"ef":"As técnicas do Pergaminho da Super Besta, inspiradas nas caricaturas de animais antropomorfizados (Chōjū-jinbutsu-giga) do Templo de Kozan-Ji, também conhecido como “O Primeiro Mangá”, são a base do uso artístico em forma de ninpou para combate e missões. O usuário usa um pergaminho e tinta para dar vida a suas criações e lutar com elas.","custo":4,"tec":[]},{"n":"Fuuinjutsu","nv":2,"ef":"Nv. 1: Selo de Armazenamento. Nv. 2: Selo de Armazenamento Maior.","custo":2,"tec":[]}],"bio":"RAIDEN SUMI  |  UM NOME FEITO DE TINTA\n\nORIGENS — Encontrado ainda bebê nos portões de Konoha, acompanhado apenas de um pergaminho, um pincel e tinta preta. Cresceu no orfanato sob os cuidados de Ayame Shizuno, que incentivou sua curiosidade. A amizade e rivalidade com Haru Senda, os estudos com Iori Takeda e as lições de Daichi Kurogane marcaram sua formação.\n\nA ARTE COMO CAMINHO — Quieto e observador, encontrou no desenho uma linguagem própria. Inspirado pelo espírito inventivo de Tobirama Senju, estudou controle de chakra, mecanismos, caligrafia, substâncias e técnicas de selamento. Aos poucos, suas criaturas de tinta deixaram de ser simples desenhos e se tornaram ninjutsu.\n\nVIDA DE GENIN — Aos 12 anos, Raiden representa Konoha como Genin. Sobreviveu à guerra e participou de investigações envolvendo símbolos antigos, recipientes de chakra e o Templo do Fogo. Costuma registrar suas descobertas num pergaminho-diário, procurando entender antes de agir.\n\nFAMÍLIA E PRESENTE — Graças às pistas reunidas em seus relatórios, Hiruzen conseguiu localizar seus pais biológicos; o reencontro aconteceu em Konoha. O garoto ainda tem perguntas sobre o passado, mas agora também constrói vínculos no presente. Para Raiden, criar algo novo continua sendo tão importante quanto descobrir de onde veio.","cur":"✦ Guarda ideias, pesquisas e lembranças em um pergaminho-diário.\n✦ É competitivo consigo mesmo: quase sempre acha que um desenho pode ficar melhor.\n✦ Admira Tobirama Senju pelo conhecimento e pela criação de técnicas, não apenas pelo poder.\n✦ Gosta de investigar química de tintas, mecanismos, selos e padrões difíceis de perceber.\n✦ Estudou venenos, antídotos e cuidados básicos influenciado pelas conversas com Kaede.\n✦ Seu primeiro grande orgulho foi vestir a bandana da Folha; Konoha segue sendo seu lar.\n✦ Recebeu uma pequena aquarela dos pais durante o Festival das Flores.","mis":[{"t":"Guerra no País das Neves","rank":"A","exp":0,"obs":"","ryos":0},{"t":"Templo do Fogo","rank":"A","exp":0,"obs":"","ryos":0},{"t":"Templo do Fogo (limpeza)","rank":"C","exp":0,"obs":"","ryos":0},{"t":"Restaurante","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Missão chata dos velhos","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Família Haruno","rank":"D","exp":0,"obs":"","ryos":0},{"t":"Vila do Chá","rank":"C","exp":0,"obs":"","ryos":0}],"xp0":0,"apt":[{"n":"Arte de Combate","d":"Permite obter e evoluir Sumi Ninpō. Concede Perito: Arte e Perícia Inata: Arte gratuitamente; ao usar Sustento com Arte, recebe o dobro de ryō. Fonte: Hijutsus Vol. 2.","custo":0,"g":1},{"n":"Acuidade","d":"Usa Destreza no cálculo da precisão de Combate Corporal para ataques desarmados, técnicas de toque e armas permitidas (como kunai em CC). Não altera o dano. Fonte: Básico 4.1b, p. 61.","custo":0,"g":1},{"n":"Duro de Matar","d":"CONSULTA • 1 vez/dia, ao sofrer dano que o reduziria a 0 ou menos de Vitalidade, pode permanecer com Vit igual ao nível de Vigor (ou 1, conforme a situação). Não funciona contra acertos críticos. Aquisição não confirmada.","custo":0,"g":1},{"n":"De Pé","d":"Levanta-se como ação livre no próprio turno, em vez de gastar uma ação de movimento. Uma vez por cena, pode levantar-se como reação imediatamente após ser derrubado por um oponente. Básico 4.1b, p. 63.","custo":2,"g":0},{"n":"Desenhos Rastreadores","d":"EFEITO DE SUMI NINPŌ • Cria pequenos desenhos exploradores (pássaros, insetos, peixes etc.). Ação padrão; 2 Chakra; alcance de 20 m por desenho; duração de 5 turnos. Fazem varredura visual e transmitem informações; não combatem nem detectam chakra. Hijutsus Vol. 2, pp. 25–26.","custo":0,"g":0},{"n":"Ponto Cego","d":"Permite Fintar como ação de movimento, em vez de ação padrão. Também se aplica a fintas especiais de poderes e técnicas, como Flechas e Bunshin. Pré-requisito: Agilidade 6 ou Prestidigitação 6. Básico 4.1b, p. 65.","custo":2,"g":0},{"n":"Técnica do Clone de Tinta","d":"REFERÊNCIA • Sumi Bunshin no Jutsu (Rank C). Requer a aptidão Clone, que não está identificada na lista atual. Cria clones de tinta (1 Chakra por clone); um único clone não sofre a penalidade comum de precisão em CC/ESQ. Pode receber Henge na criação, compartilhar informações e visão; ao ser destruído, espalha tinta. Não ativar sem confirmar pré-requisito e aquisição.","custo":0,"g":0},{"n":"Talento Natural","d":"PLANEJAMENTO • Tensai — Talento Natural: escolhe um efeito permitido adicional de poder versátil ou Hibon Ninpō, com evoluções gratuitas quando alcançar o nível necessário. A opção anotada é Míssil  (Nv. 4), ainda acima do Sumi Ninpō 3 atual. Confirmar compra e compatibilidade antes de ativar. Básico 4.1b, p. 243.","custo":0,"g":0},{"n":"Técnica Avançada","d":"PLANEJAMENTO • Tensai — Técnica Poderosa concede duas aptidões de técnica, desde que seus pré-requisitos sejam atendidos. Opções anotadas: Técnica Acelerada (Espírito ou Inteligência 12) e Potencializar (Espírito ou Inteligência 8). Valores atuais não cumprem esses requisitos. Básico 4.1b, pp. 74 e 243.","custo":0,"g":0},{"n":"Capacidade","d":"NÃO DISPONÍVEL • Tensai — Capacidade: exige Espírito 8 (Raiden tem 3). Concede +1 no dano base de efeitos de Ninpō/elementos, com restrições, e possui evolução própria. Manter como referência futura; nenhum bônus aplicado. Básico 4.1b, p. 244.","custo":0,"g":0},{"n":"Hiraishin","d":"NÃO DISPONÍVEL • Hiraishin depende de Deus do Trovão, que exige Fūinjutsu 8 e Inteligência 14. Raiden possui Fūinjutsu 2 e Inteligência 7. Entrada mantida apenas como planejamento; nenhuma técnica ou teleporte concedido. Básico 4.1b, p. 244.","custo":0,"g":0},{"n":"Saque Rápido","d":"Pode sacar ou guardar arma/munição como ação livre e sacar arma corpo a corpo durante reação de Bloqueio. Em circunstâncias permitidas, facilita formar selos enquanto porta arma. Básico 4.1b, pp. 65–66.","custo":2,"g":0},{"n":"Trabalho em Equipe","d":"REGRA DA CAMPANHA • Ao auxiliar um parceiro num esforço, a ajuda concede vantagem (3d8) em vez do bônus usual de +2. Mantida a redação e o funcionamento registrados na ficha.","custo":0,"g":0},{"n":"Leitura de Selos","d":"REGRA DA CAMPANHA • Você recebe +2 nos testes para identificar técnicas inimigas ao observar seus selos de mão.\nLimitação: É necessário enxergar os gestos do adversário. A aptidão não reduz o tempo de execução de jutsus nem permite antecipar técnicas automaticamente.","custo":0,"g":0},{"n":"Resistência Maior: Inteligência","d":"","custo":0,"g":0},{"n":"Diligente","d":"(Aptidão ganha no treino de hoje.)","custo":2,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"raiden","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0},"kaiser":{"c":"kaiser","nc":7,"id":{"nome":"Kaiser Kusakabe","cla":"Kibaku Nendo","patente":"Genin","filiacao":"Vila Oculta da Folha","genero":"Masculino","tendencia":"Caótico e Neutro","idade":"12","nasc":"","sexualidade":"","jeito":""},"at":{"forca":2,"des":7,"agi":2,"per":7,"vig":2,"int":7,"esp":3},"rm":[],"base":{"cc":3,"cd":5,"esq":1,"lm":3},"outro":{"cc":0,"cd":0,"esq":0,"lm":0},"per":{"acrobacia":[0,0,0],"arte":[3,0,0],"atletismo":[0,0,0],"ciencias":[0,0,0],"concentracao":[3,0,0],"cultura":[0,0,0],"disfarce":[0,0,0],"escapar":[3,0,0],"furtividade":[0,0,0],"animais":[2,0,0],"mecanismo":[0,0,0],"medicina":[0,0,0],"ocultismo":[0,0,0],"prestidigitacao":[3,0,0],"procurar":[3,0,0],"prontidao":[3,0,0],"rastrear":[0,0,0],"veneficio":[0,0,0]},"soc":{"yin":[0,"MUDAR ATITUDE"],"yang":[0,"ATUAÇÃO"]},"cfg":["diligente"],"pod":[{"n":"Kibaku Nendo","nv":3,"ef":"Canhão (1), Montaria (2), Flechas (3)","custo":3,"tec":["canhao","flechas"]},{"n":"Doton","nv":3,"ef":"Canhão (1), Repelir (2), Barreira (3)","custo":2,"tec":["canhao","repelir","barreira"]}],"bio":"","cur":"","mis":[],"xp0":0,"apt":[{"n":"Duro de Matar","d":"","custo":0,"g":1},{"n":"Diligente","d":"","custo":0,"g":1},{"n":"De Pé","d":"","custo":0,"g":1},{"n":"Ponto Cego","d":"","custo":2,"g":0}],"v":1,"comp":[],"sensor":"NÃO SENSOR","tam":"MÉDIO","rp":3,"vis":"kaiser","inv":{"ryos":0,"guard":0,"arm":null,"armas":[],"itens":[]},"en":{"vitP":0,"chaP":0},"durM":0}};
 const PODER_TAB = [["NINPOU","0","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["DOTON","0","2","0","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["FUUTON","2","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KATON","2","0","0","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["RAITON","1","0","0","0,5m/Nível de Espírito","15m + 3m/Nível de Espírito"],["SUITON","0","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KIKAI NINPOU","0","0","0","1m/Nível de Lidar com Animais","10m + 2m/Nível de Lidar com Animais"],["MOKUTON","1","0","1","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["HYOUTON","0","2","1","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SABAKU HIJUTSU","0","2","0","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["YONBI YOUTTON","2","0","0","2m/Nível de Espírito","15m + 3m/Nível de Espírito"],["KAMI NINPOU","1","0","0","1m/Nível de Espírito/Arte","10m + 2m/Nível de Espírito/Arte"],["KUJAKU MYOHO","1","0","0","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SUMI NINPOU","0","1*","1","1m/Nível de Arte","15m + 3m/Nível de Arte"],["KUMO NINPOU","0","0","1","1m/Nível de Espírito","15m + 3m/Nível de Espírito"],["HEBI NINPOU","0","0","1","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["OTOTON","0","0","1","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["SAKIN","0","2","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SATETSU","1","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KIBAKU NENDO","2","0","0","2m/Nível de Arte","15m + 3m/Nível de Arte"],["RANTON","1","0","0","1m/Nível de Espírito","15m + 3m/Nível de Espírito"],["SHAKUTON","2","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SHOUTON","0","2","1","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["SHOKUBUTSUTON","1","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["YUME NINPOU","0","0","1","1m/Nível de Espírito","5m + 1m/Nível de Espírito"],["HIKARITON","0","0","0","1m/Nível de Espírito","10m + 2m/Nível de Espírito"],["KYUDO NINPOU","*","0","0","0,5m/Nível de Espírito","Alcance Arco + 2m por nível de Espírito"],["TAYOUTON","3","0","0","0,5m/Nível de Espírito","10m + 2m/Nível de Espírito"],["DOKUJUTSU","0","0","1*","1m/Nível de Venefício","10m + 2m/Nível de Venefício"],["YOTON (MEI)","1","0","0","2m/Nível de Espírito","15m + 3m/Nível de Espírito"],["FUTTON (MEI)","2","0","1","2m/Nível de Espírito","10m + 2m/Nível de Espírito"],["DOMÍNIO MECÂNICO","2*","1*","1*","1m/Nível de Mecanismo","15m + 1m/Nível de Mecanismo*"]];
 // ---------- fichas: o que precisa existir antes do resto da página ----------
 const PERS = {};                 // fichas que o mestre publicou (na tela de um jogador)
@@ -2371,7 +2371,7 @@ function mkItem(e, frame, x, y, fx, fy, wx, wy, flip, depth) {
   const fw = e[3] / e[7]; const rx0 = wx - e[5], ry0 = wy - e[6];
   return { bx0: x, by0: y, bx1: x + fx, by1: y + fy, rx0, ry0, rx1: rx0 + fw, ry1: ry0 + e[4], depth, draw() { blit(ctx, e, frame, wx, wy, flip); } };
 }
-const PU = { alt: 0, aga: false, run: false, deit: false, fr: null, flash: 0, jx: 0, cinza: 0, ex: 0, ey: 0 }, VOO = [];   // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo, deitado (caído, inconsciente)
+const PU = { alt: 0, aga: false, run: false, deit: false, fr: null, flash: 0, jx: 0, cinza: 0, ex: 0, ey: 0, afunda: 0, pedra: 0 }, VOO = [];   // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo, deitado (caído, inconsciente)
 // paredão dos rostos: o quarto rosto vai sendo esculpido aos poucos, de 19/11/2026 até ficar pronto em 5 semanas de verdade
 // (#obra=0..1 na URL força uma etapa). De dia, dois escultores batem o cinzel na tábua do andaime logo abaixo do corte.
 const OBRA_T0 = Date.UTC(2026, 10, 19, 15), OBRA_DIAS = 35, OBRA_TAB = [13, 23, 33, 43], OBRA_ESC = 5;
@@ -2396,7 +2396,7 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
   if (!e || ((NVOC.length || DGV.on) && nevoaEsconde(x, y))) return; const ti = (x | 0) * N + (y | 0); const onWater = isWater(TM[ti]) && !PU.alt; const alt = PU.alt ? PU.alt + Math.round(Math.sin(t / 400 + x) * 2) : 0, aga = PU.aga, deit = PU.deit && !PU.alt;
   let [sx, sy] = unitScreen(x, y); const fw = e[3] / e[7];
   const frame = PU.fr != null ? PU.fr % e[7] : mv ? Math.floor(t / (PU.run ? 80 : 130)) % e[7] : Math.floor(t / 600) % e[7];
-  const fl = PU.flash, cz = PU.cinza; if (PU.jx) sx += PU.jx; if (PU.ex || PU.ey) { sx += PU.ex; sy += PU.ey; }
+  const fl = PU.flash, cz = PU.cinza, af = PU.afunda && !PU.alt, pd = PU.pedra; if (PU.jx) sx += PU.jx; if (PU.ex || PU.ey) { sx += PU.ex; sy += PU.ey; }
   const flip = flipOverride !== undefined ? flipOverride : (dx - dy) < 0 ? (dx + dy) >= 0 : (dx + dy) < 0;
   if (TM[ti] === 2) unitsAt.set(ti, 1);
   if (TM[ti] === 25) GJR.push([e, frame, sx, sy, flip, sy, false]);
@@ -2404,14 +2404,19 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
     draw() {
       if (onWater && !side) { ctx.fillStyle = 'rgba(200,230,240,.55)'; ctx.fillRect(Math.round(sx) - 6, Math.round(sy) - 1, 12, 2); }
       if (alt) { ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fillRect(Math.round(sx) - 5, Math.round(sy) - 1, 11, 2); blit(ctx, e, frame, sx, sy - alt, flip); if (fl > 0) blitBranco(ctx, e, frame, sx, sy - alt, flip, fl); return; }
+      if (af) { const X = Math.round(sx), Y = Math.round(sy), ga0 = ctx.globalAlpha, f = Math.floor(t / 300) % 4;      // imerso: um monte de terra e o topo da cabeça
+        ctx.globalAlpha = ga0 * 0.5; ctx.fillStyle = '#322'; ctx.fillRect(X - 6, Y - 1, 13, 3); ctx.fillRect(X - 4, Y - 2, 9, 5); ctx.globalAlpha = ga0;
+        ctx.save(); ctx.beginPath(); ctx.rect(X - 24, Y - 48, 48, 48); ctx.clip(); blit(ctx, e, frame, sx, sy + e[6] - 6, flip); ctx.restore();
+        ctx.fillStyle = '#a97'; ctx.fillRect(X - 5, Y, 3, 1); ctx.fillRect(X + 3, Y, 3, 1); ctx.fillStyle = '#cb9'; ctx.fillRect(X - 6 + f, Y + 1, 2, 1); ctx.fillRect(X + 4 - f, Y - 1, 2, 1); return; }
       const ga = ctx.globalAlpha; if (cz) ctx.globalAlpha = ga * 0.55;
       if (deit) blitDeitado(ctx, e, sx, sy, flip); else if (aga) blitAgachado(ctx, e, frame, sx, sy, flip); else (scene.tema === 'demonio' ? blitNeg : blit)(ctx, e, frame, sx, sy, flip);
       if (cz) ctx.globalAlpha = ga; if (fl > 0 && !deit) blitBranco(ctx, e, frame, sx, sy, flip, fl);
+      if (pd && !deit) blitPedra(ctx, e, frame, sx, sy, flip);                                                          // Pele de Pedra: o corpo vira rocha
       if (TM[ti] === 2) { const xi = x | 0, yi = y | 0; const [wx, wy] = tw(xi, yi, HM[ti]); blit(ctx, GA[1], Math.floor(t / 700) % 2, wx, wy); }
       if (isPlayer && frameN % 1 === 0) { }
     } });
 }
-function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.ex = 0; PU.ey = 0; PU.voa = md === 'v'; }
+function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.ex = 0; PU.ey = 0; PU.voa = md === 'v'; PU.afunda = 0; PU.pedra = 0; }
 const DEIT = new Map();                                               // deitado: o quadro parado girado 90°, pixel a pixel, com os pés no chão
 function blitDeitado(c, e, sx, sy, flip) {
   const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + (flip ? 1 : 0); let k = DEIT.get(key);
@@ -2974,7 +2979,8 @@ function limpaAx(a) {
   if (!a || typeof a !== 'object' || typeof a.i !== 'string' || !UNID_RE.test(a.de) || !Array.isArray(a.al)) return null;
   const al = a.al.slice(0, 12).filter(q => Array.isArray(q) && UNID_RE.test(q[0])).map(q => [q[0], Math.max(0, Math.min(999, Math.round(+q[1] || 0)))]); if (!al.length) return null;
   return { i: a.i.slice(0, 40), de: a.de, al, fx: a.fx != null && Number.isFinite(+a.fx) ? Math.max(0, Math.min(999, Math.round(+a.fx))) : null, ef: /^[a-z_]{0,16}$/.test(a.ef || '') ? a.ef || '' : '',
-    ar: a.ar ? 1 : 0, pj: a.pj ? 1 : 0, cc: a.cc ? 1 : 0, nm: String(a.nm || 'Ataque').slice(0, 32), ex: /^[a-zA-Z]{1,16}$/.test(a.ex || '') ? a.ex : null };
+    ar: a.ar ? 1 : 0, pj: a.pj ? 1 : 0, cc: a.cc ? 1 : 0, nm: String(a.nm || 'Ataque').slice(0, 32), ex: /^[a-zA-Z]{1,16}$/.test(a.ex || '') ? a.ex : null,
+    nv: Math.max(0, Math.min(10, Math.round(+a.nv || 0))), df: Math.max(0, Math.min(99, Math.round(+a.df || 0))) };
 }
 function limpaRolagem(m) {
   if (!m || typeof m !== 'object' || !Array.isArray(m.dados) || !m.dados.length || m.dados.length > 12) return null;
@@ -3318,7 +3324,10 @@ function criatura(base, x, y, hb, dx, dy, t, alfa, zx) {      // desenho de tint
 function fxTecnica(ev) {
   const F = EFE[ev.ef]; if (!F) return;
   const R = { proj: fxProj, orbe: fxProj, raio: fxRaio, flechas: fxFlechas, lanca: fxLanca, ricochete: fxRicochete, coluna: fxColuna, cone: fxCone, onda: fxOnda,
-    missil: fxMissil, explosao: fxExplosao, zona: fxZona, nuvem: fxNuvem, barreira: fxBarreira, algema: fxAlgema, meteoros: fxMeteoros, tremor: fxTremor, aura: fxAura }[F.fx];
+    missil: fxMissil, explosao: fxExplosao, zona: fxZona, nuvem: fxNuvem, barreira: fxBarreira, algema: fxAlgema, meteoros: fxMeteoros, tremor: fxTremor, aura: fxAura,
+    arma: fxArma, imergir: fxImergir, lamina: fxLamina, laminas: fxLaminas, neblina: fxNeblina, vacuo: fxVacuo, repelir: fxRepelir, purificar: fxPurificar, prisao: fxPrisao,
+    veneno: fxVeneno, inflamavel: fxInflamavel, flutuar: fxFlutuar, pedra: fxPedra, descarga: e => fxExplosao(Object.assign({}, e, { o: e.a || e.o, forma: 'meia' })),
+    desastre: fxDesastre, combustao: fxCombustao }[F.fx];
   if (R) R(ev);
 }
 // Canhão e Orbe: jato ou bola até o alvo; Sumi solta um lobo de tinta, Kibaku Nendo um pássaro de argila
@@ -3526,7 +3535,7 @@ function fxCone(ev) {
 const CRISTA = { suiton: ['#38c', '#4ad', '#fff'], doton: ['#653', '#875', '#ba8'], fuuton: ['#bdd', '#dff', '#fff'], ninpou: ['#88d', '#bbf', '#fff'], sumi: ['#112', '#223', '#667'],
   katon: ['#c21', '#f82', '#ffe'], raiton: ['#48e', '#9ef', '#fff'], nendo: ['#a98', '#cba', '#ffe'] };
 function fxOnda(ev) {
-  const el = ev.el, m = MAT[el], o = ev.o, d = ev.d || [0.7071, 0.7071], T = ev.p.tam / M_CASA, L = compArea(ev.p), n = [-d[1], d[0]], h0 = hChao(o[0], o[1]), DUR = Math.min(2, 0.55 + L / 14), Hw = Math.min(30, Math.max(6, ev.p.tam * 4)), cr = CRISTA[el] || CRISTA.suiton;
+  const el = ev.el, m = MAT[el], o = ev.o, d = ev.d || [0.7071, 0.7071], T = ev.p.tam / M_CASA, L = compArea(ev.p), n = [-d[1], d[0]], h0 = hChao(o[0], o[1]), DUR = Math.min(2, 0.55 + L / 14), Hw = Math.min(ev.ef === 'colisao_ondas' ? 50 : 30, Math.max(6, ev.p.tam * (ev.ef === 'colisao_ondas' ? 7 : 4))), cr = CRISTA[el] || CRISTA.suiton;
   novoFx(ev, DUR + 1, {
     tick(fx, t, dt) { if (t > DUR) return; const f = L * (t / DUR), k = Math.round(dt * 200 * Math.max(0.7, T / 3)), v = L / DUR;
       for (let i = 0; i < k; i++) { const s = (fx.rnd() - 0.5) * T, x = o[0] + d[0] * f + n[0] * s, y = o[1] + d[1] * f + n[1] * s;
@@ -3664,6 +3673,147 @@ function fxAura(ev) {
       ctx.globalAlpha = ga; } });
 }
 
+// ---------- efeitos do Livro Básico e do Guia Avançado (leva 1) ----------
+// Criar Arma: o elemento junta na mão e vira uma lâmina
+function fxArma(ev) {
+  const el = ev.el, o = ev.o, hb = hChao(o[0], o[1]), cr = CRISTA[el] || CRISTA.ninpou, mat = MAT[el] ? el : 'ninpou';
+  novoFx(ev, 1.3, {
+    tick(fx, t, dt) { if (t > 0.5) return; for (let k = Math.round(dt * 70); k > 0; k--) { const a = fx.rnd() * 6.283, r = 0.6 * (1 - t / 0.5) + 0.1;
+      pt({ x: o[0] + Math.cos(a) * r, y: o[1] + Math.sin(a) * r, z: Z0 + (fx.rnd() - 0.5) * 6, hb, vx: -Math.cos(a) * 1.4, vy: -Math.sin(a) * 1.4, vz: 0, vida: 0.25, s0: 1.5, s1: 0.5, c: MAT[mat].c.slice(1, 6), f: 'q' }); } },
+    draw(fx, t) { if (t < 0.45 || t > 1.25) return; const [sx, sy] = telaDe(o[0], o[1], Z0, hb), u = Math.min(1, (t - 0.45) / 0.25), L = Math.round(10 * u), ga = ctx.globalAlpha;
+      ctx.globalAlpha = ga * (t > 1 ? 1 - (t - 1) / 0.25 : 1);
+      linha(sx + 3, sy + 1, sx + 3 + L * 0.5, sy + 1 - L, cr[0], 2); linha(sx + 3, sy, sx + 3 + L * 0.5, sy - L, cr[1], 1);
+      ctx.fillStyle = cr[0]; ctx.fillRect(Math.round(sx + 1), Math.round(sy + 1), 5, 1);
+      const k = (t - 0.7) / 0.18; if (k > 0 && k < 1) px1(sx + 3 + 5 * k, sy - 10 * k, '#fff');
+      ctx.globalAlpha = ga; } });
+}
+// Imergir: o chão (ou a água) abre em volta dos pés e engole quem usa; o boneco afundado é desenhado pela condição
+function fxImergir(ev) {
+  const el = MAT[ev.el] ? ev.el : 'doton', o = ev.o, hb = hChao(o[0], o[1]), cor = el === 'suiton' ? '#9df' : '#a97';
+  ondaChao(o[0], o[1], hb, 0.8, cor, 0.6);
+  novoFx(ev, 1.4, { tick(fx, t, dt) { if (t > 0.9) return; for (let k = Math.round(dt * 50); k > 0; k--) { const a = fx.rnd() * 6.283, r = 0.3 + fx.rnd() * 0.2;
+      emite(el, o[0] + Math.cos(a) * r, o[1] + Math.sin(a) * r, 1, Math.cos(a) * 0.6, Math.sin(a) * 0.6, 10, 0.7, fx.rnd, hb); }
+    if (!fx.o2 && t > 0.5) { fx.o2 = 1; ondaChao(o[0], o[1], hb, 0.6, cor, 0.5); } } });
+}
+// Lâmina de Raios: a mão estala por um instante e o golpe risca até o alvo
+function fxLamina(ev) {
+  const al = ev.alvos[0], el = MAT[ev.el] ? ev.el : 'raiton', o = ev.o, h0 = hChao(o[0], o[1]), a = al ? [al[1], al[2]] : o, h1 = hChao(a[0], a[1]);
+  novoFx(ev, 1.4, {
+    tick(fx, t, dt) { if (t < 0.45) { const [sx, sy] = telaDe(o[0], o[1], Z0, h0), u = Math.min(1, t / 0.4); if (fx.rnd() < dt * 25) arcos(sx + 3, sy, 2, 6 + 6 * u, fx.rnd);
+        for (let k = Math.round(dt * 60); k > 0; k--) emite(el, o[0], o[1], Z0, 0, 0, 0, 1, fx.rnd, h0); if (fx.rnd() < dt * 8) luzFx(o[0], o[1], Z0, 22, 0.15); }
+      else if (!fx.imp && al) { fx.imp = 1; estouro(el, a[0], a[1], 10, 1.2, fx.rnd); } },
+    draw(fx, t) { if (!al || t < 0.4 || t > 0.62) return; const [ax, ay] = telaDe(o[0], o[1], Z0, h0), [bx, by] = telaDe(a[0], a[1], 10, h1), ga = ctx.globalAlpha;
+      ctx.globalAlpha = ga * (1 - (t - 0.4) / 0.22); relampago(zig(ax, ay, bx, by, rngFx(ev.seed + 5), 0.6, 3)); ctx.globalAlpha = ga; } });
+}
+// Lâmina de Vento: uma lâmina quase invisível por nível, girando, uma atrás da outra
+function fxLaminas(ev) {
+  const al = ev.alvos[0]; if (!al) return; const o = ev.o, a = [al[1], al[2]], h0 = hChao(o[0], o[1]), h1 = hChao(a[0], a[1]), n = Math.min(10, ev.nv), L = Math.hypot(a[0] - o[0], a[1] - o[1]) || 0.01;
+  const dur = Math.max(0.18, L / 14), rnd = rngFx(ev.seed + 3), nn = [-(a[1] - o[1]) / L, (a[0] - o[0]) / L], ls = [];
+  for (let i = 0; i < n; i++) ls.push({ t0: i * 0.07, off: (rnd() - 0.5) * 1.2, s: rnd() < 0.5 ? 1 : -1 });
+  novoFx(ev, n * 0.07 + dur + 0.8, {
+    tick(fx, t) { for (const q of ls) if ((t - q.t0) / dur >= 1 && !q.imp) { q.imp = 1; const [sx, sy] = telaDe(a[0], a[1], 12, h1); corte(sx, sy, 7, fx.rnd); if (q === ls[ls.length - 1]) estouro('fuuton', a[0], a[1], 12, 1, fx.rnd); } },
+    draw(fx, t) { for (const q of ls) { const u = (t - q.t0) / dur; if (u <= 0 || u >= 1) continue; const w = Math.sin(Math.PI * u) * q.off * 0.5;
+      const x = o[0] + (a[0] - o[0]) * u + nn[0] * w, y = o[1] + (a[1] - o[1]) * u + nn[1] * w, [sx, sy] = telaDe(x, y, Z0 + (12 - Z0) * u, h0 + (h1 - h0) * u), rot = t * 30 * q.s;
+      for (let i = -3; i <= 3; i++) { const b = rot + i * 0.32, r = 4 - Math.abs(i) * 0.3; px1(sx + Math.cos(b) * r, sy + Math.sin(b) * r * 0.6, Math.abs(i) < 2 ? '#fff' : '#bdd'); } } } });
+}
+// Névoa: o nevoeiro sai de quem usa e cobre a área (fica soltando bruma enquanto durar)
+function nevoaPuff(x, y, rnd, a) { pt({ x, y, z: 1 + rnd() * 16, vx: (rnd() - 0.5) * 0.3, vy: (rnd() - 0.5) * 0.3, vz: 1 + rnd() * 2, vida: 2 + rnd() * 1.5, s0: 5 + rnd() * 3, s1: 11 + rnd() * 5, c: ['#eef', '#dde', '#cde'], f: 'd', a: a || 0.32, fade: 1 }); }
+function fxNeblina(ev) {
+  const c = ev.o, R = ev.p.tam / M_CASA / 2;
+  novoFx(ev, 2, { tick(fx, t, dt) { if (t > 1.3) return; const rr = R * easeOut(t / 1.3); for (let k = Math.min(240, Math.round(dt * 30 * Math.max(1, rr * rr))); k > 0; k--) { const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * rr; nevoaPuff(c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, fx.rnd, 0.4); } } });
+}
+// Deslocamento de Vácuo: o elemento gira em volta de quem ganha velocidade
+function fxVacuo(ev) {
+  const el = MAT[ev.el] ? ev.el : 'fuuton', alvos = ev.alvos.length ? ev.alvos : [[ev.q, ev.o[0], ev.o[1]]], cs = el === 'fuuton' ? MAT.fuuton.c : MAT[el].c.slice(1, 6);
+  novoFx(ev, 1.2, { tick(fx, t, dt) { if (t > 0.8) return; for (const a of alvos) for (let k = Math.round(dt * 60); k > 0; k--)
+    pt({ x: a[1], y: a[2], z: 2 + fx.rnd() * 14, orb: [a[1], a[2], 0.35 + fx.rnd() * 0.15, 10, fx.rnd() * 6.283], vx: 0, vy: 0, vz: 12, vida: 0.35, s0: 1, c: cs, f: 'q', a: 0.9, fade: 1 }); } });
+}
+// Repelir: uma bolha do elemento estoura em volta de quem usa
+function fxRepelir(ev) {
+  const el = MAT[ev.el] ? ev.el : 'ninpou', o = ev.o, hb = hChao(o[0], o[1]), [cx, cy] = telaDe(o[0], o[1], 0, hb), an = ANEL[el] || ANEL.ninpou;
+  novoFx(ev, 0.9, { tick(fx, t, dt) { if (t > 0.2) return; for (let k = Math.round(dt * 200); k > 0; k--) { const a = fx.rnd() * 6.283; emite(el, o[0] + Math.cos(a) * 0.5, o[1] + Math.sin(a) * 0.5, 4 + fx.rnd() * 12, Math.cos(a) * 1.5, Math.sin(a) * 1.5, 10, 0.8, fx.rnd, hb); } },
+    draw(fx, t) { if (t > 0.7) return; const u = easeOut(Math.min(1, t / 0.18)), r = 6 + 10 * u, ga = ctx.globalAlpha; ctx.globalAlpha = ga * (t > 0.3 ? 1 - (t - 0.3) / 0.4 : 1);
+      anelTela(cx, cy - 2, r * 1.3, r * 0.65, an[0]); anelTela(cx, cy - 4, r * 1.2, r * 1.1, an[0], 0, 0, 'cima'); anelTela(cx, cy - 4, r * 1.05, r * 0.95, an[1], 3, t * 50, 'cima'); ctx.globalAlpha = ga; } });
+}
+// Purificar: um anel limpo varre a área e brilhos sobem do chão
+function fxPurificar(ev) {
+  const c = ev.a || ev.o, R = ev.p.tam / M_CASA / 2, hb = hChao(c[0], c[1]), cor = ev.el === 'suiton' ? ['#eff', '#9df'] : ['#fff', '#cee'];
+  ondaChao(c[0], c[1], hb, R, cor[0], 0.9);
+  novoFx(ev, 2, { tick(fx, t, dt) { if (t > 1.2) return; for (let k = Math.min(200, Math.round(dt * 60 * Math.max(0.6, R * R))); k > 0; k--) { const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * R;
+    pt({ x: c[0] + Math.cos(a) * d, y: c[1] + Math.sin(a) * d, z: 0, vx: 0, vy: 0, vz: 14 + fx.rnd() * 14, vida: 0.7 + fx.rnd() * 0.5, s0: 1, c: [cor[0], cor[1], cor[1]], f: 'q', fade: 1 }); } } });
+}
+// Prisão de Água: a água sobe em espiral e fecha uma bolha em volta do alvo (a bolha fica enquanto ele estiver paralisado)
+function fxPrisao(ev) {
+  const al = ev.alvos[0]; if (!al) return; const x = al[1], y = al[2], hb = hChao(x, y);
+  novoFx(ev, 1, { tick(fx, t, dt) { if (t > 0.45) return; for (let k = Math.round(dt * 160); k > 0; k--) { const a = fx.rnd() * 6.283;
+    pt({ x, y, z: 0, hb, orb: [x, y, 0.55 * (1 - t), 7, a], vx: 0, vy: 0, vz: 30 + fx.rnd() * 20, vida: 0.4, s0: 1.5, s1: 1, c: MAT.suiton.c.slice(2, 7), f: 'q' }); } } });
+}
+function bolha(sx, sy, u, frente, t) {
+  const R = Math.max(1, 10 * easeOut(u)), cy = sy - 10, ga = ctx.globalAlpha;
+  if (!frente) { ctx.globalAlpha = ga * 0.3; disco(sx, cy, R, '#38c'); ctx.globalAlpha = ga * 0.8; anelTela(sx, cy, R, R, '#26b', 0, 0, 'cima'); ctx.globalAlpha = ga; return; }
+  ctx.globalAlpha = ga * 0.24; disco(sx, cy, R, '#6ce'); ctx.globalAlpha = ga * 0.9; anelTela(sx, cy, R, R, '#4ad', 5, t * 20);
+  px1(sx - R * 0.5, cy - R * 0.55, '#fff'); px1(sx - R * 0.4, cy - R * 0.65, '#eff'); px1(sx - R * 0.6, cy - R * 0.4, '#cef');
+  for (let i = 0; i < 3; i++) { const a = t * 2 + i * 2.1; px1(sx + Math.cos(a) * R * 0.6, cy + Math.sin(a * 1.3) * R * 0.6, '#9df'); }
+  ctx.globalAlpha = ga;
+}
+// Venenoso: um cone de gás esverdeado que se arrasta e se desfaz
+const GAS = ['#cfa', '#ad8', '#8b6', '#a8c', '#86a'];
+function fxVeneno(ev) {
+  const o = ev.o, d = ev.d || [0.7071, 0.7071], T = compArea(ev.p), alfa = Math.atan(ev.p.tam / M_CASA / 2 / T), base = Math.atan2(d[1], d[0]), h0 = hChao(o[0], o[1]);
+  novoFx(ev, 2.4, { tick(fx, t, dt) { if (t > 0.9) return; for (let k = Math.min(220, Math.round(dt * 120 * Math.max(0.6, T / 3))); k > 0; k--) { const a = base + (fx.rnd() * 2 - 1) * alfa * 0.95, v = T / 0.8 * (0.6 + fx.rnd() * 0.5);
+    pt({ x: o[0] + d[0] * 0.3, y: o[1] + d[1] * 0.3, z: Z0 - 3 + fx.rnd() * 4, hb: h0, vx: Math.cos(a) * v, vy: Math.sin(a) * v, vz: (fx.rnd() - 0.3) * 6, ar: 0.6, vida: 1.1 + fx.rnd() * 0.6, s0: 1.5, s1: 4 + fx.rnd() * 3, c: GAS, f: 'd', a: 0.55, fade: 1 }); } } });
+}
+// Inflamável: pó, gás ou óleo cobre o chão (fica até alguém acender)
+const INFL = { katon: ['#a64', '#fb3', '#dca'], fuuton: ['#ba8', '#dcb', '#cb9'], suiton: ['#334', '#669', '#9a8'] };
+function fxInflamavel(ev) {
+  const c = ev.a || ev.o, R = ev.p.tam / M_CASA / 2, hb = hChao(c[0], c[1]), cs = INFL[ev.el] || INFL.katon;
+  novoFx(ev, 1.6, { tick(fx, t, dt) { if (t > 0.6) return; for (let k = Math.min(200, Math.round(dt * 120 * Math.max(0.6, R))); k > 0; k--) { const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * R * Math.min(1, t / 0.45);
+    pt({ x: c[0] + Math.cos(a) * d, y: c[1] + Math.sin(a) * d, z: 1 + fx.rnd() * 8, hb, vx: Math.cos(a) * 0.3, vy: Math.sin(a) * 0.3, vz: -4, ar: 1, vida: 0.9 + fx.rnd() * 0.6, s0: 1, s1: 2, c: cs, f: 'd', a: 0.7, fade: 1 }); } } });
+}
+// Combustão: a área inteira explode em fogo
+function fxCombustao(ev) {
+  const c = ev.a || ev.o, R = Math.max(0.5, ev.p.tam / M_CASA / 2), hb = hChao(c[0], c[1]), [sx, sy] = telaDe(c[0], c[1], 6, hb);
+  tremorAte = performance.now() + 900; tremorForca = 3; flash(sx, sy, 14 + R * 6, 0.25, '#ffe'); ondaChao(c[0], c[1], hb, R, '#fb3', 0.6); luzFx(c[0], c[1], 10, 60 + R * 20, 0.8);
+  novoFx(ev, 2.2, { n: 0, tick(fx, t) { if (t > 0.6) return; const alvo = Math.round(Math.min(14, 3 + R * R) * t / 0.6);
+    while (fx.n < alvo) { fx.n++; const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * R; estouro('katon', c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, 4 + fx.rnd() * 8, 1 + fx.rnd() * 0.6, fx.rnd); } } });
+}
+// Flutuar: o leque bate o vento para baixo e levanta quem usa
+function fxFlutuar(ev) {
+  const o = ev.o, hb = hChao(o[0], o[1]); ondaChao(o[0], o[1], hb, 0.9, '#fff', 0.5);
+  novoFx(ev, 1.4, { tick(fx, t, dt) { if (t > 1) return; for (let k = Math.round(dt * 90); k > 0; k--) { const a = fx.rnd() * 6.283;
+    emite('fuuton', o[0] + Math.cos(a) * 0.4, o[1] + Math.sin(a) * 0.4, 1 + fx.rnd() * 4, Math.cos(a) * 2.5, Math.sin(a) * 2.5, 15 + fx.rnd() * 25, 1, fx.rnd, hb); } } });
+}
+// Pele de Pedra: pedrinhas se juntam no corpo (a pele de pedra fica desenhada pela condição)
+function fxPedra(ev) {
+  const o = ev.o, hb = hChao(o[0], o[1]);
+  novoFx(ev, 1.1, { tick(fx, t, dt) { if (t > 0.5) return; for (let k = Math.round(dt * 110); k > 0; k--) { const a = fx.rnd() * 6.283, r = 0.7 * (1 - t / 0.5) + 0.15;
+    pt({ x: o[0] + Math.cos(a) * r, y: o[1] + Math.sin(a) * r, z: 2 + fx.rnd() * 16, hb, vx: -Math.cos(a) * 1.4, vy: -Math.sin(a) * 1.4, vz: 0, vida: 0.22, s0: 1.5, s1: 1, c: MAT.doton.c.slice(4, 9), f: 'q' }); }
+    if (!fx.k && t > 0.45) { fx.k = 1; ondaChao(o[0], o[1], hb, 0.5, '#cb9', 0.35); } } });
+}
+// Desastre: a área vira uma tempestade do elemento (fica enquanto durar a Concentração)
+function desastrePt(el, x, y, rnd) {
+  switch (MAT[el].t) {
+    case 'agua': pt({ x, y, z: 60 + rnd() * 40, vx: -0.6, vy: 0.6, vz: -170, vida: 0.45, s0: 1, c: ['#cef', '#9df'], f: 'r', rl: 0.03, a: 0.7 }); break;
+    case 'raio': if (rnd() < 0.05) { const hb = hChao(x, y), [sx, sy] = telaDe(x, y, 0, hb), sd = (rnd() * 1e9) | 0, dx = (rnd() - 0.5) * 12;
+        prim(0.1, () => relampago(zig(sx + dx, sy - 100, sx, sy, rngFx(sd), 1, 4))); luzFx(x, y, 10, 44, 0.15); } else emite('raiton', x, y, 2, 0, 0, 20, 1, rnd); break;
+    case 'terra': emite('doton', x, y, 1, 0, 0, 30 + rnd() * 40, 1, rnd); break;
+    case 'vento': pt({ x, y, z: 2 + rnd() * 30, vx: (rnd() - 0.5) * 6, vy: (rnd() - 0.5) * 6, vz: 0, vida: 0.3, s0: 1, c: MAT.fuuton.c, f: 'r', rl: 0.08, a: 0.8, fade: 1 }); break;
+    default: emite(el, x, y, 2 + rnd() * 10, 0, 0, 15, 1, rnd);
+  }
+}
+function fxDesastre(ev) {
+  const c = ev.a || ev.o, R = ev.p.tam / M_CASA / 2, hb = hChao(c[0], c[1]), el = MAT[ev.el] ? ev.el : 'ninpou', an = ANEL[el] || ANEL.ninpou;
+  tremorAte = performance.now() + 1400; tremorForca = 3; ondaChao(c[0], c[1], hb, R, an[0], 1.4); ondaChao(c[0], c[1], hb, R * 0.7, an[1], 1.1);
+  novoFx(ev, 2.2, { tick(fx, t, dt) { if (t > 1.4) return; for (let k = Math.min(260, Math.round(dt * 80 * Math.max(1, R * R / 4))); k > 0; k--) { const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * R; desastrePt(el, c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, fx.rnd); } } });
+}
+// quem está com dano contínuo solta fogo pelo corpo
+let condAmbT = 0;
+function fxCondAmb(dt) {
+  condAmbT += dt; if (condAmbT < 0.08 || !condPronto) return; const passo = condAmbT; condAmbT = 0;
+  for (const u of unidades()) { if (!(condsDe(u.id).nv.chamas > 0)) continue; const p = posDe(u.id); if (!p || p.s !== scene.id) continue; const rnd = Math.random;
+    for (let k = Math.max(1, Math.round(passo * 30)); k > 0; k--) emite('katon', u.x + (rnd() - 0.5) * 0.3, u.y + (rnd() - 0.5) * 0.3, 3 + rnd() * 14, 0, 0, 10, 0.6, rnd); }
+}
+
 // ---------- o que fica no mapa: muros (ordenados com o resto) e algemas ----------
 const MURO = {
   doton: (u, j, h, t) => (((j / 4) | 0) + ((u * 10 + ((j / 4) | 0) * 0.5) | 0)) % 2 ? (j % 4 === 0 ? '#542' : '#986') : (j % 4 === 0 ? '#542' : '#875'),
@@ -3698,10 +3848,10 @@ function fxItens(items, now) {
 // atrás do boneco e a da frente por cima. Argila vira uma centopeia enrolada, tinta uma serpente; terra e água, uma corda grossa.
 function fxAlgemas() {}
 function algemaItens(items, now) {
-  for (const z of zonasVisiveis()) { if (z.ef !== 'algemar' || z.g.k !== 'alvo' || !algemaAtiva(z)) continue; const p = posDe(z.g.id); if (!p || p.s !== scene.id) continue;
-    if (!zonaT0.has(z.id)) zonaT0.set(z.id, now - 1e4); const u = Math.min(1, (now - zonaT0.get(z.id)) / 900), [sx0, sy0] = unitScreen(p.x, p.y), sx = Math.round(sx0), sy = Math.round(sy0);
-    for (const frente of [0, 1]) items.push({ bx0: p.x - 0.3, by0: p.y - 0.3, bx1: p.x + 0.3, by1: p.y + 0.3, rx0: sx - 9, ry0: sy - 16, rx1: sx + 9, ry1: sy + 4,
-      depth: p.x + p.y + (frente ? 0.003 : -0.003), draw() { espiral(z.el, sx, sy, u, frente, now / 1000); } }); }
+  for (const z of zonasVisiveis()) { if ((z.ef !== 'algemar' && z.ef !== 'prisao_agua') || z.g.k !== 'alvo' || !algemaAtiva(z)) continue; const p = posDe(z.g.id); if (!p || p.s !== scene.id) continue;
+    if (!zonaT0.has(z.id)) zonaT0.set(z.id, now - 1e4); const u = Math.min(1, (now - zonaT0.get(z.id)) / 900), [sx0, sy0] = unitScreen(p.x, p.y), sx = Math.round(sx0), sy = Math.round(sy0), pr = z.ef === 'prisao_agua';
+    for (const frente of [0, 1]) items.push({ bx0: p.x - 0.3, by0: p.y - 0.3, bx1: p.x + 0.3, by1: p.y + 0.3, rx0: sx - (pr ? 12 : 9), ry0: sy - (pr ? 22 : 16), rx1: sx + (pr ? 12 : 9), ry1: sy + 4,
+      depth: p.x + p.y + (frente ? 0.003 : -0.003), draw() { if (pr) bolha(sx, sy, u, frente, now / 1000); else espiral(z.el, sx, sy, u, frente, now / 1000); } }); }
 }
 function espiral(el, sx, sy, u, frente, t) {
   const c = PICO[el] || PICO.doton, bicho = el === 'nendo' || el === 'sumi', N = 46, VOLTAS = 2.6, ALT = 11, fim = Math.max(1, Math.round(N * easeOut(u)));
@@ -3722,6 +3872,10 @@ function fxZonasAmb(dt) {
   for (const z of zonasVisiveis()) { if (z.s !== scene.id || z.g.k !== 'disco') continue; const g = z.g, rnd = Math.random;
     if (z.ef === 'nuvem') for (let k = 0; k < dt * Math.min(140, 26 * Math.max(0.6, g.r * g.r)); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; nuvemPuff(g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, z.el, rnd);
       if (z.el === 'nendo' && rnd() < 0.02) pt({ x: g.c[0], y: g.c[1], z: 10, orb: [g.c[0], g.c[1], g.r * 0.6, 2, rnd() * 6.283], vx: 0, vy: 0, vz: 0, vida: 1, s0: 1, c: ['#a98'], f: 'q' }); }
+    if (z.ef === 'neblina') for (let k = 0; k < dt * Math.min(120, 2.5 * g.r * g.r); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; nevoaPuff(g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, rnd, z.nv >= 5 ? 0.3 : 0.2); }
+    if (z.ef === 'inflamavel' && rnd() < dt * 8 * Math.max(0.6, g.r * g.r)) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r, cs = INFL[z.el] || INFL.katon;
+      pt({ x: g.c[0] + Math.cos(a) * d, y: g.c[1] + Math.sin(a) * d, z: 1 + rnd() * 6, vx: (rnd() - 0.5) * 0.2, vy: (rnd() - 0.5) * 0.2, vz: 1, vida: 1.2, s0: 1, c: cs, f: 'q', a: 0.8, fade: 1 }); }
+    if (z.ef === 'desastre') { const el = MAT[z.el] ? z.el : 'ninpou'; for (let k = 0; k < dt * Math.min(70, 2.5 * g.r * g.r); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; desastrePt(el, g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, rnd); } }
     if (z.ef === 'restringente' && rnd() < dt * 6 * Math.max(0.6, g.r * g.r)) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r, [c1, c2] = ZONA_COR.restringente[z.el] || ['#777', '#aaa'];
       pt({ x: g.c[0] + Math.cos(a) * d, y: g.c[1] + Math.sin(a) * d, z: 0, vx: 0, vy: 0, vz: 6, vida: 0.5, s0: 1, s1: 2, c: [c2, c2, c1], f: 'd' }); } }
 }
@@ -3738,7 +3892,7 @@ function ptPasso(dt) {
 function fxPasso(now, dt, lights) {
   const t = now / 1000;
   for (let i = FXS.length - 1; i >= 0; i--) { const fx = FXS[i], ft = t - fx.t0; if (ft > fx.dur) { FXS.splice(i, 1); continue; } if (fx.tick) fx.tick(fx, ft, dt); }
-  fxZonasAmb(dt); ptPasso(dt);
+  fxZonasAmb(dt); fxCondAmb(dt); ptPasso(dt);
   for (let i = PRIM.length - 1; i >= 0; i--) if (t - PRIM[i].t0 > PRIM[i].dur) PRIM.splice(i, 1);
   for (let i = DEC.length - 1; i >= 0; i--) if (t - DEC[i].t0 > DEC[i].dur) DEC.splice(i, 1);
   for (let i = LUZES.length - 1; i >= 0; i--) { const L = LUZES[i], u = (t - L.t0) / L.dur; if (u > 1) { LUZES.splice(i, 1); continue; } const [sx, sy] = telaDe(L.x, L.y, L.z); lights.push([sx, sy, L.r * (1 - u * 0.4), 1 - u * 0.5]); }
@@ -3803,19 +3957,27 @@ const COND = {
   cego: { n: 'Cego', s: '盲', g: 'sentido', d: 'Não enxerga: camuflagem visual total; sem Procurar e Prontidão visuais nem nada que exija visão.' },
   surdo: { n: 'Surdo', s: '聾', g: 'sentido', d: 'Iniciativa −3; sem Procurar e Prontidão auditivos.', p: { ini: -3 } },
   ofuscado: { n: 'Ofuscado', s: '霞', g: 'sentido', d: 'Visão prejudicada: −1 no ataque e nos testes de perícia e atributo que precisem da visão.', p: { atq: -1, per: -1 } },
+  cegado: { n: 'Vista turva', s: '濁', g: 'sentido', d: 'Cegante: enxerga tudo com camuflagem parcial (ataques têm 25% de falha). Limpa o rosto com uma ação padrão, ou movimento e Força/Destreza; passa em 3 turnos.' },
+  // ----- efeitos de técnicas (Livro Básico e Guia Avançado) -----
+  chamas: { n: 'Dano contínuo', s: '焼', g: 'tec', d: 'Fogo ou carga elétrica no corpo: no início de cada turno perde de Vitalidade o número ao lado (o nível do poder). Apaga com uma ação completa e Vigor, ou quando os turnos acabam.', nv: 1 },
+  imerso: { n: 'Imerso', s: '潜', g: 'tec', d: 'Fundido ao chão (Imergir): Perito em Furtividade, vê até 10 m, não se desloca; atacar revela. Sair é uma ação de movimento.', semMov: 1 },
+  imerso_anda: { n: 'Imerso', s: '潜', g: 'tec', d: 'Fundido ao chão (Imergir nível 4+): Perito em Furtividade, vê até 10 m e anda à metade do deslocamento; atacar revela.', lento: 1 },
+  pele_pedra: { n: 'Pele de Pedra', s: '岩', g: 'tec', d: 'A pele vira rocha: dureza de corpo igual à dureza do poder +2 até o fim do turno (sustentada, 1; nível 9+, 2).' },
+  vacuo: { n: 'Vácuo', s: '疾', g: 'tec', d: 'Deslocamento de Vácuo: +½ Espírito de quem usou em metros de deslocamento até o próximo turno.' },
+  flutuando: { n: 'Flutuando', s: '浮', g: 'tec', d: 'Flutuar (Fuuton com Leque Gigante): pode voar, com Voo igual ao Espírito, enquanto sustentar.' },
 };
-const COND_GRUPOS = [['corpo', 'Corpo'], ['ferida', 'Ferimentos'], ['mente', 'Ação e defesa'], ['medo', 'Medo'], ['sentido', 'Sentidos']];
+const COND_GRUPOS = [['corpo', 'Corpo'], ['ferida', 'Ferimentos'], ['mente', 'Ação e defesa'], ['medo', 'Medo'], ['sentido', 'Sentidos'], ['tec', 'Técnicas']];
 // a linha de gravidade: a chave fica escondida quando uma destas (ou uma mais grave que elas) está presente
 const GRAVE = { assustado: ['amedrontado'], amedrontado: ['aterrorizado'], aterrorizado: ['paralisado'], lento: ['fatigado'], fatigado: ['exausto'], exausto: ['inconsciente'],
   tonto: ['atordoado'], atordoado: ['indefeso'], impedido: ['indefeso'], indefeso: ['inconsciente'], inconsciente: ['estavel', 'morrendo'], estavel: ['morto'], morrendo: ['morto'],
-  caido: ['inconsciente'] };
+  caido: ['inconsciente'], cegado: ['cego'], ofuscado: ['cego'] };
 const COND_ORD = Object.keys(COND);
 const okCondId = id => typeof id === 'string' && (/^k:[a-z]+:[a-z0-9]{1,8}$/.test(id) || /^p:[a-z]+:[0-9]{1,2}$/.test(id) || okId(id));
 function limpaCond(o) {
   const out = {}; if (!o || typeof o !== 'object') return out; let n = 0;
   for (const id of Object.keys(o)) { if (++n > 80) break; if (!okCondId(id) || !Array.isArray(o[id])) continue; const L = [];
     for (const q of o[id].slice(0, 16)) { if (!q || !COND[q.k] || L.some(z => z.k === q.k)) continue;
-      L.push({ k: q.k, n: nnum(q.n, 1, 9, 1), t: q.t == null ? null : nnum(q.t, 1, 99, 1), i: q.i ? 1 : 0 }); }
+      L.push({ k: q.k, n: nnum(q.n, 1, 10, 1), t: q.t == null ? null : nnum(q.t, 1, 99, 1), i: q.i ? 1 : 0 }); }
     if (L.length) out[id] = L; }
   return out;
 }
@@ -3835,7 +3997,7 @@ function condDerivadas(id, guardadas) {                   // Vitalidade em 0: in
   if (v.ct > 0 && v.ca <= 0) out.push({ k: 'exausto', auto: 'Sem chakra, até recuperar 1 ponto' });
   return out;
 }
-const CONDC = new Map(), CVAZIO = { vis: [], ef: new Set(), nv: { sangrando: 0, debilitado: 0 }, flag: () => false, tem: () => false };
+const CONDC = new Map(), CVAZIO = { vis: [], ef: new Set(), nv: { sangrando: 0, debilitado: 0, chamas: 0 }, flag: () => false, tem: () => false };
 function condsDe(id) {
   if (!id || !condPronto) return CVAZIO; const ag = performance.now(), m = CONDC.get(id); if (m && ag - m.at < 200) return m.v;
   const guard = (conds[id] || []).filter(q => q.k !== 'estavel' || ((condVida(id) || {}).va <= -11)), base = guard.map(q => Object.assign({}, q));
@@ -3844,7 +4006,7 @@ function condsDe(id) {
   const acima = k => { const pilha = [...(GRAVE[k] || [])], visto = new Set(); while (pilha.length) { const g = pilha.pop(); if (visto.has(g)) continue; visto.add(g); if (E.has(g)) return true; pilha.push(...(GRAVE[g] || [])); } return false; };
   let ef = new Set([...E].filter(k => !acima(k))); if (ef.has('morto')) ef = new Set(['morto']);
   const vis = base.filter(q => ef.has(q.k)).sort((a, b) => COND_ORD.indexOf(a.k) - COND_ORD.indexOf(b.k));
-  const nv = { sangrando: 0, debilitado: 0 }; for (const q of base) if (q.k in nv && ef.has(q.k)) nv[q.k] = Math.min(q.k === 'debilitado' ? 3 : 9, q.n);
+  const nv = { sangrando: 0, debilitado: 0, chamas: 0 }; for (const q of base) if (q.k in nv && ef.has(q.k)) nv[q.k] = Math.min(q.k === 'debilitado' ? 3 : q.k === 'chamas' ? 10 : 9, q.n);
   if (ef.has('morrendo')) nv.sangrando = Math.max(1, nv.sangrando);
   const v = { vis, ef, nv, tem: k => ef.has(k), flag: f => [...ef].some(k => COND[k][f]) };
   CONDC.set(id, { at: ag, v }); return v;
@@ -3873,7 +4035,8 @@ function condMov(id) {                                   // pode sair do lugar?
   if (C.ef.has('caido')) return { caido: 1, msg: 'Caído: levante-se primeiro (é uma ação de movimento)' };
   return {};
 }
-const condDesl = (id, m) => condsDe(id).flag('lento') ? Math.floor(m / 2) : m;
+const condDesl = (id, m) => { const C = condsDe(id); if (C.ef.has('vacuo') && typeof statsDe === 'function') m += Math.ceil((statsDe(id).esp || 0) / 2);     // Deslocamento de Vácuo
+  return C.flag('lento') ? Math.floor(m / 2) : m; };
 const nomeCond = k => COND[k] ? COND[k].n : k;
 
 // ---------- escrita (só o mestre, ou sem mesa) ----------
@@ -3890,8 +4053,9 @@ function condPoe(id, k, o) {
   else if (k === 'fatigado' && tem('fatigado')) { k = 'exausto'; msg = 'fatigado de novo: ficou exausto'; }
   else if (k === 'exausto' && exausto) { k = 'inconsciente'; msg = 'exausto de novo: ficou inconsciente'; }
   const q = tem(k), dur = o.t == null ? null : nnum(o.t, 1, 99, 1);
-  if (q) { if (COND[k].nv) q.n = Math.min(k === 'debilitado' ? 3 : 9, q.n + (o.n || 1)); q.t = q.t == null || dur == null ? null : Math.max(q.t, dur); }
-  else L.push({ k, n: COND[k].nv ? Math.min(k === 'debilitado' ? 3 : 9, o.n || 1) : 1, t: dur, i: o.i ? 1 : 0 });
+  const teto = k === 'debilitado' ? 3 : k === 'chamas' ? 10 : 9;
+  if (q) { if (COND[k].nv) q.n = Math.min(teto, k === 'chamas' ? Math.max(q.n, o.n || 1) : q.n + (o.n || 1)); q.t = q.t == null || dur == null ? null : Math.max(q.t, dur); }
+  else L.push({ k, n: COND[k].nv ? Math.min(teto, o.n || 1) : 1, t: dur, i: o.i ? 1 : 0 });
   if (L.length > 16) L.splice(0, L.length - 16);
   condMudou(); publicar(true);
   if (!o.quieto) condAviso(`${nomeDe(id)}: ${msg || nomeCond(k).toLowerCase()}${COND[k].nv && tem(k) && tem(k).n > 1 ? ' ×' + tem(k).n : ''}${dur ? ` por ${dur} turno${dur > 1 ? 's' : ''}` : ''}`, id);
@@ -3939,6 +4103,7 @@ function condFimTurno(id) { if (id) condContaTurno(id, false); }
 function condInicioTurno(id) {
   if (!id || !ehMestre()) return; condContaTurno(id, true); condMudou(); if (ferrPronto) fumacaTurno(id); const C = condsDe(id);
   if (C.nv.sangrando > 0 && !C.ef.has('morto')) { const n = 2 * C.nv.sangrando; if (danoEm(id, n)) condAviso(`${nomeDe(id)} sangra: −${n} de Vitalidade`, id); }
+  if (C.nv.chamas > 0 && !C.ef.has('morto')) { const n = C.nv.chamas; if (danoEm(id, n)) condAviso(`${nomeDe(id)} sofre o dano contínuo: −${n} de Vitalidade`, id); }
   const sa = [...C.ef].find(k => COND[k].semAcao); if (sa) condAviso(`Vez de ${nomeDe(id)}, que não pode agir: ${nomeCond(sa).toLowerCase()}`, id);
   else if (C.ef.has('confuso')) { const r = rolarAuto({ k: 'livre', dados: [{ f: 8, s: 1 }], desc: 'Confuso: o que faz neste turno', quem: quemDe(id), local: ocultoId(id) }), v = r.dados[0].v;
     setTimeout(() => condAviso(`${nomeDe(id)} está confuso (${v}): ${v <= 2 ? 'foge' : v <= 4 ? 'ataca a criatura mais próxima' : v <= 6 ? 'não faz nada' : 'age normalmente'}`, id), 900); }
@@ -4094,12 +4259,16 @@ const ELEM = {
   sumi: { n: 'Sumi Ninpou', k: '墨', alc: [15, 3], an: 'longo', tam: 1, dano: 0, dif: 1, arte: 1, durFixa: 1 },
   nendo: { n: 'Kibaku Nendo', k: '爆', alc: [15, 3], an: 'longo', tam: 2, dano: 2, arte: 1 },
 };
-const TODOS_EF = ['canhao', 'orbe', 'raio', 'restringente', 'barreira', 'flechas', 'lanca', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp', 'algemar'];
+const TODOS_EF = ['canhao', 'orbe', 'raio', 'restringente', 'barreira', 'flechas', 'lanca', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp', 'algemar',
+  'criar_arma', 'projetar', 'repelir', 'cegante', 'desastre'];      // Ninpou do Livro Básico + os efeitos de Ninpou do Guia Avançado
 const PERMITE = {
-  ninpou: TODOS_EF, suiton: TODOS_EF, sumi: TODOS_EF, doton: TODOS_EF.concat(['tremor']),
-  katon: ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'energizar', 'sopro', 'missil', 'onda_exp', 'meteoros'],
-  fuuton: ['canhao', 'orbe', 'raio', 'barreira', 'flechas', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp'],
-  raiton: ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'energizar', 'sopro', 'missil', 'onda_exp', 'meteoros'],
+  ninpou: TODOS_EF, sumi: TODOS_EF,
+  suiton: TODOS_EF.concat(['inflamavel', 'venenoso', 'imergir', 'neblina', 'prisao_agua', 'colisao_ondas', 'desloc_vacuo', 'purificar']),
+  doton: TODOS_EF.concat(['tremor', 'imergir', 'pele_pedra', 'desloc_vacuo']),
+  katon: ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'energizar', 'sopro', 'missil', 'onda_exp', 'meteoros', 'inflamavel', 'dano_cont'],
+  fuuton: ['canhao', 'orbe', 'raio', 'barreira', 'flechas', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp',
+    'venenoso', 'afiar', 'lamina_vento', 'inflamavel', 'desloc_vacuo', 'projetar', 'repelir', 'purificar', 'cegante', 'flutuar', 'desastre'],
+  raiton: ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'energizar', 'sopro', 'missil', 'onda_exp', 'meteoros', 'lamina_raios', 'arma_eletrica', 'descarga', 'dano_cont', 'desastre'],
   nendo: ['canhao', 'orbe', 'flechas', 'coluna', 'nuvem', 'missil', 'onda_exp', 'algemar', 'meteoros'],
 };
 // t: alvo (uma criatura), raio, flechas, varios, cadeia, area, pessoal · forma: geometria da área · def: defesas que valem
@@ -4122,6 +4291,31 @@ const EFE = {
   onda_exp: { n: 'Onda Explosiva', nv: 5, t: 'area', forma: 'explosao', dano: 'comum', def: 'area', fx: 'explosao' },
   algemar: { n: 'Algemar', nv: 6, t: 'alvo', dur: 'Concentração', def: 'alvo', fx: 'algema', fica: 1 },
   meteoros: { n: 'Meteoros', nv: 9, t: 'area', forma: 'meteoros', acao: 'Completa', dano: 'meteoro', def: 'area', fx: 'meteoros' },
+  // ----- Livro Básico: efeitos exclusivos de cada elemento · Guia Avançado: efeitos novos (resumos da mesa; a regra completa está no livro) -----
+  // alcM: alcance fixo em metros (toque = a casa vizinha) · alcX/tamX: múltiplos do comum · cond: condição que deixa · pg: onde está no livro
+  criar_arma: { n: 'Criar Arma', nv: 2, t: 'pessoal', acao: 'Parcial', dur: 'Sustentada ou Permanente', custo: 1, def: 'nenhuma', fx: 'arma', pg: 'Livro Básico, Ninpou (p. 95)' },
+  imergir: { n: 'Imergir', nv: 2, t: 'pessoal', acao: 'Completa', dur: 'Contínua', def: 'nenhuma', fx: 'imergir', cond: 'imerso', pg: 'Livro Básico, Doton (p. 102–104)' },
+  lamina_raios: { n: 'Lâmina de Raios', nv: 2, t: 'alvo', alcM: 1, dano: 'comum', cc: 1, acao: 'Movimento (preparar) e Padrão (golpe)', dur: 'Sustentada, um golpe', def: 'toque', fx: 'lamina', pg: 'Livro Básico, Raiton (p. 109–110)' },
+  neblina: { n: 'Névoa', nv: 2, t: 'area', forma: 'neblina', alcM: 1, dur: 'Sustentada', def: 'ambiente', fx: 'neblina', fica: 1, pg: 'Livro Básico, Suiton (p. 111–113)' },
+  dano_cont: { n: 'Dano Contínuo', nv: 2, t: 'alvo', dano: 'nivel', def: 'proj', fx: 'proj', cond: 'chamas', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  desloc_vacuo: { n: 'Deslocamento de Vácuo', nv: 2, t: 'alvo', aliado: 1, acao: 'Parcial', dur: '1 rodada', custo: 2, def: 'nenhuma', fx: 'vacuo', cond: 'vacuo', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  projetar: { n: 'Projetar', nv: 2, t: 'alvo', alcMeio: 1, dano: 'comum', def: 'proj', fx: 'proj', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  repelir: { n: 'Repelir', nv: 2, t: 'pessoal', acao: 'Movimento (reação)', dur: 'Instantânea', def: 'nenhuma', fx: 'repelir', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  purificar: { n: 'Purificar', nv: 2, t: 'area', forma: 'circulo', def: 'nenhuma', fx: 'purificar', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  prisao_agua: { n: 'Prisão de Água', nv: 3, t: 'alvo', alcM: 1, pen: -3, dur: 'Concentração', def: 'alvo', fx: 'prisao', fica: 1, pg: 'Livro Básico, Suiton (p. 111–113)' },
+  arma_eletrica: { n: 'Arma Elétrica', nv: 4, t: 'pessoal', acao: 'Parcial', dur: 'Sustentada', custo: 3, def: 'nenhuma', fx: 'aura', pg: 'Livro Básico, Raiton (p. 109–110)' },
+  venenoso: { n: 'Venenoso', nv: 5, t: 'area', forma: 'cone', def: 'area', fx: 'veneno', pg: 'Livro Básico, Fuuton (p. 105–106)' },
+  inflamavel: { n: 'Inflamável', nv: 5, t: 'area', forma: 'circulo', acao: 'Movimento', dur: 'Até acender (ou o mestre limpar)', custo: 3, def: 'nenhuma', fx: 'inflamavel', fica: 1, pg: 'Livro Básico, Katon (p. 107–108); Guia Avançado (p. 48–55)' },
+  cegante: { n: 'Cegante', nv: 5, t: 'alvo', alcMeio: 1, dano: 'comum', def: 'proj', fx: 'proj', cond: 'cegado', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  flutuar: { n: 'Flutuar', nv: 5, t: 'pessoal', acao: 'Movimento', dur: 'Sustentada', custo: 5, def: 'nenhuma', fx: 'flutuar', cond: 'flutuando', pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  pele_pedra: { n: 'Pele de Pedra', nv: 6, t: 'pessoal', acao: 'Movimento', dur: 'Até o fim do turno (ou Sustentada)', def: 'nenhuma', fx: 'pedra', cond: 'pele_pedra', pg: 'Livro Básico, Doton (p. 102–104)' },
+  afiar: { n: 'Afiar', nv: 6, t: 'pessoal', acao: 'Parcial', dur: 'Sustentada', def: 'nenhuma', fx: 'aura', pg: 'Livro Básico, Fuuton (p. 105–106)' },
+  descarga: { n: 'Descarga', nv: 6, t: 'area', forma: 'circulo', dano: 'meio', def: 'area', fx: 'descarga', pg: 'Livro Básico, Raiton (p. 109–110)' },
+  colisao_ondas: { n: 'Colisão de Ondas', nv: 6, t: 'area', forma: 'onda', dano: 'base10', dur: 'Concentração', def: 'area', fx: 'onda', pg: 'Livro Básico, Suiton (p. 111–113)' },
+  lamina_vento: { n: 'Lâmina de Vento', nv: 7, t: 'alvo', alcM: 5, dano: 'vento', acao: 'Completa', def: 'proj', fx: 'laminas', pg: 'Livro Básico, Fuuton (p. 105–106)' },
+  desastre: { n: 'Desastre', nv: 9, t: 'area', forma: 'circulo', alcX: 2, tamX: 3, dano: 'tri', custoX: 3, dur: 'Concentração', def: 'area', fx: 'desastre', fica: 1, pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  // a combustão de uma área Inflamável (lançada sozinha quando um Katon ou Raiton a acende; não aparece na lista)
+  combustao: { n: 'Combustão', nv: 1, t: 'area', forma: 'circulo', dano: 'fixa', def: 'area', fx: 'combustao', oculto: 1, pg: 'Livro Básico, Katon (p. 107–108)' },
 };
 // fichas dos personagens (planilhas da campanha); o mestre corrige na mesa
 const FICHA0 = {
@@ -4461,6 +4655,7 @@ function formaDe(ef, o, a, d, p, forma) {
   const F = EFE[ef], T = p.tam / M_CASA;
   switch (F.forma) {
     case 'circulo': case 'cilindro': return { k: 'disco', c: a, r: T / 2 };              // diâmetro = tamanho
+    case 'neblina': return { k: 'disco', c: o, r: T / 2 };                                 // Névoa: nasce em quem usa (alcance 1 m)
     case 'nuvem': return { k: 'disco', c: a, r: T };                                       // círculo com o dobro do tamanho
     case 'tremor': return { k: 'disco', c: a, r: 1 / M_CASA };                             // 2 m de diâmetro
     case 'meteoros': return { k: 'disco', c: a, r: 2.5 / M_CASA };                         // esferas de 5 m
@@ -4475,14 +4670,17 @@ function formaDe(ef, o, a, d, p, forma) {
   }
   return null;
 }
-const daOrigem = ef => ['cone', 'linha', 'onda', 'explosao'].includes(EFE[ef].forma);     // área que nasce no usuário
+const daOrigem = ef => ['cone', 'linha', 'onda', 'explosao', 'neblina'].includes(EFE[ef].forma);     // área que nasce no usuário
+const semMira = ef => ef === 'onda_exp' || ef === 'neblina';                                // nem direção precisa
 
 // ---------- parâmetros da técnica (p. 92–94 e descrição de cada elemento) ----------
 function tqCalc(el, ef, nv, st, op) {
   const Em = ELEM[el], F = EFE[ef]; const chave = Em.arte ? 'Arte' : 'Espírito', X = Em.arte ? (st.arte || 0) : (st.esp || 0), meio = Math.ceil(X / 2);
   const ba = op.nvAlc ? nv : X, bt = op.nvTam ? nv : X;
-  const alc = (F.t === 'pessoal' || F.forma === 'explosao') ? 0 : Em.alc[0] + Em.alc[1] * ba;
-  const tam = Em.tam === 0.5 ? Math.ceil(bt * 0.5) : Em.tam * bt;
+  let alc = (F.t === 'pessoal' || F.forma === 'explosao') ? 0 : Em.alc[0] + Em.alc[1] * ba;
+  if (F.alcM) alc = F.alcM; else if (F.alcMeio) alc = Math.ceil(alc / 2); else if (F.alcX) alc *= F.alcX;      // divisões arredondam para cima (regra geral do livro)
+  let tam = Em.tam === 0.5 ? Math.ceil(bt * 0.5) : Em.tam * bt;
+  if (F.forma === 'neblina') tam = 30 + 3 * X; else if (F.tamX) tam *= F.tamX;                              // Névoa: 30 m + 3 m por Espírito de diâmetro
   const comum = nv + meio + Em.dano, dif = 9 + nv + meio + (Em.dif || 0), dureza = Em.durFixa || (nv + meio + (Em.dur || 0));
   const bonus = Em.dano ? ` + ${Em.dano} do ${Em.n}` : '';
   let dano = null, txt = 'nenhum', fixo = null;
@@ -4491,22 +4689,64 @@ function tqCalc(el, ef, nv, st, op) {
   else if (F.dano === 'flecha') { dano = 2; txt = `2 por projétil, ${nv} projéteis${Em.dano ? `; +${Em.dano} do ${Em.n} uma vez por alvo` : ''}`; }
   else if (F.dano === 'nuvem') { fixo = nv; txt = `${nv} fixo por turno, se falhar no Vigor`; }
   else if (F.dano === 'meteoro') { fixo = nv; txt = `${nv} fixo por meteoro (6 meteoros)`; }
-  return { alc, tam, dano, txt, fixo, dif, dureza, custo: F.custo || nv, chave, X, meio, comum };
+  else if (F.dano === 'nivel') { fixo = nv; txt = `${nv} fixo ao acertar e de novo a cada turno, a partir do segundo`; }
+  else if (F.dano === 'meio') { dano = Math.ceil(comum / 2); txt = `${dano} (metade do comum ${comum})`; }
+  else if (F.dano === 'base10') { dano = nv >= 10 ? 18 : nv >= 8 ? 14 : 10; txt = `${dano} (fixo do efeito; o dobro em construções)`; }
+  else if (F.dano === 'vento') { dano = nv * (1 + Em.dano); txt = `${dano}: ${nv} lâminas de ${1 + Em.dano} (1 + ${Em.dano} do ${Em.n}), um só teste`; }
+  else if (F.dano === 'tri') { dano = 3 * nv; txt = `${dano} (3 por nível)`; }
+  return { alc, tam, dano, txt, fixo, dif, dureza, custo: F.custoX ? F.custoX * nv : F.custo || nv, chave, X, meio, comum, nv };
 }
 function nota(ef, p) {
-  return { raio: 'Não pode ser bloqueado.', restringente: `Quem estiver na área fica lento; sai com Escapar ou Força (dif ${p.dif}).`,
-    tremor: 'Quem falhar na defesa fica caído.', barreira: `Defesa com teste de LM +2; dureza ${p.dureza}.`,
-    flechas: 'Cada alvo faz uma única defesa.', lanca: 'Surge a até 2 m e se estica; ignora 2 de dureza; o dano é dividido entre os alvos.',
+  const nv = p.nv || 1, base = {
+    raio: 'Não pode ser bloqueado.', restringente: `Quem estiver na área fica lento; sai com Escapar ou Força (dif ${p.dif}).`,
+    tremor: 'Quem falhar na defesa fica caído.' + (nv >= 4 ? ' Nível 4+: o diâmetro passa a ser o tamanho comum.' : ''), barreira: `Defesa com teste de LM +2; dureza ${p.dureza}.`,
+    flechas: 'Cada alvo faz uma única defesa.', lanca: 'Surge a até 2 m e se estica; ignora 2 de dureza; o dano é dividido entre os alvos.'
+      + (nv >= 9 ? ' Nível 9+: brota de baixo, ignora cobertura e toda dureza; o alvo testa Prontidão ou fica desprevenido.' : nv >= 6 ? ' Nível 6+: pode brotar de baixo do alvo, ignorando cobertura.' : ''),
     ricochete: 'Salta para mais 1 inimigo a cada 2 níveis, até 10 m do primeiro; para quando alguém defende.',
     coluna: 'Cilindro com diâmetro e altura do tamanho comum.', energizar: 'Punho ou arma com o elemento; troca Força/Destreza pelo Espírito no dano.',
     nuvem: `Sem teste de acerto. No início de cada turno do usuário: Vigor (dif ${p.dif - 2}) ou ${p.fixo} de dano e fica lento.`,
-    correnteza: `Vigor (dif ${p.dif - 2}) ou é empurrado até o fim da onda.`, missil: 'Acertando, role o ataque de novo: +1 de dano base.',
-    onda_exp: `Vigor (dif ${p.dif - 2}) ou é empurrado até a borda.`, algemar: `Alvo impedido; algemas com dureza ${p.dureza}.`,
-    meteoros: 'Explodem no ponto escolhido; quem estiver em mais de uma explosão sofre todas.' }[ef] || '';
+    correnteza: `Vigor (dif ${p.dif - 2}) ou é empurrado até o fim da onda; batendo em algo, +1 de dano por concussão.` + (nv >= 8 ? ' Nível 8+: quem bate fica atordoado; a largura pode mudar.' : ''),
+    missil: 'Acertando, role o ataque de novo: +1 de dano base.',
+    onda_exp: `Vigor (dif ${p.dif - 2}) ou é empurrado até a borda.` + (nv >= 8 ? ' Nível 8+: quem é empurrado fica caído.' : ''), algemar: `Alvo impedido; algemas com dureza ${p.dureza}.`,
+    meteoros: 'Explodem no ponto escolhido; quem estiver em mais de uma explosão sofre todas.',
+    orbe: nv >= 7 ? 'Nível 7+: metade do chakra e não pode ser bloqueado, mas não soma outros efeitos nem aptidões.' : '',
+    // ----- efeitos novos (resumo da mesa) -----
+    criar_arma: 'Cria uma arma simples ou marcial (leve, longa, média ou de arremesso) com o dano normal dela, ou munição para encher um compartimento.',
+    imergir: 'Some no chão (ou numa criação de Doton): Perito em Furtividade, vê até 10 m, não se desloca; atacar revela. Sair é uma ação de movimento.'
+      + (nv >= 6 ? ' Nível 6+: Falsa Decapitação (agarrar furtivo que puxa o alvo para baixo da terra).' : nv >= 4 ? ' Nível 4+: anda imerso à metade do deslocamento.' : ''),
+    pele_pedra: `Dureza de corpo ${p.dureza + 2} até o fim do turno (sustentada: ${nv >= 9 ? 2 : 1}). Dá para usar como defesa com um teste de LM.`,
+    lamina_raios: `Golpe de toque (CC) com dano comum que ignora 1 de dureza; armas comuns não bloqueiam.`
+      + (nv >= 9 ? ' Nível 9+: ignora dureza (exceto de Fuuton) e tem Crítico Aprimorado.' : nv >= 7 ? ' Nível 7+: ignora dureza (exceto de Fuuton).' : nv >= 5 ? ' Nível 5+: preparar é parcial; em Investida, +2 de dano e guarda aberta.' : ''),
+    arma_eletrica: 'Energiza uma arma cortante ou perfurante (3 de chakra), projéteis elétricos (1) ou cria uma lâmina na mão que ignora 1 de dureza e se estica 5 m (4).'
+      + (nv >= 8 ? ' Nível 8+: destrói a arma que bloquear.' : ''),
+    descarga: `Quem sofrer dano faz Vigor (dif ${p.dif - 3}) ou fica atordoado até o fim do próximo turno dele.`,
+    venenoso: 'Sem dano: espalha um veneno feito com Venefício (até nível II), que se gasta; quem estiver no cone faz os testes de resistência do veneno.',
+    afiar: 'Arma real cortante ou perfurante ganha o Energizar Fuuton: ignora 1 de dureza, crítico +1 e lâmina estendida.',
+    lamina_vento: 'Antes de defender, o alvo testa Prontidão ou fica fintado (quem vê chakra passa sozinho; sensores têm −2).' + (nv >= 10 ? ' Nível 10: quem falha fica desprevenido.' : ''),
+    inflamavel: `Sem dano. Um Canhão de Katon ou Raiton mirado dentro da área acende tudo: explosão em toda a área com o dano do Canhão +2.`
+      + (nv >= 8 ? ' Nível 8+: qualquer Katon ou Raiton instantâneo acende.' : ''),
+    neblina: `Ninguém enxerga além de 1 m: camuflagem ${nv >= 5 ? 'parcial até 1 m e total além (50% de falha)' : 'parcial além de 1 m (25% de falha)'}. Explosões e vento reduzem a dureza dela; Fuuton a dissipa.`,
+    prisao_agua: `Teste de CD com −3 pela proximidade. O alvo fica paralisado (mas respira) enquanto você mantém contato; a prisão tem dureza ${Math.ceil(p.dureza / 2)}.`
+      + (nv >= 9 ? ' Nível 9+: pode sufocar e ser mantida por um clone de água.' : ''),
+    colisao_ondas: 'Mantida com metade do chakra por turno. Quem falha na defesa é arrastado para baixo da água (Atletismo para subir, senão sufocando).',
+    dano_cont: `Acertando, ${nv} de dano fixo agora e no início de cada turno a partir do segundo. Acaba com uma ação completa e Vigor (dif ${p.dif - (nv >= 7 ? 0 : 3)}) ou em ${nv >= 7 ? 5 : 3} turnos.`
+      + (nv >= 7 ? ' Nível 7+: para apagar, precisa mergulhar.' : ''),
+    desloc_vacuo: `O alvo ganha +${p.meio} m de deslocamento até o próximo turno; precisa estar cercado pelo elemento.` + (nv >= 7 ? ' Nível 7+: até 5 alvos voluntários, 3 de chakra.' : ''),
+    projetar: `Acertando, Vigor (dif ${p.dif - 2}) ou é empurrado em linha reta tantos metros quanto o grau do dano (sem cair).`
+      + (nv >= 7 ? ` Nível 7+: não pode ser bloqueado, empurra ${Math.ceil(p.tam / 2)} m e a falha crítica derruba.` : ''),
+    repelir: `Reação a um projétil, toque ou golpe contra você ou um aliado no alcance: teste de LM +1 cria dureza ${p.dureza}. Se absorver tudo, quem estiver colado é empurrado 1 m.`
+      + (nv >= 7 ? ' Nível 7+: até o seu próximo turno, os outros usos são ações livres com metade do chakra.' : ''),
+    purificar: 'Tira venenos e impurezas da área se o nível do poder vencer a origem (veneno: o dobro do nível contra o nível de Venefício; empate pede teste de Espírito).',
+    cegante: `Acertando, o alvo enxerga tudo com camuflagem ${nv >= 8 ? 'total por 5 turnos' : 'parcial por 3 turnos'}; limpa o rosto com uma ação padrão (ou movimento e Força/Destreza dif ${p.dif}).`,
+    flutuar: 'Voo igual ao Espírito, como alado. Vale como reação a uma queda.',
+    desastre: `Concentração. Quem estiver na área (menos você) fica lento e, no início do turno dele, sofre um ataque de CD seu; construções sofrem dano a cada turno.`,
+    combustao: 'Explosão do Inflamável: área toda, sem Bloqueio.' };
+  return base[ef] || '';
 }
 function defesasTxt(F) {
   return { proj: 'Esquiva ou Antecipar; Bloqueio só com arma especial ou Energizar', raio: 'Esquiva ou Antecipar (sem Bloqueio)',
     area: 'Esquiva ou Antecipar (área: sem Bloqueio)', alvo: 'Esquiva, Antecipar ou Bloqueio com arma especial', ambiente: 'Nenhuma: o alvo é o ambiente',
+    toque: 'Esquiva ou Antecipar; armas comuns não bloqueiam',
     nenhuma: '—' }[F.def] || '—';
 }
 
@@ -4521,7 +4761,7 @@ function tqForma() {
   return formaDe(tec.ef, o, F.forma === 'explosao' ? o : a, d, tqP(), tec.forma);
 }
 function tqEstado() {                                         // pronto para lançar? quem é atingido?
-  const F = EFE[tec.ef], o = tqOrigem(), p = tqP(), A = p.alc / M_CASA;
+  const F = EFE[tec.ef], o = tqOrigem(), p = tqP(), toque = F.alcM && F.alcM <= M_CASA, A = toque ? Math.SQRT2 + 0.05 : p.alc / M_CASA;     // toque: a casa vizinha
   if (!tec.quem) return { msg: 'Escolha quem usa a técnica' };
   if (!o) return { msg: `${nomeDe(tec.quem)} não está nesta cena` };
   if (!(PERMITE[tec.el] || []).includes(tec.ef)) return { msg: `${ELEM[tec.el].n} não tem o efeito ${F.n}` };
@@ -4534,25 +4774,25 @@ function tqEstado() {                                         // pronto para lan
     const af = us.filter(u => naForma(g, u.x, u.y, CORPO) && !(u.id === tec.quem && (daOrigem(tec.ef) || tec.ef === 'nuvem')) && !nevoaEsconde(u.x, u.y)).map(u => u.id);
     if (fora) return { g, af, msg: `Fora do alcance: o centro da área precisa estar a até ${p.alc} m` };
     if (!tec.fixo && !daOrigem(tec.ef)) return { g, af, msg: 'Clique no mapa para fixar a área', mira: true };
-    if (!tec.fixo && daOrigem(tec.ef) && tec.ef !== 'onda_exp') return { g, af, msg: 'Clique para fixar a direção', mira: true };
+    if (!tec.fixo && daOrigem(tec.ef) && !semMira(tec.ef)) return { g, af, msg: 'Clique para fixar a direção', mira: true };
     return { g, af, pronto: true };
   }
   const al = tec.alvos.map(id => ux.get(id)).filter(Boolean);
   // a altura do terreno conta na distância (1 nível = 1 m); contra quem voa, atacando do chão, o alcance cai à metade (Combate Aéreo, p. 270)
   for (const u of al) { const ar = vooDe(u.id) && !vooDe(tec.quem), dz = (hEff(u.x | 0, u.y | 0) - hEff(o[0] | 0, o[1] | 0)) / M_CASA;
-    if (Math.hypot(u.x - o[0], u.y - o[1], dz) - CORPO > (ar ? A / 2 : A) + 1e-6) return { af: al.map(u => u.id), msg: `${nomeDe(u.id)} está fora do alcance (${ar ? p.alc / 2 + ' m: está voando' : p.alc + ' m'})` }; }
+    if (Math.hypot(u.x - o[0], u.y - o[1], dz) - CORPO > (ar ? A / 2 : A) + 1e-6) return { af: al.map(u => u.id), msg: toque ? `${nomeDe(u.id)} precisa estar colado (na casa vizinha)` : `${nomeDe(u.id)} está fora do alcance (${ar ? p.alc / 2 + ' m: está voando' : p.alc + ' m'})` }; }
   if (!al.length) return { af: [], msg: F.t === 'flechas' ? `Clique nos alvos: cada clique põe um projétil (${tec.nv})` : F.t === 'cadeia' ? 'Clique no primeiro alvo' : 'Clique no alvo', mira: true };
   if (F.t === 'raio' && al.length > 1) for (const u of al) for (const v of al) if (Math.hypot(u.x - v.x, u.y - v.y) * M_CASA > 4 + 1e-6) return { af: al.map(u => u.id), msg: 'Com vários raios, os alvos ficam a até 4 m entre si' };
   if (F.t === 'cadeia') for (const u of al.slice(1)) if (Math.hypot(u.x - al[0].x, u.y - al[0].y) * M_CASA > 10 + 1e-6) return { af: al.map(u => u.id), msg: `${nomeDe(u.id)} está a mais de 10 m do primeiro alvo` };
   return { af: al.map(u => u.id), pronto: true };
 }
-function maxAlvos() { const F = EFE[tec.ef]; if (F.t === 'raio') return tec.nv >= 5 ? Math.floor(tec.nv / 2) : 1; if (F.t === 'cadeia') return 1 + Math.floor(tec.nv / 2); if (F.t === 'varios') return 6; if (F.t === 'flechas') return tec.nv; return 1; }
+function maxAlvos() { const F = EFE[tec.ef]; if (tec.ef === 'desloc_vacuo') return tec.nv >= 7 ? 5 : 1; if (F.t === 'raio') return tec.nv >= 5 ? Math.floor(tec.nv / 2) : 1; if (F.t === 'cadeia') return 1 + Math.floor(tec.nv / 2); if (F.t === 'varios') return 6; if (F.t === 'flechas') return tec.nv; return 1; }
 function nFlechas() { let n = 0; for (const k in tec.flechas) n += tec.flechas[k]; return n; }
 function tecClique(wx, wy) {
   if (!tec.quem) return; const F = EFE[tec.ef]; tec.pausa = false;
   if (F.t === 'area') { const g = chaoEm(wx, wy); if (!g) return; aponta(g); tec.fixo = true; tqUI(); return; }
   if (F.t === 'pessoal') return;
-  const u = unidadeEm(wx, wy); if (!u || u.id === tec.quem) { if (!u) say('Clique em cima de alguém'); return; }
+  const u = unidadeEm(wx, wy); if (!u || (u.id === tec.quem && !F.aliado)) { if (!u) say('Clique em cima de alguém'); return; }
   if (F.t === 'flechas') { if (nFlechas() >= tec.nv) { say(`Já são ${tec.nv} projéteis (clique com o botão direito para tirar)`); return; }
     tec.flechas[u.id] = (tec.flechas[u.id] || 0) + 1; if (!tec.alvos.includes(u.id)) tec.alvos.push(u.id); }
   else if (tec.alvos.includes(u.id)) tec.alvos = tec.alvos.filter(x => x !== u.id);
@@ -4579,8 +4819,22 @@ function lancarTecnica() {
   if (F.t === 'area' && F.forma !== 'explosao' && !ev.a) ev.a = ev.o;
   acoesGastaTecnica(tec.quem, ev.p.custo);                                    // o chakra sai da ficha
   if (mesa) mesa.sendEvent(Object.assign({ tid: ev.id }, ev, { alvos: ev.alvos.filter(a => !ocultoId(a[0])), af: ev.af.filter(id => !ocultoId(id)) })).catch(() => {});   // o id da mensagem é trocado pela rede; o da técnica vai em tid
-  tocarTecnica(ev, true);
+  tocarTecnica(ev, true); inflamaVe(ev);
   tec.alvos = []; tec.flechas = {}; tec.fixo = false; tec.pausa = true; tec.lancou = performance.now(); tqUI();
+}
+// Inflamável (p. 107–108): um Canhão de Katon ou Raiton mirado dentro da área acende tudo (nível 8+: qualquer Katon ou Raiton instantâneo).
+// Quem lançou a faísca manda a combustão: explosão na área inteira com o dano do Canhão +2; o mestre tira a área.
+const ACENDE = ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'sopro', 'missil', 'onda_exp', 'meteoros', 'dano_cont', 'descarga', 'lamina_raios'];
+function inflamaVe(ev) {
+  if (ev.el !== 'katon' && ev.el !== 'raiton' || !ACENDE.includes(ev.ef)) return;
+  const pts = ev.alvos.map(a => [a[1], a[2]]).concat(ev.a ? [ev.a] : []);
+  const z = zonasVisiveis().find(z => z.ef === 'inflamavel' && z.s === ev.s && z.g.k === 'disco' && (ev.ef === 'canhao' || z.nv >= 8) && pts.some(q => Math.hypot(q[0] - z.g.c[0], q[1] - z.g.c[1]) <= z.g.r + CORPO));
+  if (!z) return; const dano = (ev.ef === 'canhao' ? ev.p.dano || 0 : 2 * ev.nv + ELEM[ev.el].dano) + 2;        // nível 8+: a faísca conta como um Canhão do mesmo nível
+  const af = unidades().filter(u => posDe(u.id) && posDe(u.id).s === ev.s && Math.hypot(u.x - z.g.c[0], u.y - z.g.c[1]) <= z.g.r + CORPO).map(u => u.id).slice(0, 30);
+  const ev2 = { tipo: 'tec', id: (mesa ? mesa.cid : 'solo') + '-' + Date.now().toString(36) + rid().slice(0, 3), q: ev.q, el: 'katon', ef: 'combustao', nv: z.nv, s: ev.s,
+    o: [z.g.c[0], z.g.c[1]], a: [z.g.c[0], z.g.c[1]], d: null, forma: 'circulo', alvos: [], af, p: { alc: 0, tam: r2(z.g.r * 2 * M_CASA), dano, fixo: null, dif: ev.p.dif, dureza: 0, custo: 0 },
+    seed: (Math.random() * 1e9) | 0, at: Date.now(), qn: ev.qn, z: z.id };
+  setTimeout(() => { if (mesa) mesa.sendEvent(Object.assign({ tid: ev2.id }, ev2, { af: ev2.af.filter(id => !ocultoId(id)) })).catch(() => {}); tocarTecnica(ev2, true); }, 650);
 }
 function limpaEvento(m) {
   if (!m || m.tipo !== 'tec' || !EFE[m.ef] || !ELEM[m.el] || !okId(m.q) || !okPt(m.o) || !okScene(m.s)) return null;
@@ -4590,7 +4844,7 @@ function limpaEvento(m) {
     alvos: (Array.isArray(m.alvos) ? m.alvos : []).slice(0, 12).filter(a => Array.isArray(a) && okUnid(a[0]) && okXY(+a[1], +a[2])).map(a => [a[0], +a[1], +a[2], nnum(a[3], 1, 10, 1)]),
     af: (Array.isArray(m.af) ? m.af : []).filter(okUnid).slice(0, 30),
     p: { alc: nnum(p.alc, 0, 999, 0), tam: nnum(p.tam, 0, 999, 1), dano: p.dano == null || n(p.dano) == null ? null : nnum(p.dano, 0, 999, 0), fixo: p.fixo == null || n(p.fixo) == null ? null : nnum(p.fixo, 0, 99, 0), dif: nnum(p.dif, 0, 99, 9), dureza: nnum(p.dureza, 0, 99, 0), custo: nnum(p.custo, 0, 99, 0) },
-    seed: nnum(m.seed, 0, 2e9, 1), at: Number.isFinite(+m.at) ? +m.at : Date.now(), qn: String(m.qn || '').slice(0, 24) };
+    seed: nnum(m.seed, 0, 2e9, 1), at: Number.isFinite(+m.at) ? +m.at : Date.now(), qn: String(m.qn || '').slice(0, 24), z: typeof m.z === 'string' ? m.z.slice(0, 40) : null };
   if (out.d) { const l = Math.hypot(out.d[0], out.d[1]); out.d = l > 0.01 ? [out.d[0] / l, out.d[1] / l] : null; }
   return out;
 }
@@ -4600,14 +4854,25 @@ function tocarTecnica(ev, meu) {
   if (vistos.has(ev.id)) return; vistos.add(ev.id); if (vistos.size > 300) vistos.clear(); anima(ev.q, 'selo'); if (ehMestre() && typeof tatMarca === 'function' && cmb && cmb.on) tatMarca(ev.q, acaoTec(ev.ef));
   if (ev.s === scene.id) fxTecnica(ev);
   mostraTecnica(ev, meu);
+  if (ehMestre()) tecEfeitoMestre(ev);
   if (EFE[ev.ef].fica) { const z = zonaDe(ev); if (z) { pendentes.set(z.id, { z, ate: Date.now() + 6000 }); zonaT0.set(z.id, performance.now());
     const t = tab(); if (ehMestre() && t) { t.zonas = (t.zonas || []).filter(q => q.id !== z.id).concat([z]).slice(-30); publicar(true); } else zonasMudaram(); } }
 }
 // ---------- efeitos que ficam no mapa (Restringente, Nuvem, Barreira, Algemar) ----------
 const pendentes = new Map(), zonaT0 = new Map();
+// o que o mestre marca sozinho quando a técnica sai: as condições de quem usa (ou do aliado) e a área que se apaga
+function tecEfeitoMestre(ev) {
+  const F = EFE[ev.ef]; if (!condPronto) return; const em = cmb && cmb.on;
+  if (ev.ef === 'combustao' && ev.z) { const t = tab(); if (t && (t.zonas || []).some(z => z.id === ev.z)) removeZona(ev.z); else pendentes.delete(ev.z); return; }
+  if (!F.cond || F.def !== 'nenhuma') return;
+  const quem = F.t === 'pessoal' ? [ev.q] : ev.alvos.map(a => a[0]), k = F.cond === 'imerso' && ev.nv >= 4 ? 'imerso_anda' : F.cond;     // Imergir nível 4+: anda imerso
+  const op = { pele_pedra: { t: em ? 1 : null }, vacuo: { t: em ? 1 : null, i: 1 } }[k] || {};
+  for (const id of quem) condPoe(id, k, Object.assign({ quieto: 1 }, op));
+  if (quem.length) condAviso(`${quem.map(nomeDe).join(', ')}: ${nomeCond(k).toLowerCase()}`, quem[0]);
+}
 function zonaDe(ev) {
   const F = EFE[ev.ef]; let g = null;
-  if (ev.ef === 'algemar') g = ev.alvos[0] ? { k: 'alvo', id: ev.alvos[0][0] } : null;
+  if (ev.ef === 'algemar' || ev.ef === 'prisao_agua') g = ev.alvos[0] ? { k: 'alvo', id: ev.alvos[0][0] } : null;
   else { const a = ev.a || ev.o; let d = ev.d; if (!d) { const dx = a[0] - ev.o[0], dy = a[1] - ev.o[1], l = Math.hypot(dx, dy); d = l > 0.01 ? [dx / l, dy / l] : [0.7071, 0.7071]; }
     g = formaDe(ev.ef, ev.o, F.forma === 'explosao' ? ev.o : a, d, ev.p, ev.forma); }
   if (!g) return null; return limpaZonas([{ id: ev.id, ef: ev.ef, el: ev.el, s: ev.s, g, n: ev.qn, nv: ev.nv, t: Date.now() }])[0] || null;
@@ -4620,12 +4885,16 @@ function zonasVisiveis() {
 // Algemar (Concentração, p. 102): as amarras ficam enquanto o alvo está impedido. Antes de o ataque ser resolvido elas aparecem
 // por até 45 s; fora de combate duram 2 min. O mestre limpa as que acabaram (e as antigas, que ficavam para sempre).
 const ALG_ESPERA = 45000, ALG_FORA = 120000;
+// A Prisão de Água (Concentração, p. 112) segue a mesma regra, com o alvo paralisado.
+const PRENDE = { algemar: 'impedido', prisao_agua: 'paralisado' };
+const PEGOU = new Set();                     // amarras e prisões que já seguraram alguém: soltou, somem na hora
 function algemaAtiva(z) { const id = z.g && z.g.id; if (!id) return false; const idade = Date.now() - (z.t || 0);
   if (!(cmb && cmb.on) && z.t && idade > ALG_FORA) return false;
-  return (condPronto && condsDe(id).ef.has('impedido')) || idade < ALG_ESPERA; }
+  const preso = condPronto && condsDe(id).ef.has(PRENDE[z.ef] || 'impedido'); if (preso) PEGOU.add(z.id);
+  return preso || (idade < ALG_ESPERA && !PEGOU.has(z.id)); }
 setInterval(() => { if (!ehMestre() || !tab()) return; const t = tab(); if (!(t.zonas || []).length) return;
-  for (const z of t.zonas.slice()) { if (z.ef !== 'algemar' || algemaAtiva(z)) continue;
-    if (!(cmb && cmb.on) && z.t && Date.now() - z.t > ALG_FORA && condPronto && condsDe(z.g.id).ef.has('impedido')) { condTira(z.g.id, 'impedido'); condAviso(`${nomeDe(z.g.id)} se livrou das amarras`, z.g.id); }
+  for (const z of t.zonas.slice()) { if (!PRENDE[z.ef] || algemaAtiva(z)) continue; const k = PRENDE[z.ef]; PEGOU.delete(z.id);
+    if (!(cmb && cmb.on) && z.t && Date.now() - z.t > ALG_FORA && condPronto && condsDe(z.g.id).ef.has(k)) { condTira(z.g.id, k); condAviso(`${nomeDe(z.g.id)} se livrou ${z.ef === 'prisao_agua' ? 'da prisão de água' : 'das amarras'}`, z.g.id); }
     removeZona(z.id); } }, 2500);
 let zonasChave = '';
 function zonasMudaram() { zonasChave = 'x'; }
@@ -4680,16 +4949,20 @@ function ovTile(i, wx, wy) {                                 // chamado pelo la�
 const COR_EL = { ninpou: '#aaf', katon: '#f83', fuuton: '#bee', raiton: '#8ef', suiton: '#5bf', doton: '#cb8', sumi: '#556', nendo: '#edc' };
 const BORDA_EL = { ninpou: '#ddf', katon: '#fc6', fuuton: '#eff', raiton: '#eff', suiton: '#bef', doton: '#edb', sumi: '#99a', nendo: '#ffe' };
 const ZONA_COR = { restringente: { doton: ['#653', '#986'], suiton: ['#38c', '#8de'], ninpou: ['#77c', '#bbf'], sumi: ['#111', '#445'], fuuton: ['#9bb', '#dee'], katon: ['#a42', '#f84'], raiton: ['#48e', '#bff'], nendo: ['#a98', '#dcb'] },
-  nuvem: { doton: ['#a97', '#cb9'], suiton: ['#9ab', '#dee'], fuuton: ['#9b9', '#cec'], ninpou: ['#99c', '#ccf'], sumi: ['#223', '#445'], nendo: ['#a98', '#cba'], katon: ['#a64', '#d96'], raiton: ['#48a', '#9cf'] } };
+  nuvem: { doton: ['#a97', '#cb9'], suiton: ['#9ab', '#dee'], fuuton: ['#9b9', '#cec'], ninpou: ['#99c', '#ccf'], sumi: ['#223', '#445'], nendo: ['#a98', '#cba'], katon: ['#a64', '#d96'], raiton: ['#48a', '#9cf'] },
+  inflamavel: { katon: ['#a64', '#fb3'], fuuton: ['#a97', '#dcb'], suiton: ['#334', '#77a'] },
+  neblina: { suiton: ['#dde', '#fff'] },
+  desastre: { doton: ['#653', '#a97'], suiton: ['#269', '#6ce'], fuuton: ['#9bb', '#dee'], ninpou: ['#77c', '#bbf'], raiton: ['#248', '#7cf'], sumi: ['#112', '#334'] } };
+const ZONA_CHAO = { restringente: ['xadrez', 0.8], nuvem: ['pontos', 0.55], inflamavel: ['pontos', 0.7], neblina: ['pontos', 0.22], desastre: ['xadrez', 0.45] };
 let tqChave = '', movChave = '', camChave = '';
 function atualizaOverlays() {
   ovGarante();
   // efeitos que ficam
-  const zs = zonasVisiveis().filter(z => z.s === scene.id && z.g.k !== 'alvo' && (z.ef === 'restringente' || z.ef === 'nuvem'));
+  const zs = zonasVisiveis().filter(z => z.s === scene.id && z.g.k !== 'alvo' && ZONA_CHAO[z.ef]);
   const zk = zs.map(z => z.id).join(',');
   if (zk !== zonasChave) { zonasChave = zk; ovLimpa('zona');
     for (const z of zs) { const [c1, c2] = (ZONA_COR[z.ef] || ZONA_COR.restringente)[z.el] || ['#777', '#aaa']; const cs = casasDe(z.g, 0);
-      ovPreenche('zona', cs, c1, z.ef === 'nuvem' ? 'pontos' : 'xadrez', c2, { a: z.ef === 'nuvem' ? 0.55 : 0.8, anim: z.ef === 'restringente' ? animZona(c1, c2) : null });
+      ovPreenche('zona', cs, c1, ZONA_CHAO[z.ef][0], c2, { a: ZONA_CHAO[z.ef][1], anim: z.ef === 'restringente' || z.ef === 'desastre' ? animZona(c1, c2) : null });
       ovPontos('zona', contorno(z.g, 0.07), c2, 0); } }
   // técnica: alcance e área
   const tk = tqChaveAtual();
@@ -4972,14 +5245,15 @@ function tqUI(nvCampo, mexeu) {
   const st = tec.quem ? statsDe(tec.quem) : NPC0, p = tqCalc(tec.el, tec.ef, tec.nv, st, tec); const pod = (st.pod || {})[tec.el];
   const dl = $('tqParams'); dl.textContent = '';
   const linha = (k, v, t) => { const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; if (t) dd.title = t; dl.appendChild(dt); dl.appendChild(dd); };
-  if (F.t !== 'pessoal' && F.forma !== 'explosao') linha('Alcance', `${p.alc} m`, `${Em.an[0].toUpperCase() + Em.an.slice(1)}: ${Em.alc[0]} m + ${Em.alc[1]} m por ${tec.nvAlc ? 'nível usado' : 'nível de ' + p.chave}`);
+  if (F.alcM) linha('Alcance', F.alcM <= M_CASA ? `${p.alc} m (toque: a casa vizinha)` : `${p.alc} m`, 'Fixo do efeito');
+  else if (F.t !== 'pessoal' && F.forma !== 'explosao') linha('Alcance', `${p.alc} m${F.alcMeio ? ' (metade do comum)' : F.alcX ? ` (${F.alcX}× o comum)` : ''}`, `${Em.an[0].toUpperCase() + Em.an.slice(1)}: ${Em.alc[0]} m + ${Em.alc[1]} m por ${tec.nvAlc ? 'nível usado' : 'nível de ' + p.chave}`);
   else linha('Alcance', F.t === 'pessoal' ? 'Pessoal' : 'Pessoal (centro em si)');
-  if (F.t === 'area') linha('Tamanho', `${p.tam} m`, `${Em.tam === 0.5 ? '0,5' : Em.tam} m por ${tec.nvTam ? 'nível usado' : 'nível de ' + p.chave}`);
+  if (F.t === 'area') linha('Tamanho', `${p.tam} m${F.tamX ? ` (${F.tamX}× o comum)` : F.forma === 'neblina' ? ' (30 m + 3 m por Espírito)' : ''}`, `${Em.tam === 0.5 ? '0,5' : Em.tam} m por ${tec.nvTam ? 'nível usado' : 'nível de ' + p.chave}`);
   if (F.t === 'area') linha('Área', { circulo: `Círculo de ${p.tam} m`, cilindro: `Cilindro de ${p.tam} m`, nuvem: `Círculo de ${2 * p.tam} m`, tremor: 'Círculo de 2 m', meteoros: 'Esferas de 5 m',
-    explosao: tec.forma === 'circulo' ? `Círculo de ${2 * p.tam} m em volta de si` : `Meia-esfera de ${p.tam} m`, cone: `Cone de ${Math.max(p.alc, p.tam)} m (ponta de ${p.tam} m)`, linha: `Linha de ${Math.max(p.alc, p.tam)} m × 1 m`, onda: `Onda de ${Math.max(p.alc, p.tam)} m × ${p.tam} m`, muro: `Muro de ${p.tam / 2} m` }[F.forma]);
+    explosao: tec.forma === 'circulo' ? `Círculo de ${2 * p.tam} m em volta de si` : `Meia-esfera de ${p.tam} m`, neblina: `Círculo de ${p.tam} m em volta de si`, cone: `Cone de ${Math.max(p.alc, p.tam)} m (ponta de ${p.tam} m)`, linha: `Linha de ${Math.max(p.alc, p.tam)} m × 1 m`, onda: `Onda de ${Math.max(p.alc, p.tam)} m × ${p.tam} m`, muro: `Muro de ${p.tam / 2} m` }[F.forma]);
   linha('Dano base', p.txt); linha('Dif', `${p.dif}`, `9 + nível ${tec.nv} + ½ ${p.chave} ${p.meio}${Em.dif ? ' + ' + Em.dif : ''}`);
   linha('Chakra', `${p.custo}`); linha('Ação', F.acao || 'Padrão'); if (F.dur) linha('Duração', F.dur);
-  linha('Defesas', defesasTxt(F)); const nt = nota(tec.ef, p); if (nt) linha('Regra', nt);
+  linha('Defesas', defesasTxt(F)); const nt = nota(tec.ef, p); if (nt) linha('Regra', nt); if (F.pg) linha('Livro', F.pg);
   if (pod && tec.nv > pod) linha('Atenção', `acima do nível ${pod} de ${Em.n} na ficha`);
   // mira
   const es = tqEstado(); tecUltimo = es; const mi = $('tqMira'); mi.textContent = '';
@@ -5023,19 +5297,20 @@ function mostraTecnica(ev, meu) {
   if (F.def !== 'nenhuma') { const df = document.createElement('div'); df.className = 'rs df'; df.textContent = 'Defesas: ' + defesasTxt(F); mio.appendChild(df); }
   const sl = document.createElement('div'); sl.className = 'selo'; sl.textContent = Em.k; el.appendChild(sl);
   if (meu && F.def !== 'nenhuma' && F.def !== 'ambiente') {
-    const st = statsDe(ev.q), pen = condPen(ev.q, 'cd'); const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'atq';
+    const st = statsDe(ev.q), pen = condPen(ev.q, F.cc ? 'cc' : 'cd'), pr = (F.cc ? st.cc : st.cd) + (F.pen || 0); const bt = document.createElement('button'); bt.type = 'button'; bt.className = 'atq';
     const unico = ids.length === 1 ? defesaDe(ids[0], dOp) : null; const flechasUm = F.t === 'flechas' && ev.alvos.length === 1;
     const base = p.dano == null ? null : F.t === 'flechas' ? (flechasUm ? p.dano * ev.alvos[0][3] + Em.dano : null) : F.t === 'varios' && ev.alvos.length > 1 ? Math.floor(p.dano / ev.alvos.length) : p.dano;
-    bt.textContent = `Rolar ataque · CD ${sinal(st.cd + pen.v).replace(' ', '')}`; if (pen.v) bt.title = 'Com as condições: ' + pen.txt;
+    bt.textContent = `Rolar ataque · ${F.cc ? 'CC' : 'CD'} ${sinal(pr + pen.v).replace(' ', '')}`; if (pen.v || F.pen) bt.title = [pen.v ? 'Com as condições: ' + pen.txt : '', F.pen ? `${F.pen} pela proximidade` : ''].filter(Boolean).join('; ');
     const axA = ids.map(id => { const a = ev.alvos.find(q => q[0] === id); return [id, p.dano == null ? 0 : F.t === 'flechas' ? p.dano * (a ? a[3] : 1) + Em.dano : F.t === 'varios' && ev.alvos.length > 1 ? Math.floor(p.dano / ev.alvos.length) : p.dano]; });
-    bt.onclick = e => { e.stopPropagation(); prepararAtaque({ bonus: st.cd + pen.v, alvo: unico ? unico.v : null, desc: `${F.n} ${Em.n} ${ev.nv}`, base, quem: ehMestre() && ev.q.startsWith('n:') ? nomeDe(ev.q) : null, aid: ids.length === 1 ? ids[0] : null,
-      ax: ids.length ? axNovo(ev.q, axA, { fx: p.fixo, ef: ev.ef, ar: F.t === 'area', pj: F.def !== 'area', nm: `${F.n} de ${Em.n}` }) : null }); };
+    bt.onclick = e => { e.stopPropagation(); prepararAtaque({ bonus: pr + pen.v, alvo: unico ? unico.v : null, desc: `${F.n} ${Em.n} ${ev.nv}`, base, quem: ehMestre() && ev.q.startsWith('n:') ? nomeDe(ev.q) : null, aid: ids.length === 1 ? ids[0] : null,
+      ax: ids.length ? axNovo(ev.q, axA, { fx: p.fixo, ef: ev.ef, ar: F.t === 'area', pj: F.def !== 'area', cc: !!F.cc, nm: `${F.n} de ${Em.n}`, nv: ev.nv, df: p.dif }) : null }); };
     mio.appendChild(bt); }
   // o mestre marca a condição que a técnica deixa em quem falhou na defesa (ou em quem está na área)
-  const CT = { restringente: ['lento', 'Na área fica lento'], nuvem: ['lento', 'Quem falhou no Vigor fica lento'] }[ev.ef];      // Tremor e Algemar: o combate fechado aplica em quem falhou a defesa
+  const CT = { restringente: ['lento', 'Na área fica lento'], nuvem: ['lento', 'Quem falhou no Vigor fica lento'], desastre: ['lento', 'Na área fica lento'],
+    descarga: ['atordoado', 'Quem sofreu dano e falhou no Vigor fica atordoado', { t: 1 }] }[ev.ef];      // Tremor e Algemar: o combate fechado aplica em quem falhou a defesa
   if (CT && ehMestre() && ids.length) { const cr = document.createElement('div'); cr.className = 'rs cnd'; const lb = document.createElement('span'); lb.textContent = CT[1] + ':'; cr.appendChild(lb);
     for (const id of ids) { const b = document.createElement('button'); b.type = 'button'; b.className = 'cnd'; b.textContent = nomeDe(id); b.title = `Pôr ${nomeCond(CT[0]).toLowerCase()} em ${nomeDe(id)}`;
-      b.onclick = e => { e.stopPropagation(); condPoe(id, CT[0]); b.disabled = true; b.classList.add('feito'); }; cr.appendChild(b); }
+      b.onclick = e => { e.stopPropagation(); condPoe(id, CT[0], CT[2] && cmb && cmb.on ? CT[2] : {}); b.disabled = true; b.classList.add('feito'); }; cr.appendChild(b); }
     mio.appendChild(cr); }
   for (const o of rolosEl.children) o.classList.add('velho');
   rolosEl.prepend(el); requestAnimationFrame(() => el.classList.add('selou')); setTimeout(() => el.classList.add('aberto'), 900);
@@ -5120,7 +5395,7 @@ function limpaPers(f, c) {
   const so = f.soc || {}; o.soc = { yin: [pNum((so.yin || [])[0], 0, 20, 0), YIN.some(q => q[0] === (so.yin || [])[1]) ? so.yin[1] : 'MUDAR ATITUDE'], yang: [pNum((so.yang || [])[0], 0, 20, 0), YANG.some(q => q[0] === (so.yang || [])[1]) ? so.yang[1] : 'ATUAÇÃO'] };
   o.cfg = Array.isArray(f.cfg) ? f.cfg.filter(k => MARCAS.some(m => m[0] === k)) : [];
   o.tam = TAMANHOS.some(t => t[0] === f.tam) ? f.tam : 'MÉDIO'; o.sensor = pTxt(f.sensor || 'NÃO SENSOR', 40); o.durM = pNum(f.durM, 0, 20, 0);
-  o.pod = (Array.isArray(f.pod) ? f.pod : []).slice(0, 12).map(p => ({ n: pTxt(p.n, 50), nv: pNum(p.nv, 0, 20, 0), custo: pNum(p.custo, 0, 60, 0), ef: pTxt(p.ef, 1500), tec: (Array.isArray(p.tec) ? p.tec : []).filter(e => TODOS_EF.includes(e) || e === 'tremor').slice(0, 12) }));
+  o.pod = (Array.isArray(f.pod) ? f.pod : []).slice(0, 12).map(p => ({ n: pTxt(p.n, 50), nv: pNum(p.nv, 0, 20, 0), custo: pNum(p.custo, 0, 60, 0), ef: pTxt(p.ef, 1500), tec: (Array.isArray(p.tec) ? p.tec : []).filter(e => typeof e === 'string' && Object.prototype.hasOwnProperty.call(EFE, e) && !EFE[e].oculto).slice(0, 16) }));
   o.apt = (Array.isArray(f.apt) ? f.apt : []).slice(0, 60).map(a => ({ n: pTxt(a.n, 60), d: pTxt(a.d, 1500), custo: pNum(a.custo, 0, 20, 0), g: a.g ? 1 : 0 }));
   const iv = f.inv || {}, arm = iv.arm;
   o.inv = { ryos: pNum(iv.ryos, 0, 1e7, 0), guard: pNum(iv.guard, 0, 1e7, 0),
@@ -5665,7 +5940,7 @@ function presExtra() {
 // ---------- quem pode o quê (pela ficha) ----------
 const aptTem = (F, re) => !!F && F.apt.some(a => re.test(semAc(a.n)));
 const podTem = (F, re) => !!F && F.pod.some(p => p.nv > 0 && re.test(semAc(p.ef + ' ' + p.n)));
-function podeVoar(c) { const F = persDe(c); if (c === me.c && parcPronto && montadoMeu() != null && (compDe(idParc(c, montadoMeu())) || {}).voa) return true; return aptTem(F, /\bVOO\b|VOAR|KUJAKU/) || podTem(F, /MONTARIA|\bVOO\b/) || (F && F.cfg.includes('voo')); }
+function podeVoar(c) { const F = persDe(c); if (condPronto && condsDe('c:' + c).ef.has('flutuando')) return true; /* Flutuar (Fuuton) */ if (c === me.c && parcPronto && montadoMeu() != null && (compDe(idParc(c, montadoMeu())) || {}).voa) return true; return aptTem(F, /\bVOO\b|VOAR|KUJAKU/) || podTem(F, /MONTARIA|\bVOO\b/) || (F && F.cfg.includes('voo')); }
 function tipoClone(c) { const F = persDe(c); if (!F) return null; const a = F.apt.find(q => /^CLONE\b|BUNSHIN/.test(semAc(q.n))); if (!a) return null;
   const s = semAc(a.n + ' ' + a.d); return s.includes('KAGE') ? 'kage' : s.includes('IWA') ? 'iwa' : s.includes('MIZU') ? 'mizu' : s.includes('SUMI') ? 'sumi' : s.includes('NENDO') ? 'nendo' : 'clone'; }
 const temHiraishin = c => aptTem(persDe(c), /DEUS DO TROVAO|HIRAISHIN/) && !aptTem(persDe(c), /^NAO DISPONIVEL/);
@@ -5991,6 +6266,8 @@ function modoUnidade(id, md, now) {
   if (mt) { const q = compDe(mt); a += selaDe(q && VIS_PARC.test(q.vis || '') ? q.vis : 'plantao'); PU.aga = false; PU.run = false; }     // montado: em cima da montaria
   PU.alt = a; PU.deit = C.flag('deita') && PU.alt === 0;
   if (C.ef.has('morto')) PU.cinza = 1;
+  if (C.ef.has('imerso') || C.ef.has('imerso_anda')) PU.afunda = 1;                       // Imergir: só o alto da cabeça aparece no chão
+  if (C.ef.has('pele_pedra')) PU.pedra = 1;
   if (C.ef.has('assustado') || C.ef.has('amedrontado') || C.ef.has('aterrorizado')) PU.jx = (Math.floor(now / 70) % 3) - 1;
 }
 // o quadro de uma unidade: base é o nome do visual (kaiser, inimigo2, aldeao22...)
@@ -6006,10 +6283,23 @@ function spriteDe(base, id, mv, front, md, now) {
 }
 // silhueta branca do quadro (o piscar do dano)
 const BRANCO = new Map();
-function blitBranco(c, e, frame, sx, sy, flip, a) {
-  const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + frame + ':' + (flip ? 1 : 0); let k = BRANCO.get(key);
-  if (!k) { const fw = Math.ceil(e[3] / e[7]); k = document.createElement('canvas'); k.width = fw; k.height = e[4]; const kx = k.getContext('2d');
-    blit(kx, e, frame, e[5], e[6], flip); kx.globalCompositeOperation = 'source-in'; kx.fillStyle = '#fff'; kx.fillRect(0, 0, fw, e[4]); BRANCO.set(key, k); }
+function blitBranco(c, e, frame, sx, sy, flip, a) { blitCor(c, e, frame, sx, sy, flip, a, '#fff'); }
+// Pele de Pedra: o mesmo quadro com as cores trocadas por tons de rocha (pela claridade de cada pixel) e umas rachaduras
+const PEDRA = new Map(), TOM_PEDRA = [[0x44, 0x40, 0x3a], [0x66, 0x60, 0x55], [0x88, 0x80, 0x70], [0xaa, 0xa2, 0x90], [0xcc, 0xc4, 0xb0]];
+function blitPedra(c, e, frame, sx, sy, flip) {
+  const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + frame + ':' + (flip ? 1 : 0); let k = PEDRA.get(key);
+  if (!k) { if (PEDRA.size > 300) PEDRA.clear(); const fw = Math.ceil(e[3] / e[7]); k = document.createElement('canvas'); k.width = fw; k.height = e[4]; const kx = k.getContext('2d');
+    blit(kx, e, frame, e[5], e[6], flip); const im = kx.getImageData(0, 0, fw, e[4]), d = im.data;
+    for (let i = 0; i < d.length; i += 4) { if (!d[i + 3]) continue; const px = (i / 4) % fw, py = (i / 4 / fw) | 0, l = (d[i] * 0.3 + d[i + 1] * 0.55 + d[i + 2] * 0.15) / 255;
+      let t = Math.min(4, Math.max(0, Math.round(l * 4 - 0.1))); if (((px * 7 + py * 13) % 23 === 0) || ((px + 2 * py) % 17 === 0 && py % 3 === 0)) t = Math.max(0, t - 2);      // rachaduras
+      const q = TOM_PEDRA[t]; d[i] = q[0]; d[i + 1] = q[1]; d[i + 2] = q[2]; }
+    kx.putImageData(im, 0, 0); PEDRA.set(key, k); }
+  c.drawImage(k, Math.round(sx) - e[5], Math.round(sy) - e[6]);
+}
+function blitCor(c, e, frame, sx, sy, flip, a, cor) {               // a silhueta numa cor (branco do dano, cinza da Pele de Pedra)
+  const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + frame + ':' + (flip ? 1 : 0) + cor; let k = BRANCO.get(key);
+  if (!k) { if (BRANCO.size > 600) BRANCO.clear(); const fw = Math.ceil(e[3] / e[7]); k = document.createElement('canvas'); k.width = fw; k.height = e[4]; const kx = k.getContext('2d');
+    blit(kx, e, frame, e[5], e[6], flip); kx.globalCompositeOperation = 'source-in'; kx.fillStyle = cor; kx.fillRect(0, 0, fw, e[4]); BRANCO.set(key, k); }
   const ga = c.globalAlpha; c.globalAlpha = ga * a; c.drawImage(k, Math.round(sx) - e[5], Math.round(sy) - e[6]); c.globalAlpha = ga;
 }
 // ---------- números flutuantes: Vitalidade (vermelho dano, verde cura) e chakra (azul) ----------
@@ -6326,10 +6616,15 @@ function flanqueado(de, alvo) {                                // um aliado do a
   return false;
 }
 // camuflagem (p. 272): névoa de área ou fumaça no alvo dá 25% de falha (1d8: 1–2 erra); crítico ignora
-function camuflagem(alvo) {                    // 1 = parcial, 2 = total (tempestade de areia forte)
-  const b = posAlvo(alvo); if (!b) return 0; if (climaPronto) { const k = climaCamuf(b.s || scene.id); if (k) return k; }
-  for (const f of nevoa || []) if (f.s === scene.id && f.k === 'area' && f.c && Math.hypot(b.x - f.c[0], b.y - f.c[1]) <= f.r) return 1;
-  return 0;
+function camuflagem(alvo, de) {                // 1 = parcial, 2 = total (tempestade de areia forte, Névoa nível 5+, cego)
+  const b = posAlvo(alvo); if (!b) return 0; let k = 0; if (climaPronto) k = Math.max(k, climaCamuf(b.s || scene.id) || 0);
+  for (const f of nevoa || []) if (f.s === scene.id && f.k === 'area' && f.c && Math.hypot(b.x - f.c[0], b.y - f.c[1]) <= f.r) k = Math.max(k, 1);
+  // Névoa (Suiton, p. 111): além de 1 m ninguém enxerga direito; quem está colado (na casa vizinha) aparece
+  const a = de ? posAlvo(de) : null, longe = !a || Math.hypot(a.x - b.x, a.y - b.y) > Math.SQRT2 + 0.05;
+  for (const z of zonasVisiveis()) if (z.ef === 'neblina' && z.g.k === 'disco' && z.s === (b.s || scene.id) && Math.hypot(b.x - z.g.c[0], b.y - z.g.c[1]) <= z.g.r) k = Math.max(k, longe ? (z.nv >= 5 ? 2 : 1) : z.nv >= 5 ? 1 : 0);
+  // Cegante (Guia Avançado): quem levou a tinta nos olhos vê tudo camuflado
+  if (de && condPronto) { const C = condsDe(de); if (C.ef.has('cego')) k = 2; else if (C.ef.has('cegado')) k = Math.max(k, 1); }
+  return k;
 }
 // onde está um alvo (unidade, clone ou companheiro)
 function posAlvo(id) {
@@ -6340,7 +6635,20 @@ function posAlvo(id) {
 // ---------- o ataque que o painel leva ----------
 function axNovo(de, alvos, o) {
   o = o || {}; return { i: (mesa ? mesa.cid : 'solo') + '-' + Date.now().toString(36) + rid().slice(0, 4), de, al: alvos.slice(0, 12).map(a => [a[0], Math.max(0, Math.round(a[1] || 0))]),
-    fx: o.fx == null ? null : Math.round(o.fx), ef: o.ef || '', ar: o.ar ? 1 : 0, pj: o.pj ? 1 : 0, cc: o.cc ? 1 : 0, nm: String(o.nm || 'Ataque').slice(0, 32), ex: o.ex || null };
+    fx: o.fx == null ? null : Math.round(o.fx), ef: o.ef || '', ar: o.ar ? 1 : 0, pj: o.pj ? 1 : 0, cc: o.cc ? 1 : 0, nm: String(o.nm || 'Ataque').slice(0, 32), ex: o.ex || null,
+    nv: o.nv ? Math.round(o.nv) : 0, df: o.df ? Math.round(o.df) : 0 };
+}
+// a condição que a técnica deixa em quem não se defendeu
+function efNoAlvo(ax) {
+  const em = cmb && cmb.on;
+  switch (ax.ef) {
+    case 'tremor': return ['caido', {}];
+    case 'algemar': return ['impedido', { t: em ? 3 : null }];
+    case 'prisao_agua': return ['paralisado', {}];                                             // Concentração: dura enquanto quem usa mantiver
+    case 'cegante': return ax.nv >= 8 ? ['cego', { t: em ? 5 : null }] : ['cegado', { t: em ? 3 : null }];
+    case 'dano_cont': { const n = Math.max(1, ax.nv || ax.fx || 1); return ['chamas', { n, t: n >= 7 ? 5 : 3, i: 1 }]; }
+  }
+  return null;
 }
 // ---------- o mestre resolve ----------
 const RES = new Map();
@@ -6377,7 +6685,7 @@ function resolveAgora(r) {
           dn = rr.dados[0].v + rr.dados[1].v; dt = dn + b; if (dn >= 15 || dn <= 3 || dt !== tot || b !== r.bonus) break; }     // empate com a mesma precisão: refaz
         acerto = dn >= 15 ? false : dn <= 3 ? true : tot > dt || (tot === dt && r.bonus > b); dtxt = `${DEFS[tipo]} ${dt}${dn >= 15 ? ' (crítico)' : dn <= 3 ? ' (erro crítico)' : ''}`; }
       if (acerto) grau = grauDe(nat); }
-    const cmf = acerto && !crit ? camuflagem(id) : 0;
+    const cmf = acerto && !crit ? camuflagem(id, ax.de) : 0;
     if (cmf) { const lim = cmf > 1 ? 4 : 2, c8 = rolarAuto({ k: 'livre', dados: [{ f: 8, s: 1 }], desc: `Camuflagem: 1–${lim} erra`, quem: quemDe(ax.de), local: !visivel(id) }).dados[0].v;
       if (c8 <= lim) { acerto = false; dtxt += ', ia acertar'; notas.push(`camuflagem (${c8}): passou longe`); } else notas.push(`camuflagem (${c8})`); }
     const D = { id, vit: 0, abs: 0, conds: [] };
@@ -6385,7 +6693,9 @@ function resolveAgora(r) {
     const dano = base * grau + (ax.fx || 0), ap = aplicaGolpe(id, dano); D.vit = ap.vit; D.abs = ap.abs;
     let txt = `${nome}: ${dtxt} · acertou, grau ${grau}: ${dano} de dano` + (ap.abs ? ` (${ap.abs} na armadura)` : '');
     if (crit && base > 0) { const n = Math.max(1, Math.floor(base / 4)); condPoe(id, 'sangrando', { n, quieto: 1 }); D.conds.push(['sangrando', n]); txt += `, sangrando ${n > 1 ? '×' + n : ''}`.trimEnd(); }
-    const EF = { tremor: 'caido', algemar: 'impedido' }[ax.ef]; if (EF) { condPoe(id, EF, { quieto: 1, t: EF === 'impedido' && cmb && cmb.on ? 3 : null }); D.conds.push([EF, 1]); txt += `, ${nomeCond(EF).toLowerCase()}`; }
+    const EF = efNoAlvo(ax); if (EF) { condPoe(id, EF[0], Object.assign({ quieto: 1 }, EF[1])); D.conds.push([EF[0], EF[1].n || 1]); txt += `, ${nomeCond(EF[0]).toLowerCase()}${EF[1].t ? ` (${EF[1].t} turnos)` : ''}`; }
+    if (ax.ef === 'projetar') txt += `; Vigor (dif ${Math.max(0, ax.df - 2)}) ou é empurrado ${ax.nv >= 7 ? 'para longe' : grau + ' m'}`;
+    if (ax.ef === 'descarga') txt += `; Vigor (dif ${Math.max(0, ax.df - 3)}) ou fica atordoado`;
     if (ax.ex === 'luminosa') { condPoe(id, 'ofuscado', { t: 3, quieto: 1 }); D.conds.push(['ofuscado', 1]); }
     if (notas.length) txt += ' · ' + notas.join(', ');
     lin(id, txt); R.desf.push(D);
