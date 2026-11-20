@@ -2371,7 +2371,7 @@ function mkItem(e, frame, x, y, fx, fy, wx, wy, flip, depth) {
   const fw = e[3] / e[7]; const rx0 = wx - e[5], ry0 = wy - e[6];
   return { bx0: x, by0: y, bx1: x + fx, by1: y + fy, rx0, ry0, rx1: rx0 + fw, ry1: ry0 + e[4], depth, draw() { blit(ctx, e, frame, wx, wy, flip); } };
 }
-const PU = { alt: 0, aga: false, run: false, deit: false, fr: null, flash: 0, jx: 0, cinza: 0, ex: 0, ey: 0, afunda: 0, pedra: 0 }, VOO = [];   // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo, deitado (caído, inconsciente)
+const PU = { alt: 0, aga: false, run: false, deit: false, fr: null, flash: 0, jx: 0, cinza: 0, ex: 0, ey: 0, afunda: 0, tom: null }, VOO = [];   // modo de quem está sendo desenhado: voando (altura em px), agachado, correndo, deitado (caído, inconsciente)
 // paredão dos rostos: o quarto rosto vai sendo esculpido aos poucos, de 19/11/2026 até ficar pronto em 5 semanas de verdade
 // (#obra=0..1 na URL força uma etapa). De dia, dois escultores batem o cinzel na tábua do andaime logo abaixo do corte.
 const OBRA_T0 = Date.UTC(2026, 10, 19, 15), OBRA_DIAS = 35, OBRA_TAB = [13, 23, 33, 43], OBRA_ESC = 5;
@@ -2396,7 +2396,7 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
   if (!e || ((NVOC.length || DGV.on) && nevoaEsconde(x, y))) return; const ti = (x | 0) * N + (y | 0); const onWater = isWater(TM[ti]) && !PU.alt; const alt = PU.alt ? PU.alt + Math.round(Math.sin(t / 400 + x) * 2) : 0, aga = PU.aga, deit = PU.deit && !PU.alt;
   let [sx, sy] = unitScreen(x, y); const fw = e[3] / e[7];
   const frame = PU.fr != null ? PU.fr % e[7] : mv ? Math.floor(t / (PU.run ? 80 : 130)) % e[7] : Math.floor(t / 600) % e[7];
-  const fl = PU.flash, cz = PU.cinza, af = PU.afunda && !PU.alt, pd = PU.pedra; if (PU.jx) sx += PU.jx; if (PU.ex || PU.ey) { sx += PU.ex; sy += PU.ey; }
+  const fl = PU.flash, cz = PU.cinza, af = PU.afunda && !PU.alt, pd = PU.tom; if (PU.jx) sx += PU.jx; if (PU.ex || PU.ey) { sx += PU.ex; sy += PU.ey; }
   const flip = flipOverride !== undefined ? flipOverride : (dx - dy) < 0 ? (dx + dy) >= 0 : (dx + dy) < 0;
   if (TM[ti] === 2) unitsAt.set(ti, 1);
   if (TM[ti] === 25) GJR.push([e, frame, sx, sy, flip, sy, false]);
@@ -2411,12 +2411,12 @@ function pushUnit(items, unitsAt, e, x, y, dx, dy, mv, t, side, flipOverride, is
       const ga = ctx.globalAlpha; if (cz) ctx.globalAlpha = ga * 0.55;
       if (deit) blitDeitado(ctx, e, sx, sy, flip); else if (aga) blitAgachado(ctx, e, frame, sx, sy, flip); else (scene.tema === 'demonio' ? blitNeg : blit)(ctx, e, frame, sx, sy, flip);
       if (cz) ctx.globalAlpha = ga; if (fl > 0 && !deit) blitBranco(ctx, e, frame, sx, sy, flip, fl);
-      if (pd && !deit) blitPedra(ctx, e, frame, sx, sy, flip);                                                          // Pele de Pedra: o corpo vira rocha
+      if (pd && !deit) blitPedra(ctx, e, frame, sx, sy, flip, pd);                                                      // Pele de Pedra, armaduras e mantos: o corpo muda de material
       if (TM[ti] === 2) { const xi = x | 0, yi = y | 0; const [wx, wy] = tw(xi, yi, HM[ti]); blit(ctx, GA[1], Math.floor(t / 700) % 2, wx, wy); }
       if (isPlayer && frameN % 1 === 0) { }
     } });
 }
-function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.ex = 0; PU.ey = 0; PU.voa = md === 'v'; PU.afunda = 0; PU.pedra = 0; }
+function modoPU(md, deit) { PU.alt = md === 'v' ? 34 : 0; PU.aga = md === 'a'; PU.run = md === 'r'; PU.deit = !!deit; PU.fr = null; PU.flash = 0; PU.jx = 0; PU.cinza = 0; PU.ex = 0; PU.ey = 0; PU.voa = md === 'v'; PU.afunda = 0; PU.tom = null; }
 const DEIT = new Map();                                               // deitado: o quadro parado girado 90°, pixel a pixel, com os pés no chão
 function blitDeitado(c, e, sx, sy, flip) {
   const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + (flip ? 1 : 0); let k = DEIT.get(key);
@@ -3217,6 +3217,30 @@ const MAT = {
   sumi: { t: 'tinta', c: ['#556', '#445', '#334', '#223', '#112', '#001'] },
   nendo: { t: 'argila', c: ['#ffe', '#eed', '#edc', '#dcb', '#cba', '#ba9', '#a98'] },
 };
+// hijutsus: cada um se comporta como um dos materiais acima (t), com as próprias cores (da mais clara para a mais escura)
+Object.assign(MAT, {
+  kikai: { t: 'chakra', c: ['#887', '#665', '#554', '#443', '#332', '#221', '#110', '#332', '#221', '#110'] },
+  mokuton: { t: 'terra', c: ['#dc9', '#cb8', '#ba7', '#a96', '#985', '#874', '#763', '#652', '#541', '#430'], po: ['#9b6', '#8a5', '#794'] },
+  hyouton: { t: 'agua', c: ['#fff', '#eff', '#dff', '#cef', '#bdf', '#9ce', '#8bd', '#7ac', '#69b', '#58a'] },
+  sabaku: { t: 'terra', c: ['#fed', '#edc', '#dcb', '#dca', '#cb9', '#ba8', '#a97', '#986', '#875', '#764'], po: ['#edc', '#dcb', '#cba'] },
+  youton: { t: 'fogo', c: ['#fff', '#ffc', '#fe6', '#fc4', '#f93', '#e62', '#c42', '#a32', '#822', '#511'], fumo: ['#544', '#433', '#322', '#211'], luz: 1 },
+  kami: { t: 'argila', c: ['#fff', '#ffe', '#eed', '#ddc', '#ccb', '#bba', '#aa9', '#998'] },
+  kujaku: { t: 'chakra', c: ['#fff', '#fef', '#ecf', '#dbf', '#c9e', '#b8d', '#a6c', '#94b', '#83a', '#729'], luz: 1 },
+  kumo: { t: 'chakra', c: ['#fff', '#ffe', '#ffd', '#eec', '#ddb', '#cca', '#bb9', '#aa8', '#997', '#886'] },
+  hebi: { t: 'tinta', c: ['#ce9', '#bd8', '#ac7', '#9b6', '#8a5', '#794', '#683', '#572', '#461', '#350'] },
+  ototon: { t: 'chakra', c: ['#fff', '#eef', '#dde', '#ccf', '#bbe', '#aad', '#99c', '#88b', '#77a', '#669'], luz: 1 },
+  sakin: { t: 'terra', c: ['#ffe', '#ffc', '#fe9', '#ed7', '#dc6', '#cb5', '#ba4', '#a93', '#872', '#651'], po: ['#fe9', '#ed7', '#dc6'] },
+  satetsu: { t: 'terra', c: ['#998', '#887', '#776', '#665', '#554', '#443', '#332', '#221', '#110', '#000'], po: ['#776', '#554', '#443'] },
+  ranton: { t: 'raio', c: ['#fff', '#eef', '#ccf', '#aaf', '#88e', '#66d', '#55b', '#449', '#337', '#225'], luz: 1 },
+  shakuton: { t: 'fogo', c: ['#fff', '#ffe', '#ffc', '#ff9', '#fd7', '#fb5', '#f93', '#e72', '#c51', '#a31'], fumo: ['#ddc', '#ccb', '#bba', '#aa9'], luz: 1 },
+  shouton: { t: 'agua', c: ['#fff', '#fef', '#fdf', '#ecf', '#dbe', '#cad', '#b9c', '#a8b', '#97a', '#869'], luz: 1 },
+  doku: { t: 'tinta', c: ['#dfa', '#ce9', '#bd8', '#a8c', '#97b', '#86a', '#759', '#648', '#537', '#426'] },
+  yoton: { t: 'fogo', c: ['#ffe', '#ffa', '#fd6', '#fb4', '#f83', '#e52', '#c32', '#a22', '#712', '#401'], fumo: ['#433', '#322', '#211', '#100'], luz: 1 },
+  futton: { t: 'chakra', c: ['#fff', '#fff', '#eee', '#ddd', '#dde', '#cce', '#bbd', '#aac', '#99b', '#88a'] },
+  mecanico: { t: 'terra', c: ['#eee', '#ddd', '#ccc', '#bbb', '#aaa', '#999', '#888', '#777', '#666', '#555'], po: ['#bbb', '#999', '#777'] },
+});
+const TRI = el => (ELEM[el] && ELEM[el].cor) || ['#77c', '#bbf', '#fff'];       // escuro, médio, claro de um hijutsu (o padrão é o Ninpou)
+const HIJ = el => !!(ELEM[el] && ELEM[el].cor);
 function rngFx(a) { a = (a | 0) || 1; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const agoraS = () => performance.now() / 1000;
 const easeOut = u => 1 - Math.pow(1 - Math.max(0, Math.min(1, u)), 3);
@@ -3289,22 +3313,23 @@ function cabeca(el, sx, sy, r, t, rnd) {                      // a "bala" de cad
       ctx.fillStyle = '#cb9'; ctx.fillRect(Math.round(sx - r + 1), Math.round(sy - r + k), 2, 1); ctx.fillStyle = '#542'; ctx.fillRect(Math.round(sx + r - 2), Math.round(sy + r - 2 + k), 2, 1); break; }
     case 'sumi': disco(sx, sy, r + 0.8, '#001'); disco(sx, sy, r, '#223'); px1(sx - 1, sy - 1, '#667'); break;
     case 'nendo': disco(sx, sy, r, '#a98'); disco(sx, sy, r * 0.8, '#cba'); disco(sx - 1, sy - 1, r * 0.4, '#edc'); px1(sx - 1, sy - 2, '#ffe'); break;
-    default: { const ga = ctx.globalAlpha; ctx.globalAlpha = ga * 0.45; disco(sx, sy, r + 2.5, '#77c'); ctx.globalAlpha = ga * 0.8; disco(sx, sy, r + 1, '#99e'); ctx.globalAlpha = ga; disco(sx, sy, r * 0.8, '#ccf'); disco(sx, sy, r * 0.45, '#fff'); }
+    default: { const c = HIJ(el) ? TRI(el) : ['#77c', '#99e', '#ccf']; const ga = ctx.globalAlpha; ctx.globalAlpha = ga * 0.45; disco(sx, sy, r + 2.5, c[0]); ctx.globalAlpha = ga * 0.8; disco(sx, sy, r + 1, c[1]); ctx.globalAlpha = ga; disco(sx, sy, r * 0.8, c[2]); disco(sx, sy, r * 0.45, '#fff'); }
   }
 }
 function estouro(el, x, y, z, f, rnd) {                       // impacto
   const m = MAT[el], hb = hChao(x, y), [sx, sy] = telaDe(x, y, z, hb), n = Math.round(12 * f);
   const radial = (k, v0, v1, z0, z1, cb) => { for (let i = 0; i < k; i++) { const a = rnd() * 6.283, v = v0 + rnd() * (v1 - v0); cb(Math.cos(a) * v, Math.sin(a) * v, z0 + rnd() * (z1 - z0)); } };
+  const H = HIJ(el) ? TRI(el) : null;
   switch (m.t) {
     case 'fogo': flash(sx, sy, 6 + 4 * f, 0.12); radial(n * 3, 0.4, 2.4 * f, 10, 80, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, 1.3 * f, rnd, hb)); ondaChao(x, y, hb, 0.8 * f, '#fb3', 0.3); luzFx(x, y, z, 44 * f, 0.45); break;
     case 'vento': corte(sx, sy, 11 * f, rnd); ondaChao(x, y, hb, 1 * f, '#fff', 0.3); radial(n * 3, 1.5, 4.5 * f, -20, 25, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, 1, rnd, hb));
       for (let i = 0; i < 6 * f; i++) pt({ x, y, z: 1, hb, vx: (rnd() - 0.5) * 2, vy: (rnd() - 0.5) * 2, vz: 10 + rnd() * 10, ar: 2, vida: 0.7, s0: 2, s1: 5, c: m.po, f: 'd', a: 0.4, fade: 1 }); break;
     case 'raio': flash(sx, sy, 4 + 3 * f, 0.08, '#eff'); arcos(sx, sy, 4, 16 * f, rnd); radial(n * 3, 1, 4.5 * f, -60, 90, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, 1, rnd, hb)); luzFx(x, y, z, 40 * f, 0.3); break;
-    case 'agua': radial(n * 2, 0.3, 1.6 * f, 40, 110, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, 1, rnd, hb)); ondaChao(x, y, hb, 0.9 * f, '#cef', 0.45); break;
+    case 'agua': radial(n * 2, 0.3, 1.6 * f, 40, 110, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, 1, rnd, hb)); ondaChao(x, y, hb, 0.9 * f, H ? H[2] : '#cef', 0.45); break;
     case 'terra': radial(n * 2, 0.3, 1.6 * f, 30, 100, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, f, rnd, hb)); break;
-    case 'chakra': ondaChao(x, y, hb, 0.9 * f, '#ccf', 0.4); flash(sx, sy, 4 + 3 * f, 0.09, '#eef'); radial(n * 3, 0.4, 2.2 * f, -20, 40, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, f, rnd, hb)); luzFx(x, y, z, 30 * f, 0.35); break;
-    case 'tinta': radial(n * 3, 0.4, 1.9 * f, 20, 90, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, f, rnd, hb)); for (let i = 0; i < 5; i++) mancha(x + (rnd() - 0.5) * 0.5, y + (rnd() - 0.5) * 0.5, hb, 2 + rnd() * 2 * f, '#112'); break;
-    case 'argila': katsu(x, y, z, f, rnd); break;
+    case 'chakra': ondaChao(x, y, hb, 0.9 * f, H ? H[2] : '#ccf', 0.4); flash(sx, sy, 4 + 3 * f, 0.09, H ? H[2] : '#eef'); radial(n * 3, 0.4, 2.2 * f, -20, 40, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, f, rnd, hb)); luzFx(x, y, z, 30 * f, 0.35); break;
+    case 'tinta': radial(n * 3, 0.4, 1.9 * f, 20, 90, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, f, rnd, hb)); for (let i = 0; i < 5; i++) mancha(x + (rnd() - 0.5) * 0.5, y + (rnd() - 0.5) * 0.5, hb, 2 + rnd() * 2 * f, H ? H[0] : '#112'); break;
+    case 'argila': if (el === 'nendo') katsu(x, y, z, f, rnd); else radial(n * 3, 0.3, 1.6 * f, 30, 100, (vx, vy, vz) => emite(el, x, y, z, vx, vy, vz, f, rnd, hb)); break;
   }
 }
 function katsu(x, y, z, f, rnd) {                             // a argila explode
@@ -3327,7 +3352,9 @@ function fxTecnica(ev) {
     missil: fxMissil, explosao: fxExplosao, zona: fxZona, nuvem: fxNuvem, barreira: fxBarreira, algema: fxAlgema, meteoros: fxMeteoros, tremor: fxTremor, aura: fxAura,
     arma: fxArma, imergir: fxImergir, lamina: fxLamina, laminas: fxLaminas, neblina: fxNeblina, vacuo: fxVacuo, repelir: fxRepelir, purificar: fxPurificar, prisao: fxPrisao,
     veneno: fxVeneno, inflamavel: fxInflamavel, flutuar: fxFlutuar, pedra: fxPedra, descarga: e => fxExplosao(Object.assign({}, e, { o: e.a || e.o, forma: 'meia' })),
-    desastre: fxDesastre, combustao: fxCombustao }[F.fx];
+    desastre: fxDesastre, combustao: fxCombustao, enxame: fxEnxame, sementes: fxSementes, golem: fxGolem, espelhos: fxEspelhos, som: fxSom, medo: fxMedo, brilho: fxBrilho,
+    acido: fxAcido, laser: fxLaser, lasers: fxLasers,
+    emissario: e => fxCombustao(Object.assign({}, e, { a: e.o, p: Object.assign({}, e.p, { tam: e.p.tam * 3 }) })) }[F.fx];
   if (R) R(ev);
 }
 // Canhão e Orbe: jato ou bola até o alvo; Sumi solta um lobo de tinta, Kibaku Nendo um pássaro de argila
@@ -3366,7 +3393,7 @@ function feixeEl(el, ax, ay, bx, by, t) {                      // o raio de cada
     case 'doton': { linha(ax, ay, bx, by, '#653', 3); const n = Math.ceil(L / 3); for (let i = 0; i < n; i++) { const u = ((i / n) + t * 5) % 1; px1(ax + (bx - ax) * u, ay + (by - ay) * u - 1, i % 2 ? '#cb9' : '#a97'); } break; }
     case 'sumi': { const n = Math.ceil(L); for (let i = 0; i <= n; i++) { const u = i / n, w = 0.6 + 2.2 * Math.sin(Math.PI * Math.min(1, u * 1.15)); disco(ax + (bx - ax) * u, ay + (by - ay) * u, w, '#112'); } linha(ax, ay - 1, bx, by - 1, '#334', 1); break; }
     case 'nendo': linha(ax, ay, bx, by, '#a98', 3); linha(ax, ay, bx, by, '#edc', 1); break;
-    default: { const ga = ctx.globalAlpha; ctx.globalAlpha = ga * 0.6; linha(ax, ay, bx, by, '#77c', 5); ctx.globalAlpha = ga; linha(ax, ay, bx, by, '#bbf', 3); linha(ax, ay, bx, by, '#fff', 1); }
+    default: { const c = TRI(el), ga = ctx.globalAlpha; ctx.globalAlpha = ga * 0.6; linha(ax, ay, bx, by, c[0], 5); ctx.globalAlpha = ga; linha(ax, ay, bx, by, c[1], 3); linha(ax, ay, bx, by, c[2], 1); }
   }
 }
 function fxRaio(ev) {
@@ -3392,7 +3419,7 @@ function agulha(el, x0, y0, x1, y1, t) {                        // um projétil 
     case 'doton': ctx.fillStyle = '#653'; ctx.fillRect(Math.round(x1 - 2), Math.round(y1 - 1), 5, 3); ctx.fillStyle = '#986'; ctx.fillRect(Math.round(x1 - 1), Math.round(y1 - 1), 3, 2); px1(x1 - 1, y1 - 1, '#cb9'); break;
     case 'sumi': linha(x1 - ux * 4, y1 - uy * 4, x1, y1, '#112', 2); break;
     case 'nendo': disco(x1, y1, 1.5, '#cba'); px1(x1 - 1, y1 - 1, '#ffe'); break;
-    default: linha(x1 - ux * 7, y1 - uy * 7, x1, y1, '#88d', 2); linha(x1 - ux * 6, y1 - uy * 6, x1, y1, '#ccf', 1); px1(x1, y1, '#fff');
+    default: { const c = HIJ(el) ? TRI(el) : ['#88d', '#88d', '#ccf']; linha(x1 - ux * 7, y1 - uy * 7, x1, y1, c[0], 2); linha(x1 - ux * 6, y1 - uy * 6, x1, y1, c[2], 1); px1(x1, y1, '#fff'); }
   }
 }
 function fxFlechas(ev) {
@@ -3507,18 +3534,19 @@ function pilarPedra(w, H, seed) {                               // rocha irregul
 }
 // Sopro Destrutivo: o cone se enche do elemento, que voa da boca de quem usa até a ponta
 function sopro(el, x, y, z, vx, vy, vida, rnd, hb) {
-  switch (MAT[el].t) {
-    case 'fogo': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.4) * 20, vida: vida * (0.9 + rnd() * 0.3), s0: 1.5, s1: 4 + rnd() * 2, c: ['#ffe', '#ff8', '#fd4', '#fb3', '#f92', '#f62', '#e41'], f: 'd', fim: 0.7 });
-      if (rnd() < 0.1) pt({ x, y, z: z + 3, hb, vx: vx * 0.8, vy: vy * 0.8, vz: 18, vida: vida * 1.4, s0: 2, s1: 5, c: MAT.katon.fumo, f: 'd', a: 0.45, fade: 1 }); break;
-    case 'agua': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.2) * 30, g: 60, vida: vida * (0.9 + rnd() * 0.3), s0: 1.5, s1: 3, c: ['#eff', '#9df', '#6ce', '#4ad', '#38c'], f: 'q' });
-      if (rnd() < 0.15) pt({ x, y, z, hb, vx: vx * 0.9, vy: vy * 0.9, vz: 0, vida, s0: 1.5, s1: 4, c: ['#eff', '#cef'], f: 'd', a: 0.35, fade: 1 }); break;
-    case 'vento': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.5) * 20, vida, s0: 1, c: MAT.fuuton.c, f: 'r', rl: 0.06, a: 0.85, fade: 1 });
-      if (rnd() < 0.08) pt({ x, y, z: 2, hb, vx: vx * 0.8, vy: vy * 0.8, vz: 20 * rnd(), g: 40, vida, s0: 1, c: rnd() < 0.6 ? MAT.fuuton.folha : MAT.fuuton.po, f: 'q' }); break;
-    case 'raio': pt({ x, y, z, hb, vx: vx * 1.3, vy: vy * 1.3, vz: (rnd() - 0.5) * 60, vida: vida * 0.7, s0: 1, c: MAT.raiton.c, f: 'r', rl: 0.03 }); break;
-    case 'terra': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.3) * 30, g: 100, vida, s0: 2 + rnd() * 1.5, s1: 2, c: MAT.doton.c.slice(3), f: 'q' });
-      if (rnd() < 0.4) pt({ x, y, z, hb, vx: vx * 0.7, vy: vy * 0.7, vz: 5, vida: vida * 1.3, s0: 3, s1: 7, c: MAT.doton.po, f: 'd', a: 0.5, fade: 1 }); break;
-    case 'chakra': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.5) * 20, vida, s0: 2, s1: 4.5, c: MAT.ninpou.c, f: 'd', fim: 0.5 }); break;
-    default: pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.2) * 20, g: 90, pousa: 1, vida: vida * 1.2, s0: 1, s1: 2.5, c: MAT.sumi.c.slice(2), f: 'd' });
+  const m = MAT[el];
+  switch (m.t) {
+    case 'fogo': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.4) * 20, vida: vida * (0.9 + rnd() * 0.3), s0: 1.5, s1: 4 + rnd() * 2, c: m.c.slice(1, 8), f: 'd', fim: 0.7 });
+      if (rnd() < 0.1) pt({ x, y, z: z + 3, hb, vx: vx * 0.8, vy: vy * 0.8, vz: 18, vida: vida * 1.4, s0: 2, s1: 5, c: m.fumo || MAT.katon.fumo, f: 'd', a: 0.45, fade: 1 }); break;
+    case 'agua': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.2) * 30, g: 60, vida: vida * (0.9 + rnd() * 0.3), s0: 1.5, s1: 3, c: [m.c[1], m.c[3], m.c[4], m.c[5], m.c[6]], f: 'q' });
+      if (rnd() < 0.15) pt({ x, y, z, hb, vx: vx * 0.9, vy: vy * 0.9, vz: 0, vida, s0: 1.5, s1: 4, c: [m.c[1], m.c[2]], f: 'd', a: 0.35, fade: 1 }); break;
+    case 'vento': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.5) * 20, vida, s0: 1, c: m.c, f: 'r', rl: 0.06, a: 0.85, fade: 1 });
+      if (rnd() < 0.08) pt({ x, y, z: 2, hb, vx: vx * 0.8, vy: vy * 0.8, vz: 20 * rnd(), g: 40, vida, s0: 1, c: rnd() < 0.6 ? (m.folha || MAT.fuuton.folha) : (m.po || MAT.fuuton.po), f: 'q' }); break;
+    case 'raio': pt({ x, y, z, hb, vx: vx * 1.3, vy: vy * 1.3, vz: (rnd() - 0.5) * 60, vida: vida * 0.7, s0: 1, c: m.c, f: 'r', rl: 0.03 }); break;
+    case 'terra': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.3) * 30, g: 100, vida, s0: 2 + rnd() * 1.5, s1: 2, c: m.c.slice(3), f: 'q' });
+      if (rnd() < 0.4) pt({ x, y, z, hb, vx: vx * 0.7, vy: vy * 0.7, vz: 5, vida: vida * 1.3, s0: 3, s1: 7, c: m.po || MAT.doton.po, f: 'd', a: 0.5, fade: 1 }); break;
+    case 'chakra': pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.5) * 20, vida, s0: 2, s1: 4.5, c: m.c, f: 'd', fim: 0.5 }); break;
+    default: pt({ x, y, z, hb, vx, vy, vz: (rnd() - 0.2) * 20, g: 90, pousa: 1, vida: vida * 1.2, s0: 1, s1: 2.5, c: m.c.slice(2), f: 'd' });
   }
 }
 function fxCone(ev) {
@@ -3557,7 +3585,7 @@ function fxOnda(ev) {
 }
 // Míssil: uma rajada em sequência que corre pela linha (dragão de fogo, de água...); Nendo manda pássaros, Sumi uma serpente
 function corpo(el, sx, sy, r, ponta) {
-  const c = { katon: ['#c21', '#f82', '#fd4'], suiton: ['#26b', '#4ad', '#cef'], fuuton: ['#9cc', '#dff', '#fff'], raiton: ['#48e', '#9ef', '#fff'], doton: ['#653', '#875', '#cb9'], ninpou: ['#77c', '#bbf', '#fff'], sumi: ['#001', '#223', '#556'], nendo: ['#a98', '#cba', '#edc'] }[el] || ['#77c', '#bbf', '#fff'];
+  const c = { katon: ['#c21', '#f82', '#fd4'], suiton: ['#26b', '#4ad', '#cef'], fuuton: ['#9cc', '#dff', '#fff'], raiton: ['#48e', '#9ef', '#fff'], doton: ['#653', '#875', '#cb9'], ninpou: ['#77c', '#bbf', '#fff'], sumi: ['#001', '#223', '#556'], nendo: ['#a98', '#cba', '#edc'] }[el] || TRI(el);
   disco(sx, sy, r + 0.8, c[0]); disco(sx, sy, r, c[1]); disco(sx - r * 0.3, sy - r * 0.3, r * 0.45, c[2]); if (ponta) { px1(sx - r * 0.6, sy - r - 1, c[2]); px1(sx + r * 0.6, sy - r - 1, c[2]); }
 }
 function fxMissil(ev) {
@@ -3621,7 +3649,7 @@ function nuvemPuff(x, y, el, rnd) { const [c1, c2] = (ZONA_COR.nuvem[el] || ['#9
 // Barreira: poeira na base enquanto o muro sobe (o muro em si é do mapa)
 function fxBarreira(ev) {
   const z = zonaDe(ev); if (!z || z.g.k !== 'poli') return; const p = z.g.p, a = [(p[0][0] + p[1][0]) / 2, (p[0][1] + p[1][1]) / 2], b = [(p[2][0] + p[3][0]) / 2, (p[2][1] + p[3][1]) / 2];
-  const mat = ev.el === 'suiton' ? 'suiton' : ev.el === 'fuuton' ? 'fuuton' : ev.el === 'sumi' ? 'sumi' : ev.el === 'ninpou' ? 'ninpou' : 'doton';
+  const mat = ['suiton', 'fuuton', 'sumi', 'ninpou'].includes(ev.el) || HIJ(ev.el) ? ev.el : 'doton';
   novoFx(ev, 1, { tick(fx, t, dt) { if (t > 0.35) return; for (let k = Math.round(dt * 120); k > 0; k--) { const u = fx.rnd(); emite(mat, a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, 1, (fx.rnd() - 0.5) * 0.6, (fx.rnd() - 0.5) * 0.6, 20, 1, fx.rnd); } } });
 }
 // Algemar: amarras se fecham nos pés do alvo (as algemas ficam desenhadas enquanto durarem)
@@ -3632,10 +3660,11 @@ function fxAlgema(ev) {
 }
 // Meteoros: seis meteoros caem do céu no ponto escolhido
 function fxMeteoros(ev) {
-  const el = ev.el, c = ev.a || ev.o, r = 2.5 / M_CASA, rnd = rngFx(ev.seed + 7), ms = [];
+  const el = ev.el, c = ev.a || ev.o, vul = ev.ef === 'vulcao', r = (vul ? 10 : 2.5) / M_CASA, rnd = rngFx(ev.seed + 7), ms = [];
+  if (vul) { tremorAte = performance.now() + 1600; tremorForca = 3; ondaChao(c[0], c[1], hChao(c[0], c[1]), r, '#fb3', 1.2); }
   for (let k = 0; k < 6; k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * r * 0.8; ms.push({ x: c[0] + Math.cos(a) * d, y: c[1] + Math.sin(a) * d, t0: k * 0.13, dur: 0.5 }); }
   novoFx(ev, 2.2, {
-    tick(fx, t) { for (const q of ms) { const u = (t - q.t0) / q.dur; if (u >= 1 && !q.imp) { q.imp = 1; if (el === 'nendo') katsu(q.x, q.y, 2, 1.3, fx.rnd); else estouro(el, q.x, q.y, 2, 1.4, fx.rnd); }
+    tick(fx, t) { for (const q of ms) { const u = (t - q.t0) / q.dur; if (u >= 1 && !q.imp) { q.imp = 1; if (el === 'nendo') katsu(q.x, q.y, 2, 1.3, fx.rnd); else estouro(el, q.x, q.y, 2, vul ? 2.6 : 1.4, fx.rnd); }
       else if (u > 0 && u < 1) { const [x, y, z] = [q.x - 1.6 * (1 - u), q.y + 1.6 * (1 - u), 170 * (1 - u)]; rastro(el === 'nendo' ? 'katon' : el, x, y, z, hChao(q.x, q.y), fx.rnd, 1.6); } } },
     draw(fx, t) { for (const q of ms) { const u = (t - q.t0) / q.dur; if (u <= 0 || u >= 1) continue; const [sx, sy] = telaDe(q.x - 1.6 * (1 - u), q.y + 1.6 * (1 - u), 170 * (1 - u), hChao(q.x, q.y)); cabeca(el === 'nendo' ? 'nendo' : el, sx, sy, 5, t, fx.rnd); } } });
 }
@@ -3746,7 +3775,7 @@ function fxPurificar(ev) {
 function fxPrisao(ev) {
   const al = ev.alvos[0]; if (!al) return; const x = al[1], y = al[2], hb = hChao(x, y);
   novoFx(ev, 1, { tick(fx, t, dt) { if (t > 0.45) return; for (let k = Math.round(dt * 160); k > 0; k--) { const a = fx.rnd() * 6.283;
-    pt({ x, y, z: 0, hb, orb: [x, y, 0.55 * (1 - t), 7, a], vx: 0, vy: 0, vz: 30 + fx.rnd() * 20, vida: 0.4, s0: 1.5, s1: 1, c: MAT.suiton.c.slice(2, 7), f: 'q' }); } } });
+    pt({ x, y, z: 0, hb, orb: [x, y, 0.55 * (1 - t), 7, a], vx: 0, vy: 0, vz: 30 + fx.rnd() * 20, vida: 0.4, s0: 1.5, s1: 1, c: (MAT[ev.el] || MAT.suiton).c.slice(2, 7), f: 'q' }); } } });
 }
 function bolha(sx, sy, u, frente, t) {
   const R = Math.max(1, 10 * easeOut(u)), cy = sy - 10, ga = ctx.globalAlpha;
@@ -3781,14 +3810,14 @@ function fxCombustao(ev) {
 function fxFlutuar(ev) {
   const o = ev.o, hb = hChao(o[0], o[1]); ondaChao(o[0], o[1], hb, 0.9, '#fff', 0.5);
   novoFx(ev, 1.4, { tick(fx, t, dt) { if (t > 1) return; for (let k = Math.round(dt * 90); k > 0; k--) { const a = fx.rnd() * 6.283;
-    emite('fuuton', o[0] + Math.cos(a) * 0.4, o[1] + Math.sin(a) * 0.4, 1 + fx.rnd() * 4, Math.cos(a) * 2.5, Math.sin(a) * 2.5, 15 + fx.rnd() * 25, 1, fx.rnd, hb); } } });
+    emite(MAT[ev.el] ? ev.el : 'fuuton', o[0] + Math.cos(a) * 0.4, o[1] + Math.sin(a) * 0.4, 1 + fx.rnd() * 4, Math.cos(a) * 2.5, Math.sin(a) * 2.5, 15 + fx.rnd() * 25, 1, fx.rnd, hb); } } });
 }
 // Pele de Pedra: pedrinhas se juntam no corpo (a pele de pedra fica desenhada pela condição)
 function fxPedra(ev) {
-  const o = ev.o, hb = hChao(o[0], o[1]);
+  const o = ev.o, hb = hChao(o[0], o[1]), mc = (MAT[ev.el] || MAT.doton).c, ond = HIJ(ev.el) ? TRI(ev.el)[2] : '#cb9';
   novoFx(ev, 1.1, { tick(fx, t, dt) { if (t > 0.5) return; for (let k = Math.round(dt * 110); k > 0; k--) { const a = fx.rnd() * 6.283, r = 0.7 * (1 - t / 0.5) + 0.15;
-    pt({ x: o[0] + Math.cos(a) * r, y: o[1] + Math.sin(a) * r, z: 2 + fx.rnd() * 16, hb, vx: -Math.cos(a) * 1.4, vy: -Math.sin(a) * 1.4, vz: 0, vida: 0.22, s0: 1.5, s1: 1, c: MAT.doton.c.slice(4, 9), f: 'q' }); }
-    if (!fx.k && t > 0.45) { fx.k = 1; ondaChao(o[0], o[1], hb, 0.5, '#cb9', 0.35); } } });
+    pt({ x: o[0] + Math.cos(a) * r, y: o[1] + Math.sin(a) * r, z: 2 + fx.rnd() * 16, hb, vx: -Math.cos(a) * 1.4, vy: -Math.sin(a) * 1.4, vz: 0, vida: 0.22, s0: 1.5, s1: 1, c: mc.slice(4, 9), f: 'q' }); }
+    if (!fx.k && t > 0.45) { fx.k = 1; ondaChao(o[0], o[1], hb, 0.5, ond, 0.35); } } });
 }
 // Desastre: a área vira uma tempestade do elemento (fica enquanto durar a Concentração)
 function desastrePt(el, x, y, rnd) {
@@ -3810,8 +3839,155 @@ function fxDesastre(ev) {
 let condAmbT = 0;
 function fxCondAmb(dt) {
   condAmbT += dt; if (condAmbT < 0.08 || !condPronto) return; const passo = condAmbT; condAmbT = 0;
-  for (const u of unidades()) { if (!(condsDe(u.id).nv.chamas > 0)) continue; const p = posDe(u.id); if (!p || p.s !== scene.id) continue; const rnd = Math.random;
-    for (let k = Math.max(1, Math.round(passo * 30)); k > 0; k--) emite('katon', u.x + (rnd() - 0.5) * 0.3, u.y + (rnd() - 0.5) * 0.3, 3 + rnd() * 14, 0, 0, 10, 0.6, rnd); }
+  for (const u of unidades()) { const C = condsDe(u.id); if (!C.vis.length) continue; const p = posDe(u.id); if (!p || p.s !== scene.id) continue; const rnd = Math.random, n = Math.max(1, Math.round(passo * 30));
+    const perto = (el, z0, z1, vz, esc) => { for (let k = n; k > 0; k--) emite(el, u.x + (rnd() - 0.5) * 0.3, u.y + (rnd() - 0.5) * 0.3, z0 + rnd() * (z1 - z0), 0, 0, vz, esc, rnd); };
+    if (C.nv.chamas > 0) perto('katon', 3, 17, 10, 0.6);
+    if (C.ef.has('manto_lava') || C.ef.has('lava_corpo')) perto('youton', 2, 16, 6, 0.5);
+    if (C.ef.has('manto_ferro') && rnd() < 0.7) for (let k = n; k > 0; k--) pt({ x: u.x, y: u.y, z: 3 + rnd() * 14, orb: [u.x, u.y, 0.3 + rnd() * 0.1, 6, rnd() * 6.283], vx: 0, vy: 0, vz: 4, vida: 0.4, s0: 1, c: ['#221', '#443', '#110'], f: 'q' });
+    if (C.ef.has('bracos_serpente') && rnd() < 0.5) pt({ x: u.x + (rnd() - 0.5) * 0.5, y: u.y + (rnd() - 0.5) * 0.5, z: 8 + rnd() * 6, vx: 0, vy: 0, vz: 0, vida: 0.3, s0: 1, c: ['#8a5', '#461'], f: 'q' });
+    if (C.ef.has('intoxicado') && rnd() < 0.4) pt({ x: u.x + (rnd() - 0.5) * 0.3, y: u.y + (rnd() - 0.5) * 0.3, z: 14, vx: 0, vy: 0, vz: 8, vida: 0.6, s0: 1, s1: 2, c: ACIDO, f: 'd', a: 0.8, fade: 1 }); }
+}
+
+// ---------- hijutsus (leva 2) ----------
+// Interferência (Kikai Ninpou): uma nuvem de insetos se espalha e fica zumbindo na área
+function enxamePt(x, y, rnd) { pt({ x, y, z: 2 + rnd() * 16, vx: (rnd() - 0.5) * 2.4, vy: (rnd() - 0.5) * 2.4, vz: (rnd() - 0.5) * 12, vida: 0.6 + rnd() * 0.6, s0: 1, c: ['#221', '#332', '#110'], f: 'q', fade: 1 }); }
+function fxEnxame(ev) {
+  const c = ev.o, R = ev.p.tam / M_CASA / 2;
+  novoFx(ev, 1.8, { tick(fx, t, dt) { if (t > 1.3) return; const rr = R * easeOut(t / 1.3); for (let k = Math.min(200, Math.round(dt * 40 * Math.max(1, rr * rr))); k > 0; k--) { const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * rr; enxamePt(c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, fx.rnd); } } });
+}
+// Transmissor (Mokuton): o clone se desfaz em sementes
+function fxSementes(ev) {
+  const o = ev.o, hb = hChao(o[0], o[1]);
+  novoFx(ev, 1.4, { tick(fx, t, dt) { if (t > 0.3) return; for (let k = Math.round(dt * 80); k > 0; k--) { const a = fx.rnd() * 6.283, v = 1 + fx.rnd() * 2;
+    pt({ x: o[0], y: o[1], z: Z0, hb, vx: Math.cos(a) * v, vy: Math.sin(a) * v, vz: 30 + fx.rnd() * 30, g: 140, quica: 0.3, vida: 0.9, s0: 1, c: ['#9b6', '#a96', '#763'], f: 'q' }); } } });
+}
+// Golem (Mokuton): troncos rompem o chão ao lado de quem usa
+function fxGolem(ev) {
+  const o = ev.o, c = [o[0] + 1.2, o[1] + 1.2], hb = hChao(c[0], c[1]), [sx, sy] = telaDe(c[0], c[1], 0, hb), rnd = rngFx(ev.seed), tr = [];
+  tremorAte = performance.now() + 900; tremorForca = 2; ondaChao(c[0], c[1], hb, 1.4, '#a96', 0.8);
+  for (let i = 0; i < 7; i++) tr.push({ dx: (rnd() - 0.5) * 22, w: 3 + rnd() * 3, h: 24 + rnd() * 30, t0: rnd() * 0.3 });
+  novoFx(ev, 2.2, {
+    tick(fx, t, dt) { if (t > 1) return; for (let k = Math.round(dt * 70); k > 0; k--) emite('mokuton', c[0] + (fx.rnd() - 0.5) * 0.8, c[1] + (fx.rnd() - 0.5) * 0.8, 2, 0, 0, 40, 1, fx.rnd, hb); },
+    draw(fx, t) { const ga = ctx.globalAlpha; ctx.globalAlpha = ga * (t > 1.6 ? Math.max(0, 1 - (t - 1.6) / 0.6) : 1);
+      for (const q of tr) { const u = easeOut(Math.min(1, Math.max(0, (t - q.t0) / 0.5))), H = Math.round(q.h * u); if (H < 1) continue; const X = Math.round(sx + q.dx - q.w / 2), Y = Math.round(sy - H), W = Math.round(q.w);
+        ctx.fillStyle = '#541'; ctx.fillRect(X, Y, W, H); ctx.fillStyle = '#874'; ctx.fillRect(X + 1, Y, Math.max(1, W - 2), H); ctx.fillStyle = '#ba7'; ctx.fillRect(X + 1, Y, 1, H);
+        ctx.fillStyle = '#430'; for (let yy = Y + 3; yy < Y + H; yy += 5) ctx.fillRect(X + 1, yy, Math.max(1, W - 2), 1); }
+      ctx.globalAlpha = ga; } });
+}
+// Espelhos Demoníacos (Hyouton): o gelo sobe em anel (os espelhos ficam desenhados enquanto a técnica durar)
+function fxEspelhos(ev) {
+  const o = ev.o, R = Math.max(0.6, (ev.nv || 6) / M_CASA / 2), hb = hChao(o[0], o[1]); ondaChao(o[0], o[1], hb, R, '#eff', 0.6);
+  novoFx(ev, 1.2, { tick(fx, t, dt) { if (t > 0.6) return; for (let k = Math.round(dt * 160); k > 0; k--) { const a = fx.rnd() * 6.283; emite('hyouton', o[0] + Math.cos(a) * R, o[1] + Math.sin(a) * R, 2, 0, 0, 40, 1, fx.rnd, hb); } } });
+}
+// Ototon: ondas de som correm até o alvo e ficam vibrando em volta dele
+function fxSom(ev) {
+  const al = ev.alvos[0]; if (!al) return; const o = ev.o, a = [al[1], al[2]], h0 = hChao(o[0], o[1]), h1 = hChao(a[0], a[1]), c = TRI(ev.el);
+  novoFx(ev, 1.4, { draw(fx, t) { const ga = ctx.globalAlpha;
+    for (let k = 0; k < 4; k++) { const u = (t - k * 0.08) / 0.45; if (u <= 0 || u >= 1) continue; const [sx, sy] = telaDe(o[0] + (a[0] - o[0]) * u, o[1] + (a[1] - o[1]) * u, Z0 + (12 - Z0) * u, h0 + (h1 - h0) * u);
+      ctx.globalAlpha = ga * (1 - u * 0.5); anelTela(sx, sy, 3 + u * 4, 2 + u * 3, k % 2 ? c[1] : c[2]); }
+    if (t > 0.45) { const [sx, sy] = telaDe(a[0], a[1], 12, h1); for (let k = 0; k < 3; k++) { const u = ((t - 0.45) * 2 + k / 3) % 1; ctx.globalAlpha = ga * (1 - u) * Math.max(0, 1 - (t - 0.9) / 0.5); anelTela(sx, sy, 4 + u * 12, 3 + u * 8, c[2], 3, t * 30); } }
+    ctx.globalAlpha = ga; } });
+}
+// Infligir Medo (Hebi): um arrepio escuro sai de quem usa e pulsa nos alvos
+function fxMedo(ev) {
+  const o = ev.o, hb = hChao(o[0], o[1]); ondaChao(o[0], o[1], hb, 3, '#461', 0.9); ondaChao(o[0], o[1], hb, 2, '#223', 0.7);
+  novoFx(ev, 1.4, { draw(fx, t) { const ga = ctx.globalAlpha, [sx, sy] = telaDe(o[0], o[1], 22, hb);
+    if (t < 0.8) { ctx.globalAlpha = ga * (1 - t / 0.8); px1(sx - 2, sy, '#fe4'); px1(sx + 1, sy, '#fe4'); }
+    for (const a of ev.alvos) { const [tx, ty] = telaDe(a[1], a[2], 8, hChao(a[1], a[2])), u = (t * 1.5) % 1; ctx.globalAlpha = ga * (1 - u) * Math.max(0, 1 - t / 1.4); anelTela(tx, ty, 6 + u * 8, 3 + u * 4, '#461', 2, t * 20); }
+    ctx.globalAlpha = ga; } });
+}
+// Ouro Reluzente (Sakin): a esfera de ouro estoura e o brilho cega
+function fxBrilho(ev) {
+  const c = ev.a || ev.o, R = ev.p.tam / M_CASA / 2, hb = hChao(c[0], c[1]), [sx, sy] = telaDe(c[0], c[1], 8, hb);
+  fxExplosao(Object.assign({}, ev, { o: c, forma: 'meia' })); flash(sx, sy, 20 + R * 10, 0.35, '#ffe'); luzFx(c[0], c[1], 10, 80 + R * 20, 0.6);
+}
+// Neblina Ácida (Futton): uma esfera de vapor ácido cresce em volta de quem usa
+const ACIDO = ['#df9', '#cd8', '#bc7', '#9a6'];
+function acidoPuff(x, y, rnd, a) { pt({ x, y, z: 1 + rnd() * 14, vx: (rnd() - 0.5) * 0.4, vy: (rnd() - 0.5) * 0.4, vz: 2 + rnd() * 3, vida: 1.5 + rnd(), s0: 4 + rnd() * 3, s1: 9 + rnd() * 4, c: ACIDO, f: 'd', a: a || 0.3, fade: 1 }); }
+function fxAcido(ev) {
+  const c = ev.o, R = ev.p.tam / M_CASA;
+  novoFx(ev, 2, { tick(fx, t, dt) { if (t > 1) return; const rr = R * easeOut(t); for (let k = Math.min(220, Math.round(dt * 60 * Math.max(1, rr * rr))); k > 0; k--) { const a = fx.rnd() * 6.283, d = Math.sqrt(fx.rnd()) * rr; acidoPuff(c[0] + Math.cos(a) * d, c[1] + Math.sin(a) * d, fx.rnd, 0.45); } } });
+}
+// Feixe de Luz (Ranton): um laser grosso em linha reta até o alcance
+function fxLaser(ev) {
+  const el = ev.el, o = ev.o, d = ev.d || [0.7071, 0.7071], L = compArea(ev.p), e = [o[0] + d[0] * L, o[1] + d[1] * L], h0 = hChao(o[0], o[1]), c = TRI(el);
+  novoFx(ev, 1.1, {
+    tick(fx, t) { if (!fx.imp && t > 0.12) { fx.imp = 1; estouro(el, e[0], e[1], 12, 1.2, fx.rnd); luzFx(o[0] + d[0] * L / 2, o[1] + d[1] * L / 2, 10, 40 + L * 6, 0.4); } },
+    draw(fx, t) { if (t > 0.6) return; const ext = Math.min(1, t / 0.1), fade = t > 0.35 ? 1 - (t - 0.35) / 0.25 : 1, [ax, ay] = telaDe(o[0], o[1], Z0, h0), [bx, by] = telaDe(o[0] + d[0] * L * ext, o[1] + d[1] * L * ext, 12, hChao(e[0], e[1])), w = 2 + Math.sin(t * 60);
+      const ga = ctx.globalAlpha; ctx.globalAlpha = ga * fade * 0.5; linha(ax, ay, bx, by, c[0], 7 + w); ctx.globalAlpha = ga * fade; linha(ax, ay, bx, by, c[1], 4 + w * 0.5); linha(ax, ay, bx, by, c[2], 2); linha(ax, ay, bx, by, '#fff', 1); ctx.globalAlpha = ga; } });
+}
+// Circo de Laser (Ranton): um laser por nível, curvando até cada alvo
+function fxLasers(ev) {
+  const el = ev.el, o = ev.o, h0 = hChao(o[0], o[1]), c = TRI(el), rnd = rngFx(ev.seed + 9), L = []; let i = 0;
+  for (const a of ev.alvos) for (let k = 0; k < a[3]; k++) L.push({ x: a[1] + (rnd() - 0.5) * 0.3, y: a[2] + (rnd() - 0.5) * 0.3, t0: (i++) * 0.06, bend: (rnd() - 0.5) * 30 });
+  if (!L.length) return;
+  novoFx(ev, L.length * 0.06 + 0.8, {
+    tick(fx, t) { for (const q of L) if (!q.imp && t > q.t0 + 0.08) { q.imp = 1; estouro(el, q.x, q.y, 11, 0.5, fx.rnd); } },
+    draw(fx, t) { const [ax, ay] = telaDe(o[0], o[1], Z0, h0), ga = ctx.globalAlpha;
+      for (const q of L) { const u = t - q.t0; if (u < 0 || u > 0.22) continue; const [bx, by] = telaDe(q.x, q.y, 11, hChao(q.x, q.y)), mx = (ax + bx) / 2 + q.bend * 0.3, my = (ay + by) / 2 - Math.abs(q.bend) * 0.4;
+        ctx.globalAlpha = ga * (1 - u / 0.22); poliLinha([[ax, ay], [mx, my], [bx, by]], c[1], 2); poliLinha([[ax, ay], [mx, my], [bx, by]], '#fff', 1); }
+      ctx.globalAlpha = ga; } });
+}
+// prisões desenhadas em quem foi preso (a metade de trás atrás do boneco, a da frente por cima)
+function casulo(sx, sy, u, frente, c, t) {                      // Prisão de Areia: um casulo até o pescoço
+  if (!frente) return; const H = Math.max(1, Math.round(16 * easeOut(u)));
+  for (let j = 0; j < H; j++) { const k = (j - H * 0.42) / (H * 0.62), w = Math.round(7.5 * Math.sqrt(Math.max(0, 1 - k * k))); if (w < 1) continue; const y = sy + 1 - j;
+    ctx.fillStyle = c[1]; ctx.fillRect(sx - w, y, 2 * w + 1, 1); ctx.fillStyle = c[0]; ctx.fillRect(sx + w, y, 1, 1); ctx.fillStyle = c[2]; ctx.fillRect(sx - w, y, 1, 1);
+    for (let i = -w + 1; i < w; i++) if (((i * 7 + j * 3 + ((t * 6) | 0)) % 11) === 0) ctx.fillRect(sx + i, y, 1, 1); }
+}
+function cristais(sx, sy, u, frente, c) {                       // Prisão Cristalina: lascas de cristal em volta
+  const k = easeOut(u), ga = ctx.globalAlpha;
+  for (let i = 0; i < 7; i++) { const a = i / 7 * 6.283 + 0.3, f = Math.sin(a); if ((f >= 0) !== !!frente) continue; const x = Math.round(sx + Math.cos(a) * 7), y = Math.round(sy + f * 3), H = Math.round((12 + (i * 5) % 7) * k); if (H < 2) continue;
+    ctx.globalAlpha = ga * (frente ? 0.72 : 0.9); ctx.fillStyle = c[1]; ctx.fillRect(x - 1, y - H, 3, H); ctx.fillStyle = c[2]; ctx.fillRect(x - 1, y - H, 1, H); ctx.fillStyle = c[0]; ctx.fillRect(x + 1, y - H + 1, 1, H - 1); ctx.fillStyle = '#fff'; ctx.fillRect(x, y - H - 1, 1, 1); }
+  ctx.globalAlpha = ga;
+}
+function piramide(sx, sy, u, frente, c) {                       // Pirâmide de areia
+  if (!frente) return; const H = Math.round(28 * easeOut(u)), B = 13;
+  for (let j = 0; j < H; j++) { const w = Math.round(B * (1 - j / 28)); if (w < 1) continue; const y = sy + 2 - j; ctx.fillStyle = c[2]; ctx.fillRect(sx - w, y, w, 1); ctx.fillStyle = c[1]; ctx.fillRect(sx, y, w + 1, 1);
+    if (j % 5 === 0) { ctx.fillStyle = c[0]; ctx.fillRect(sx - w, y, 2 * w + 1, 1); } }
+}
+function prismaDes(sx, sy, u, frente, c, t) {                    // Prisma de cristal em volta de quem usa
+  const H = Math.round(28 * easeOut(u)), W = 9, ga = ctx.globalAlpha; if (H < 2) return;
+  if (!frente) { ctx.globalAlpha = ga * 0.35; ctx.fillStyle = c[0]; ctx.fillRect(sx - W, sy - H, 2 * W + 1, H); ctx.globalAlpha = ga; return; }
+  ctx.globalAlpha = ga * 0.3; ctx.fillStyle = c[1]; ctx.fillRect(sx - W, sy - H, 2 * W + 1, H); ctx.globalAlpha = ga * 0.9; ctx.fillStyle = c[2]; ctx.fillRect(sx - W, sy - H, 1, H); ctx.fillRect(sx + W, sy - H, 1, H); ctx.fillRect(sx - 3, sy - H, 1, H);
+  ctx.fillStyle = c[1]; for (let i = -W; i <= W; i++) ctx.fillRect(sx + i, sy - H - Math.round((W - Math.abs(i)) * 0.5), 1, 1);
+  const k = ((t * 20) | 0) % (H + 10); if (k < H) { ctx.fillStyle = '#fff'; ctx.fillRect(sx - W + 1, sy - H + k, 2, 1); } ctx.globalAlpha = ga;
+}
+// o que fica de pé no mapa: espelhos de gelo, o olho de areia, a esfera de calor, os pilares e o labirinto de cristal
+function espelho(sx, sy, u, fase, now) {
+  const H = Math.round(16 * easeOut(u)); if (H < 2) return; const X = Math.round(sx), Y = Math.round(sy), ga = ctx.globalAlpha; ctx.globalAlpha = ga * 0.82;
+  ctx.fillStyle = '#9ce'; ctx.fillRect(X - 2, Y - H, 5, H); ctx.fillStyle = '#eff'; ctx.fillRect(X - 2, Y - H, 1, H); ctx.fillStyle = '#58a'; ctx.fillRect(X + 2, Y - H, 1, H);
+  const k = ((now / 60 + fase * 30) | 0) % (H + 12); if (k < H) { ctx.fillStyle = '#fff'; ctx.fillRect(X - 1, Y - H + k, 3, 1); } ctx.globalAlpha = ga;
+}
+function pilar(sx, sy, u, c, H0) {
+  const H = Math.round((H0 || 22) * easeOut(u)); if (H < 2) return; const X = Math.round(sx), Y = Math.round(sy), ga = ctx.globalAlpha; ctx.globalAlpha = ga * 0.85;
+  ctx.fillStyle = c[1]; ctx.fillRect(X - 2, Y - H, 5, H); ctx.fillStyle = c[2]; ctx.fillRect(X - 2, Y - H, 1, H); ctx.fillStyle = c[0]; ctx.fillRect(X + 2, Y - H + 1, 1, H - 1);
+  ctx.fillStyle = c[2]; ctx.fillRect(X - 1, Y - H - 1, 3, 1); ctx.fillStyle = '#fff'; ctx.fillRect(X, Y - H - 2, 1, 1); ctx.globalAlpha = ga;
+}
+function zonasTecItens(items, now) {
+  const t = now / 1000;
+  for (const z of zonasVisiveis()) { if (z.s !== scene.id || z.g.k !== 'disco') continue; const g = z.g, ef = z.ef;
+    if (!['espelhos', 'terceiro_olho', 'kajousatsu', 'aprimorar', 'labirinto'].includes(ef)) continue;
+    if (!zonaT0.has(z.id)) zonaT0.set(z.id, now - 1e4); const u = Math.min(1, (now - zonaT0.get(z.id)) / 900), c = TRI(z.el);
+    const anel = (n, r, H, desenha) => { for (let i = 0; i < n; i++) { const a = i / n * 6.283, x = g.c[0] + Math.cos(a) * r, y = g.c[1] + Math.sin(a) * r, [sx, sy] = unitScreen(x, y);
+      items.push({ bx0: x - 0.2, by0: y - 0.2, bx1: x + 0.2, by1: y + 0.2, rx0: sx - 4, ry0: sy - H - 3, rx1: sx + 4, ry1: sy + 1, depth: x + y, draw() { desenha(sx, sy, i, a); } }); } };
+    if (ef === 'espelhos') anel(21, g.r, 18, (sx, sy, i, a) => espelho(sx, sy, u, a, now));
+    else if (ef === 'aprimorar') anel(5, g.r, 24, (sx, sy) => pilar(sx, sy, u, c, 22));
+    else if (ef === 'labirinto') { anel(Math.max(16, Math.round(g.r * 9)), g.r, 20, (sx, sy) => pilar(sx, sy, u, c, 18));
+      anel(Math.max(8, Math.round(g.r * 5)), g.r * 0.55, 16, (sx, sy, i) => { if (i % 3) pilar(sx, sy, u, c, 12); }); }
+    else { const [sx, sy] = unitScreen(g.c[0], g.c[1]);
+      items.push({ bx0: g.c[0] - 0.3, by0: g.c[1] - 0.3, bx1: g.c[0] + 0.3, by1: g.c[1] + 0.3, rx0: sx - 9, ry0: sy - 30, rx1: sx + 9, ry1: sy, depth: g.c[0] + g.c[1] + 0.01,
+        draw() { if (ef === 'terceiro_olho') olhoAreia(sx, sy, t); else orbeCalor(sx, sy, t); } }); } }
+}
+function olhoAreia(sx, sy, t) {
+  const Y = Math.round(sy - 22 + Math.sin(t * 2) * 2), X = Math.round(sx);
+  ctx.fillStyle = '#986'; ctx.fillRect(X - 4, Y - 1, 9, 3); ctx.fillRect(X - 3, Y - 2, 7, 5); ctx.fillStyle = '#edc'; ctx.fillRect(X - 3, Y - 1, 7, 3);
+  ctx.fillStyle = '#542'; ctx.fillRect(X - 1, Y - 1, 3, 3); ctx.fillStyle = '#000'; ctx.fillRect(X, Y, 1, 1); ctx.fillStyle = '#fff'; ctx.fillRect(X - 1, Y - 1, 1, 1);
+  const k = ((t * 8) | 0) % 6; ctx.fillStyle = '#cb9'; ctx.fillRect(X - 2 + k, Y + 3 + k, 1, 1);
+}
+function orbeCalor(sx, sy, t) {
+  const Y = sy - 12 + Math.sin(t * 3) * 1.5, f = Math.sin(t * 20) * 0.5, ga = ctx.globalAlpha;
+  ctx.globalAlpha = ga * 0.35; disco(sx, Y, 7 + f, '#f93'); ctx.globalAlpha = ga; disco(sx, Y, 4.5 + f, '#fb5'); disco(sx, Y, 3, '#ffc'); disco(sx - 1, Y - 1, 1.2, '#fff');
 }
 
 // ---------- o que fica no mapa: muros (ordenados com o resto) e algemas ----------
@@ -3825,7 +4001,7 @@ const MURO = {
 function fxItens(items, now) {
   const t = now / 1000;
   for (const fx of FXS) if (fx.itens) fx.itens(fx, t - fx.t0, items);
-  algemaItens(items, now); if (typeof cozyItens === 'function') cozyItens(items, now);
+  algemaItens(items, now); zonasTecItens(items, now); if (typeof cozyItens === 'function') cozyItens(items, now);
   for (const z of zonasVisiveis()) { if (z.s !== scene.id || z.ef !== 'barreira' || z.g.k !== 'poli') continue;
     const p = z.g.p, A = [(p[0][0] + p[1][0]) / 2, (p[0][1] + p[1][1]) / 2], B = [(p[2][0] + p[3][0]) / 2, (p[2][1] + p[3][1]) / 2], D = [p[1][0] - p[0][0], p[1][1] - p[0][1]];
     const fatias = [-0.5, -0.375, -0.25, -0.125, 0, 0.125, 0.25, 0.375, 0.5].sort((u, v) => u * (D[0] + D[1]) - v * (D[0] + D[1]));
@@ -3848,10 +4024,12 @@ function fxItens(items, now) {
 // atrás do boneco e a da frente por cima. Argila vira uma centopeia enrolada, tinta uma serpente; terra e água, uma corda grossa.
 function fxAlgemas() {}
 function algemaItens(items, now) {
-  for (const z of zonasVisiveis()) { if ((z.ef !== 'algemar' && z.ef !== 'prisao_agua') || z.g.k !== 'alvo' || !algemaAtiva(z)) continue; const p = posDe(z.g.id); if (!p || p.s !== scene.id) continue;
-    if (!zonaT0.has(z.id)) zonaT0.set(z.id, now - 1e4); const u = Math.min(1, (now - zonaT0.get(z.id)) / 900), [sx0, sy0] = unitScreen(p.x, p.y), sx = Math.round(sx0), sy = Math.round(sy0), pr = z.ef === 'prisao_agua';
-    for (const frente of [0, 1]) items.push({ bx0: p.x - 0.3, by0: p.y - 0.3, bx1: p.x + 0.3, by1: p.y + 0.3, rx0: sx - (pr ? 12 : 9), ry0: sy - (pr ? 22 : 16), rx1: sx + (pr ? 12 : 9), ry1: sy + 4,
-      depth: p.x + p.y + (frente ? 0.003 : -0.003), draw() { if (pr) bolha(sx, sy, u, frente, now / 1000); else espiral(z.el, sx, sy, u, frente, now / 1000); } }); }
+  for (const z of zonasVisiveis()) { if (z.g.k !== 'alvo' || !PRENDE[z.ef] || !algemaAtiva(z)) continue; const p = posDe(z.g.id); if (!p || p.s !== scene.id) continue;
+    if (!zonaT0.has(z.id)) zonaT0.set(z.id, now - 1e4); const u = Math.min(1, (now - zonaT0.get(z.id)) / 900), [sx0, sy0] = unitScreen(p.x, p.y), sx = Math.round(sx0), sy = Math.round(sy0), ef = z.ef, c = TRI(z.el), alto = ef === 'piramide' || ef === 'prisma';
+    for (const frente of [0, 1]) items.push({ bx0: p.x - 0.3, by0: p.y - 0.3, bx1: p.x + 0.3, by1: p.y + 0.3, rx0: sx - 14, ry0: sy - (alto ? 34 : 24), rx1: sx + 14, ry1: sy + 4,
+      depth: p.x + p.y + (frente ? 0.003 : -0.003), draw() { const t = now / 1000;
+        if (ef === 'prisao_agua') bolha(sx, sy, u, frente, t); else if (ef === 'prisao_areia') casulo(sx, sy, u, frente, c, t); else if (ef === 'prisao_cristal') cristais(sx, sy, u, frente, c);
+        else if (ef === 'piramide') piramide(sx, sy, u, frente, c); else if (ef === 'prisma') prismaDes(sx, sy, u, frente, c, t); else espiral(z.el, sx, sy, u, frente, t); } }); }
 }
 function espiral(el, sx, sy, u, frente, t) {
   const c = PICO[el] || PICO.doton, bicho = el === 'nendo' || el === 'sumi', N = 46, VOLTAS = 2.6, ALT = 11, fim = Math.max(1, Math.round(N * easeOut(u)));
@@ -3876,6 +4054,11 @@ function fxZonasAmb(dt) {
     if (z.ef === 'inflamavel' && rnd() < dt * 8 * Math.max(0.6, g.r * g.r)) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r, cs = INFL[z.el] || INFL.katon;
       pt({ x: g.c[0] + Math.cos(a) * d, y: g.c[1] + Math.sin(a) * d, z: 1 + rnd() * 6, vx: (rnd() - 0.5) * 0.2, vy: (rnd() - 0.5) * 0.2, vz: 1, vida: 1.2, s0: 1, c: cs, f: 'q', a: 0.8, fade: 1 }); }
     if (z.ef === 'desastre') { const el = MAT[z.el] ? z.el : 'ninpou'; for (let k = 0; k < dt * Math.min(70, 2.5 * g.r * g.r); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; desastrePt(el, g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, rnd); } }
+    if (z.ef === 'interferencia') for (let k = 0; k < dt * Math.min(90, 1.5 * g.r * g.r); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; enxamePt(g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, rnd); }
+    if (z.ef === 'neblina_acida') for (let k = 0; k < dt * Math.min(80, 1.2 * g.r * g.r); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; acidoPuff(g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, rnd); }
+    if (z.ef === 'nuvem_tempestuosa') { for (let k = 0; k < dt * Math.min(140, 26 * Math.max(0.6, g.r * g.r)); k++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r; nuvemPuff(g.c[0] + Math.cos(a) * d, g.c[1] + Math.sin(a) * d, z.el, rnd); }
+      if (rnd() < dt * 1.2) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r, x = g.c[0] + Math.cos(a) * d, y = g.c[1] + Math.sin(a) * d, [sx, sy] = telaDe(x, y, 0), sd = (rnd() * 1e9) | 0; prim(0.12, () => relampago(zig(sx, sy - 40, sx, sy, rngFx(sd), 1, 4))); luzFx(x, y, 20, 40, 0.15); } }
+    if (z.ef === 'kajousatsu' && rnd() < dt * 12) emite('shakuton', g.c[0], g.c[1], 10, 0, 0, 10, 0.5, rnd);
     if (z.ef === 'restringente' && rnd() < dt * 6 * Math.max(0.6, g.r * g.r)) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * g.r, [c1, c2] = ZONA_COR.restringente[z.el] || ['#777', '#aaa'];
       pt({ x: g.c[0] + Math.cos(a) * d, y: g.c[1] + Math.sin(a) * d, z: 0, vx: 0, vy: 0, vz: 6, vida: 0.5, s0: 1, s1: 2, c: [c2, c2, c1], f: 'd' }); } }
 }
@@ -3964,7 +4147,16 @@ const COND = {
   imerso_anda: { n: 'Imerso', s: '潜', g: 'tec', d: 'Fundido ao chão (Imergir nível 4+): Perito em Furtividade, vê até 10 m e anda à metade do deslocamento; atacar revela.', lento: 1 },
   pele_pedra: { n: 'Pele de Pedra', s: '岩', g: 'tec', d: 'A pele vira rocha: dureza de corpo igual à dureza do poder +2 até o fim do turno (sustentada, 1; nível 9+, 2).' },
   vacuo: { n: 'Vácuo', s: '疾', g: 'tec', d: 'Deslocamento de Vácuo: +½ Espírito de quem usou em metros de deslocamento até o próximo turno.' },
-  flutuando: { n: 'Flutuando', s: '浮', g: 'tec', d: 'Flutuar (Fuuton com Leque Gigante): pode voar, com Voo igual ao Espírito, enquanto sustentar.' },
+  flutuando: { n: 'Voando', s: '浮', g: 'tec', d: 'Flutuar, asas (Kujaku, Anjo de Papel) ou nuvem de areia: pode voar, com Voo igual ao Espírito, enquanto sustentar.' },
+  armadura_areia: { n: 'Armadura de Areia', s: '砂', g: 'tec', d: 'Dureza de corpo 1 por nível par do poder (até 3); −5 m de deslocamento e −3 na Esquiva, Agilidade, Acrobacia e Furtividade. Quebra com crítico ou ataque que ignore dureza.', esqPen: 3, desl: -5 },
+  armadura_ouro: { n: 'Armadura de Ouro', s: '金', g: 'tec', d: 'Pó de ouro: dureza de corpo 2 a 4; −10 m de deslocamento, −3 na Esquiva e falha em Agilidade, Acrobacia e Furtividade.', esqPen: 3, desl: -10 },
+  manto_ferro: { n: 'Manto de Ferro', s: '鉄', g: 'tec', d: 'Areia de ferro em volta do corpo: dureza de corpo 1 que não quebra; custa 1 de chakra por turno.' },
+  manto_lava: { n: 'Manto de Lava', s: '熔', g: 'tec', d: 'Coberto de lava: golpes corporais viram Youton; quem encosta sofre o dano comum (grau 1); quem esquiva testa Vigor.' },
+  bracos_serpente: { n: 'Braços de Serpente', s: '蛇', g: 'tec', d: 'Serpentes nas mangas: arma longa de 6 m e 3 de dano; bloqueiam ataques armados e energizados.' },
+  prisma: { n: 'Prisma', s: '晶', g: 'tec', d: 'Dentro do prisma de cristal (regras de Barreira); ataca com Canhão pela ponta uma vez por turno; desprevenido.', impl: ['desprevenido'] },
+  carga_lava: { n: 'Carga de Lava', s: '岩', g: 'tec', d: 'Lava endurecida no corpo: cada carga ocupa 1 compartimento (nível 7+: −2 m de deslocamento cada). Quebrar todas: ação parcial e Força ou Escapar.', nv: 1 },
+  lava_corpo: { n: 'Lava no corpo', s: '灼', g: 'ferida', d: 'Onda Queimante: no início de cada turno, Vigor ou perde de Vitalidade o número ao lado; depois de 3 turnos vira Carga de Lava.', nv: 1 },
+  intoxicado: { n: 'Intoxicado', s: '酸', g: 'ferida', d: 'Neblina Ácida: Vigor no fim de cada turno até 3 sucessos; cada falha tira 2 de Vitalidade (sem dureza de corpo).' },
 };
 const COND_GRUPOS = [['corpo', 'Corpo'], ['ferida', 'Ferimentos'], ['mente', 'Ação e defesa'], ['medo', 'Medo'], ['sentido', 'Sentidos'], ['tec', 'Técnicas']];
 // a linha de gravidade: a chave fica escondida quando uma destas (ou uma mais grave que elas) está presente
@@ -4027,8 +4219,9 @@ function defesaDe(id, o) {
   o = o || {}; const st = statsDe(id), C = condsDe(id);
   if (C.flag('semDef')) return { v: 0, auto: 1, txt: 'acerta sozinho: ' + COND[[...C.ef].find(k => COND[k].semDef)].n.toLowerCase() };
   if (o.area && C.flag('def9Area')) return { v: 9, txt: 'impedido: defesa fixa 9 contra área' };
-  const esq = C.flag('semEsq') ? 0 : (st.esq || 0), p = condPen(id, 'def', o);
-  return { v: 9 + esq + p.v, txt: (C.flag('semEsq') ? 'sem bônus de Esquiva' + (p.txt ? ', ' : '') : '') + p.txt, pen: p.v };
+  const esq = C.flag('semEsq') ? 0 : (st.esq || 0), p = condPen(id, 'def', o), ar = [...C.ef].find(k => COND[k].esqPen);      // armadura pesada: −3 na Esquiva
+  const ep = ar ? -COND[ar].esqPen : 0, txt = [C.flag('semEsq') ? 'sem bônus de Esquiva' : '', p.txt, ar ? `${COND[ar].n} −${COND[ar].esqPen}` : ''].filter(Boolean).join(', ');
+  return { v: 9 + esq + p.v + ep, txt, pen: p.v + ep };
 }
 function condMov(id) {                                   // pode sair do lugar?
   const C = condsDe(id); const k = [...C.ef].find(q => COND[q].semMov); if (k) return { msg: `${COND[k].n}: não pode se deslocar` };
@@ -4036,6 +4229,7 @@ function condMov(id) {                                   // pode sair do lugar?
   return {};
 }
 const condDesl = (id, m) => { const C = condsDe(id); if (C.ef.has('vacuo') && typeof statsDe === 'function') m += Math.ceil((statsDe(id).esp || 0) / 2);     // Deslocamento de Vácuo
+  for (const k of C.ef) if (COND[k].desl) m = Math.max(1, m + COND[k].desl);                // armaduras de areia e de ouro
   return C.flag('lento') ? Math.floor(m / 2) : m; };
 const nomeCond = k => COND[k] ? COND[k].n : k;
 
@@ -4258,6 +4452,46 @@ const ELEM = {
   doton: { n: 'Doton', k: '土', alc: [5, 1], an: 'curto', tam: 1, dano: 0, dur: 2 },
   sumi: { n: 'Sumi Ninpou', k: '墨', alc: [15, 3], an: 'longo', tam: 1, dano: 0, dif: 1, arte: 1, durFixa: 1 },
   nendo: { n: 'Kibaku Nendo', k: '爆', alc: [15, 3], an: 'longo', tam: 2, dano: 2, arte: 1 },
+  // ----- hijutsus (Livro Básico, Guia Avançado e Livros de Hijutsus): seguem as regras do Ninpou com os parâmetros da tabela de poderes -----
+  // ch: atributo ou perícia chave no lugar do Espírito · cor: escuro, médio e claro (o visual das técnicas) · hj: o livro e as páginas
+  kikai: { n: 'Kikai Ninpou', k: '蟲', alc: [10, 2], an: 'médio', tam: 1, dano: 0, ch: 'animais', chN: 'Lidar com Animais', cor: ['#110', '#332', '#776'], hj: 'Livro Básico, Kikai Ninpou (p. 147–149)',
+    extra: 'Usa 1 kikaichuu por nível; drena 1 de chakra por nível usado ao tocar o alvo (só efeitos com custo; metade nos que causam dano por turno).' },
+  mokuton: { n: 'Mokuton', k: '木', alc: [10, 2], an: 'médio', tam: 1, dano: 1, dif: 1, cor: ['#541', '#874', '#ba7'], hj: 'Livro Básico, Mokuton (p. 175–179)',
+    extra: 'Ganha 1 nível de Doton e Suiton (Canhão com o nível de Mokuton).' },
+  hyouton: { n: 'Hyouton', k: '氷', alc: [10, 2], an: 'médio', tam: 1, dano: 0, dur: 2, dif: 1, cor: ['#58a', '#9ce', '#eff'], hj: 'Hijutsus vol. 1, Hyouton (p. 19–21)',
+    extra: 'Criações permanentes derretem em 1 h por nível usado. Ganha 1 nível de Fuuton e Suiton (Canhão com o nível de Hyouton).' },
+  sabaku: { n: 'Sabaku Hijutsu', k: '砂', alc: [10, 2], an: 'médio', tam: 2, dano: 0, dur: 2, cor: ['#986', '#cb9', '#edc'], hj: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)',
+    extra: 'Fora do deserto, cada técnica pede antes uma ação de movimento para fazer areia (a Areia Especial dispensa). Vantagem contra Katon; desvantagem contra Suiton e Sakin.' },
+  youton: { n: 'Yonbi Youton', k: '熔', alc: [15, 3], an: 'longo', tam: 2, dano: 2, cor: ['#822', '#e62', '#fc4'], hj: 'Hijutsus vol. 1, Yonbi Youton (p. 38–39)',
+    extra: 'Lava do Yonbi (Jinchuuriki 1). Desvantagem contra Suiton. Ganha 1 nível de Doton e Katon.' },
+  kami: { n: 'Kami Ninpou', k: '紙', alc: [10, 2], an: 'médio', tam: 1, dano: 1, cor: ['#aa9', '#ddc', '#fff'], hj: 'Hijutsus vol. 1, Kami Ninpou (p. 57–60)',
+    extra: 'Arte pode substituir o Espírito (opcional). Algemar, Orbe, Barreira e Prisão de Água só com Shikigami no Mai. Desvantagem contra Katon.' },
+  kujaku: { n: 'Kujaku Myoho', k: '孔', alc: [10, 2], an: 'médio', tam: 2, dano: 1, cor: ['#729', '#b8d', '#fef'], hj: 'Hijutsus vol. 2, Kujaku Myoho (p. 15–17)',
+    extra: 'Cada técnica gasta também 1 ponto de Saúde; o 10º ponto tira 1 de Vigor de vez.' },
+  kumo: { n: 'Kumo Ninpou', k: '蜘', alc: [15, 3], an: 'longo', tam: 1, dano: 0, dif: 1, cor: ['#886', '#ddb', '#fff'], hj: 'Hijutsus vol. 2, Kumo Ninpou (p. 34–36)',
+    extra: 'Teia de aranha; não aprende outros elementos.' },
+  hebi: { n: 'Hebi Ninpou', k: '蛇', alc: [5, 1], an: 'curto', tam: 1, dano: 0, dif: 1, cor: ['#461', '#8a5', '#ce9'], hj: 'Hijutsus vol. 2, Hebi Ninpou (p. 38–40)',
+    extra: 'Serpentes; pede Possessão da Serpente Branca.' },
+  ototon: { n: 'Ototon', k: '音', alc: [5, 1], an: 'curto', tam: 1, dano: 0, dif: 1, cor: ['#669', '#aad', '#eef'], hj: 'Hijutsus vol. 2, Ototon (p. 50–52)',
+    extra: 'Os efeitos exclusivos não se bloqueiam nem se evitam tapando os ouvidos; quem é surdo é imune. Um efeito exclusivo novo encerra as condições do anterior.' },
+  sakin: { n: 'Sakin', k: '金', alc: [10, 2], an: 'médio', tam: 1, dano: 0, dur: 2, cor: ['#872', '#dc6', '#ffc'], hj: 'Hijutsus vol. 2, Sakin (p. 64–66)',
+    extra: 'Pó de ouro: Areia Especial obrigatória. Vantagem contra Katon e Sabaku; desvantagem contra Suiton.' },
+  satetsu: { n: 'Satetsu', k: '鉄', alc: [10, 2], an: 'médio', tam: 1, dano: 1, cor: ['#221', '#554', '#998'], hj: 'Hijutsus vol. 2, Satetsu (p. 67–68)',
+    extra: 'Areia de ferro: Areia Especial obrigatória. Vantagem contra Katon; desvantagem contra Suiton.' },
+  ranton: { n: 'Ranton', k: '嵐', alc: [15, 3], an: 'longo', tam: 1, dano: 1, cor: ['#449', '#88e', '#eef'], hj: 'Hijutsus vol. 2, Ranton (p. 115–117)',
+    extra: 'Precisa das duas mãos. Ganha 1 nível de Raiton e Suiton.' },
+  shakuton: { n: 'Shakuton', k: '灼', alc: [10, 2], an: 'médio', tam: 1, dano: 2, cor: ['#c51', '#fb5', '#ffe'], hj: 'Hijutsus vol. 2, Shakuton (p. 119–122)',
+    extra: 'Fraco contra Suiton. Ganha 1 nível de Katon e Fuuton.' },
+  shouton: { n: 'Shouton', k: '晶', alc: [10, 2], an: 'médio', tam: 1, dano: 0, dur: 2, dif: 1, cor: ['#97a', '#dbe', '#fff'], hj: 'Hijutsus vol. 2, Shouton (p. 123–125)',
+    extra: 'Vantagem contra Doton, Fuuton e Suiton; desvantagem contra Kikai Ninpou e Raiton. Ganha 1 nível de Doton.' },
+  doku: { n: 'Dokujutsu', k: '毒', alc: [10, 2], an: 'médio', tam: 1, dano: 0, dif: 1, ch: 'venef', chN: 'Venefício', cor: ['#537', '#97b', '#ce9'], hj: 'Livro Básico, Dokujutsu (p. 201); Guia Avançado (p. 7–10)',
+    extra: 'Pode aplicar um veneno junto do efeito (inalação, toque ou corrente sanguínea, que pede grau 2+). Resistência ao veneno: 8 + Venefício.' },
+  yoton: { n: 'Youton', k: '溶', alc: [15, 3], an: 'longo', tam: 2, dano: 1, cor: ['#712', '#e52', '#fd6'], hj: 'Hijutsus vol. 2, Youton (p. 108–110)',
+    extra: 'Lava. Desvantagem contra Suiton. Ganha 1 nível de Doton e Katon.' },
+  futton: { n: 'Futton', k: '沸', alc: [10, 2], an: 'médio', tam: 2, dano: 2, dif: 1, cor: ['#99b', '#dde', '#fff'], hj: 'Hijutsus vol. 2, Futton (p. 111–113)',
+    extra: 'Vapor fervente. Ganha 1 nível de Katon e Suiton.' },
+  mecanico: { n: 'Ninpou Mecânico', k: '機', alc: [15, 1], an: 'longo', tam: 1, dano: 2, ch: 'mec', chN: 'Mecanismo', cor: ['#555', '#999', '#ddd'], hj: 'Guia Avançado, Domínio Mecânico (p. 35)',
+    extra: 'Domínio Mecânico: a cada técnica, escolha um bônus (+2 de dano, já contado; ou +2 de dureza, +1 de dificuldade, ou +5 m +1 m por Mecanismo de alcance).' },
 };
 const TODOS_EF = ['canhao', 'orbe', 'raio', 'restringente', 'barreira', 'flechas', 'lanca', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp', 'algemar',
   'criar_arma', 'projetar', 'repelir', 'cegante', 'desastre'];      // Ninpou do Livro Básico + os efeitos de Ninpou do Guia Avançado
@@ -4269,7 +4503,32 @@ const PERMITE = {
   fuuton: ['canhao', 'orbe', 'raio', 'barreira', 'flechas', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp',
     'venenoso', 'afiar', 'lamina_vento', 'inflamavel', 'desloc_vacuo', 'projetar', 'repelir', 'purificar', 'cegante', 'flutuar', 'desastre'],
   raiton: ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'energizar', 'sopro', 'missil', 'onda_exp', 'meteoros', 'lamina_raios', 'arma_eletrica', 'descarga', 'dano_cont', 'desastre'],
-  nendo: ['canhao', 'orbe', 'flechas', 'coluna', 'nuvem', 'missil', 'onda_exp', 'algemar', 'meteoros'],
+  nendo: ['canhao', 'orbe', 'flechas', 'coluna', 'nuvem', 'missil', 'onda_exp', 'algemar', 'meteoros', 'projetar', 'repelir'],
+  // hijutsus: "Efeitos Permitidos" de cada um, mais os efeitos do Guia Avançado que citam o hijutsu e os exclusivos
+  kikai: ['canhao', 'orbe', 'raio', 'barreira', 'flechas', 'ricochete', 'coluna', 'nuvem', 'sopro', 'missil', 'dano_cont', 'repelir', 'purificar', 'cegante', 'interferencia'],
+  mokuton: TODOS_EF.concat(['imergir', 'dano_cont', 'desloc_vacuo', 'transmissor', 'selar_chakra', 'golem']),
+  hyouton: TODOS_EF.concat(['imergir', 'dano_cont', 'desloc_vacuo', 'espelhos']),
+  sabaku: TODOS_EF.concat(['imergir', 'colisao_ondas', 'areia_especial', 'armadura_areia', 'prisao_areia', 'terceiro_olho', 'areia_suspensa', 'piramide']),
+  youton: TODOS_EF.concat(['manto_lava', 'vulcao']),
+  kami: ['canhao', 'criar_arma', 'raio', 'flechas', 'sopro', 'coluna', 'lanca', 'missil', 'ricochete', 'correnteza', 'algemar', 'orbe', 'barreira', 'prisao_agua',
+    'projetar', 'repelir', 'cegante', 'anjo_papel', 'julgamento', 'emissario'],
+  kujaku: ['canhao', 'criar_arma', 'orbe', 'raio', 'barreira', 'flechas', 'lanca', 'ricochete', 'coluna', 'energizar', 'sopro', 'correnteza', 'missil', 'onda_exp', 'algemar', 'meteoros',
+    'projetar', 'repelir', 'voo_kujaku'],
+  kumo: ['canhao', 'orbe', 'raio', 'restringente', 'flechas', 'ricochete', 'sopro', 'missil', 'onda_exp', 'algemar', 'pele_pedra', 'projetar', 'repelir', 'purificar', 'cegante'],
+  hebi: ['canhao', 'orbe', 'raio', 'restringente', 'imergir', 'barreira', 'flechas', 'lanca', 'ricochete', 'coluna', 'nuvem', 'sopro', 'correnteza', 'missil', 'onda_exp', 'venenoso', 'algemar',
+    'dano_cont', 'projetar', 'repelir', 'purificar', 'cegante', 'medo', 'bracos_serpente'],
+  ototon: ['canhao', 'orbe', 'raio', 'barreira', 'ricochete', 'coluna', 'flechas', 'sopro', 'correnteza', 'missil', 'onda_exp', 'dano_cont', 'projetar', 'repelir', 'guizo', 'explosao_sonora', 'sino'],
+  sakin: TODOS_EF.concat(['imergir', 'colisao_ondas', 'areia_especial', 'prisao_areia', 'terceiro_olho', 'areia_suspensa', 'areia_selada', 'armadura_ouro', 'ouro_reluzente']),
+  satetsu: TODOS_EF.concat(['imergir', 'colisao_ondas', 'areia_selada', 'areia_especial', 'prisao_areia', 'areia_suspensa', 'manto_ferro', 'membros_ferro', 'ferro_venenoso']),
+  ranton: ['canhao', 'orbe', 'raio', 'flechas', 'ricochete', 'coluna', 'nuvem', 'sopro', 'energizar', 'missil', 'onda_exp', 'descarga', 'meteoros', 'cegante', 'feixe_luz', 'nuvem_tempestuosa', 'circo_laser'],
+  shakuton: ['canhao', 'orbe', 'raio', 'flechas', 'coluna', 'energizar', 'nuvem', 'sopro', 'missil', 'onda_exp', 'meteoros', 'dano_cont', 'kajousatsu'],
+  shouton: TODOS_EF.concat(['imergir', 'pele_pedra', 'dano_cont', 'desloc_vacuo', 'esfera_cristal', 'prisao_cristal', 'prisma', 'aprimorar', 'labirinto']),
+  doku: ['canhao', 'orbe', 'raio', 'dano_cont', 'purificar', 'flechas', 'lanca', 'ricochete', 'coluna', 'energizar', 'nuvem', 'sopro', 'missil', 'correnteza', 'onda_exp', 'cegante'],
+  yoton: ['canhao', 'restringente', 'dano_cont', 'orbe', 'raio', 'ricochete', 'lanca', 'flechas', 'barreira', 'coluna', 'energizar', 'sopro', 'correnteza', 'onda_exp', 'missil', 'tremor', 'desastre',
+    'carga_lava', 'onda_queimante', 'petrificacao'],
+  futton: ['canhao', 'orbe', 'neblina', 'raio', 'dano_cont', 'projetar', 'flechas', 'ricochete', 'coluna', 'nuvem', 'sopro', 'missil', 'correnteza', 'inflamavel', 'onda_exp', 'cegante',
+    'sopro_concentrado', 'neblina_acida'],
+  mecanico: TODOS_EF,
 };
 // t: alvo (uma criatura), raio, flechas, varios, cadeia, area, pessoal · forma: geometria da área · def: defesas que valem
 const EFE = {
@@ -4314,6 +4573,49 @@ const EFE = {
   colisao_ondas: { n: 'Colisão de Ondas', nv: 6, t: 'area', forma: 'onda', dano: 'base10', dur: 'Concentração', def: 'area', fx: 'onda', pg: 'Livro Básico, Suiton (p. 111–113)' },
   lamina_vento: { n: 'Lâmina de Vento', nv: 7, t: 'alvo', alcM: 5, dano: 'vento', acao: 'Completa', def: 'proj', fx: 'laminas', pg: 'Livro Básico, Fuuton (p. 105–106)' },
   desastre: { n: 'Desastre', nv: 9, t: 'area', forma: 'circulo', alcX: 2, tamX: 3, dano: 'tri', custoX: 3, dur: 'Concentração', def: 'area', fx: 'desastre', fica: 1, pg: 'Guia Avançado, Efeitos (p. 48–55)' },
+  // ----- efeitos exclusivos dos hijutsus (resumos da mesa; a regra completa está no livro) -----
+  interferencia: { n: 'Interferência', nv: 3, t: 'area', forma: 'neblina', alcM: 1, dur: 'Sustentada', def: 'ambiente', fx: 'enxame', fica: 1, pg: 'Livro Básico, Kikai Ninpou (p. 147–149)' },
+  transmissor: { n: 'Transmissor', nv: 2, t: 'pessoal', acao: 'Parcial', dur: 'Contínua', def: 'nenhuma', fx: 'sementes', pg: 'Livro Básico, Mokuton (p. 175–179)' },
+  selar_chakra: { n: 'Selar Chakra', nv: 6, t: 'raio', dano: 'nv2', def: 'raio', fx: 'raio', pg: 'Livro Básico, Mokuton (p. 175–179)' },
+  golem: { n: 'Golem', nv: 7, t: 'pessoal', dur: 'Contínua (Concentração para controlar)', def: 'nenhuma', fx: 'golem', pg: 'Livro Básico, Mokuton (p. 175–179)' },
+  espelhos: { n: 'Espelhos Demoníacos', nv: 6, t: 'area', forma: 'espelhos', dur: 'Contínua (3 de chakra por turno)', custo: 3, def: 'area', fx: 'espelhos', fica: 1, pg: 'Hijutsus vol. 1, Hyouton (p. 19–21)' },
+  areia_especial: { n: 'Areia Especial', nv: 2, t: 'pessoal', acao: 'Reação', dur: 'Contínua', custo: 0, def: 'nenhuma', fx: 'repelir', pg: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)' },
+  armadura_areia: { n: 'Armadura de Areia', nv: 3, t: 'pessoal', dur: 'Contínua', def: 'nenhuma', fx: 'pedra', cond: 'armadura_areia', pg: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)' },
+  prisao_areia: { n: 'Prisão de Areia', nv: 5, t: 'alvo', dur: 'Concentração', def: 'alvo', fx: 'prisao', fica: 1, pg: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)' },
+  terceiro_olho: { n: 'Terceiro Olho', nv: 5, t: 'area', forma: 'ponto', dur: 'Concentração', def: 'nenhuma', fx: 'zona', fica: 1, pg: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)' },
+  areia_suspensa: { n: 'Areia Suspensa', nv: 9, t: 'pessoal', acao: 'Movimento (nuvem)', dur: 'Sustentada', custo: 2, def: 'nenhuma', fx: 'flutuar', cond: 'flutuando', pg: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)' },
+  piramide: { n: 'Pirâmide', nv: 9, t: 'alvo', acao: 'Completa', dur: 'Contínua', def: 'nenhuma', fx: 'prisao', fica: 1, cond: ['paralisado', 'sufocando'], pg: 'Hijutsus vol. 1, Sabaku Hijutsu (p. 30–33)' },
+  manto_lava: { n: 'Manto de Lava', nv: 5, t: 'pessoal', acao: 'Movimento', dur: 'Sustentada', def: 'nenhuma', fx: 'pedra', cond: 'manto_lava', pg: 'Hijutsus vol. 1, Yonbi Youton (p. 38–39)' },
+  vulcao: { n: 'Vulcão', nv: 10, t: 'area', forma: 'vulcao', acao: 'Completa', dano: 'meteoro', def: 'area', fx: 'meteoros', pg: 'Hijutsus vol. 1, Yonbi Youton (p. 38–39)' },
+  anjo_papel: { n: 'Anjo de Papel', nv: 5, t: 'pessoal', acao: 'Parcial (asas)', dur: 'Sustentada', custo: 0, def: 'nenhuma', fx: 'flutuar', cond: 'flutuando', pg: 'Hijutsus vol. 1, Kami Ninpou (p. 57–60)' },
+  julgamento: { n: 'Julgamento', nv: 6, t: 'alvo', acao: 'Completa', dano: 'sufoca', dur: 'Concentração', def: 'alvo', fx: 'prisao', fica: 1, pg: 'Hijutsus vol. 1, Kami Ninpou (p. 57–60)' },
+  emissario: { n: 'Emissário Divino', nv: 10, t: 'area', forma: 'esfera3', dano: 'nv2', def: 'area', fx: 'emissario', condArea: 'indefeso', pg: 'Hijutsus vol. 1, Kami Ninpou (p. 57–60)' },
+  voo_kujaku: { n: 'Voo', nv: 4, t: 'pessoal', dur: 'Sustentada', custo: 4, def: 'nenhuma', fx: 'flutuar', cond: 'flutuando', pg: 'Hijutsus vol. 2, Kujaku Myoho (p. 15–17)' },
+  medo: { n: 'Infligir Medo', nv: 2, t: 'varios', dur: '2 rodadas', def: 'nenhuma', fx: 'medo', pg: 'Hijutsus vol. 2, Hebi Ninpou (p. 38–40)' },
+  bracos_serpente: { n: 'Braços de Serpente', nv: 4, t: 'pessoal', acao: 'Parcial', dur: 'Contínua', custo: 4, def: 'nenhuma', fx: 'aura', cond: 'bracos_serpente', pg: 'Hijutsus vol. 2, Hebi Ninpou (p. 38–40)' },
+  guizo: { n: 'Sons de Guizo', nv: 3, t: 'alvo', dur: '1 turno', def: 'som', fx: 'som', pg: 'Hijutsus vol. 2, Ototon (p. 50–52)' },
+  explosao_sonora: { n: 'Explosão Sonora', nv: 4, t: 'alvo', dur: '1 turno', custo: 4, def: 'som', fx: 'som', pg: 'Hijutsus vol. 2, Ototon (p. 50–52)' },
+  sino: { n: 'Badalar do Sino', nv: 6, t: 'alvo', dur: '1 turno', def: 'som', fx: 'som', pg: 'Hijutsus vol. 2, Ototon (p. 50–52)' },
+  areia_selada: { n: 'Areia Selada', nv: 3, t: 'pessoal', acao: '1 rodada', dur: 'Permanente', custo: 0, def: 'nenhuma', fx: 'arma', pg: 'Hijutsus vol. 2, Sakin (p. 64–66)' },
+  armadura_ouro: { n: 'Armadura de Pó de Ouro', nv: 3, t: 'pessoal', dur: 'Contínua', custo: 3, def: 'nenhuma', fx: 'pedra', cond: 'armadura_ouro', pg: 'Hijutsus vol. 2, Sakin (p. 64–66)' },
+  ouro_reluzente: { n: 'Ouro Reluzente', nv: 4, t: 'area', forma: 'circulo', acao: 'Completa', dano: 'comum', def: 'area', fx: 'brilho', pg: 'Hijutsus vol. 2, Sakin (p. 64–66)' },
+  manto_ferro: { n: 'Manto de Areia de Ferro', nv: 3, t: 'pessoal', dur: 'Contínua (1 de chakra por turno)', custo: 1, def: 'nenhuma', fx: 'pedra', cond: 'manto_ferro', pg: 'Hijutsus vol. 2, Satetsu (p. 67–68)' },
+  membros_ferro: { n: 'Membros de Ferro', nv: 4, t: 'pessoal', dur: 'Sustentada', custo: 1, def: 'nenhuma', fx: 'aura', pg: 'Hijutsus vol. 2, Satetsu (p. 67–68)' },
+  ferro_venenoso: { n: 'Areia de Ferro Venenosa', nv: 6, t: 'pessoal', acao: '2 minutos por compartimento', dur: '1 mês', custo: 0, def: 'nenhuma', fx: 'aura', pg: 'Hijutsus vol. 2, Satetsu (p. 67–68)' },
+  carga_lava: { n: 'Carga de Lava', nv: 2, t: 'alvo', dano: 'comum', dur: 'Contínua', def: 'proj', fx: 'proj', pg: 'Hijutsus vol. 2, Youton (p. 108–110)' },
+  onda_queimante: { n: 'Onda Queimante', nv: 3, t: 'alvo', dano: 'nvbase', dur: 'Contínua por 3 turnos', def: 'proj', fx: 'proj', pg: 'Hijutsus vol. 2, Youton (p. 108–110)' },
+  petrificacao: { n: 'Petrificação', nv: 6, t: 'alvo', dano: 'comum', dur: 'Contínua', def: 'proj', fx: 'proj', pg: 'Hijutsus vol. 2, Youton (p. 108–110)' },
+  sopro_concentrado: { n: 'Sopro Concentrado', nv: 2, t: 'alvo', dano: 'comum', def: 'raio', fx: 'raio', pg: 'Hijutsus vol. 2, Futton (p. 111–113)' },
+  neblina_acida: { n: 'Neblina Ácida', nv: 6, t: 'area', forma: 'esfera', dano: 'comum', dur: 'Instantânea ou Concentração', def: 'area', fx: 'acido', fica: 1, pg: 'Hijutsus vol. 2, Futton (p. 111–113)' },
+  feixe_luz: { n: 'Feixe de Luz', nv: 5, t: 'area', forma: 'linha', dano: 'comum', def: 'area', fx: 'laser', pg: 'Hijutsus vol. 2, Ranton (p. 115–117)' },
+  nuvem_tempestuosa: { n: 'Nuvem Tempestuosa', nv: 7, t: 'area', forma: 'nuvem', dano: 'nuvem', dur: 'Concentração', def: 'ambiente', fx: 'nuvem', fica: 1, pg: 'Hijutsus vol. 2, Ranton (p. 115–117)' },
+  circo_laser: { n: 'Circo de Laser', nv: 7, t: 'flechas', dano: 'flecha', acao: 'Completa', def: 'proj', fx: 'lasers', pg: 'Hijutsus vol. 2, Ranton (p. 115–117)' },
+  kajousatsu: { n: 'Kajousatsu', nv: 3, t: 'area', forma: 'esfera_calor', acao: 'Completa', dano: 'comum', dur: 'Concentração (até 4 turnos)', def: 'proj', fx: 'zona', fica: 1, pg: 'Hijutsus vol. 2, Shakuton (p. 119–122)' },
+  esfera_cristal: { n: 'Esfera de Cristal', nv: 4, t: 'pessoal', dur: 'Concentração', custo: 2, def: 'nenhuma', fx: 'aura', pg: 'Hijutsus vol. 2, Shouton (p. 123–125)' },
+  prisao_cristal: { n: 'Prisão Cristalina', nv: 6, t: 'alvo', alcM: 1, pen: -3, dur: 'Concentração', def: 'alvo', fx: 'prisao', fica: 1, pg: 'Hijutsus vol. 2, Shouton (p. 123–125)' },
+  prisma: { n: 'Prisma', nv: 7, t: 'pessoal', acao: 'Completa', dur: 'Concentração', custo: 7, def: 'nenhuma', fx: 'pedra', fica: 1, cond: 'prisma', pg: 'Hijutsus vol. 2, Shouton (p. 123–125)' },
+  aprimorar: { n: 'Aprimorar Técnica', nv: 8, t: 'area', forma: 'circulo', dur: 'Sustentada', def: 'nenhuma', fx: 'zona', fica: 1, pg: 'Hijutsus vol. 2, Shouton (p. 123–125)' },
+  labirinto: { n: 'Labirinto', nv: 10, t: 'area', forma: 'domo', acao: 'Completa', dur: 'Sustentada', def: 'nenhuma', fx: 'explosao', fica: 1, pg: 'Hijutsus vol. 2, Shouton (p. 123–125)' },
   // a combustão de uma área Inflamável (lançada sozinha quando um Katon ou Raiton a acende; não aparece na lista)
   combustao: { n: 'Combustão', nv: 1, t: 'area', forma: 'circulo', dano: 'fixa', def: 'area', fx: 'combustao', oculto: 1, pg: 'Livro Básico, Katon (p. 107–108)' },
 };
@@ -4656,6 +4958,13 @@ function formaDe(ef, o, a, d, p, forma) {
   switch (F.forma) {
     case 'circulo': case 'cilindro': return { k: 'disco', c: a, r: T / 2 };              // diâmetro = tamanho
     case 'neblina': return { k: 'disco', c: o, r: T / 2 };                                 // Névoa: nasce em quem usa (alcance 1 m)
+    case 'espelhos': return { k: 'disco', c: o, r: (p.nv || 1) / M_CASA / 2 };            // Espelhos Demoníacos: cúpula de 1 m de diâmetro por nível
+    case 'esfera': return { k: 'disco', c: o, r: T };                                      // esfera com raio do tamanho comum, em volta de si
+    case 'esfera3': return { k: 'disco', c: o, r: 1.5 * T };                               // círculo com o triplo do tamanho, em volta de si
+    case 'domo': return { k: 'disco', c: o, r: T / 2 };                                    // meia-esfera com o diâmetro comum, em volta de si
+    case 'ponto': return { k: 'disco', c: a, r: 0.3 };                                     // um ponto (o olho de areia)
+    case 'esfera_calor': return { k: 'disco', c: a, r: 0.35 };                             // esfera de calor de 0,5 m (uma casa)
+    case 'vulcao': return { k: 'disco', c: a, r: 10 / M_CASA };                            // seis focos de 10 m em volta do ponto
     case 'nuvem': return { k: 'disco', c: a, r: T };                                       // círculo com o dobro do tamanho
     case 'tremor': return { k: 'disco', c: a, r: 1 / M_CASA };                             // 2 m de diâmetro
     case 'meteoros': return { k: 'disco', c: a, r: 2.5 / M_CASA };                         // esferas de 5 m
@@ -4670,12 +4979,12 @@ function formaDe(ef, o, a, d, p, forma) {
   }
   return null;
 }
-const daOrigem = ef => ['cone', 'linha', 'onda', 'explosao', 'neblina'].includes(EFE[ef].forma);     // área que nasce no usuário
-const semMira = ef => ef === 'onda_exp' || ef === 'neblina';                                // nem direção precisa
+const daOrigem = ef => ['cone', 'linha', 'onda', 'explosao', 'neblina', 'espelhos', 'esfera', 'esfera3', 'domo'].includes(EFE[ef].forma);     // área que nasce no usuário
+const semMira = ef => ef === 'onda_exp' || ['neblina', 'espelhos', 'esfera', 'esfera3', 'domo'].includes(EFE[ef].forma);                  // nem direção precisa
 
 // ---------- parâmetros da técnica (p. 92–94 e descrição de cada elemento) ----------
 function tqCalc(el, ef, nv, st, op) {
-  const Em = ELEM[el], F = EFE[ef]; const chave = Em.arte ? 'Arte' : 'Espírito', X = Em.arte ? (st.arte || 0) : (st.esp || 0), meio = Math.ceil(X / 2);
+  const Em = ELEM[el], F = EFE[ef]; const chave = Em.chN || (Em.arte ? 'Arte' : 'Espírito'), X = Em.ch ? (st[Em.ch] || 0) : Em.arte ? (st.arte || 0) : (st.esp || 0), meio = Math.ceil(X / 2);
   const ba = op.nvAlc ? nv : X, bt = op.nvTam ? nv : X;
   let alc = (F.t === 'pessoal' || F.forma === 'explosao') ? 0 : Em.alc[0] + Em.alc[1] * ba;
   if (F.alcM) alc = F.alcM; else if (F.alcMeio) alc = Math.ceil(alc / 2); else if (F.alcX) alc *= F.alcX;      // divisões arredondam para cima (regra geral do livro)
@@ -4694,7 +5003,9 @@ function tqCalc(el, ef, nv, st, op) {
   else if (F.dano === 'base10') { dano = nv >= 10 ? 18 : nv >= 8 ? 14 : 10; txt = `${dano} (fixo do efeito; o dobro em construções)`; }
   else if (F.dano === 'vento') { dano = nv * (1 + Em.dano); txt = `${dano}: ${nv} lâminas de ${1 + Em.dano} (1 + ${Em.dano} do ${Em.n}), um só teste`; }
   else if (F.dano === 'tri') { dano = 3 * nv; txt = `${dano} (3 por nível)`; }
-  return { alc, tam, dano, txt, fixo, dif, dureza, custo: F.custoX ? F.custoX * nv : F.custo || nv, chave, X, meio, comum, nv };
+  else if (F.dano === 'nvbase') { dano = nv >= 6 ? comum : nv + Em.dano; txt = nv >= 6 ? `${comum} (comum; nível 6+) e ${nv} fixo por turno` : `${dano} (nível ${nv}${bonus}) e ${nv} fixo por turno`; }
+  else if (F.dano === 'sufoca') { fixo = comum; txt = `sufocamento: ${comum} fixo (o dano comum)`; }
+  return { alc, tam, dano, txt, fixo, dif, dureza, custo: F.custoX ? F.custoX * nv : F.custo != null ? F.custo : nv, chave, X, meio, comum, nv };
 }
 function nota(ef, p) {
   const nv = p.nv || 1, base = {
@@ -4740,13 +5051,62 @@ function nota(ef, p) {
     cegante: `Acertando, o alvo enxerga tudo com camuflagem ${nv >= 8 ? 'total por 5 turnos' : 'parcial por 3 turnos'}; limpa o rosto com uma ação padrão (ou movimento e Força/Destreza dif ${p.dif}).`,
     flutuar: 'Voo igual ao Espírito, como alado. Vale como reação a uma queda.',
     desastre: `Concentração. Quem estiver na área (menos você) fica lento e, no início do turno dele, sofre um ataque de CD seu; construções sofrem dano a cada turno.`,
-    combustao: 'Explosão do Inflamável: área toda, sem Bloqueio.' };
+    combustao: 'Explosão do Inflamável: área toda, sem Bloqueio.',
+    // ----- hijutsus -----
+    interferencia: `Insetos espalhados emitem chakra: quem usar Sensor na área testa Rastrear (dif ${p.dif}) ou sente assinaturas por toda parte e não distingue nenhuma.`,
+    transmissor: 'O clone de madeira vira sementes; quem carregar (ou engolir) uma semente é rastreado por você como pela aptidão Sensor.',
+    selar_chakra: `Como o Raio; quem é atingido perde ${Math.ceil(nv / 2)} de chakra. Também sela o chakra bijuu de um Jinchuuriki descontrolado (teste de Espírito).`
+      + (nv >= 9 ? ' Nível 9+: vale contra Jinchuuriki de nível igual e quebra controle de bijuu pelo toque.' : ''),
+    golem: 'Um golem de madeira imenso com seus atributos (Força vira Espírito), dureza 0 e metade da Vitalidade; ataca com o dano comum e usa seus efeitos de Mokuton. Controlar pede Concentração.'
+      + (nv >= 10 ? ' Nível 10: colossal, e os golpes já selam chakra.' : ''),
+    espelhos: `Teste de CD contra Evadir de quem está dentro. Os espelhos têm absorção ${8 * nv} e dureza ${nv >= 8 ? 2 : 0}; ataques que não pegam todos têm 1–4 no d8 de acertar um reflexo. Ir de espelho a espelho é ${nv >= 8 ? 'ação parcial' : 'ação de movimento'}.`,
+    areia_especial: 'Defesa Rápida: bloqueia golpes e projéteis com 1 compartimento de areia e um teste de LM, sem chakra, mesmo impedido ou paralisado. Barreira vira reação.'
+      + (nv >= 8 ? ' Nível 8+: vale até fintado.' : ''),
+    armadura_areia: `Dureza de corpo ${Math.min(3, Math.floor(nv / 2))}; −5 m de deslocamento e −3 na Esquiva, Agilidade, Acrobacia e Furtividade. Quebra com crítico ou ataque que ignore dureza.`,
+    prisao_areia: `Como a Prisão de Água, mas à distância: o alvo fica paralisado. Mantendo no turno seguinte, o Funeral de Areia é um golpe de misericórdia com ${nv >= 9 ? 'o dano comum' : 'metade do dano comum'}.`
+      + (nv >= 9 ? ' Nível 9+: sufoca.' : ''),
+    terceiro_olho: `Um olho de areia que vê por você em qualquer ponto do alcance. Achá-lo: Prontidão ou Procurar contra dif ${p.dif}.`,
+    areia_suspensa: 'Nuvem de areia: voa (Voo igual ao Espírito), leva um aliado e permite fintar de cima com Destreza.',
+    piramide: `Só em quem já está na Prisão de Areia: vira uma pirâmide com dureza ${3 * nv}, sufocante (sem o Funeral).`,
+    manto_lava: 'Golpes corporais viram Youton (Energizar ou dano comum, pagando o nível em chakra); bloquear com arma comum ou mão nua falha. Quem encosta sofre o dano comum com grau 1; quem esquiva testa Vigor.',
+    vulcao: 'Só na Forma Bijuu. Segue as regras dos Meteoros, com até seis focos de 10 m; com Tremor 4, junta o Tremor como ação livre.',
+    anjo_papel: 'Asas de papel: Voo igual ao Espírito (2 Pontos Kami). Voo rápido e Flechas nível 3 enquanto estiver com asas.',
+    julgamento: `Só em capanga, indefeso ou impedido: envolve o alvo em papel; fica indefeso e sufocando (${p.comum} fixo). Escapa com ação padrão e Força (dif ${p.dif}).` + (nv >= 9 ? ' Nível 9+: mais alvos ou um não-capanga.' : ''),
+    emissario: 'Bilhões de papéis com selos explosivos: em dois estágios (ação completa cada) e depois a explosão. Todos na área ficam indefesos (golpe de misericórdia, ignora dureza) e você sofre grau 3.',
+    voo_kujaku: 'Asas de chakra: Voo igual ao Espírito, +10 m de deslocamento e a condição alado.' + (nv >= 7 ? ' Nível 7+: pode dar as asas a um segundo alvo (+4 de chakra).' : ''),
+    medo: `Teste de Inteligência (dif ${p.dif - 2}, −1 por alvo extra) ou fica ${nv >= 7 ? 'aterrorizado' : nv >= 5 ? 'amedrontado' : 'assustado'} por 2 rodadas; quem resiste fica imune até o fim da cena.`,
+    bracos_serpente: 'Serpentes nas mangas: arma longa simples de 6 m de alcance e 3 de dano (Destreza no lugar da Força), bloqueiam ataques armados e energizados.',
+    guizo: nv >= 9 ? 'O alvo enxerga tudo com camuflagem total e fica desprevenido no próximo ataque; Vigor no início do turno para sair.'
+      : nv >= 6 ? 'O alvo enxerga tudo com camuflagem total e fica fintado no próximo ataque; Vigor no início do turno para sair.'
+      : `O alvo enxerga tudo com camuflagem parcial e fica com a defesa debilitada no próximo ataque; Vigor (dif ${p.dif - 2}) no início do turno para sair.`,
+    explosao_sonora: `No início do turno, Vigor (dif ${p.dif - 2}) ou sofre ${nv >= 7 ? nv : 2} de dano (role o grau) ignorando dureza e armadura, e fica tonto.` + (nv >= 7 ? ' Fica surdo até o fim do seu próximo turno.' : ''),
+    sino: `Vigor (dif ${p.dif - 2}) ou fica ${nv >= 10 ? 'paralisado por 2 turnos' : nv >= 8 ? 'impedido e atordoado' : 'impedido'}.`,
+    areia_selada: 'Selo na pele que guarda toda a sua areia especial (ou pó de ouro) sem ocupar compartimentos; soltar é ação livre.',
+    armadura_ouro: `Dureza de corpo ${Math.min(4, 2 + Math.max(0, Math.floor((nv - 3) / 2)))}; −10 m de deslocamento, −3 na Esquiva e falha em Agilidade, Acrobacia e Furtividade. Só quebra se ignorarem metade da dureza.`,
+    ouro_reluzente: `Pede uma Bomba Luminosa. Quem estiver no brilho testa Agilidade ou Prontidão (dif ${p.dif}) ou fica ${nv >= 10 ? 'cego no primeiro turno' : 'ofuscado'} por 3 turnos.`,
+    manto_ferro: 'Dureza de corpo 1 que não quebra; sem perder deslocamento. Guarda 3 compartimentos de areia de ferro.',
+    membros_ferro: `Membros grandes de areia de ferro (1 de chakra cada): ataque de CD com ${nv >= 10 ? 6 : nv >= 8 ? 4 : 3} de dano de arma, energizados.` + (nv >= 6 ? ' Nível 6+: podem virar asas (Voo igual ao Espírito).' : ''),
+    ferro_venenoso: 'Imbui a areia de ferro com venenos de toque ou corrente sanguínea (2 doses por compartimento).',
+    carga_lava: `Acertando, a lava endurece no corpo: +${nv >= 7 ? 'grau + 1 compartimentos (e −2 m de deslocamento cada)' : '1 compartimento cheio'}. Quebrar: ação parcial e Força ou Escapar (dif ${p.dif}).`,
+    onda_queimante: `Acertando, ${nv} de dano fixo por turno durante 3 turnos (Vigor dif ${p.dif - 2} para evitar a cada turno); depois vira uma Carga de Lava.`,
+    petrificacao: `Acertando, Vigor (dif ${p.dif - 2}) ou fica impedido; a pedra tem dureza ${p.dureza}.` + (nv >= 9 ? ' Nível 9+: em cone.' : ''),
+    sopro_concentrado: 'Jato fino de vapor: não pode ser bloqueado e ignora 2 de dureza de objetos e 1 de dureza de corpo.' + (nv >= 7 ? ' Nível 7+: ignora toda dureza e corta metade da absorção.' : ''),
+    neblina_acida: `Gás que contorna coberturas. Quem é atingido testa Vigor (dif ${p.dif - 2}) ou fica intoxicado (${nv >= 10 ? Math.ceil(nv / 2) : nv >= 8 ? 3 : 2} de dano por falha até 3 sucessos). Mantendo, cresce 5 m de raio por turno.`,
+    feixe_luz: 'Ignora 2 de dureza de barreiras e objetos; uma barreira que não quebra ainda deixa passar grau 1.',
+    nuvem_tempestuosa: `Como a Nuvem; uma vez por turno, mantendo, solta um Raio de Ranton em alguém na área.` + (nv >= 10 ? ' Nível 10: +3 de dureza e dano fixo dobrado.' : nv >= 8 ? ' Nível 8+: um raio a mais a cada 3 níveis.' : ''),
+    circo_laser: `${nv} lasers de 2; quem esquiva leva outro teste com metade do dano${nv >= 9 ? ' (nível 9+: dano inteiro)' : ''}. Todos num só alvo: Prontidão ou fintado. Ignoram cobertura.`,
+    kajousatsu: `Esfera de calor que fica: quem estiver nela no início do seu turno sofre o dano sem defesa. Pode mover a esfera; serve de defesa (CD no lugar de LM).` + (nv >= 6 ? ` Nível 6+: ${Math.floor(nv / 2)} esferas.` : ''),
+    esfera_cristal: 'Observa de longe (50 m por nível de Rastrear) quem tem assinatura de chakra conhecida; você fica desprevenido.',
+    prisao_cristal: 'Como a Prisão de Água, sem precisar manter contato: o alvo fica paralisado.' + (nv >= 9 ? ' Nível 9+: alcance comum e vários alvos.' : ''),
+    prisma: 'Você se fecha num prisma de cristal (regras de Barreira, renovável); uma vez por turno ataca com um Canhão pela ponta. Fica desprevenido.',
+    aprimorar: 'Cinco pilares de cristal: dentro, suas técnicas e as dos aliados ganham Técnica Poderosa e um melhoramento de Potencializar enquanto os pilares estiverem de pé.',
+    labirinto: `Domo de cristal com labirinto: você tem camuflagem total lá dentro; dureza ${p.dureza + 3}. Sair: ação completa e Rastrear (dif ${p.dif}), 2 sucessos.` };
   return base[ef] || '';
 }
 function defesasTxt(F) {
   return { proj: 'Esquiva ou Antecipar; Bloqueio só com arma especial ou Energizar', raio: 'Esquiva ou Antecipar (sem Bloqueio)',
     area: 'Esquiva ou Antecipar (área: sem Bloqueio)', alvo: 'Esquiva, Antecipar ou Bloqueio com arma especial', ambiente: 'Nenhuma: o alvo é o ambiente',
-    toque: 'Esquiva ou Antecipar; armas comuns não bloqueiam',
+    toque: 'Esquiva ou Antecipar; armas comuns não bloqueiam', som: 'Esquiva ou Antecipar (sem Bloqueio; quem é surdo é imune)',
     nenhuma: '—' }[F.def] || '—';
 }
 
@@ -4864,17 +5224,20 @@ const pendentes = new Map(), zonaT0 = new Map();
 function tecEfeitoMestre(ev) {
   const F = EFE[ev.ef]; if (!condPronto) return; const em = cmb && cmb.on;
   if (ev.ef === 'combustao' && ev.z) { const t = tab(); if (t && (t.zonas || []).some(z => z.id === ev.z)) removeZona(ev.z); else pendentes.delete(ev.z); return; }
+  if (F.condArea && ev.af.length) { for (const id of ev.af) condPoe(id, F.condArea, { quieto: 1, t: em ? 1 : null }); condAviso(`Na área: ${nomeCond(F.condArea).toLowerCase()}`, ev.af[0]); }   // Emissário Divino
   if (!F.cond || F.def !== 'nenhuma') return;
-  const quem = F.t === 'pessoal' ? [ev.q] : ev.alvos.map(a => a[0]), k = F.cond === 'imerso' && ev.nv >= 4 ? 'imerso_anda' : F.cond;     // Imergir nível 4+: anda imerso
-  const op = { pele_pedra: { t: em ? 1 : null }, vacuo: { t: em ? 1 : null, i: 1 } }[k] || {};
-  for (const id of quem) condPoe(id, k, Object.assign({ quieto: 1 }, op));
-  if (quem.length) condAviso(`${quem.map(nomeDe).join(', ')}: ${nomeCond(k).toLowerCase()}`, quem[0]);
+  const quem = F.t === 'pessoal' ? [ev.q] : ev.alvos.map(a => a[0]), ks = [].concat(F.cond).map(k => k === 'imerso' && ev.nv >= 4 ? 'imerso_anda' : k);     // Imergir nível 4+: anda imerso
+  for (const k of ks) { const op = { pele_pedra: { t: em ? 1 : null }, vacuo: { t: em ? 1 : null, i: 1 } }[k] || {};
+    for (const id of quem) condPoe(id, k, Object.assign({ quieto: 1 }, op)); }
+  if (quem.length) condAviso(`${quem.map(nomeDe).join(', ')}: ${ks.map(k => nomeCond(k).toLowerCase()).join(', ')}`, quem[0]);
 }
+const NO_ALVO = ['algemar', 'prisao_agua', 'prisao_areia', 'prisao_cristal', 'julgamento', 'piramide'];     // prisões que ficam desenhadas em quem foi preso
 function zonaDe(ev) {
   const F = EFE[ev.ef]; let g = null;
-  if (ev.ef === 'algemar' || ev.ef === 'prisao_agua') g = ev.alvos[0] ? { k: 'alvo', id: ev.alvos[0][0] } : null;
+  if (NO_ALVO.includes(ev.ef)) g = ev.alvos[0] ? { k: 'alvo', id: ev.alvos[0][0] } : null;
+  else if (ev.ef === 'prisma') g = { k: 'alvo', id: ev.q };
   else { const a = ev.a || ev.o; let d = ev.d; if (!d) { const dx = a[0] - ev.o[0], dy = a[1] - ev.o[1], l = Math.hypot(dx, dy); d = l > 0.01 ? [dx / l, dy / l] : [0.7071, 0.7071]; }
-    g = formaDe(ev.ef, ev.o, F.forma === 'explosao' ? ev.o : a, d, ev.p, ev.forma); }
+    g = formaDe(ev.ef, ev.o, F.forma === 'explosao' ? ev.o : a, d, Object.assign({ nv: ev.nv }, ev.p), ev.forma); }
   if (!g) return null; return limpaZonas([{ id: ev.id, ef: ev.ef, el: ev.el, s: ev.s, g, n: ev.qn, nv: ev.nv, t: Date.now() }])[0] || null;
 }
 function zonasVisiveis() {
@@ -4886,7 +5249,7 @@ function zonasVisiveis() {
 // por até 45 s; fora de combate duram 2 min. O mestre limpa as que acabaram (e as antigas, que ficavam para sempre).
 const ALG_ESPERA = 45000, ALG_FORA = 120000;
 // A Prisão de Água (Concentração, p. 112) segue a mesma regra, com o alvo paralisado.
-const PRENDE = { algemar: 'impedido', prisao_agua: 'paralisado' };
+const PRENDE = { algemar: 'impedido', prisao_agua: 'paralisado', prisao_areia: 'paralisado', prisao_cristal: 'paralisado', piramide: 'paralisado', julgamento: 'indefeso', prisma: 'prisma' };
 const PEGOU = new Set();                     // amarras e prisões que já seguraram alguém: soltou, somem na hora
 function algemaAtiva(z) { const id = z.g && z.g.id; if (!id) return false; const idade = Date.now() - (z.t || 0);
   if (!(cmb && cmb.on) && z.t && idade > ALG_FORA) return false;
@@ -4894,7 +5257,7 @@ function algemaAtiva(z) { const id = z.g && z.g.id; if (!id) return false; const
   return preso || (idade < ALG_ESPERA && !PEGOU.has(z.id)); }
 setInterval(() => { if (!ehMestre() || !tab()) return; const t = tab(); if (!(t.zonas || []).length) return;
   for (const z of t.zonas.slice()) { if (!PRENDE[z.ef] || algemaAtiva(z)) continue; const k = PRENDE[z.ef]; PEGOU.delete(z.id);
-    if (!(cmb && cmb.on) && z.t && Date.now() - z.t > ALG_FORA && condPronto && condsDe(z.g.id).ef.has(k)) { condTira(z.g.id, k); condAviso(`${nomeDe(z.g.id)} se livrou ${z.ef === 'prisao_agua' ? 'da prisão de água' : 'das amarras'}`, z.g.id); }
+    if (!(cmb && cmb.on) && z.t && Date.now() - z.t > ALG_FORA && condPronto && condsDe(z.g.id).ef.has(k)) { condTira(z.g.id, k); condAviso(`${nomeDe(z.g.id)} se livrou ${z.ef === 'algemar' ? 'das amarras' : 'da prisão'}`, z.g.id); }
     removeZona(z.id); } }, 2500);
 let zonasChave = '';
 function zonasMudaram() { zonasChave = 'x'; }
@@ -4953,7 +5316,10 @@ const ZONA_COR = { restringente: { doton: ['#653', '#986'], suiton: ['#38c', '#8
   inflamavel: { katon: ['#a64', '#fb3'], fuuton: ['#a97', '#dcb'], suiton: ['#334', '#77a'] },
   neblina: { suiton: ['#dde', '#fff'] },
   desastre: { doton: ['#653', '#a97'], suiton: ['#269', '#6ce'], fuuton: ['#9bb', '#dee'], ninpou: ['#77c', '#bbf'], raiton: ['#248', '#7cf'], sumi: ['#112', '#334'] } };
-const ZONA_CHAO = { restringente: ['xadrez', 0.8], nuvem: ['pontos', 0.55], inflamavel: ['pontos', 0.7], neblina: ['pontos', 0.22], desastre: ['xadrez', 0.45] };
+const ZONA_CHAO = { restringente: ['xadrez', 0.8], nuvem: ['pontos', 0.55], inflamavel: ['pontos', 0.7], neblina: ['pontos', 0.22], desastre: ['xadrez', 0.45],
+  interferencia: ['pontos', 0.14], neblina_acida: ['pontos', 0.5], nuvem_tempestuosa: ['pontos', 0.55], espelhos: ['pontos', 0.3], aprimorar: ['xadrez', 0.3], labirinto: ['xadrez', 0.4] };
+Object.assign(ZONA_COR, { interferencia: { kikai: ['#221', '#443'] }, neblina_acida: { futton: ['#9a6', '#df9'] }, nuvem_tempestuosa: { ranton: ['#449', '#99c'] },
+  espelhos: { hyouton: ['#9ce', '#eff'] }, aprimorar: { shouton: ['#b9c', '#fdf'] }, labirinto: { shouton: ['#97a', '#dbe'] } });
 let tqChave = '', movChave = '', camChave = '';
 function atualizaOverlays() {
   ovGarante();
@@ -4961,7 +5327,7 @@ function atualizaOverlays() {
   const zs = zonasVisiveis().filter(z => z.s === scene.id && z.g.k !== 'alvo' && ZONA_CHAO[z.ef]);
   const zk = zs.map(z => z.id).join(',');
   if (zk !== zonasChave) { zonasChave = zk; ovLimpa('zona');
-    for (const z of zs) { const [c1, c2] = (ZONA_COR[z.ef] || ZONA_COR.restringente)[z.el] || ['#777', '#aaa']; const cs = casasDe(z.g, 0);
+    for (const z of zs) { const [c1, c2] = (ZONA_COR[z.ef] || ZONA_COR.restringente)[z.el] || (ELEM[z.el] && ELEM[z.el].cor ? [ELEM[z.el].cor[1], ELEM[z.el].cor[2]] : ['#777', '#aaa']); const cs = casasDe(z.g, 0);
       ovPreenche('zona', cs, c1, ZONA_CHAO[z.ef][0], c2, { a: ZONA_CHAO[z.ef][1], anim: z.ef === 'restringente' || z.ef === 'desastre' ? animZona(c1, c2) : null });
       ovPontos('zona', contorno(z.g, 0.07), c2, 0); } }
   // técnica: alcance e área
@@ -5250,10 +5616,13 @@ function tqUI(nvCampo, mexeu) {
   else linha('Alcance', F.t === 'pessoal' ? 'Pessoal' : 'Pessoal (centro em si)');
   if (F.t === 'area') linha('Tamanho', `${p.tam} m${F.tamX ? ` (${F.tamX}× o comum)` : F.forma === 'neblina' ? ' (30 m + 3 m por Espírito)' : ''}`, `${Em.tam === 0.5 ? '0,5' : Em.tam} m por ${tec.nvTam ? 'nível usado' : 'nível de ' + p.chave}`);
   if (F.t === 'area') linha('Área', { circulo: `Círculo de ${p.tam} m`, cilindro: `Cilindro de ${p.tam} m`, nuvem: `Círculo de ${2 * p.tam} m`, tremor: 'Círculo de 2 m', meteoros: 'Esferas de 5 m',
-    explosao: tec.forma === 'circulo' ? `Círculo de ${2 * p.tam} m em volta de si` : `Meia-esfera de ${p.tam} m`, neblina: `Círculo de ${p.tam} m em volta de si`, cone: `Cone de ${Math.max(p.alc, p.tam)} m (ponta de ${p.tam} m)`, linha: `Linha de ${Math.max(p.alc, p.tam)} m × 1 m`, onda: `Onda de ${Math.max(p.alc, p.tam)} m × ${p.tam} m`, muro: `Muro de ${p.tam / 2} m` }[F.forma]);
+    explosao: tec.forma === 'circulo' ? `Círculo de ${2 * p.tam} m em volta de si` : `Meia-esfera de ${p.tam} m`, neblina: `Círculo de ${p.tam} m em volta de si`,
+    espelhos: `Cúpula de ${tec.nv} m em volta de si`, esfera: `Esfera de ${p.tam} m de raio em volta de si`, esfera3: `Círculo de ${3 * p.tam} m em volta de si`, domo: `Meia-esfera de ${p.tam} m em volta de si`,
+    ponto: 'Um ponto no alcance', esfera_calor: 'Esfera de 0,5 m', vulcao: 'Seis focos de 10 m em volta do ponto', cone: `Cone de ${Math.max(p.alc, p.tam)} m (ponta de ${p.tam} m)`, linha: `Linha de ${Math.max(p.alc, p.tam)} m × 1 m`, onda: `Onda de ${Math.max(p.alc, p.tam)} m × ${p.tam} m`, muro: `Muro de ${p.tam / 2} m` }[F.forma]);
   linha('Dano base', p.txt); linha('Dif', `${p.dif}`, `9 + nível ${tec.nv} + ½ ${p.chave} ${p.meio}${Em.dif ? ' + ' + Em.dif : ''}`);
   linha('Chakra', `${p.custo}`); linha('Ação', F.acao || 'Padrão'); if (F.dur) linha('Duração', F.dur);
   linha('Defesas', defesasTxt(F)); const nt = nota(tec.ef, p); if (nt) linha('Regra', nt); if (F.pg) linha('Livro', F.pg);
+  if (Em.extra) linha('Poder', `${Em.extra} ${Em.hj ? '(' + Em.hj + ')' : ''}`.trim());
   if (pod && tec.nv > pod) linha('Atenção', `acima do nível ${pod} de ${Em.n} na ficha`);
   // mira
   const es = tqEstado(); tecUltimo = es; const mi = $('tqMira'); mi.textContent = '';
@@ -5270,9 +5639,10 @@ function tqUI(nvCampo, mexeu) {
 // selinho do elemento em pixel (ícone do botão)
 function desenhaSelo(cv2, el) {
   const S = 22; cv2.width = S; cv2.height = S; const x = cv2.getContext('2d'); x.clearRect(0, 0, S, S);
-  const cor = { ninpou: '#77c', katon: '#d42', fuuton: '#6aa', raiton: '#48e', suiton: '#28c', doton: '#975', sumi: '#223', nendo: '#cba' }[el] || '#777';
+  const cor = { ninpou: '#77c', katon: '#d42', fuuton: '#6aa', raiton: '#48e', suiton: '#28c', doton: '#975', sumi: '#223', nendo: '#cba' }[el] || (ELEM[el] && ELEM[el].cor ? ELEM[el].cor[1] : '#777');
   x.fillStyle = cor; x.fillRect(3, 2, 16, 18); x.fillRect(2, 3, 18, 16); x.fillStyle = 'rgba(255,255,255,.18)'; x.fillRect(3, 3, 16, 2);
-  x.fillStyle = el === 'nendo' || el === 'fuuton' ? '#223' : '#fff'; x.font = 'bold 13px ' + getComputedStyle(document.body).getPropertyValue('--mincho'); x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(ELEM[el].k, 11, 12);
+  const claro = h => { const v = h.replace('#', ''), q = n => parseInt(v[n], 16); return q(0) * 0.3 + q(1) * 0.55 + q(2) * 0.15 > 10; };
+  x.fillStyle = el === 'nendo' || el === 'fuuton' || (ELEM[el] && ELEM[el].cor && claro(cor)) ? '#223' : '#fff'; x.font = 'bold 13px ' + getComputedStyle(document.body).getPropertyValue('--mincho'); x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(ELEM[el].k, 11, 12);
 }
 
 // ---------- tira de papel da técnica (para toda a mesa) ----------
@@ -5306,8 +5676,15 @@ function mostraTecnica(ev, meu) {
       ax: ids.length ? axNovo(ev.q, axA, { fx: p.fixo, ef: ev.ef, ar: F.t === 'area', pj: F.def !== 'area', cc: !!F.cc, nm: `${F.n} de ${Em.n}`, nv: ev.nv, df: p.dif }) : null }); };
     mio.appendChild(bt); }
   // o mestre marca a condição que a técnica deixa em quem falhou na defesa (ou em quem está na área)
-  const CT = { restringente: ['lento', 'Na área fica lento'], nuvem: ['lento', 'Quem falhou no Vigor fica lento'], desastre: ['lento', 'Na área fica lento'],
-    descarga: ['atordoado', 'Quem sofreu dano e falhou no Vigor fica atordoado', { t: 1 }] }[ev.ef];      // Tremor e Algemar: o combate fechado aplica em quem falhou a defesa
+  const nv = ev.nv, CT = { restringente: ['lento', 'Na área fica lento'], nuvem: ['lento', 'Quem falhou no Vigor fica lento'], desastre: ['lento', 'Na área fica lento'],
+    nuvem_tempestuosa: ['lento', 'Quem falhou no Vigor fica lento'],
+    descarga: ['atordoado', 'Quem sofreu dano e falhou no Vigor fica atordoado', { t: 1 }],
+    medo: [nv >= 7 ? 'aterrorizado' : nv >= 5 ? 'amedrontado' : 'assustado', 'Quem falhou na Inteligência', { t: 2 }],
+    explosao_sonora: ['tonto', 'Quem falhou no Vigor fica tonto (e sofre o dano)', { t: 1 }],
+    sino: [nv >= 10 ? 'paralisado' : nv >= 8 ? 'atordoado' : 'impedido', 'Quem falhou no Vigor', { t: nv >= 10 ? 2 : 1 }],
+    petrificacao: ['impedido', 'Quem falhou no Vigor fica impedido'],
+    ouro_reluzente: [nv >= 10 ? 'cego' : 'ofuscado', 'Quem falhou na Agilidade ou Prontidão', { t: nv >= 10 ? 1 : 3 }],
+    neblina_acida: ['intoxicado', 'Quem falhou no Vigor fica intoxicado'] }[ev.ef];      // Tremor e Algemar: o combate fechado aplica em quem falhou a defesa
   if (CT && ehMestre() && ids.length) { const cr = document.createElement('div'); cr.className = 'rs cnd'; const lb = document.createElement('span'); lb.textContent = CT[1] + ':'; cr.appendChild(lb);
     for (const id of ids) { const b = document.createElement('button'); b.type = 'button'; b.className = 'cnd'; b.textContent = nomeDe(id); b.title = `Pôr ${nomeCond(CT[0]).toLowerCase()} em ${nomeDe(id)}`;
       b.onclick = e => { e.stopPropagation(); condPoe(id, CT[0], CT[2] && cmb && cmb.on ? CT[2] : {}); b.disabled = true; b.classList.add('feito'); }; cr.appendChild(b); }
@@ -5341,6 +5718,12 @@ addEventListener('keydown', e => {
 });
 // ---------- a cada quadro ----------
 function combateQuadro(now, dt) { passoNpcs(dt); atualizaOverlays(); if (tec.aberto && (frameN % 15 === 0)) { const es = tqEstado(); if ((es.msg || '') !== ((tecUltimo || {}).msg || '') || (es.af || []).join() !== ((tecUltimo || {}).af || []).join() || !!es.pronto !== !!(tecUltimo || {}).pronto) tqUI(false); } }
+// as cores dos hijutsus nas tabelas de visual (ondas, anéis, amarras, muros, áreas que ficam)
+for (const [el, E2] of Object.entries(ELEM)) { const c = E2.cor; if (!c) continue;
+  CRISTA[el] = CRISTA[el] || [c[0], c[1], c[2]]; ANEL[el] = ANEL[el] || [c[2], c[1]]; PICO[el] = PICO[el] || [c[0], c[1], c[2], '#fff']; COR_EL[el] = COR_EL[el] || c[1];
+  MURO[el] = MURO[el] || ((u, j, h, t) => (j === 0 || j === h - 1 ? c[2] : (((u * 23) | 0) + j) % 6 === 0 ? c[2] : (j % 4 === 0 ? c[0] : c[1])));
+  for (const k of ['restringente', 'desastre', 'inflamavel']) ZONA_COR[k][el] = ZONA_COR[k][el] || [c[0], c[2]];
+  ZONA_COR.nuvem[el] = ZONA_COR.nuvem[el] || [c[1], c[2]]; }
 desenhaSelo($('tecIco'), 'ninpou');
 aplicarCombate();
 combatePronto = true;
@@ -5374,7 +5757,13 @@ const RANKS = ['D', 'C', 'B', 'A', 'S'];
 const semAc = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase();
 function elemDePoder(n) {
   const s = semAc(n) + ' ';
-  for (const [k, ws] of [['sumi', ['SUMI']], ['nendo', ['NENDO', 'KIBAKU']], ['katon', ['KATON', 'FOGO']], ['fuuton', ['FUUTON', 'VENTO']], ['raiton', ['RAITON', 'TROVAO']], ['suiton', ['SUITON', 'AGUA']], ['doton', ['DOTON', 'TERRA']], ['ninpou', ['NINPOU']]])
+  // hijutsus primeiro (vários têm NINPOU ou o nome de um elemento dentro); os que os quatro livros não trazem ficam de fora (null)
+  for (const [k, ws] of [[null, ['SHOKUBUTSU', 'YUME NINPOU', 'HIKARITON', 'KYUDO', 'KYUUDO', 'TAYOUTON', 'TAYOTON']], ['sumi', ['SUMI']], ['nendo', ['NENDO', 'KIBAKU']],
+    ['kikai', ['KIKAI']], ['mokuton', ['MOKUTON', 'MADEIRA']], ['hyouton', ['HYOUTON', 'HYOTON', 'GELO']], ['sakin', ['SAKIN']], ['satetsu', ['SATETSU']], ['sabaku', ['SABAKU', 'AREIA']], ['youton', ['YONBI']],
+    ['kami', ['KAMI NINPOU', 'PAPEIS', 'PAPEL']], ['kujaku', ['KUJAKU']], ['kumo', ['KUMO NINPOU', 'TEIA']], ['hebi', ['HEBI']], ['ototon', ['OTOTON', 'ELEMENTO SOM']],
+    ['ranton', ['RANTON', 'TEMPESTADE']], ['shakuton', ['SHAKUTON', 'CALOR']], ['shouton', ['SHOUTON', 'SHOTON', 'CRISTAL']],
+    ['doku', ['DOKUJUTSU', 'VENENOS']], ['yoton', ['YOUTON', 'YOTON', 'LAVA']], ['futton', ['FUTTON', 'VAPOR']], ['mecanico', ['MECANIC']],
+    ['katon', ['KATON', 'FOGO']], ['fuuton', ['FUUTON', 'VENTO']], ['raiton', ['RAITON', 'TROVAO']], ['suiton', ['SUITON', 'AGUA']], ['doton', ['DOTON', 'TERRA']], ['ninpou', ['NINPOU']]])
     if (ws.some(w => s.includes(w))) return k;
   return null;
 }
@@ -5489,7 +5878,7 @@ function persCalc(F) {
     .map(([n, v, mx, f]) => ({ n, v, mx, f, nota: Math.ceil(v / mx * 500) / 100 }));
   D.dbTotal = Math.round(D.db.reduce((s, q) => s + Math.min(5, q.nota), 0) * 100) / 100;
   // para o combate da mesa
-  D.stats = { agi: a.agi, esp: a.esp, forca: a.forca, des: a.des, vig: a.vig, arte: D.per.arte || 0, ini: D.ini, cc: D.cc, cd: D.cd, esq: D.esq, lm: D.lm, pod: D.pod };
+  D.stats = { agi: a.agi, esp: a.esp, forca: a.forca, des: a.des, vig: a.vig, arte: D.per.arte || 0, animais: D.per.animais || 0, venef: D.per.veneficio || 0, mec: D.per.mecanismo || 0, ini: D.ini, cc: D.cc, cd: D.cd, esq: D.esq, lm: D.lm, pod: D.pod };
   // avisos de regra
   const av = (t, erro, aba) => D.avisos.push({ t, erro: !!erro, aba });
   const conta = (g, p, nome, aba) => { if (g < p) av(`Sobram ${p - g} ${nome}`, 0, aba); else if (g > p) av(`${nome[0].toUpperCase() + nome.slice(1)}: ${g} gastos de ${p}`, 1, aba); };
@@ -6267,7 +6656,7 @@ function modoUnidade(id, md, now) {
   PU.alt = a; PU.deit = C.flag('deita') && PU.alt === 0;
   if (C.ef.has('morto')) PU.cinza = 1;
   if (C.ef.has('imerso') || C.ef.has('imerso_anda')) PU.afunda = 1;                       // Imergir: só o alto da cabeça aparece no chão
-  if (C.ef.has('pele_pedra')) PU.pedra = 1;
+  PU.tom = C.ef.has('pele_pedra') ? 'pedra' : C.ef.has('armadura_ouro') ? 'ouro' : C.ef.has('armadura_areia') ? 'areia' : C.ef.has('manto_lava') ? 'lava' : C.ef.has('manto_ferro') ? 'ferro' : null;
   if (C.ef.has('assustado') || C.ef.has('amedrontado') || C.ef.has('aterrorizado')) PU.jx = (Math.floor(now / 70) % 3) - 1;
 }
 // o quadro de uma unidade: base é o nome do visual (kaiser, inimigo2, aldeao22...)
@@ -6285,13 +6674,20 @@ function spriteDe(base, id, mv, front, md, now) {
 const BRANCO = new Map();
 function blitBranco(c, e, frame, sx, sy, flip, a) { blitCor(c, e, frame, sx, sy, flip, a, '#fff'); }
 // Pele de Pedra: o mesmo quadro com as cores trocadas por tons de rocha (pela claridade de cada pixel) e umas rachaduras
-const PEDRA = new Map(), TOM_PEDRA = [[0x44, 0x40, 0x3a], [0x66, 0x60, 0x55], [0x88, 0x80, 0x70], [0xaa, 0xa2, 0x90], [0xcc, 0xc4, 0xb0]];
-function blitPedra(c, e, frame, sx, sy, flip) {
-  const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + frame + ':' + (flip ? 1 : 0); let k = PEDRA.get(key);
+const PEDRA = new Map(), TONS = {                                  // da sombra à luz; rachaduras só na pedra e na areia
+  pedra: [[0x44, 0x40, 0x3a], [0x66, 0x60, 0x55], [0x88, 0x80, 0x70], [0xaa, 0xa2, 0x90], [0xcc, 0xc4, 0xb0]],
+  areia: [[0x76, 0x64, 0x44], [0x98, 0x86, 0x60], [0xba, 0xa8, 0x80], [0xdc, 0xca, 0xa0], [0xee, 0xdd, 0xc0]],
+  ouro: [[0x66, 0x44, 0x11], [0x99, 0x77, 0x22], [0xcc, 0xaa, 0x44], [0xee, 0xcc, 0x66], [0xff, 0xee, 0xaa]],
+  lava: [[0x33, 0x11, 0x11], [0x66, 0x22, 0x11], [0xaa, 0x33, 0x11], [0xee, 0x66, 0x22], [0xff, 0xcc, 0x44]],
+  ferro: [[0x11, 0x11, 0x11], [0x22, 0x22, 0x22], [0x33, 0x33, 0x33], [0x55, 0x55, 0x55], [0x88, 0x88, 0x88]] };
+function blitPedra(c, e, frame, sx, sy, flip, tom) {
+  tom = tom || 'pedra'; const TOM_PEDRA = TONS[tom] || TONS.pedra, racha = tom === 'pedra' || tom === 'areia';
+  const key = e[0] + ':' + e[1] + ':' + e[2] + ':' + frame + ':' + (flip ? 1 : 0) + tom; let k = PEDRA.get(key);
   if (!k) { if (PEDRA.size > 300) PEDRA.clear(); const fw = Math.ceil(e[3] / e[7]); k = document.createElement('canvas'); k.width = fw; k.height = e[4]; const kx = k.getContext('2d');
     blit(kx, e, frame, e[5], e[6], flip); const im = kx.getImageData(0, 0, fw, e[4]), d = im.data;
     for (let i = 0; i < d.length; i += 4) { if (!d[i + 3]) continue; const px = (i / 4) % fw, py = (i / 4 / fw) | 0, l = (d[i] * 0.3 + d[i + 1] * 0.55 + d[i + 2] * 0.15) / 255;
-      let t = Math.min(4, Math.max(0, Math.round(l * 4 - 0.1))); if (((px * 7 + py * 13) % 23 === 0) || ((px + 2 * py) % 17 === 0 && py % 3 === 0)) t = Math.max(0, t - 2);      // rachaduras
+      let t = Math.min(4, Math.max(0, Math.round(l * 4 - 0.1))); if (racha && (((px * 7 + py * 13) % 23 === 0) || ((px + 2 * py) % 17 === 0 && py % 3 === 0))) t = Math.max(0, t - 2);      // rachaduras
+      if (tom === 'lava' && (px * 5 + py * 3) % 13 === 0) t = 4;                                   // veios acesos
       const q = TOM_PEDRA[t]; d[i] = q[0]; d[i + 1] = q[1]; d[i + 2] = q[2]; }
     kx.putImageData(im, 0, 0); PEDRA.set(key, k); }
   c.drawImage(k, Math.round(sx) - e[5], Math.round(sy) - e[6]);
@@ -6639,14 +7035,18 @@ function axNovo(de, alvos, o) {
     nv: o.nv ? Math.round(o.nv) : 0, df: o.df ? Math.round(o.df) : 0 };
 }
 // a condição que a técnica deixa em quem não se defendeu
-function efNoAlvo(ax) {
-  const em = cmb && cmb.on;
+function efNoAlvo(ax, grau) {                    // lista de [condição, opções]
+  const em = cmb && cmb.on, T = n => (em ? n : null), nv = ax.nv || 0;
   switch (ax.ef) {
-    case 'tremor': return ['caido', {}];
-    case 'algemar': return ['impedido', { t: em ? 3 : null }];
-    case 'prisao_agua': return ['paralisado', {}];                                             // Concentração: dura enquanto quem usa mantiver
-    case 'cegante': return ax.nv >= 8 ? ['cego', { t: em ? 5 : null }] : ['cegado', { t: em ? 3 : null }];
-    case 'dano_cont': { const n = Math.max(1, ax.nv || ax.fx || 1); return ['chamas', { n, t: n >= 7 ? 5 : 3, i: 1 }]; }
+    case 'tremor': return [['caido', {}]];
+    case 'algemar': return [['impedido', { t: T(3) }]];
+    case 'prisao_agua': case 'prisao_areia': case 'prisao_cristal': return [['paralisado', {}]];     // Concentração: dura enquanto quem usa mantiver
+    case 'julgamento': return [['indefeso', {}], ['sufocando', {}]];
+    case 'cegante': return nv >= 8 ? [['cego', { t: T(5) }]] : [['cegado', { t: T(3) }]];
+    case 'dano_cont': { const n = Math.max(1, nv || ax.fx || 1); return [['chamas', { n, t: n >= 7 ? 5 : 3, i: 1 }]]; }
+    case 'guizo': return nv >= 9 ? [['cego', { t: T(1), i: 1 }], ['desprevenido', { t: T(1), i: 1 }]] : nv >= 6 ? [['cego', { t: T(1), i: 1 }], ['fintado', { t: T(1), i: 1 }]] : [['cegado', { t: T(1), i: 1 }]];
+    case 'carga_lava': return [['carga_lava', { n: nv >= 7 ? grau + 1 : 1 }]];
+    case 'onda_queimante': return [['lava_corpo', { n: Math.max(1, nv), t: 3, i: 1 }]];
   }
   return null;
 }
@@ -6693,7 +7093,8 @@ function resolveAgora(r) {
     const dano = base * grau + (ax.fx || 0), ap = aplicaGolpe(id, dano); D.vit = ap.vit; D.abs = ap.abs;
     let txt = `${nome}: ${dtxt} · acertou, grau ${grau}: ${dano} de dano` + (ap.abs ? ` (${ap.abs} na armadura)` : '');
     if (crit && base > 0) { const n = Math.max(1, Math.floor(base / 4)); condPoe(id, 'sangrando', { n, quieto: 1 }); D.conds.push(['sangrando', n]); txt += `, sangrando ${n > 1 ? '×' + n : ''}`.trimEnd(); }
-    const EF = efNoAlvo(ax); if (EF) { condPoe(id, EF[0], Object.assign({ quieto: 1 }, EF[1])); D.conds.push([EF[0], EF[1].n || 1]); txt += `, ${nomeCond(EF[0]).toLowerCase()}${EF[1].t ? ` (${EF[1].t} turnos)` : ''}`; }
+    for (const EF of efNoAlvo(ax, grau) || []) { condPoe(id, EF[0], Object.assign({ quieto: 1 }, EF[1])); D.conds.push([EF[0], EF[1].n || 1]); txt += `, ${nomeCond(EF[0]).toLowerCase()}${EF[1].n > 1 ? ' ×' + EF[1].n : ''}${EF[1].t ? ` (${EF[1].t} turno${EF[1].t > 1 ? 's' : ''})` : ''}`; }
+    if (ax.ef === 'selar_chakra' && ax.nv) { const n = Math.ceil(ax.nv / 2); if (danoEm(id, n, 'cha')) txt += `; −${n} de chakra selado`; }
     if (ax.ef === 'projetar') txt += `; Vigor (dif ${Math.max(0, ax.df - 2)}) ou é empurrado ${ax.nv >= 7 ? 'para longe' : grau + ' m'}`;
     if (ax.ef === 'descarga') txt += `; Vigor (dif ${Math.max(0, ax.df - 3)}) ou fica atordoado`;
     if (ax.ex === 'luminosa') { condPoe(id, 'ofuscado', { t: 3, quieto: 1 }); D.conds.push(['ofuscado', 1]); }
