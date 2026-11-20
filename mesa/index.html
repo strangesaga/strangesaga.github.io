@@ -324,7 +324,7 @@ select{background:#232b3f;color:#e8e6df;border:1px solid #39435c;border-radius:6
 #ficha .cddef button.on{background:var(--sumi);color:var(--washi)}
 #ficha .rt{font:500 12px system-ui,sans-serif;color:#5a4f5c}
 .tag.parc{background:rgba(30,34,26,.72);box-shadow:0 0 0 1px rgba(170,200,140,.55);font-size:10px;padding:0 6px}
-.rolo.tec.res .selo{background:#3a5a3a}
+.rolo.tec.res .selo{background:#3a5a3a}.rolo.tec.res,.rolo.tec.res.velho{grid-template-columns:minmax(0,1fr)}.rolo.tec.res .atq{justify-self:start}
 /* ---------- movimento e jutsus básicos ---------- */
 #acoes{left:12px;bottom:72px;display:flex;flex-wrap:wrap;align-items:center;gap:3px;padding:4px;max-width:calc(100vw - 24px);box-sizing:border-box}
 #acoes[hidden]{display:none}
@@ -883,7 +883,27 @@ body.emTitulo #cv{cursor:default}
 #mapaVila{position:fixed;z-index:65;inset:16px max(16px,calc((100vw - 1320px)/2));display:grid;grid-template-columns:minmax(0,1fr) 260px;grid-template-rows:auto minmax(0,1fr);grid-template-areas:"cab cab" "mapa lista";background:#0d1322;color:#ece6d6;border-radius:8px;box-shadow:0 0 0 100vmax rgba(5,8,16,.55),0 24px 60px rgba(0,0,0,.6);overflow:hidden;font:13px system-ui,-apple-system,"Segoe UI",sans-serif}
 #mapaVila[hidden]{display:none}
 #explorar{position:fixed;z-index:66;left:50%;top:50%;transform:translate(-50%,-50%);width:min(860px,calc(100vw - 24px));max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:#0d1322;color:#ece6d6;border-radius:8px;box-shadow:0 0 0 100vmax rgba(5,8,16,.55)}
-#explorar[hidden]{display:none}#explorar .mvCab p{margin:0;flex:1;color:#8f98ad;font-size:12px}#explorar button{font:600 12px system-ui,sans-serif;cursor:pointer}
+#explorar[hidden]{display:none}
+#tatOrdem{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:4px;padding:4px 6px;background:rgba(13,19,34,.88);border-radius:8px;max-width:min(62vw,720px);overflow-x:auto;scrollbar-width:none}
+#tatOrdem[hidden],#tatBarra[hidden],#tatAlvo[hidden]{display:none}
+.toR{font:600 11px system-ui,sans-serif;color:#9aa3b8;padding:0 6px 0 2px;white-space:nowrap}
+.toU{position:relative;flex:none;width:36px;height:40px;padding:0;border:2px solid #2b3550;border-radius:6px;background:#141b2e;cursor:pointer;display:flex;align-items:flex-start;justify-content:center;overflow:hidden}
+.toU canvas{width:32px;height:32px;image-rendering:pixelated}.toU.ini{border-color:#5a2f36}.toU.eu{border-color:#7cc4ff}
+.toU.vez{border-color:#e9c46a;box-shadow:0 0 0 1px #e9c46a;width:42px;height:46px}.toU.vez canvas{width:38px;height:38px}.toU.feito{opacity:.55}
+.toU i{position:absolute;left:3px;right:3px;bottom:3px;height:3px;background:#3a1f24;border-radius:2px}
+.toU i::after{content:'';position:absolute;left:0;top:0;bottom:0;width:calc(var(--v)*100%);background:#c45a4a;border-radius:2px}
+.toU:focus-visible,.toX:focus-visible,#tatBarra button:focus-visible{outline:2px solid #e9c46a;outline-offset:1px}
+.toX{flex:none;background:none;border:0;color:#8a93a8;font-size:16px;cursor:pointer;padding:0 4px}
+#tatBarra{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:31;background:rgba(13,19,34,.94);color:#ece6d6;border:1px solid #2b3550;border-radius:10px;padding:8px 10px 6px;display:flex;flex-direction:column;gap:6px;min-width:min(520px,calc(100vw - 16px))}
+.tbTopo{display:flex;align-items:center;gap:10px;font:13px system-ui,sans-serif}.tbTopo b{font-weight:700}#tbDesl{color:#9aa3b8;font-size:12px;flex:1}
+.tbPips{display:flex;gap:6px;font:600 11px system-ui,sans-serif}.tbPips span{padding:2px 7px;border-radius:10px;background:#1f3a2c;color:#bfe8c9}.tbPips span.gasto{background:#262b38;color:#6b7386;text-decoration:line-through}
+.tbBts{display:flex;gap:6px;flex-wrap:wrap}
+#tatBarra button{display:flex;align-items:center;gap:6px;font:600 13px system-ui,sans-serif;color:#ece6d6;background:#141b2e;border:1px solid #2b3550;border-radius:7px;padding:7px 12px;cursor:pointer}
+#tatBarra button b{font-size:15px;color:#e9c46a}#tatBarra button:hover:not(:disabled){border-color:#5a6788}#tatBarra button.on{background:#3a2f12;border-color:#e9c46a}
+#tatBarra button:disabled{opacity:.45;cursor:default}#tatBarra button[hidden]{display:none}body.tatVez #help{visibility:hidden}@media (min-width:901px){body.tatVez #acoes{bottom:124px}}#tbFim{margin-left:auto}#tbDica{margin:0;font-size:12px;color:#c9b98a;min-height:0}#tbDica:empty{display:none}
+#tatAlvo{position:fixed;left:0;top:0;z-index:40;pointer-events:none;background:rgba(13,19,34,.94);color:#ece6d6;font:600 12px system-ui,sans-serif;padding:5px 8px;border-radius:6px;border:1px solid #e9c46a;white-space:nowrap}
+body.tatico #vez{top:64px}
+@media (max-width:900px){#tatOrdem{display:none!important}#tatBarra{bottom:112px;min-width:0;width:calc(100vw - 16px)}#tatBarra button{padding:7px 9px;font-size:12px}.tbPips span{padding:2px 5px}#tbDesl{display:none}}#explorar .mvCab p{margin:0;flex:1;color:#8f98ad;font-size:12px}#explorar button{font:600 12px system-ui,sans-serif;cursor:pointer}
 #exFecha{background:none;border:0;color:#ece6d6;font-size:22px;line-height:1;padding:4px 8px}
 #exCorpo{overflow:auto;padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;scrollbar-width:thin;scrollbar-color:#39435c transparent}
 #exCorpo section{display:flex;flex-direction:column;gap:4px}#exCorpo h3{margin:0 0 4px;font-size:12px;font-weight:600;color:#9aa3b8}
@@ -955,7 +975,7 @@ body.emTitulo #cv{cursor:default}
 <div id="aviso"></div>
 <div id="clAviso" hidden></div>
 <div id="vgAviso" hidden></div>
-<div id="canto"><button id="exBtn" class="ui" type="button" title="Explorar todos os mapas sozinho" hidden>Explorar</button><button id="aldBtn" class="ui" type="button" title="Mapa da aldeia: lugares, casas e distritos dos clãs" hidden>Aldeia</button><button id="mdBtn" class="ui" type="button" title="Mapa do mundo e viagens">Mapa</button><button id="ljBtn" class="ui" type="button" title="Lojas deste lugar" hidden>Lojas</button><button id="msBtn" class="ui" type="button" title="Quadro de missões">Missões</button><button id="diBtn" class="ui" type="button" title="Diário da sessão">Diário</button></div>
+<div id="canto"><button id="tatLiga" class="ui" type="button" title="Mostrar o modo tático (ordem da rodada e barra de ações)" hidden>Tático</button><button id="exBtn" class="ui" type="button" title="Explorar todos os mapas sozinho" hidden>Explorar</button><button id="aldBtn" class="ui" type="button" title="Mapa da aldeia: lugares, casas e distritos dos clãs" hidden>Aldeia</button><button id="mdBtn" class="ui" type="button" title="Mapa do mundo e viagens">Mapa</button><button id="ljBtn" class="ui" type="button" title="Lojas deste lugar" hidden>Lojas</button><button id="msBtn" class="ui" type="button" title="Quadro de missões">Missões</button><button id="diBtn" class="ui" type="button" title="Diário da sessão">Diário</button></div>
 <section id="diario" class="ui" hidden aria-label="Diário da sessão"><header><h2>Diário da sessão</h2><button id="diFecha" type="button" aria-label="Fechar">×</button></header><div class="diBarra"><input id="diBusca" type="search" placeholder="Buscar no diário"><button id="diExporta" type="button">Exportar texto</button><button id="diCopia" type="button">Copiar</button><button id="diLimpa" type="button">Limpar</button></div><ul id="diLista"></ul></section>
 <section id="missoes" class="ui" hidden aria-label="Quadro de missões"><header><h2>Quadro de missões</h2><button id="msFecha" type="button" aria-label="Fechar">×</button></header><div id="msLista"></div></section>
 <section id="sprEd" hidden aria-label="Editor de sprite">
@@ -989,6 +1009,14 @@ body.emTitulo #cv{cursor:default}
   <input type="file" id="seArq" accept="image/png" hidden>
 </section>
 <section id="rgPainel" class="ui" hidden aria-label="Régua"><div class="rgFormas" role="group" aria-label="Forma"><button type="button" data-rg="linha">Linha</button><button type="button" data-rg="circulo">Círculo</button><button type="button" data-rg="cone">Cone</button></div><div class="rgCampos"><label data-p="lin"><span>Largura</span><button type="button" data-d="-1" aria-label="Menos 1 m">−</button><input type="number" min="0" max="120" step="1" inputmode="numeric"><button type="button" data-d="1" aria-label="Mais 1 m">+</button><em>m</em></label><label data-p="diam"><span>Diâmetro</span><button type="button" data-d="-1" aria-label="Menos 1 m">−</button><input type="number" min="0" max="120" step="1" inputmode="numeric"><button type="button" data-d="1" aria-label="Mais 1 m">+</button><em>m</em></label><label data-p="comp"><span>Comprimento</span><button type="button" data-d="-1" aria-label="Menos 1 m">−</button><input type="number" min="0" max="120" step="1" inputmode="numeric"><button type="button" data-d="1" aria-label="Mais 1 m">+</button><em>m</em></label><label data-p="larg"><span>Largura no fim</span><button type="button" data-d="-1" aria-label="Menos 1 m">−</button><input type="number" min="0" max="120" step="1" inputmode="numeric"><button type="button" data-d="1" aria-label="Mais 1 m">+</button><em>m</em></label></div><p id="rgLeitura" aria-live="polite"></p><div class="rgBt"><button type="button" id="rgOrigem">Nova origem</button><button type="button" id="rgMostra">Mostrar para a mesa</button><button type="button" id="rgFecha">Fechar</button></div></section>
+<div id="tatOrdem" class="ui" hidden aria-label="Ordem da rodada"></div>
+<div id="tatBarra" class="ui" hidden role="toolbar" aria-label="Ações da vez">
+  <div class="tbTopo"><b id="tbQuem"></b><span id="tbDesl"></span>
+    <span class="tbPips"><span id="tbPa" title="Ação padrão: golpe, arremesso, técnica">● Padrão</span><span id="tbAm" title="Ação de movimento: deslocar-se (uma vez por rodada)">▲ Movimento</span><span id="tbPc" title="Ação parcial">◆ Parcial</span></span></div>
+  <div class="tbBts"><button id="tbGolpe" type="button" title="Golpe corpo a corpo: escolha o alvo"><b>拳</b>Golpe</button><button id="tbArma" type="button" title="Kunai, shuriken e bombas da bolsa"><b>苦</b>Arremessar</button><button id="tbTec" type="button" title="Abrir as técnicas"><b>術</b>Técnica</button><button id="tbIA" type="button" title="O inimigo faz o turno sozinho: chega perto e bate" hidden><b>自</b>Agir sozinho</button><button id="tbFim" type="button" title="Passar a vez"><b>終</b>Fim do turno</button></div>
+  <p id="tbDica"></p>
+</div>
+<div id="tatAlvo" class="ui" hidden></div>
 <section id="explorar" hidden aria-label="Explorar os mapas">
   <header class="mvCab"><h2>Explorar os mapas</h2><p>Sozinho, sem mesa: nada do que você fizer aqui vai para a mesa.</p><button id="exFecha" type="button" aria-label="Fechar">×</button></header>
   <div id="exCorpo"></div>
@@ -4111,7 +4139,7 @@ function limpaNpcs(a) {
 function limpaCmb(c) {
   if (!c || typeof c !== 'object' || !c.on) return null;
   const ordem = []; for (const e of (Array.isArray(c.ordem) ? c.ordem.slice(0, 40) : [])) if (e && okId(e.id) && !ordem.some(q => q.id === e.id))
-    ordem.push({ id: e.id, ini: e.ini == null ? null : nnum(e.ini, -20, 99, null), b: nnum(e.b, -20, 60, 0), mv: e.mv ? 1 : 0, g: typeof e.g === 'string' ? e.g.slice(0, 30) : '' });
+    ordem.push({ id: e.id, ini: e.ini == null ? null : nnum(e.ini, -20, 99, null), b: nnum(e.b, -20, 60, 0), mv: e.mv ? 1 : 0, pa: e.pa ? 1 : 0, am: e.am ? 1 : 0, pc: e.pc ? 1 : 0, g: typeof e.g === 'string' ? e.g.slice(0, 30) : '' });
   return { on: 1, s: okScene(c.s) ? c.s : 'vila', r: nnum(c.r, 0, 999, 0), vez: nnum(c.vez, 0, Math.max(0, ordem.length - 1), 0), ordem, oc: c.oc ? 1 : 0, gi: c.gi ? 1 : 0 };
 }
 function limpaForma(g) {
@@ -4277,7 +4305,7 @@ function cbRolarIni() {
   const t = tab(); if (!t || !t.cmb) return; const falta = t.cmb.ordem.filter(e => e.ini == null);
   for (const e of falta) { const par = t.cmb.gi && e.g ? t.cmb.ordem.find(q => q !== e && q.g === e.g && q.ini != null) : null;   // iniciativa em grupo: inimigos iguais usam a mesma rolagem
     if (par) { e.ini = par.ini; e.b = par.b; } else rolaIniDe(e, true); }
-  let comecou = false; ordenar(t.cmb); if (t.cmb.r < 1 && t.cmb.ordem.length) { t.cmb.r = 1; t.cmb.vez = 0; for (const e of t.cmb.ordem) e.mv = 0; comecou = true; }
+  let comecou = false; ordenar(t.cmb); if (t.cmb.r < 1 && t.cmb.ordem.length) { t.cmb.r = 1; t.cmb.vez = 0; for (const e of t.cmb.ordem) { e.mv = 0; e.pa = 0; e.am = 0; e.pc = 0; } comecou = true; }
   publicar(true); if (comecou) condInicioTurno(t.cmb.ordem[0].id); if (falta.length) say('Ordem: ' + t.cmb.ordem.map(e => `${nomeDe(e.id)} ${e.ini}`).join(' · '));
 }
 function cbProximo(dir) {
@@ -4286,7 +4314,7 @@ function cbProximo(dir) {
   const antes = c.ordem[c.vez] ? c.ordem[c.vez].id : null;
   if (dir < 0) { c.vez--; if (c.vez < 0) { if (c.r > 1) { c.r--; c.vez = c.ordem.length - 1; } else c.vez = 0; } }
   else { const g0 = c.gi && c.ordem[c.vez] ? c.ordem[c.vez].g : '';
-    do { if (c.vez !== c.ordem.findIndex(e => e.id === antes) && c.ordem[c.vez]) condFimTurno(c.ordem[c.vez].id); c.vez++; if (c.vez >= c.ordem.length) { c.vez = 0; c.r++; for (const e of c.ordem) e.mv = 0; break; } } while (g0 && c.ordem[c.vez] && c.ordem[c.vez].g === g0); }   // o grupo inteiro age na mesma vez
+    do { if (c.vez !== c.ordem.findIndex(e => e.id === antes) && c.ordem[c.vez]) condFimTurno(c.ordem[c.vez].id); c.vez++; if (c.vez >= c.ordem.length) { c.vez = 0; c.r++; for (const e of c.ordem) { e.mv = 0; e.pa = 0; e.am = 0; e.pc = 0; } break; } } while (g0 && c.ordem[c.vez] && c.ordem[c.vez].g === g0); }   // o grupo inteiro age na mesma vez
   if (dir > 0) condFimTurno(antes);                          // as condições contadas em turnos andam no fim e no início da vez de cada um
   publicar(true); if (dir > 0 && c.ordem[c.vez]) { const g = c.gi ? c.ordem[c.vez].g : ''; for (let k = c.vez; k < c.ordem.length && (k === c.vez || (g && c.ordem[k].g === g)); k++) condInicioTurno(c.ordem[k].id); }
 }
@@ -4538,7 +4566,7 @@ function limpaEvento(m) {
 function receberEvento(msg) { const ev = limpaEvento(msg); if (ev) tocarTecnica(ev, false); }
 const vistos = new Set();
 function tocarTecnica(ev, meu) {
-  if (vistos.has(ev.id)) return; vistos.add(ev.id); if (vistos.size > 300) vistos.clear(); anima(ev.q, 'selo');
+  if (vistos.has(ev.id)) return; vistos.add(ev.id); if (vistos.size > 300) vistos.clear(); anima(ev.q, 'selo'); if (ehMestre() && typeof tatMarca === 'function' && cmb && cmb.on) tatMarca(ev.q, acaoTec(ev.ef));
   if (ev.s === scene.id) fxTecnica(ev);
   mostraTecnica(ev, meu);
   if (EFE[ev.ef].fica) { const z = zonaDe(ev); if (z) { pendentes.set(z.id, { z, ate: Date.now() + 6000 }); zonaT0.set(z.id, performance.now());
@@ -5827,6 +5855,7 @@ function acaoRecebe(msg) {
     if (Array.isArray(msg.de) && okXY(+msg.de[0], +msg.de[1])) puff(+msg.de[0], +msg.de[1], tipo); puff(+msg.para[0], +msg.para[1], tipo); if (okId(msg.q)) anima(msg.q, 'selo', msg.de ? 320 : 640); }
   if (msg.a === 'aviso' && typeof msg.txt === 'string') { say(msg.txt.slice(0, 200)); if (msg.fim) desfazClones(null, ['kage']); }
   if (msg.a === 'porrada' && !ehMestre() && animaPronto && okUnid(msg.de) && okUnid(msg.al)) porrada(msg.de, msg.al, Math.max(1, Math.min(4, +msg.g || 1)), !!msg.c, !!msg.cc);
+  if (msg.a === 'fimTurno' && typeof tatFimPedido === 'function') tatFimPedido(msg);
   if (msg.a === 'cai' && msg.c === me.c) aterrissa(true);                                    // o mestre derrubou quem voava
   if (msg.a === 'desfazClone' && msg.c === me.c && typeof msg.q === 'string') desfazClones(msg.q);    // o golpe acertou o clone
   if (msg.a === 'cond' && ehMestre()) condPedido(msg);
@@ -6293,6 +6322,7 @@ function resolveAgora(r) {
   const ax = r.ax, nat = r.dados.reduce((s, q) => s + q.v * (q.s || 1), 0), tot = nat + r.bonus, crit = nat >= r.crit, falha = nat <= 3 && !crit, R = RES.get(ax.i);
   const visivel = id => !ocultoId(id), lin = (id, t) => R.linhas.push({ id, t });
   if ((ax.ex === 'tarja' || ax.ex === 'tarjaRemota') && typeof explosaoFx === 'function') explosaoFx(ax);
+  if (typeof tatMarca === 'function' && ax.ex !== 'tarjaRemota' && !ax.ef) tatMarca(ax.de, 'pa');               // o golpe ou o arremesso gastou a ação padrão
   for (const [id, base] of ax.al) {
     const p = posAlvo(id); if (!p) continue; const nome = nomeVisto(id);
     if (id.startsWith('k:')) { const q = clonesTodos().find(z => z.id === id);           // clone: ilusão some ao ser tocada; os de verdade, com 1 de Vitalidade
@@ -6751,6 +6781,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape' && fiAlvo) abreFicha(n
 let ultC = null;
 function cliqueMapa(wx, wy, cx, cy) {
   const agora = performance.now(), mira = !!(tec.aberto && tec.quem && tqOrigem());
+  if (typeof taticoPronto !== 'undefined' && taticoPronto && TAT.mira && tatClique(wx, wy)) return;          // modo tático: escolhendo o alvo do golpe
   if (!mira && extrasPronto && modoMapa) { const g = chaoEm(wx, wy); if (g && extrasClique(Math.floor(g[0]), Math.floor(g[1]))) return; }   // marcar ponto, régua, nota
   if (!mira && climaPronto && climaMira) { const g = chaoEm(wx, wy); if (g && climaClique(Math.floor(g[0]), Math.floor(g[1]))) return; }   // miragem que o mestre põe
   if (!mira && cenaPronto && cenaClique(wx, wy, cx, cy)) return;                          // objetos de cena e a paleta do mestre
@@ -9241,6 +9272,146 @@ function explorarAbre() {
 if (exEl) { $('exFecha').onclick = () => { exEl.hidden = true; }; exEl.addEventListener('keydown', e => { if (e.key === 'Escape') { exEl.hidden = true; e.stopPropagation(); } }); }
 if (!MESA && $('exBtn')) { $('exBtn').hidden = false; $('exBtn').onclick = () => (exEl.hidden ? explorarAbre() : (exEl.hidden = true)); }
 if (!MESA && Q.get('explorar')) setTimeout(() => { if (typeof TIT !== 'undefined' && TIT.on && typeof tituloFecha === 'function') tituloFecha(); explorarAbre(); }, 400);
+
+// ---------- modo tático (no jeito dos jogos de estratégia por turnos) ----------
+// No alto, a ordem da rodada com retratos e Vitalidade; embaixo, a barra da vez: as três ações do livro (p. 254: 1 padrão,
+// 1 de movimento e 1 parcial por rodada, ou uma completa; deslocar-se só uma vez por rodada, p. 262), o Golpe com mira que
+// mostra a chance de acerto e o dano, Arremessar, Técnica e Fim do turno. Longe do alvo, o Golpe anda até ele e ataca.
+// O mestre marca as ações gastas quando resolve ataques e técnicas; nos inimigos, "Agir sozinho" faz o turno inteiro.
+var taticoPronto = false;
+const TAT = { on: (() => { try { return localStorage.getItem('mvila:tatico') !== '0'; } catch (e) { return true; } })(), mira: null, chave: '', ia: null };
+const tatO = $('tatOrdem'), tatB = $('tatBarra'), tatA = $('tatAlvo');
+const P2D8 = Array.from({ length: 17 }, (_, s) => (s < 2 ? 0 : (8 - Math.abs(s - 9)) / 64));
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const distU = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+function tatAtivo() { return !!(TAT.on && combateAqui() && cmb.r >= 1); }
+function tatMinha() { const at = unidadeAtiva(); return at && controlo(at) ? at : null; }
+function tatGasto(id) { const e = entrada(id) || {}; return { pa: !!e.pa, am: !!(e.mv || e.am), pc: !!e.pc, mv: !!e.mv }; }
+// o mestre anota a ação gasta (golpe, arremesso e técnica de ação padrão: pa; de movimento: am; parcial: pc; completa: pa + am)
+function tatMarca(id, k) {
+  if (!ehMestre()) return; const t = tab(); if (!t || !t.cmb || !t.cmb.on || t.cmb.r < 1) return; const e = t.cmb.ordem.find(q => q.id === id); if (!e) return;
+  if (k === 'completa') { e.pa = 1; e.am = 1; } else e[k] = 1; publicar(true);
+}
+const acaoTec = ef => ({ Movimento: 'am', Parcial: 'pc', Completa: 'completa' })[(EFE[ef] || {}).acao] || 'pa';
+// chance de acerto de um golpe (2d8 + CC contra a defesa anunciada do alvo; 16 natural sempre acerta, 3 ou menos sempre erra)
+function chanceGolpe(at, alvo) {
+  try {
+    const st = statsDe(at), bonus = st.cc + condPen(at, 'cc').v, did = (parcPronto && montariaDe(alvo)) || alvo, o = { cc: true, area: false, dist: false, voa: vooDe(at) };
+    let tipo = defesaEscolhida(did); if (tipo === 'blo' && !armado(did)) tipo = 'esq'; const fl = flanqueado(at, alvo) ? -1 : 0, df = defesaDe(did, o);
+    if (df.auto) return 1; if (!Number.isFinite(df.v) && tipo === 'esq') return null; let p = 0;
+    for (let n = 2; n <= 16; n++) { const pn = P2D8[n]; if (!pn || n <= 3) continue; if (n >= 16) { p += pn; continue; } const tot = n + bonus;
+      if (tipo === 'esq') { if (tot >= df.v + fl) p += pn; continue; }
+      const sa = statsAlvo(did), b = (tipo === 'ant' ? sa.lm : sa.cc) + condPen(did, 'def', o).v + fl; if (!Number.isFinite(b)) return null;
+      for (let m = 2; m <= 16; m++) { const pm = P2D8[m]; if (!pm || m >= 15) continue; if (m <= 3 || tot > m + b || (tot === m + b && bonus > b)) p += pn * pm; } }
+    return p;
+  } catch (e) { return null; }
+}
+const tatPerto = (a, b) => distU(a, b) <= 1.6;
+// mover a unidade da vez por um caminho (o próprio boneco anda; os outros, o mestre move) e esperar chegar
+async function tatAnda(at, path) {
+  if (!path.length) return; const fim = path[path.length - 1];
+  if (at === 'c:' + me.c) { me.path = path.slice(); cam.follow = true; lockMov = { r: cmb.r, visto: false };
+    if (ehMestre() && !MESA) { const t = tab(), te = t.cmb && t.cmb.ordem.find(q => q.id === at); if (te) { te.mv = 1; lockMov.visto = true; publicar(); } }
+    sendPresence(); }
+  else { const t = tab(), te = t && t.cmb && t.cmb.ordem.find(q => q.id === at); if (te) te.mv = 1; moverUnidade(at, fim[0], fim[1], path); }
+  const t0 = performance.now();
+  while (performance.now() - t0 < 9000) { await espera(120); const p = posDe(at); if (at === 'c:' + me.c ? !me.path.length : p && Math.hypot(p.x - fim[0], p.y - fim[1]) < 0.15 && !((npcAnim.get(at.slice(2)) || {}).path || []).length) break; }
+}
+function tatAtaca(at, alvo) {
+  golpeCC(at, alvo); setTimeout(() => { const b = $('dqRolar'); if (b) b.click(); }, 80);
+}
+async function tatGolpe(alvo) {
+  const at = tatMinha(); if (!at || !alvo || alvo === at) return; TAT.mira = null; tatRender(true);
+  if (tatGasto(at).pa) { say('A ação padrão desta rodada já foi usada'); return; }
+  const pa = posDe(at), pb = posDe(alvo); if (!pa || !pb) return;
+  if (tatPerto(pa, pb)) { tatAtaca(at, alvo); return; }
+  if (!movAtual || movAtual.id !== at) { say(tatGasto(at).mv ? 'Longe demais, e você já se deslocou nesta rodada' : 'Longe demais para o golpe'); return; }
+  let best = null;
+  for (const [k, d] of movAtual.m.dist) { const x = (k / N) | 0, y = k % N; if (Math.hypot(x + 0.5 - pb.x, y + 0.5 - pb.y) <= 1.6 && (!best || d < best[1])) best = [k, d]; }
+  if (!best) { say(`Não dá para chegar até ${nomeDe(alvo)} neste turno (${movAtual.orc} m)`); return; }
+  await tatAnda(at, caminhoAte(movAtual.m, best[0]));
+  if (tatPerto(posDe(at), posDe(alvo))) tatAtaca(at, alvo);
+}
+function tatFim() {
+  const at = tatMinha(); if (!at) return; TAT.mira = null;
+  if (ehMestre()) cbProximo(1); else if (mesa) mesa.sendEvent({ k: 'acao', a: 'fimTurno', c: me.c }).catch(() => {});
+}
+function tatFimPedido(msg) { if (ehMestre() && typeof msg.c === 'string' && unidadeAtiva() === 'c:' + msg.c) cbProximo(1); }
+// o turno inteiro de um inimigo: chega perto de quem está mais próximo e bate; sem ninguém ao alcance, só se aproxima
+async function tatIA(id) {
+  if (!ehMestre() || unidadeAtiva() !== id || TAT.ia) return; TAT.ia = id; tatRender(true);
+  try {
+    const p = posDe(id); if (!p) return;
+    const vivos = cmb.ordem.map(e => e.id).filter(q => q.startsWith('c:') && posDe(q) && posDe(q).s === scene.id && !['inconsciente', 'morto', 'morrendo'].some(k => condsDe(q).ef.has(k)));
+    if (!vivos.length) { say(`${nomeDe(id)} não tem em quem bater`); return; }
+    vivos.sort((a, b) => distU(p, posDe(a)) - distU(p, posDe(b))); const alvo = vivos[0], pb = posDe(alvo);
+    if (!tatPerto(p, pb) && !tatGasto(id).mv && !condMov(id).msg) {
+      const orc = condDesl(id, deslocM(statsDe(id))), ocup = new Set(unidades().filter(u => u.id !== id).map(u => (u.x | 0) * N + (u.y | 0)));
+      const m = mapaDesloc(p.x | 0, p.y | 0, orc, ocup); let best = null;
+      for (const [k, d] of m.dist) { const x = (k / N) | 0, y = k % N, r = Math.hypot(x + 0.5 - pb.x, y + 0.5 - pb.y), sc = r <= 1.6 ? d / 1000 : 100 + r; if (!best || sc < best[1]) best = [k, sc]; }
+      if (best && best[0] !== m.k0) await tatAnda(id, caminhoAte(m, best[0]));
+    }
+    if (tatPerto(posDe(id), posDe(alvo)) && !tatGasto(id).pa && !condsDe(id).flag('semAcao') && !condsDe(id).flag('semAtq')) { tatAtaca(id, alvo); await espera(3400); }
+    else say(`${nomeDe(id)} se aproxima de ${nomeDe(alvo)}`);
+  } finally { TAT.ia = null; if (unidadeAtiva() === id) cbProximo(1); tatRender(true); }
+}
+// ---------- desenho das barras ----------
+function tatOrdemUI(gm) {
+  tatO.textContent = ''; const r = document.createElement('span'); r.className = 'toR'; r.textContent = `Rodada ${cmb.r}`; tatO.appendChild(r);
+  for (const e of cmb.ordem) { const id = e.id, n = id.startsWith('n:') ? npcPorId(id) : null; if (n && n.oc && !gm) continue;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'toU' + (unidadeAtiva() === id ? ' vez' : '') + (id === 'c:' + me.c ? ' eu' : '') + (id.startsWith('n:') ? ' ini' : '');
+    b.title = nomeDe(id) + (unidadeAtiva() === id ? ' (vez dele)' : ''); b.style.setProperty('--cor', corDeId(id));
+    const cv2 = document.createElement('canvas'); retratoId(cv2, id); b.appendChild(cv2);
+    const v = condVida(id); if (v && v.vt && (gm || id.startsWith('c:'))) { const hp = document.createElement('i'); hp.style.setProperty('--v', Math.max(0, Math.min(1, v.va / v.vt))); b.appendChild(hp); }
+    const g = tatGasto(id); if (g.pa && g.am) b.classList.add('feito');
+    b.onclick = () => { const p = posDe(id); if (p && p.s === scene.id) { const [sx, sy] = unitScreen(p.x, p.y); cam.follow = false; cam.x = sx; cam.y = sy; } };
+    tatO.appendChild(b); }
+  const x = document.createElement('button'); x.type = 'button'; x.className = 'toX'; x.textContent = '×'; x.title = 'Esconder o modo tático'; x.setAttribute('aria-label', 'Esconder o modo tático');
+  x.onclick = () => { TAT.on = false; try { localStorage.setItem('mvila:tatico', '0'); } catch (e) {} tatRender(true); say('Modo tático escondido: o botão "Tático" no canto traz de volta'); }; tatO.appendChild(x);
+}
+function tatBarraUI(at, gm) {
+  const g = tatGasto(at), mio = at === 'c:' + me.c;
+  $('tbQuem').textContent = mio ? 'Sua vez' : `Vez de ${nomeDe(at)}`;
+  $('tbDesl').textContent = movAtual && movAtual.id === at ? `${movAtual.orc} m para andar` : g.mv ? 'já se deslocou' : condMov(at).msg ? condMov(at).msg : '';
+  for (const [k, on] of [['tbPa', g.pa], ['tbAm', g.am], ['tbPc', g.pc]]) $(k).classList.toggle('gasto', on);
+  $('tbGolpe').disabled = g.pa || !!TAT.ia; $('tbGolpe').classList.toggle('on', TAT.mira === 'golpe');
+  $('tbArma').hidden = !mio || !ferrPronto; $('tbTec').disabled = !!TAT.ia; $('tbIA').hidden = !(gm && at.startsWith('n:')); $('tbIA').disabled = !!TAT.ia; $('tbFim').disabled = !!TAT.ia;
+  $('tbDica').textContent = TAT.ia ? `${nomeDe(at)} está agindo…` : TAT.mira === 'golpe' ? 'Escolha o alvo: perto, ataca; longe, anda até ele e ataca. Esc cancela.' : '';
+}
+function tatRender(forca) {
+  if (!tatO) return; const ativo = tatAtivo(), gm = ehMestre(), at = ativo ? tatMinha() : null;
+  $('tatLiga').hidden = !(combateAqui() && cmb.r >= 1) || TAT.on;
+  if (!ativo) { tatO.hidden = true; tatB.hidden = true; tatA.hidden = true; TAT.mira = null; document.body.classList.remove('tatico', 'tatVez'); return; }
+  document.body.classList.add('tatico');
+  const ch = [cmb.r, cmb.vez, cmb.ordem.map(e => [e.id, e.mv, e.pa, e.am, e.pc, (condVida(e.id) || {}).va].join(':')).join(','), at, TAT.mira, TAT.ia, movAtual ? movAtual.orc : '', gm].join('|');
+  if (!forca && ch === TAT.chave) return; TAT.chave = ch;
+  tatO.hidden = false; tatOrdemUI(gm);
+  tatB.hidden = !at; document.body.classList.toggle('tatVez', !!at); if (at) tatBarraUI(at, gm); else TAT.mira = null;
+}
+// a dica sobre o alvo: chance de acerto e dano por grau
+function tatHover() {
+  if (TAT.mira !== 'golpe' || !mouse.ok) { if (tatA) tatA.hidden = true; return; }
+  const at = tatMinha(), [wx, wy] = mouseMundo(), u = unidadeEm(wx, wy); if (!at || !u || u.id === at || u.id.startsWith('k:' + me.c)) { tatA.hidden = true; return; }
+  const p = chanceGolpe(at, u.id), base = danoCC(at), pa = posDe(at), perto = pa && tatPerto(pa, u);
+  tatA.textContent = `${nomeDe(u.id)} · ${p == null ? 'chance ?' : 'acerta ~' + Math.round(p * 100) + '%'} · dano ${base} / ${2 * base} / ${3 * base}${perto ? '' : ' · anda até lá'}`;
+  tatA.hidden = false; tatA.style.transform = `translate(${Math.round(mouse.cx + 16)}px, ${Math.round(mouse.cy + 14)}px)`;
+}
+function tatClique(wx, wy) {
+  if (TAT.mira !== 'golpe') return false; const u = unidadeEm(wx, wy), at = tatMinha();
+  if (!u || !at || u.id === at) { say('Clique num inimigo (Esc cancela)'); return true; }
+  tatGolpe(u.id); return true;
+}
+if (tatB) {
+  $('tbGolpe').onclick = () => { TAT.mira = TAT.mira === 'golpe' ? null : 'golpe'; tatRender(true); };
+  $('tbArma').onclick = () => { TAT.mira = null; ac.menu = ac.menu === 'ferr' ? null : 'ferr'; acoesUI(); tatRender(true); };
+  $('tbTec').onclick = () => { TAT.mira = null; const at = tatMinha(); abreTecnicas(true); if (at) tqEscolheQuem(at); tatRender(true); };
+  $('tbIA').onclick = () => { const at = tatMinha(); if (at) tatIA(at); };
+  $('tbFim').onclick = tatFim;
+  $('tatLiga').onclick = () => { TAT.on = true; try { localStorage.setItem('mvila:tatico', '1'); } catch (e) {} tatRender(true); };
+  addEventListener('keydown', e => { if (e.key === 'Escape' && TAT.mira) { TAT.mira = null; tatRender(true); } });
+  setInterval(() => tatRender(false), 250); setInterval(tatHover, 60);
+}
+taticoPronto = true;
 
 // ---------- Tela de título e contas ----------
 // Um só link para a mesa. Aqui cada jogador entra com o próprio personagem (senha) e o mestre com a senha de mestre.
