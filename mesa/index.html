@@ -3573,6 +3573,7 @@ const MURO = {
 function fxItens(items, now) {
   const t = now / 1000;
   for (const fx of FXS) if (fx.itens) fx.itens(fx, t - fx.t0, items);
+  algemaItens(items, now);
   for (const z of zonasVisiveis()) { if (z.s !== scene.id || z.ef !== 'barreira' || z.g.k !== 'poli') continue;
     const p = z.g.p, A = [(p[0][0] + p[1][0]) / 2, (p[0][1] + p[1][1]) / 2], B = [(p[2][0] + p[3][0]) / 2, (p[2][1] + p[3][1]) / 2], D = [p[1][0] - p[0][0], p[1][1] - p[0][1]];
     const fatias = [-0.5, -0.375, -0.25, -0.125, 0, 0.125, 0.25, 0.375, 0.5].sort((u, v) => u * (D[0] + D[1]) - v * (D[0] + D[1]));
@@ -3591,14 +3592,28 @@ function fxItens(items, now) {
               if (H > 1) { ctx.fillStyle = z.el === 'doton' ? '#cb9' : z.el === 'suiton' ? '#eff' : z.el === 'sumi' ? '#445' : '#fff'; ctx.fillRect(sx, sy - H, 1, 1); } } }
           ctx.globalAlpha = ga; } }); } }
 }
-function fxAlgemas(now) {
-  const t = now / 1000;
-  for (const z of zonasVisiveis()) { if (z.ef !== 'algemar' || z.g.k !== 'alvo') continue; const p = posDe(z.g.id); if (!p || p.s !== scene.id) continue;
-    const [sx0, sy0] = unitScreen(p.x, p.y), sx = Math.round(sx0), sy = Math.round(sy0), c = PICO[z.el] || PICO.doton;
-    anelTela(sx, sy, 8, 3.5, c[1], 4, t * 12);
-    for (const ox of [-3, 2]) { ctx.fillStyle = z.el === 'doton' ? '#321' : c[0]; ctx.fillRect(sx + ox - 2, sy - 5, 5, 5); ctx.fillStyle = c[1]; ctx.fillRect(sx + ox - 2, sy - 5, 4, 3); ctx.fillStyle = c[2]; ctx.fillRect(sx + ox - 1, sy - 5, 2, 1); }
-    if (z.el === 'doton') { ctx.fillStyle = c[0]; ctx.fillRect(sx - 6, sy - 1, 2, 2); ctx.fillRect(sx + 5, sy - 1, 2, 2); }
-    if (z.el === 'nendo' || z.el === 'sumi') criatura(z.el === 'nendo' ? 'argila_centopeia' : 'tinta_serpente', p.x + 0.12, p.y + 0.12, hChao(p.x, p.y), 1, 1, t, 0.9, 0); }
+// Algemar: a amarra sobe enrolando nas pernas do alvo (0,9 s) e fica parada ali enquanto durar; a metade de trás é desenhada
+// atrás do boneco e a da frente por cima. Argila vira uma centopeia enrolada, tinta uma serpente; terra e água, uma corda grossa.
+function fxAlgemas() {}
+function algemaItens(items, now) {
+  for (const z of zonasVisiveis()) { if (z.ef !== 'algemar' || z.g.k !== 'alvo' || !algemaAtiva(z)) continue; const p = posDe(z.g.id); if (!p || p.s !== scene.id) continue;
+    if (!zonaT0.has(z.id)) zonaT0.set(z.id, now - 1e4); const u = Math.min(1, (now - zonaT0.get(z.id)) / 900), [sx0, sy0] = unitScreen(p.x, p.y), sx = Math.round(sx0), sy = Math.round(sy0);
+    for (const frente of [0, 1]) items.push({ bx0: p.x - 0.3, by0: p.y - 0.3, bx1: p.x + 0.3, by1: p.y + 0.3, rx0: sx - 9, ry0: sy - 16, rx1: sx + 9, ry1: sy + 4,
+      depth: p.x + p.y + (frente ? 0.003 : -0.003), draw() { espiral(z.el, sx, sy, u, frente, now / 1000); } }); }
+}
+function espiral(el, sx, sy, u, frente, t) {
+  const c = PICO[el] || PICO.doton, bicho = el === 'nendo' || el === 'sumi', N = 46, VOLTAS = 2.6, ALT = 11, fim = Math.max(1, Math.round(N * easeOut(u)));
+  const pto = i => { const s = i / N, a = s * VOLTAS * 6.283 + 1.2, rx = 5.5 - s * 1.5; return [sx + Math.cos(a) * rx, sy - 1 - s * ALT + Math.sin(a) * 2.2, Math.sin(a)]; };
+  for (let i = 0; i < fim; i++) { const [x, y, f] = pto(i); if ((f >= 0) !== !!frente) continue; const X = Math.round(x), Y = Math.round(y), escuro = f < 0;
+    let cor = escuro ? c[0] : c[1]; if (!escuro && f > 0.6) cor = c[2];
+    if (el === 'suiton' && !escuro && ((i + ((t * 10) | 0)) % 9 === 0)) cor = c[3];                // brilho correndo na corda de água
+    ctx.fillStyle = cor; ctx.fillRect(X - 1, Y - 1, 2, 2);
+    if (el === 'nendo' && i % 3 === 0 && !escuro) { ctx.fillStyle = c[0]; ctx.fillRect(X - 1, Y + 1, 1, 1); ctx.fillRect(X + 1, Y + 1, 1, 1); }     // perninhas da centopeia
+    if (el === 'doton' && i % 4 === 0) { ctx.fillStyle = c[0]; ctx.fillRect(X, Y, 1, 1); } }
+  if (bicho && frente) { const [x, y] = pto(fim - 1), X = Math.round(x), Y = Math.round(y);      // a cabeça, parada no alto da volta
+    ctx.fillStyle = c[0]; ctx.fillRect(X - 2, Y - 2, 4, 3); ctx.fillStyle = c[1]; ctx.fillRect(X - 1, Y - 2, 2, 1);
+    if (el === 'nendo') { ctx.fillStyle = c[0]; ctx.fillRect(X - 3, Y - 3, 1, 1); ctx.fillRect(X + 2, Y - 3, 1, 1); } }
+  if (u < 1 && frente) { const k = Math.round(6 * (1 - u)); ctx.fillStyle = c[2]; for (let i = 0; i < k; i++) ctx.fillRect(sx - 6 + ((i * 37) % 12), sy - ((i * 13) % 3), 1, 1); }
 }
 // ambiente dos efeitos que ficam: a nuvem continua soltando fumaça, a lama borbulha
 function fxZonasAmb(dt) {
@@ -4066,7 +4081,7 @@ function limpaForma(g) {
 function limpaZonas(a) {
   const out = []; if (!Array.isArray(a)) return out;
   for (const z of a.slice(0, 30)) { if (!z || typeof z.id !== 'string' || !EFE[z.ef] || !ELEM[z.el]) continue; const g = limpaForma(z.g); if (!g) continue;
-    out.push({ id: z.id.slice(0, 40), ef: z.ef, el: z.el, s: okScene(z.s) ? z.s : 'vila', g, n: String(z.n || '').slice(0, 24), nv: nnum(z.nv, 1, 10, 1) }); }
+    out.push({ id: z.id.slice(0, 40), ef: z.ef, el: z.el, s: okScene(z.s) ? z.s : 'vila', g, n: String(z.n || '').slice(0, 24), nv: nnum(z.nv, 1, 10, 1), t: Number.isFinite(z.t) ? z.t : 0 }); }
   return out;
 }
 // névoa da cena: { id, s, k: 'cena' | 'area', c: [x, y], r (casas), cor '#rgb', d (densidade 5..100), alt (0 rasteira, 1 alta), dir 0..7, vel 0..6, esc 1..5 (tamanho dos tufos),
@@ -4493,13 +4508,23 @@ function zonaDe(ev) {
   if (ev.ef === 'algemar') g = ev.alvos[0] ? { k: 'alvo', id: ev.alvos[0][0] } : null;
   else { const a = ev.a || ev.o; let d = ev.d; if (!d) { const dx = a[0] - ev.o[0], dy = a[1] - ev.o[1], l = Math.hypot(dx, dy); d = l > 0.01 ? [dx / l, dy / l] : [0.7071, 0.7071]; }
     g = formaDe(ev.ef, ev.o, F.forma === 'explosao' ? ev.o : a, d, ev.p, ev.forma); }
-  if (!g) return null; return limpaZonas([{ id: ev.id, ef: ev.ef, el: ev.el, s: ev.s, g, n: ev.qn, nv: ev.nv }])[0] || null;
+  if (!g) return null; return limpaZonas([{ id: ev.id, ef: ev.ef, el: ev.el, s: ev.s, g, n: ev.qn, nv: ev.nv, t: Date.now() }])[0] || null;
 }
 function zonasVisiveis() {
   const out = zonas.slice(), ids = new Set(out.map(z => z.id)); const ag = Date.now();
   for (const [id, p] of pendentes) { if (ids.has(id)) { pendentes.delete(id); continue; } if (p.ate < ag && (gmCid || (mesa && mesa.isGM))) { pendentes.delete(id); continue; } out.push(p.z); }
   return out;
 }
+// Algemar (Concentração, p. 102): as amarras ficam enquanto o alvo está impedido. Antes de o ataque ser resolvido elas aparecem
+// por até 45 s; fora de combate duram 2 min. O mestre limpa as que acabaram (e as antigas, que ficavam para sempre).
+const ALG_ESPERA = 45000, ALG_FORA = 120000;
+function algemaAtiva(z) { const id = z.g && z.g.id; if (!id) return false; const idade = Date.now() - (z.t || 0);
+  if (!(cmb && cmb.on) && z.t && idade > ALG_FORA) return false;
+  return (condPronto && condsDe(id).ef.has('impedido')) || idade < ALG_ESPERA; }
+setInterval(() => { if (!ehMestre() || !tab()) return; const t = tab(); if (!(t.zonas || []).length) return;
+  for (const z of t.zonas.slice()) { if (z.ef !== 'algemar' || algemaAtiva(z)) continue;
+    if (!(cmb && cmb.on) && z.t && Date.now() - z.t > ALG_FORA && condPronto && condsDe(z.g.id).ef.has('impedido')) { condTira(z.g.id, 'impedido'); condAviso(`${nomeDe(z.g.id)} se livrou das amarras`, z.g.id); }
+    removeZona(z.id); } }, 2500);
 let zonasChave = '';
 function zonasMudaram() { zonasChave = 'x'; }
 function removeZona(id) { const t = tab(); if (!t) return; t.zonas = (t.zonas || []).filter(z => z.id !== id); pendentes.delete(id); publicar(true); }
@@ -4744,11 +4769,15 @@ function cbFicha(id) {
   if (ehN) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Tirar da cena'; b.onclick = () => { cbAberto = null; removeNpc(id); }; ac.appendChild(b); }
   box.appendChild(ac); return box;
 }
+function cbPosiciona() { if (!cbEl || innerWidth <= 900) return; const r = $('tl').getBoundingClientRect(), top = Math.round((r.height ? r.bottom : 0) + 8);
+  cbEl.style.top = top + 'px'; cbEl.style.maxHeight = Math.max(160, innerHeight - top - 96) + 'px'; }
+if (typeof ResizeObserver === 'function' && $('tl')) new ResizeObserver(() => cbPosiciona()).observe($('tl'));
+addEventListener('resize', () => cbPosiciona());
 function cbRender() {
   if (!cbEl) return; const gm = ehMestre();
   const zs = zonasVisiveis().filter(z => z.s === scene.id); const ns = npcs.filter(n => n.s === scene.id);
   const mostra = (cmb && cmb.on) || (gm && (ns.length || zs.length || cbFixo));
-  if (mostra && innerWidth > 900) { const top = Math.round($('tl').getBoundingClientRect().bottom + 8); cbEl.style.top = top + 'px'; cbEl.style.maxHeight = Math.max(160, innerHeight - top - 96) + 'px'; }
+  if (mostra) cbPosiciona();
   cbEl.hidden = !mostra; $('cbIniciar').classList.toggle('on', !!(cmb && cmb.on)); $('cbIniciar').textContent = cmb && cmb.on ? 'Combate aberto' : 'Iniciar combate';
   if (!mostra) return;
   const tit = $('cbTitulo'), rod = $('cbRodada'), lista = $('cbLista'); lista.textContent = '';
@@ -6236,7 +6265,7 @@ function resolveAgora(r) {
     const dano = base * grau + (ax.fx || 0), ap = aplicaGolpe(id, dano); D.vit = ap.vit; D.abs = ap.abs;
     let txt = `${nome}: ${dtxt} · acertou, grau ${grau}: ${dano} de dano` + (ap.abs ? ` (${ap.abs} na armadura)` : '');
     if (crit && base > 0) { const n = Math.max(1, Math.floor(base / 4)); condPoe(id, 'sangrando', { n, quieto: 1 }); D.conds.push(['sangrando', n]); txt += `, sangrando ${n > 1 ? '×' + n : ''}`.trimEnd(); }
-    const EF = { tremor: 'caido', algemar: 'impedido' }[ax.ef]; if (EF) { condPoe(id, EF, { quieto: 1 }); D.conds.push([EF, 1]); txt += `, ${nomeCond(EF).toLowerCase()}`; }
+    const EF = { tremor: 'caido', algemar: 'impedido' }[ax.ef]; if (EF) { condPoe(id, EF, { quieto: 1, t: EF === 'impedido' && cmb && cmb.on ? 3 : null }); D.conds.push([EF, 1]); txt += `, ${nomeCond(EF).toLowerCase()}`; }
     if (ax.ex === 'luminosa') { condPoe(id, 'ofuscado', { t: 3, quieto: 1 }); D.conds.push(['ofuscado', 1]); }
     if (notas.length) txt += ' · ' + notas.join(', ');
     lin(id, txt); R.desf.push(D);
